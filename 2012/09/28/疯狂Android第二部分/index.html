@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用Intent和IntentFilter进行通信 不管是启动一个Activity也好，Service或者BroadcastReceiver组件也好，Android使用统一的Intent对象来封装意图，用Intent可以提供一致的编程模型  在某些时候，应用程序只是想启动具有某种特征的组件，并不想和某个具体的组件耦合，用Intent明显利于高层次的解耦   5.1 Intent对象详解Intent">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="疯狂Android第二部分">
+<meta property="og:url" content="https://frandfeng.github.io/2012/09/28/疯狂Android第二部分/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="使用Intent和IntentFilter进行通信 不管是启动一个Activity也好，Service或者BroadcastReceiver组件也好，Android使用统一的Intent对象来封装意图，用Intent可以提供一致的编程模型  在某些时候，应用程序只是想启动具有某种特征的组件，并不想和某个具体的组件耦合，用Intent明显利于高层次的解耦   5.1 Intent对象详解Intent">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-23T09:49:36.620Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="疯狂Android第二部分">
+<meta name="twitter:description" content="使用Intent和IntentFilter进行通信 不管是启动一个Activity也好，Service或者BroadcastReceiver组件也好，Android使用统一的Intent对象来封装意图，用Intent可以提供一致的编程模型  在某些时候，应用程序只是想启动具有某种特征的组件，并不想和某个具体的组件耦合，用Intent明显利于高层次的解耦   5.1 Intent对象详解Intent">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2012/09/28/疯狂Android第二部分/">
+
+
+
+
+
+  <title>疯狂Android第二部分 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/09/28/疯狂Android第二部分/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">疯狂Android第二部分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-09-28T00:00:00+08:00">
+                2012-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="使用Intent和IntentFilter进行通信"><a href="#使用Intent和IntentFilter进行通信" class="headerlink" title="使用Intent和IntentFilter进行通信"></a>使用Intent和IntentFilter进行通信</h2><ol>
+<li><p>不管是启动一个Activity也好，Service或者BroadcastReceiver组件也好，Android使用统一的Intent对象来封装意图，用Intent可以提供一致的编程模型</p>
+</li>
+<li><p>在某些时候，应用程序只是想启动具有某种特征的组件，并不想和某个具体的组件耦合，用Intent明显利于高层次的解耦</p>
+</li>
+</ol>
+<h3 id="5-1-Intent对象详解"><a href="#5-1-Intent对象详解" class="headerlink" title="5.1 Intent对象详解"></a>5.1 Intent对象详解</h3><p>Intent对象大致包含Component、Action、Category、Data、Type、Extra这7个属性，其中Component用于明确指定需要启动的目标组件，而Extra用于携带需要交换的数据</p>
+<h3 id="5-2-Intent的属性及intent-filter配置"><a href="#5-2-Intent的属性及intent-filter配置" class="headerlink" title="5.2 Intent的属性及intent-filter配置"></a>5.2 Intent的属性及intent-filter配置</h3><p>Intent的Action、Category属性都是一个普通的字符串，其中Action代表Intent所要完成的一个抽象动作，而Category则用于为Action增加额外的附加类别信息，通常Action属性会和Category属性结合使用，在注册Activity时可以有一个或多个Action和Category，但是Action中，如果过滤规则中能够匹配到其中一个，是可以成功的；而过滤规则需要满足对应所有的category，才可以成功的</p>
+<p>Data属性通常用于向Action属性提供操作的数据</p>
+<p>Type属性用于明确指定Data属性所指定数据的类型或MIME类型，当Intent不指定Data属性时Type属性才会起作用，否则Android系统将会根据Data属性值来分析数据的类型，因此指定Data后无须指定Type属性</p>
+<p>Intent的Extra属性通常用于在多个Action之间进行数据交换，Intent的Extra属性值应该是一个Bundle对象，Bundle对象就像一个Map对象，它可以存入多组key-value对，这样就可以通过Intent在不同的Activity之间进行数据交换了</p>
+<h2 id="Android应用的资源"><a href="#Android应用的资源" class="headerlink" title="Android应用的资源"></a>Android应用的资源</h2><p>如果从物理存在形式来分，Android应用的源代码大致可分为如下三大类：</p>
+<ol>
+<li>界面布局文件：XML文件，文件中每个标签都对应于相应的View标签</li>
+<li>Java源文件：应用中的Activity、Service、BroadcastReceiver、ContentProvider四大组件都是采用Java代码来实现的</li>
+<li>资源文件：主要以各种XML为主，还包括.png/.jpg/.gif图片资源</li>
+</ol>
+<blockquote>
+<p>Android应用下除了res目录用于存放资源之外，assets目录也可用于存放资源。一般来说，assets目录下存放的资源代表应用无法直接访问的原生资源，应用程序需要通过AssetManager以二进制流的形式来读取资源，而res目录下的资源，Android SDK会在编译该应用时，自动在R.java文件中为这些资源创建索引，程序可直接通过R资源清单类进行访问</p>
+</blockquote>
+<h3 id="6-1-资源的类型及存储方式"><a href="#6-1-资源的类型及存储方式" class="headerlink" title="6.1 资源的类型及存储方式"></a>6.1 资源的类型及存储方式</h3><p>Android应用资源可分为两大类：</p>
+<ol>
+<li>无法直接访问的原生资源，保存在assets目录下</li>
+<li>可通过R资源清单类访问的资源，保存在res目录下</li>
+</ol>
+<p>一旦将应用程序的各种资源分别保存在Android应用的/res目录下，接下来既可以在Java程序中使用这些资源，也可以在其他XML资源中使用这些资源</p>
+<p>由于Android SDK会在编译应用时在R类中为/res目录下所有资源创建索引项，因此在Java代码中访问资源主要通过R类来完成<code>[&lt;package_name&gt;.]R.&lt;resource_type&gt;.&lt;resource_name&gt;</code></p>
+<p>当定义XML资源文件时，其中的XML元素可能需要指定不同的值，这些值就可以设置为已定义的资源项。在XML中使用资源的完整语法格式为：<code>@[&lt;package_name&gt;:]&lt;resource_type&gt;/&lt;resource_name&gt;</code></p>
+<h3 id="6-2-使用字符串、颜色、尺寸资源"><a href="#6-2-使用字符串、颜色、尺寸资源" class="headerlink" title="6.2 使用字符串、颜色、尺寸资源"></a>6.2 使用字符串、颜色、尺寸资源</h3><p>字符串资源、颜色资源、尺寸资源，它们对应的XML文件都将位于/res/value目录下，它们的默认的文件名为<code>strings.xml/colors.xml/dimens.xml</code></p>
+<h3 id="6-3-数组-Array-资源"><a href="#6-3-数组-Array-资源" class="headerlink" title="6.3 数组(Array)资源"></a>6.3 数组(Array)资源</h3><p>Android同样采用位于/res/value目录下的arrays.xml文件来定义数组，定义数组时XML资源文件的根元素也是&lt;resources…/&gt;元素，该元素内可包含如下三种子元素<code>&lt;array.../&gt; &lt;string-array.../&gt; &lt;integer-array.../&gt;</code></p>
+<h3 id="6-4-使用Drawable资源"><a href="#6-4-使用Drawable资源" class="headerlink" title="6.4 使用Drawable资源"></a>6.4 使用Drawable资源</h3><p>Drawable资源通常保存在/res/drawable目录，实际上可能保存在/res/drawable-lmhdpi目录下，图片资源是最简单的Drawable资源，我们只要把.png .jpg .gif等格式的图片放入/res/drawable-xxx目录下，Android SDK就会在编译应用时自动加载该图片，并在R资源清单类中生成该资源的索引</p>
+<p>StateListDrawable用于组织多个Drawable对象，当使用StateListDrawable作为目标组件的背景，前景图片时，StateListDrawable对象所显示的Drawable对象会随目标组件状态的改变而自动切换。</p>
+<blockquote>
+<p>定义StateListDrawable对象的XML文件的根元素为<code>&lt;selector.../&gt;</code>，该元素可以包含多个<code>&lt;item.../&gt;</code>元素，该元素可以指定如下属性<code>color/drawable/state_xxx</code></p>
+</blockquote>
+<p>与StateListDrawable有点类似，LayerDrawable也可包含一个Drawable数组，因此系统将会按这些Drawable对象的数组顺序来绘制它们，索引最大的Drawable对象将会被绘制在最上面。</p>
+<blockquote>
+<p>定义LayerDrawable对象的XML文件的根元素为<code>&lt;layer-list.../&gt;</code>，该元素可以包含多个<code>&lt;item.../&gt;</code>元素，该元素可指定如下属性<code>drawable/id/bottom|top|left|right</code></p>
+</blockquote>
+<p>ShapeDrawable用于定义一个基本的几何图形(如矩形、圆形、线条等)</p>
+<blockquote>
+<p>定义ShapeDrawable的XML文件的根元素是<code>&lt;Shape.../&gt;</code>元素，该元素可指定如下属性<code>android:shape=[rectangle|oval|line|ring]</code>，该元素下边可指定如下元素<code>&lt;corners.../&gt; &lt;gradient.../&gt; &lt;padding.../&gt; &lt;size.../&gt; &lt;solid.../&gt; &lt;stroke.../&gt;</code></p>
+</blockquote>
+<p>ClipDrawable代表从其他位图上截取的一个“图片片段”，在XML文件中定义ClipDrawable对象使用<code>&lt;clip.../&gt;</code>元素，该元素可以指定三个属性<code>drawable/clipOrientation/gravity</code></p>
+<p>AnimationDrawable代表一个动画资源，Android中既支持传统的逐帧动画（类似于电影方式、一张图片一张图片的切换），也支持通过平移、变化计算出来的补间动画</p>
+<blockquote>
+<p>下面以逐帧动画原理来介绍定义AnimationDrawable资源, 定义逐帧动画的XML资源文件以<animation-list>元素作为根元素,该元素内可指定&lt;item…./&gt;子元素,将其设置为ImageView的background后,便可将item内的图片文件逐帧播放</animation-list></p>
+</blockquote>
+<blockquote>
+<p>下面以补间动画文理来介绍如何定义AnimationDrawable资源，定义补间动画的XML资源文件以&lt;set…/&gt;元素作为根元素，该元素内可以指定如下4个元素：alpha/scale/tanslate/rotate</p>
+</blockquote>
+<h3 id="6-5-使用原始XML资源"><a href="#6-5-使用原始XML资源" class="headerlink" title="6.5 使用原始XML资源"></a>6.5 使用原始XML资源</h3><p>在某些时候，Android应用有一些初始化的配置信息、应用相关的数据资源需要保存、一般推荐使用XML文件来保存它们，这种资源就被称为原始XML资源。</p>
+<blockquote>
+<p>原始XML资源一般保存在/res/xml路径下，一般默认没有此目录，开发者应该自行手动创建xml目录，一旦成功的定义了原始XML资源，接下来在XML文件中可通过如下语法格式来访问它：<code>@[&lt;package_name&gt;:]xml/file_name</code>，在Java代码中通过<code>[&lt;package_name&gt;.]R.xml.&lt;file_name&gt;</code>来访问它</p>
+</blockquote>
+<h3 id="6-6-使用布局-Layout-资源"><a href="#6-6-使用布局-Layout-资源" class="headerlink" title="6.6 使用布局(Layout)资源"></a>6.6 使用布局(Layout)资源</h3><p>Layout资源文件应放在/res/layout目录下，Layout资源文件的根元素通常是各种布局管理器，比如LinearLayout、RelativeLayout等</p>
+<blockquote>
+<p>一旦在Android项目中定义了Layout资源，接下来在XML文件中可通过如下语法格式来访问它：<code>@[&lt;package_name&gt;:]layout/file_name</code>，在Java代码中通过<code>[&lt;package_name&gt;.]R.layout.&lt;file_name&gt;</code>来访问它</p>
+</blockquote>
+<h3 id="6-7-使用菜单-Menu-资源"><a href="#6-7-使用菜单-Menu-资源" class="headerlink" title="6.7 使用菜单(Menu)资源"></a>6.7 使用菜单(Menu)资源</h3><p>菜单资源文件通常应该放在/res/menu目录下，菜单资源的根元素通常是&lt;menu…/&gt;元素，&lt;menu…/&gt;元素无须指定任何属性。<code>&lt;menu.../&gt;</code>元素内可包含如下子元素<code>&lt;item.../&gt; &lt;group.../&gt;</code>，<code>&lt;group.../&gt;</code>子元素用于控制整组菜单的行为，该元素可指定如下常用属性 checkableBehavior：指定该组菜单的选择行为 menuCategory：对菜单进行分类，指定菜单的优先级 visible：该菜单是否可见 enable：该菜单是否可用</p>
+<p>归纳起来，使用XML资源定义菜单有如下两个好处：</p>
+<ol>
+<li>XML资源文件不仅负责定义应用界面，也负责定义菜单，这样可把所有界面相关的内容交给XML文件管理，而Java代码的功能更集中</li>
+<li>后期更新维护应用时，如果需要更新、维护菜单，打开、编辑XML文件即可，避免对Java文件的修改</li>
+</ol>
+<h3 id="6-8-样式-Style-和主题-theme-资源"><a href="#6-8-样式-Style-和主题-theme-资源" class="headerlink" title="6.8 样式(Style)和主题(theme)资源"></a>6.8 样式(Style)和主题(theme)资源</h3><p>Android的样式资源文件也放在/res/values目录下，样式资源文件的根元素是<code>&lt;resources.../&gt;</code>元素，该元素内可包含多个<code>&lt;style.../&gt;</code>子元素，每个<code>&lt;style.../&gt;</code>子元素定义一个样式，<code>&lt;style.../&gt;</code>元素指定如下两个属性 <code>name 和 parent</code>，<code>&lt;style.../&gt;</code>元素内可包含多个<code>&lt;item.../&gt;</code>子元素，每个<code>&lt;item.../&gt;</code>子元素定义一个格式项，如<code>android:textColor</code></p>
+<p>与样式资源非常相似，主题资源的XML文件通常也放在/res/values目录下，主题资源的XML文档同样以<code>&lt;resource.../&gt;</code>元素作为根元素，同样使用<code>&lt;style.../&gt;</code>来定义主题。</p>
+<p>主题与样式的区别主要体现在：</p>
+<ol>
+<li>主题不能作用于单个的View组件，主题应该对整个应用中的所有Activity起作用，或对指定Activity起作用</li>
+<li>主题定义的格式应该是改变窗口外观的格式，例如窗口标题、窗口边框等</li>
+</ol>
+<h3 id="6-9-属性（Attribute）资源"><a href="#6-9-属性（Attribute）资源" class="headerlink" title="6.9 属性（Attribute）资源"></a>6.9 属性（Attribute）资源</h3><p>属性资源文件也放在/res/values目录下，属性资源文件的跟元素也是<code>&lt;resources.../&gt;</code>，该元素里包含如下两个子元素</p>
+<ol>
+<li>attr子元素：定义一个属性</li>
+<li><p>declare-styleable子元素：定义一个styleable对象，每个styleable对象就是一组attr属性的集合</p>
+<pre><code>&lt;declare-styleable name=&quot;MyImageView&quot;&gt;  
+    &lt;attr name=&quot;imgSrc&quot; format=&quot;reference&quot;/&gt;  
+&lt;/declare-styleable&gt;  
+</code></pre></li>
+</ol>
+<h3 id="6-10-使用原始资源"><a href="#6-10-使用原始资源" class="headerlink" title="6.10 使用原始资源"></a>6.10 使用原始资源</h3><p>类似声音文件及其他各种类型的文件，只要Android没有为之提供专门的支持，这种资源都被称为原始资源。Android的原始资源可以放在如下两个地方</p>
+<ol>
+<li>位于/res/raw目录下，Android SDK会处理该目录下原始资源，Android SDK会在R清单类中为该目录下的资源生成一个索引</li>
+<li>位于/assets/目录下，该目录下的资源是更彻底的原始资源。Android应用需要通过AssetManager来管理该目录下的原始资源</li>
+</ol>
+<h3 id="6-11-国际化和资源自适应"><a href="#6-11-国际化和资源自适应" class="headerlink" title="6.11 国际化和资源自适应"></a>6.11 国际化和资源自适应</h3><p>Android应用使用res/values目录下的资源文件来保存程序中用到的字符串信息，为了给这些消息提供不同语言，国家的版本，开发者需要为values目录添加几个不同的语言国家版本，不同values文件夹的命名方式为： values-语言代码-r国家代码</p>
+<h2 id="图形与图像处理"><a href="#图形与图像处理" class="headerlink" title="图形与图像处理"></a>图形与图像处理</h2><h3 id="7-1-使用简单图片"><a href="#7-1-使用简单图片" class="headerlink" title="7.1 使用简单图片"></a>7.1 使用简单图片</h3><p>当我们为Android应用增加了Drawable资源后，Android SDK会为这份资源在R清单文件中创建一个索引项：R.drawable.file_name，接下来可以在XML资源文件中通过@drawable/file_name来访问该对象，也可在Java代码中通过R.drawable.file_name方位该Drawable对象</p>
+<p>Bitmap代表一张位图，BitmapDrawable里封装的图片就是一个Bitmap对象。开发者为了把Bitmap对象包装成BitmapDrawable对象，可以调用BitmapDrawable的构造器<code>BitmapDrawable drawable = new BitmapDrawable(bitmap)</code>，如果需要获取BitmapDrawable所封装的Bitmap对象，则可调用BitmapDrawable的getBitmap()方法<code>Bitmap bitmap = drawable.getBitmap();</code></p>
+<p>除此之外，Bitmap还提供了一些静态方法来创建新的Bitmap对象，例如：</p>
+<ol>
+<li><code>createBitmap(Bitmap src, int x, int y, int width, int height)</code></li>
+<li><code>createScaledBitmap(Bitmap src, int dstWidth, int dstHeight, boolean filter)</code></li>
+<li><code>createBitmap(int width, int height, Bitmap.Config config)</code></li>
+<li><code>createBitmap(Bitmap src, int x, int y, int width, int height, Matrix m, boolen filter)</code></li>
+</ol>
+<p>BitmapFactory是一个工具类，它用于提供大量的方法，这些方法可用于从不同的数据源来解析、创建Bitmap对象。BitmapFactory包含了如下方法：</p>
+<ol>
+<li><code>decodeByteArray(byte[] data, int offset, int length)</code></li>
+<li><code>decodeFile(String pathName)</code></li>
+<li><code>decodeFileDescriptor(FileDescriptor fd)</code></li>
+<li><code>decodeResource(Resources res, int id)</code></li>
+<li><code>decodeStream(InputStream is)</code></li>
+</ol>
+<blockquote>
+<p>由于手机内存的限制，如果系统不停的去解析、创建Bitmap对象，可能由于前面创建Bitmap所占的内存还没有回收，而导致程序运行时引发OutOfMemory错误，Android为Bitmap提供了两个方法来判断它是否已回收</p>
+<pre><code>1. boolean isRecycled()
+2. void recycle()
+</code></pre></blockquote>
+<h3 id="7-2-绘图"><a href="#7-2-绘图" class="headerlink" title="7.2 绘图"></a>7.2 绘图</h3><p>Android的绘图应该继承View组件，并重写它的onDraw(Canvas canvas)方法即可；此时涉及一个绘图API：Canvas，Canvas代表了依附于指定View的画布，它提供了很多的方法来绘制各种图形，比如<code>drawArc,drawBitmap,drawLine,drawRect,drawText</code>等；这些方法的参数中都涉及一个绘图API：Paint，Paint代表了Canvas上的画笔，因此Paint类主要用于设置绘制风格，包括画笔颜色，粗细，填充风格，渐变Shader等</p>
+<p>Android提供的Path是一个非常有用的类，它可以预先在View上将N个点连成一条路径，然后调用Canvas的drawPath(path, paint)即可沿着路径绘制图形，实际上Android还未路径绘制提供了PathEffect来定义绘制效果，如<code>ComposePathEffect,CornerPathEffect,DashPathEffect,DiscretePathEffect,PathDashPathEffect,SumPathEffect</code>等</p>
+<blockquote>
+<p>为了让View组件上绘制的图形发生改变(无非是位置、大小、角度等发生改变)，这就需要程序采用变量来记住这些状态数据–如果需要游戏动画随用户操作而改变，就为用户动作编写事件监听器，在监听器中修改这些数据；如果需要游戏动画自行改变，那就是随时间的流失而改变，就需要使用定时器(Timer)，让Timer控制这些状态数据定期修改；不管使用哪种方式，每次View组件上的图形状态数据发生了改变，都应该通知View组件重写调用onDraw(Canvas canvas)方法重绘该组件。通知View重绘可调用invalidate(在UI线程中)或postInvalidate(在非UI线程中)</p>
+</blockquote>
+<h3 id="7-3-图形特效处理"><a href="#7-3-图形特效处理" class="headerlink" title="7.3 图形特效处理"></a>7.3 图形特效处理</h3><p>Matrix是Android提供的一个矩阵工具类，它本身并不能对图像或组件进行变换，但它可与其他API结合来控制图形、组件的变换，使用Matrix控制图像或组件的变换步骤如下</p>
+<ol>
+<li>获取Matrix对象，该Matrix对象既可新创建，也可直接获取其他对象内封装的Matrix</li>
+<li>调用Matrix的方法进行平移、旋转、缩放、倾斜等</li>
+<li>将程序对Matrix所做的变换应用到指定图像或组件</li>
+</ol>
+<p>Matrix提供了如下方法来控制平移、旋转和缩放<code>setTranslate/setSkew/setRotate/setScale</code></p>
+<p><code>drawBitmapMesh(Bitmap bitmap, int meshWidth, int meshHeight, float[] vers, int vertOffset, int[] colors, int colorOffset, Paint paint)</code>方法是Canvas提供，该方法可以对bitmap进行扭曲，其中的关键参数说明如下</p>
+<ol>
+<li>bitmap:指定需要扭曲的源位图</li>
+<li>meshWidth:该参数控制在横向上把该源位图划分成多少格</li>
+<li>meshHeight:该参数控制在纵向上把该源位图划分成多少格</li>
+<li>verts:该参数时一个长度为<code>(meshWidth+1)*(meshHeight+1)*2</code>的数组，它记录了扭曲后的位图各顶点位置。虽然它是一个数组，实际上它记录的数据是形如(x0, y0)、(x1, y1)、(x2, y2)、格式的数据，这些数组元素控制对bitmap位图的扭曲效果</li>
+<li>verOffset:控制verts数组中从第几个数组元素开始才对bitmap进行扭曲</li>
+</ol>
+<p>前面介绍Paint时提到其包含了一个setShader(Shader)方法，该方法控制画笔的渲染效果，Shader本身是一个抽象类，它提供了如下实现类：<code>BitmapShader(位图平铺)/LinearGradient(线性渐变)/RadialGradient(圆形渐变)/SweepGradient(角度渐变)/ComposeGradient(组合渲染)</code></p>
+<h3 id="7-4-逐帧动画"><a href="#7-4-逐帧动画" class="headerlink" title="7.4 逐帧动画"></a>7.4 逐帧动画</h3><p>逐帧(Frame)动画是最容易理解的动画，它要求开发者能把动画过程的每张静态图片都收集起来，然后由Android来控制依次显示这些静态图片，然后利用人眼视觉暂留的原理，给用户造成动画的错觉</p>
+<p>定义逐帧动画的XML资源文件以<animation-list>元素作为根元素,该元素内可指定&lt;item…./&gt;子元素,并指定各个item的持续时间，将其设置为ImageView的background后,便可将item内的图片文件逐帧播放</animation-list></p>
+<blockquote>
+<p>Android完全支持在Java代码中创建逐帧动画，如果开发者喜欢，开发者完全可以先创建AnimationDrawable对象，然后调用addFrame(Drawable frame, int duration)向该动画中添加帧，每调用一次addFrame方法，就向&lt;animation-list…/&gt;元素中添加一个&lt;item…/&gt;子元素</p>
+</blockquote>
+<h3 id="7-5-补间动画"><a href="#7-5-补间动画" class="headerlink" title="7.5 补间动画"></a>7.5 补间动画</h3><p>Android除了支持逐帧动画之外，也提供了对补间动画(Tween)动画的支持，补间动画就是指开发者只需指定开始、结束关键帧，而动画变化的中间帧由系统计算并补齐</p>
+<p>Android使用Animation代表抽象的动画类，它包括如下几个子类<code>alphaAnimation/ScaleAnimation/TranslateAnimation/RotateAnimation</code>，一旦为补间动画指定了3个必要信息，Android就会根据动画的开始帧、结束帧、动画持续时间计算出需要在中间补入多少帧，并计算所有补入帧的图形</p>
+<p>Interpolator根据特定算法计算出整个动画所需要动态插入帧的密度和位置，简单的说，Interpolator负责控制动画的变化速度，这就使得基本的动画效果能以匀速、加速、减速、抛物线速度等各种速度变化</p>
+<p>Android为Interpolator提供了如下几个实现类，分别用于实现不同动画的变化速度：</p>
+<ol>
+<li>LinearInterpolator：匀速改变</li>
+<li>AccelerateInterpolator：动画开始较慢，然后加速</li>
+<li>AccelerateDecelerateInterpolator：动画在开始和结束时慢，在中间的时候加速</li>
+<li>CycleInterpolator：变化速度按正弦曲线改变</li>
+<li>DecelerateInterpolator：动画开始比较快，然后减速</li>
+</ol>
+<p>自定义补间动画并不难，需要继承Animation类，继承Animation时关键是要重写该抽象基类的<code>applyTransformation(float interpolatedTime, Transform t)</code>方法，该方法中的两个参数的说明如下：</p>
+<ol>
+<li>interpolatedTime：代表了动画的时间进行比例，不管动画实际的持续时间如何，当动画播放时，该参数总是自动从0变到1</li>
+<li>Transformation：该参数代表了补间动画在不同时刻对图形或组件的变形程度</li>
+</ol>
+<p>从上面的介绍可以看出，实际自定义动画的关键就在于重写applyTransformation方法时根据interpolatedTime时间来动态地计算动画对图片或视图的变形程度</p>
+<h3 id="7-6-使用SurfaceView实现动画"><a href="#7-6-使用SurfaceView实现动画" class="headerlink" title="7.6 使用SurfaceView实现动画"></a>7.6 使用SurfaceView实现动画</h3><p>虽然前面大量介绍了使用自定义View来进行绘图，但是绘图机制存在如下两个缺陷：</p>
+<ol>
+<li>View缺乏双缓冲机制，界面会出现闪烁</li>
+<li>当程序需要更新View上的图像时，程序必须重绘View上显示的整张图片</li>
+<li>SurfaceView运行在非UI线程中画图，即可自己启动一个线程来画图，不会导致UI卡顿</li>
+</ol>
+<p>由于View存在上面两个缺陷，所以通过自定义View来实现绘图、尤其是游戏中的绘图时性能并不好。Android提供了一个SurfaceView来代替View，在实现游戏绘图方面，SurfaceView比View更加出色，因此一般推荐使用SurfaceView</p>
+<p>SurfaceView一般会与SurfaceHolder结合使用，SurfaceHolder用于向与之关联的SurfaceView上绘图，调用SurfaceView的getHolder()方法即可获取SurfaceView关联的SurfaceHolder。SurfaceHolder提供了如下方法来获取Canvas对象：</p>
+<ol>
+<li>Canvas lockCanvas():锁定整个SurfaceView对象，获取该Surface上的Canvas</li>
+<li>Canvas lockCanvas(Rect dirty):锁定SurfaceView上的Rect划分的区域，获取该Surface上的Canvas</li>
+</ol>
+<p>当对同一个SurfaceView调用上面两个方法时，两个方法所返回的是同一个Canvas对象，但当程序调用第二个方法获取指定区域的Canvas时，SurfaceView将只对Rect所圈出来的区域进行更新，通过这种方式可以提高画面的更新速度。</p>
+<p>当通过lockCanvas获取指定了SurfaceView上的Canvas之后，接下来程序就可以调用Canvas进行绘图了，Canvas绘图完成后通过如下方法来释放绘图、提交所绘制的图形<code>unlockCanvasAndPost(canvas)</code></p>
+<p>需要指出的是，当调用SurfaceHolder的unlockCanvasAndPost方法之后，该方法之前所绘制的图形还处于缓冲之中，下一次lockCanvas方法锁定的区域可能会遮挡它</p>
+<p>可以为SurfaceHolder添加一个Callback实例，该Callback中定义了如下三个方法</p>
+<ol>
+<li><code>void surfaceChanged(SurfaceHolder holder, int format, int width, int height)</code></li>
+<li><code>void surfaceCreated(SurfaceHolder holder)</code></li>
+<li><code>void surfaceDestroyed(SurfaceHolder holder)</code></li>
+</ol>
+<h2 id="Android-的数据存储和IO"><a href="#Android-的数据存储和IO" class="headerlink" title="Android 的数据存储和IO"></a>Android 的数据存储和IO</h2><h3 id="8-1-使用SharedPreferences"><a href="#8-1-使用SharedPreferences" class="headerlink" title="8.1 使用SharedPreferences"></a>8.1 使用SharedPreferences</h3><p>SharedPreferences 保存的数据主要是类似于配置信息格式的数据，因此它保存的数据主要是简单类型的key-value对。SharedPreferences接口主要负责读取应用程序的Preferences数据，它提供了如下常用方法来访问SharedPreferences中的key-value对</p>
+<ul>
+<li>boolean contains(String key):判断是否包含特定key的数据</li>
+<li>abstract Map&lt;String, ?&gt; getAll():获取SharedPreference数据里全部的key-value对</li>
+<li>boolean getXxx(String key, xxx defValue):获取数据里指定key对应的value，如果该key不存在，则返回默认值defValue</li>
+</ul>
+<p>SharedPreferences 接口本身没有提供写入数据的能力，而是通过SharedPreferences的内部接口，SharedPreferences调用edit()方法即可获取它所对应的Editor对象。Editor提供了如下方法来向SharedPreferences写入数据</p>
+<ul>
+<li>SharedPreferences.Editor clear();清空SharedPreferences里所有数据</li>
+<li>SharedPreferences.Editor putXxx(String key, xxx value);向SharedPreferences存入指定key对应的数据</li>
+<li>SharedPreferences.Editor remove(String key);删除SharedPreferences里指定key对应的数据项</li>
+<li>boolean commit();当Editor编辑完成后，调用该方法提交修改</li>
+</ul>
+<p>SharedPreferences本身是一个接口，程序无法直接创建SharedPreferences实例，只能通过Context提供的getSharedPreferences(String name, int mode)方法来获取SharedPreferences实例，该方法的第二个参数可以指定如下几个值</p>
+<blockquote>
+<p>Context.MODE_PRIVATE:指定该SharedPreferences数据只能被本应用程序读写<br>Context.MODE_WORLD_READABLE:指定该SharedPreferences能被其他应用程序读，但不能写<br>Context.MODE_WORLD_WRITEABLE:指定该SharedPreferences能被其他应用程序读、写</p>
+</blockquote>
+<p>SharedPreferences数据总是保存在<code>/data/data/&lt;package_name&gt;/shared_prefs</code>目录下，SharedPreferences数据总是以XML格式保存。通过File Explorer面板的导出文件按钮将该XML文件导出到XML文档，打开该XML文档可以看到如下内容</p>
+<pre><code>&lt;?xml version=1.0 encoding=&apos;utf-8&apos; standalone=&apos;yes&apos; ?&gt;
+&lt;map&gt;
+    &lt;int name=&quot;random&quot; value=&quot;2&quot;/&gt;
+    &lt;string name=&quot;time&quot; value=&quot;2018年&quot;/&gt;
+&lt;/map&gt;
+</code></pre><p>要读、写其他应用的SharedPreferences，前提是创建该SharedPreferences的应用程序指定相应的访问权限，例如指定了MODE_WORLD_READABLE，然后按照如下步骤进行：</p>
+<ol>
+<li>需要创建其他应用程序对应的Context <code>context = createPackageContext(&quot;org.crazyit.io&quot;, Context.CONTEXT_IGNORE_SECURITY)</code></li>
+<li>调用其他应用程序的Context的<code>getSharedPreferences(String name, int mode)</code>获取相应的SharedPreferences对象</li>
+<li>如果需要获取数据，直接getXxx(String key, xxx defValue)，如果需要写入数据，则调用SharedPreferences的edit方法</li>
+</ol>
+<blockquote>
+<p>事实上，如果开发者不通过先获取其他应用程序的Context，再获取SharedPreferences的方式也可以读取SharedPreferences的数据，开发者完全可以使用以IO流的方式先读取SharedPreferences对应的XML文件，再通过XML解析来获取数据也是可行的，只是这种方式过于繁琐，而使用SharedPreferences来读取数据则简单的多</p>
+</blockquote>
+<h3 id="8-2-File存储"><a href="#8-2-File存储" class="headerlink" title="8.2 File存储"></a>8.2 File存储</h3><p>读者学习JavaSE的时候都知道Java提供了一套完整的IO流体系，包括FileInputStream、FileOutputStream等，通过这些IO流可以非常方便地访问磁盘上的内容文件。Android同样支持以这种方式来访问手机存储器上的文件</p>
+<p>本应用程序的数据文件夹总是保存在<code>/data/data/&lt;package_name&gt;/files</code>目录下，Context提供了如下两个方法来打开本应用程序的数据文件夹里的文件IO流</p>
+<ul>
+<li>FileInputStream openFileInput(String name):打开应用程序的数据文件夹下的name文件对应输入流</li>
+<li>FileOutputStream openFileOutput(String name, int mode):打开应用程序的数据文件夹下name文件对应输出流</li>
+</ul>
+<p>上面两个方法分别用于打开文件输入流、输出流，其中第二个方法的第二个参数指定打开文件的模式，该模式支持如下值：</p>
+<ul>
+<li>MODE_PRIVATE:该文件只能被当前程序读写</li>
+<li>MODE_APPEND:以追加方式打开该文件，应用程序可以向该文件中追加内容</li>
+<li>MODE_WORLD_READABLE:该文件的内容可以被其他程序读取</li>
+<li>MODE_WORLD_WRITEABLE:该文件的内容可以被其他程序读、写</li>
+</ul>
+<p>除此之外，Context还提供了如下几个方法来访问应用程序的数据文件夹</p>
+<ul>
+<li>getDir(String name, int mode):在应用程序的数据文件夹下获取或创建name对应的子目录</li>
+<li>File getFilesDir():获取该应用程序的数据文件夹的绝对路径</li>
+<li>String[] fileList():获取该应用程序的数据文件夹下的全部文件</li>
+<li>deleteFile(String name):删除该应用程序的数据文件夹下的指定文件</li>
+</ul>
+<p>当程序通过Context的openFileInput或openFileOutput来打开文件输入流、输出流时，程序所打开的都是应用程序的数据文件夹里的文件，这样存储的文件大小可能比较有限一点，毕竟手机内置的存储空间都是有限的。为了更好地存、取应用程序的大文件数据，应用程序需要读、写SD卡上的文件。SD卡大大扩充手机的存储能力。读、写SD卡上的文件请按照如下步骤进行：</p>
+<ol>
+<li>调用Environment的getExternalStorageState()方法判断手机上是否插入了SD卡，并且应用程序具有读写SD卡的权限<code>Environment.getExternalStorageState().equals(Environment.MEDIA_MOUTED)</code></li>
+<li>调用Environment的getExternalStorageDirectory()方法来获取外部的存储器，也就是SD卡的目录</li>
+<li>使用FileInputStream、FileOutputStream、FileReader或FileWriter读写SD卡里的文件</li>
+</ol>
+<p>应用程序读、写SD卡的文件有如下两个注意点：</p>
+<ul>
+<li>手机上应该已插入SD卡，对应模拟器来说，可通过mksdcard命令来创建虚拟存储卡</li>
+<li>为了读、写SD卡上的数据，必须在应用程序的清单文件(AndroidManifest.xml)中添加读、写SD卡的权限<code>&lt;use-permission android:name=&quot;android.permission.MOUNT_UNMOUNT_FILESYSTEMS&quot;&gt;</code> <code>&lt;use-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot;&gt;</code></li>
+</ul>
+<h3 id="8-3-SQLite数据库"><a href="#8-3-SQLite数据库" class="headerlink" title="8.3 SQLite数据库"></a>8.3 SQLite数据库</h3><p>Android系统集成了一个轻量级的数据库：SQLite，SQLite并不想成为像Oracle、MySQL那样的专业数据库。SQLite只是一个嵌入式的数据库引擎，专门适用于资源有限的设备上适量数据存取。虽然SQLite支持绝大部分SQL 92语法，也允许开发者使用SQL语句操作数据库的数据，但SQLite并不像Oracle、MySQL数据库那样需要安装、启动服务器进程、SQLite数据库只是一个文件</p>
+<p>Android提供了SQLiteDatabase代表一个数据库(底层就是一个数据库文件)，一旦应用程序获得了代表指定数据库的SQLiteDatabase对象，接下来就可通过SQLiteDatabase对象来管理操作数据库了，SQLiteDatabase提供了如下静态方法来打开一个文件对应的数据库</p>
+<ul>
+<li>static SQLiteDatabase openDatabase(String path, SQLiteDatabase.CursorFactory factory, int flags)</li>
+<li>static SQLiteDatabase openOrCreateDatabase(File file, SQLiteDatabase.CursorFactory factory)</li>
+<li>static SQLiteDatabase openOrCreateDatabase(String path, SQLiteDatabase.CursorFactory factory)</li>
+</ul>
+<p>在程序中获取SQLiteDatabase对象之后，接下来就可以调用SQLiteDatabase的如下方法来操作数据库了<code>execSQL/insert/update/delete/query/rawQuery/beginTransaction/endTransaction</code></p>
+<p>查询数据的方法都是返回一个Cursor对象，Android中的Cursor类似于JDBC的ResultSet，同样提供了一些方法来移动查询结果的记录指针<code>move/moveToFirst/moveToLast/moveToNext/moveToPosition/moveToPrevious</code>，一旦将记录指针移动到指定行之后，接下来就可以调用Cursor的getXxx()方法获得该行的指定列的数据</p>
+<p>总结起来，使用SQLiteDatabase进行数据库操作的步骤如下</p>
+<ol>
+<li>获取SQLiteDatabase对象，它代表了与数据库的连接</li>
+<li>调用SQLiteDatabase的方法来执行SQL语句</li>
+<li>操作SQL语句的执行结果，比如遍历查询结果 Cursor</li>
+<li>关闭SQLiteDatabase，回收资源</li>
+</ol>
+<p>在Android SDK的tools目录下提供了一个sqlite3.exe工具，它是一个简单的SQLite数据库管理工具，类似于MySQL提供的命令行窗口，有些时候，开发者利用该工具来查询、管理数据库</p>
+<ul>
+<li>sqlite3 f:/my.db3 最先指定操作哪个数据库</li>
+<li>.databases: 查看当前数据库的信息</li>
+<li>.tables: 查看当前数据库中的数据表</li>
+<li>.help:查看sqlite3支持的命令</li>
+</ul>
+<p>需要指出的是，SQLite内部只支持NULL、Integer、REAL(浮点数)、TEXT(文本)、和BLOB(大二进制对象)这五种数据类型，但它允许把各种类型的数据保存到任何类型字段中，开发者可以不用关心声明该字段所使用的数据类型。</p>
+<p>如果开发者对于SQL语法不熟悉，甚至以前从未使用过任何数据库，Android的SQLiteDatabase提供了insert、update、delete或者query语句来操作数据库，具体的介绍见书本</p>
+<p>SQLiteDatabase中包含如下两个方法来控制事务</p>
+<ul>
+<li>beginTransaction():</li>
+<li>endTransaction():</li>
+</ul>
+<p>除此之外，SQLiteDatabase还提供了如下方法来判断当前上下文是否处于事务环境中</p>
+<ul>
+<li>inTransaction():</li>
+</ul>
+<p>当程序执行endTransaction()方法时将会结束事务—那到底是提交事务呢，还是回滚事务呢，这取决于SQLiteDatabase是否调用了setTransactionSuccessful()方法来设置事务标志，如果设置了，则提交事务，否则程序将会回滚事务。</p>
+<p>SQLiteOpenHelper是Android提供的一个管理数据库的工具类，可用于管理数据库的创建和版本更新。一般的用法是创建SQLiteOpenHelper的子类，并扩展它的onCreate(SQLiteDatabase db)和onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)方法</p>
+<p>SQLiteOpenHelper包含如下常用的方法：</p>
+<ul>
+<li>Constructor SQLiteOpenHelper(Context context, String name, int version):SQLiteOpenHelper的构造函数</li>
+<li>synchronized SQLiteDatabase getReadableDatabase():以读、写的方式打开数据库对应的SQLiteDatabase对象</li>
+<li>synchronized SQLiteDatabase getWritableDatabase():以写的方式打开数据库对应的SQLiteDatabase对象</li>
+<li>abstract void onCreate(SQLiteDatabase db):当第一次创建数据库时回调该方法</li>
+<li>abstract void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion):当数据库版本更新时回调该方法</li>
+<li>synchronized void close():关闭所有打开的SQLiteDatabase</li>
+</ul>
+<h3 id="8-4-手势-Gesture"><a href="#8-4-手势-Gesture" class="headerlink" title="8.4 手势(Gesture)"></a>8.4 手势(Gesture)</h3><p>Android手势行为分为两种：</p>
+<ol>
+<li>第一种手势是系统默认手势行为，Android为其提供了相应的监听器</li>
+<li>第二种手势是系统没有的手势，Android允许开发者添加手势，并提供相应的API识别用户手势</li>
+</ol>
+<p>Android为手势检测提供了一个GestureDetector类，GestureDetector实例代表了一个手势检测器，创建GestureDetector时需要传入一个GestureDetector.OnGestureListener实例，GestureDetector.OnGestureListener就是一个监听器，负责对用户的手势行为提供响应</p>
+<p>GestureDetector.OnGestureListener里包含的事件处理方法如下：</p>
+<ul>
+<li>boolean onDown(MotionEvent e):当触碰事件按下时触发该方法</li>
+<li>boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)：当用户在触摸屏上“拖过”时触发该方法，其中velocityX、velocityY分别表示动作的速度</li>
+<li>abstract void onLongPress(MotionEvent e)：当用户在屏幕上长按时触发该方法</li>
+<li>boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY)：当用户在屏幕上“滚动”时触发该方法</li>
+<li>void onShowPress(MotionEvent e)：当用户在触摸屏上按下、而且还未移动和松开时触发该方法</li>
+<li>boolean onSingleTapUp(MotionEvent e)：当用户在触摸屏上的轻击事件将会触发该方法</li>
+</ul>
+<p>使用Android的手势检测只需要两个步骤：</p>
+<ol>
+<li>创建一个GestureDetector对象，创建该对象必须实现一个GestureDetector.OnGestureListener监听器实例</li>
+<li><p>为应用程序的Activity(偶尔也可为特定组件)的TouchEvent事件绑定监听器，在事件处理中指定把Activity(或特定组件)上的TouchEvent事件就会交给GestureDetector处理，而GestureDetector就会检测是否触发了特定的手势动作</p>
+<pre><code>public class GestureDetectorTest extends Activity implements OnGestureListener {
+    private GestureDetector detector;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        detector = new GestureDetector(this);
+    }
+    public boolean onTouchEvent(MotionEvent e) {
+        return detector.onTouchEvent(e);
+    }
+    public boolean onDown(MotionEvent e) {}
+    ...
+}
+</code></pre></li>
+</ol>
+<p>Android除了提供了手势检测以外，还允许应用程序把用户手势（多个持续的触摸事件在屏幕上形成特定形状）添加到指定文件中，以备以后使用，如果程序需要，当用户下次再次画出该手势时，系统将可识别该手势。Android使用GestureLibrary来代表手势库，并提供了GestureLibraries工具类来创建手势库，GestureLibraries提供了如下4个静态方法从不同位置加载手势库</p>
+<ol>
+<li>static GestureLibrary fromFile(String path):</li>
+<li>static GestureLibrary fromFile(File path):</li>
+<li>static GestureLibrary fromPrivateFile(Context context, String name):</li>
+<li>static GestureLibrary fromRawResource(Context context, int resourceId)</li>
+</ol>
+<p>一旦在程序中获得了GestureLibrary对象之后，该对象提供了如下方法来添加手势、识别手势</p>
+<ol>
+<li>void addGesture(String entryName, Gesture gesture):</li>
+<li>Set<string> getGestures(String entryName):</string></li>
+<li>ArrayList<gesture> getGestures(String entryName):</gesture></li>
+<li>ArrayList<prediction> recognize(Gesture gesture):</prediction></li>
+<li>void removeEntry(String entryName):</li>
+<li>void removeGesture(String entryName, Gesture gesture):</li>
+<li>boolean save():</li>
+</ol>
+<p>GestureLibrary提供了recognize(Gesture gesture)方法来识别手势，该方法会返回该手势库中所有与ges匹配的手势，它的返回值为ArrayList<prediction>，其中Prediction封装了手势的匹配信息，Prediction对象的name属性代表了匹配的手势名，score属性代表了手势的相似度。</prediction></p>
+<pre><code>&lt;android.getsture.GestureOverlayView
+    android:id=&quot;@+id/gesture&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot;
+    android:gestureStrokeType=&quot;multiple&quot; /&gt;//该参数控制手势是否需要多笔完成
+public class AddGesture extends Activity {
+    private EditText editText;
+    private GestureOverlayView gestureView;
+    public void onCreate(Bundle savedInstanceState) {
+        //super...bindView...
+        //保存Gesture
+        gestureView.addGesturePerformedListener(
+            new OnGesturePerformedListener() {
+                @override
+                public void onGesturePerformed(GestureOverlayView overlay, final Gesture gesture) {
+                    GestureLibrary gestureLib = GestureLibraries.fromFile(&quot;/mnt/sdcard/geture&quot;);
+                    gestureLib.addGesture(editText.getText().toString(), gesture);
+                    gestureLib.save();
+                }
+            }
+        );
+        //识别Gesture
+        GestureLibrary gestureLib = GestureLibraries.fromFile(&quot;/mnt/sdcard/geture&quot;);
+        gestureLib.load();
+        gestureView.addGesturePerformedListener(
+            new OnGesturePerformedListener() {
+                @override
+                public void onGesturePerformed(GestureOverlayView overlay, final Gesture gesture) {
+                    ArrayList&lt;Prediction&gt; predictions = gestureLibrary.recognize(gesture);
+                    for (Prediction pred : predictions) {
+                        if (pred.score &gt; 2.0) {
+                            print(&quot;此 pred 满足要求&quot;);
+                        }
+                    }
+                }
+            }
+        );
+    }
+}
+</code></pre><h3 id="自动朗读TTS"><a href="#自动朗读TTS" class="headerlink" title="自动朗读TTS"></a>自动朗读TTS</h3><p>Android提供了自动朗读支持。自动朗读支持可以对指定文本内容进行朗读，从而发出声音；不仅如此，Android的自动朗读支持还允许把文本对应的音频录制成音频文件，方便以后播放。这种自动朗读支持的英文名称为TextToSpeech，简称TTS。Android的自动朗读支持主要通过TextToSpeech来完成，该类提供了如下一个构造器：</p>
+<ul>
+<li><p>TextToSpeech(Context context, TextToSpeech.OnInitListener listener)</p>
+<pre><code>public class Speech extends Activity {
+    TextToSpeech tts;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        tts = new TextToSpeech(this, new OnInitListener(
+            @override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    int reslut = tts.setLanguage(Locale.US);
+                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE
+                        &amp;&amp; reslut != TextToSpeech.LANG_AVAILABLE) {
+                            print(&quot;TTS暂时不支持这种语言的朗读&quot;);
+                        }
+                }
+            }
+        ));
+        button1.onclick(
+            //播放转换的音频，参数TextToSpeech.QUEUE_ADD表示添加到发音任务队列，还有一个值TextToSpeech.QUEUE_FLUSH则表示会中断当前的发音任务队列
+            tts.speak(editText.getText.toString(), TextToSpeech.QUEUE_ADD, null);
+        );
+        button2.onclick(
+            //保存转换的音频
+            tts.synthesizeToFile(editText.getText.toString(), null, &quot;/mnt/sdcard/sound.wav&quot;)
+        );
+    }
+    //最后关闭TTS，回收资源
+    public void onDestroy() {
+        if (tts != null) {
+            tts.shutdown();
+            tts = null;
+        }
+    }
+}
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/08/30/疯狂Android第一部分/" rel="next" title="疯狂Android第一部分">
+                <i class="fa fa-chevron-left"></i> 疯狂Android第一部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/10/26/疯狂Android第三部分/" rel="prev" title="疯狂Android第三部分">
+                疯狂Android第三部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Intent和IntentFilter进行通信"><span class="nav-number">1.</span> <span class="nav-text">使用Intent和IntentFilter进行通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Intent对象详解"><span class="nav-number">1.1.</span> <span class="nav-text">5.1 Intent对象详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-Intent的属性及intent-filter配置"><span class="nav-number">1.2.</span> <span class="nav-text">5.2 Intent的属性及intent-filter配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android应用的资源"><span class="nav-number">2.</span> <span class="nav-text">Android应用的资源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-资源的类型及存储方式"><span class="nav-number">2.1.</span> <span class="nav-text">6.1 资源的类型及存储方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-使用字符串、颜色、尺寸资源"><span class="nav-number">2.2.</span> <span class="nav-text">6.2 使用字符串、颜色、尺寸资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-数组-Array-资源"><span class="nav-number">2.3.</span> <span class="nav-text">6.3 数组(Array)资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-使用Drawable资源"><span class="nav-number">2.4.</span> <span class="nav-text">6.4 使用Drawable资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-使用原始XML资源"><span class="nav-number">2.5.</span> <span class="nav-text">6.5 使用原始XML资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-使用布局-Layout-资源"><span class="nav-number">2.6.</span> <span class="nav-text">6.6 使用布局(Layout)资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-7-使用菜单-Menu-资源"><span class="nav-number">2.7.</span> <span class="nav-text">6.7 使用菜单(Menu)资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-8-样式-Style-和主题-theme-资源"><span class="nav-number">2.8.</span> <span class="nav-text">6.8 样式(Style)和主题(theme)资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-9-属性（Attribute）资源"><span class="nav-number">2.9.</span> <span class="nav-text">6.9 属性（Attribute）资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-10-使用原始资源"><span class="nav-number">2.10.</span> <span class="nav-text">6.10 使用原始资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-11-国际化和资源自适应"><span class="nav-number">2.11.</span> <span class="nav-text">6.11 国际化和资源自适应</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图形与图像处理"><span class="nav-number">3.</span> <span class="nav-text">图形与图像处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-使用简单图片"><span class="nav-number">3.1.</span> <span class="nav-text">7.1 使用简单图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-绘图"><span class="nav-number">3.2.</span> <span class="nav-text">7.2 绘图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-图形特效处理"><span class="nav-number">3.3.</span> <span class="nav-text">7.3 图形特效处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-逐帧动画"><span class="nav-number">3.4.</span> <span class="nav-text">7.4 逐帧动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-5-补间动画"><span class="nav-number">3.5.</span> <span class="nav-text">7.5 补间动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-6-使用SurfaceView实现动画"><span class="nav-number">3.6.</span> <span class="nav-text">7.6 使用SurfaceView实现动画</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android-的数据存储和IO"><span class="nav-number">4.</span> <span class="nav-text">Android 的数据存储和IO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-使用SharedPreferences"><span class="nav-number">4.1.</span> <span class="nav-text">8.1 使用SharedPreferences</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-File存储"><span class="nav-number">4.2.</span> <span class="nav-text">8.2 File存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-SQLite数据库"><span class="nav-number">4.3.</span> <span class="nav-text">8.3 SQLite数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-手势-Gesture"><span class="nav-number">4.4.</span> <span class="nav-text">8.4 手势(Gesture)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动朗读TTS"><span class="nav-number">4.5.</span> <span class="nav-text">自动朗读TTS</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
