@@ -82,7 +82,7 @@
 <meta name="keywords" content="blog">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Frand Feng">
-<meta property="og:url" content="https://frandfeng.github.io/archives/2018/index.html">
+<meta property="og:url" content="https://frandfeng.github.io/page/2/index.html">
 <meta property="og:site_name" content="Frand Feng">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -116,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="https://frandfeng.github.io/archives/2018/">
+  <link rel="canonical" href="https://frandfeng.github.io/page/2/">
 
 
 
 
 
-  <title>Archive | Frand Feng</title>
+  <title>Frand Feng</title>
   
 
 
@@ -151,7 +151,8 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -286,72 +287,550 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        Um..! 13 posts in total. Keep on posting.
-      </span>
-
+  <section id="posts" class="posts-expand">
+    
       
 
-        
-        
-        
+  
 
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2011/09/30/Markdown语法的使用/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/01/26/京东MVCS框架/" itemprop="url">
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/09/30/Markdown语法的使用/" itemprop="url">Markdown语法的使用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
               
-                <span itemprop="name">京东MVCS框架</span>
+                <span class="post-meta-item-text">Posted on</span>
               
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2011-09-30T00:00:00+08:00">
+                2011-09-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          从今天开始，坚持写博客，一般博客中会用到Markdown语法，先找一篇文章来学习总结一下其语法
+Markdown语法的目标是实现易写易读，下边的内容就是介绍如何使用Markdown语法
+嵌套HTMLMarkdown的语法在HTML标签中无效，但是HTML标签在Markdown语法中是可以直接使用的
+特殊字符自动转换在HTML中，有两个字符需要特殊处理:&lt;和&amp;，如「AT&amp;T」 ，你必须要写成「AT&amp;T」，但是在Markdown中，他们可以进行自动转换，不需要特殊处理
+段落和换行在Markdown中如果需要换行，则在行尾加上两个以上的空格，然后按回车键
+标题Markdown支持两种标题语法，Setext和atx形式
+
+Setex形式是用底线的形式，利用=(大标题)和-(小标题)
+Atx形式是在行首插入1到6个#，对应标题的大小
+
+引言如果需要在文章中插入引言，则需要在每行的最前面加上&gt;，在引言中可以插入引言和其它的Markdown语法
+列表Markdown支持有序的列表和无序的列表，列表中可以嵌套其它的Markdown语法，如引言或代码块
+
+有序列表使用数字接着一个英文句号开头，然后一个空格或制表符
+无序的列表使用星号／加号／减号作为列表标记，然后一个空格或制表符
+
+程序块HTML会用&lt;pre&gt;和&lt;code&gt;标签把程序块包起来，Markdown直接简单地缩排4个空格或1个Tab就可以，这样就会转化成HTML的格式
+分隔线可以在一行中用三个或以上的*,-,_来建立一个分隔线，行内不能有其他东西
+链接Markdown支持两种形式的链接语法，行内和参考，不管用哪一种，链接的文字都是用[方括号]来标记
+
+行内：在方括号的后面马上接着圆括号并插入网址链接即可
+参考：在方括号的后面再跟一个方括号，方括号里边填入链接的标签，在文件的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2011/09/30/Markdown语法的使用/#more" rel="contents">
+              Read more &raquo;
             </a>
+          </div>
+          <!--/noindex-->
         
-      </h2>
+      
+    </div>
+    
+    
+    
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-01-26T00:00:00+08:00" content="2018-01-26">
-          01-26
-        </time>
-      </div>
+    
 
-    </header>
-  </article>
+    
 
+    
 
+    <footer class="post-footer">
+      
 
       
 
-    </div>
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
   
   
   
+  </article>
+
+
+    
+      
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2011/08/26/GIS的一些基本概念/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/08/26/GIS的一些基本概念/" itemprop="url">GIS的一些基本概念</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2011-08-26T00:00:00+08:00">
+                2011-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/GIS/" itemprop="url" rel="index">
+                    <span itemprop="name">GIS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          前些天无聊至极，就翻阅了超图公司的 GIS Deskpro 相关产品的帮助文档，感觉对了解他们公司产品和服务没有多大的帮助，反倒觉得那帮助文档是一个很好的全面学习GIS专业知识的好帮手，现在把自己这几天学习到的东西整理一下下：
+各桌面产品与功能模块:各桌面产品与功能模块包括：
+
+桌面集成环境
+地图模块
+标准图幅图框模块
+编辑模块
+属性模块
+配准模块
+布局模块
+三维模块
+栅格分析模块
+网络分析模块
+
+工作空间工作空间用于保存用户的工作环境，包括：
+
+当前打开的数据源（位置、别名和打开方式）
+底图
+专题地图
+布局
+符号库
+线型库等
+
+数据源数据源是由各种类型的数据集（如点、线、面类型数据，TIN、GRID、NetWork）组成的数据集集合, 数据源的属性包括数据源的基本信息和数据源的投影信息
+数据集数据集是由同种类型数据组成的数据集合,包括十六种：
+
+纯属性数据集
+点数据集
+线数据集
+面数据集
+文本数据集
+网络数据集
+三维点数据集(文本文件\属性生成或点数据集转换)
+三维线数据集
+CAD数据集
+TIN数据集
+路由数据集(存放线类型的数据，线对象的每个节点除了有地理坐标值，还有一个M坐标值，代表该节点到起点的距离)
+影像数据集
+DEM数据集
+Grid数据集
+MrSID数据集
+ECW数据集
+
+SDB 数据源一个SDB数据源文件包括SDB和SDD两个文件，由SDB文件存储空间数据，由SDD存储管理属性数据。SDD文件其实就是一个Access数据库，它管理着数据源中各数据集对应的属性表。一个数据集对应连接一个属性表，系统通过唯一标识SmID将数据集的每一个对象与对应属性表中的记录进行连接，建立起一一对应的关系。
+地图的属性地图的属性，包括地图的信息以及地图上对象的设置信息
+TININ是不规则三角网（Triangulated Irregular Network）的缩写，它是采用不规则三角
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2011/08/26/GIS的一些基本概念/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2011/07/29/数据结构在GIS中的应用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/07/29/数据结构在GIS中的应用/" itemprop="url">数据结构在GIS中的应用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2011-07-29T00:00:00+08:00">
+                2011-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/GIS/" itemprop="url" rel="index">
+                    <span itemprop="name">GIS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          计算机是一门研究用计算机进行信息表示和处理的科学。数据结构是数据在计算机中的逻辑和存储结构，GIS是地理信息系统的缩写，地理信息在计算机中的存储和应用非常普遍，所以，本篇文章将会探讨如何利用数据结构的知识，方便而快速的保存和处理地理信息。
+这里面涉及到两个问题：信息表示、信息处理，信息表示会影响信息处理
+
+数据结构研究的是信息表示的问题
+算法研究的是信息处理的问题
+
+信息表示直接关系到信息处理的算法与效率。信息 （数据）之间往往是有重要的结构关系，数据结构就是对数据表示以及其上操作或功能的封装，分逻辑结构和存储结构两个层面。
+逻辑结构逻辑结构定义了数据之间的逻辑结构关系。
+数据元素相互之间的关系称为结构，有四类基本结构：集合、线性结构、树形结构、图状结构（网状结构）。
+
+集合结构中的数据元素除了同属于一种类型外，别无其它关系
+线性结构中元素之间存在一对一关系
+树形结构中元素之间存在一对多关系
+图形结构中元素之间存在多对多关系
+
+存储结构存储结构定义了数据实际在计算机中存储结构关系，是某种逻辑结构在计算机上的具体实现，分顺序存储结构和链式存储结构。
+
+顺序存储方法：它是把逻辑上相邻的结点存储在物理位置相邻的存储单元里，结点间的逻辑关系由存储单元的邻接关系来体现，由此得到的存储表示称为顺序存储结构。顺序存储结构是一种最基本的存储表示方法，通常借助于程序设计语言中的数组来实现。
+链接存储方法：它不要求逻辑上相邻的结点在物理位置上亦相邻，结点间的逻辑关系是由附加的指针字段表示的。由此得到的存储表示称为链式存储结构，链式存储结构通常借助于程序设计语言中的指针类型来实现。
+
+
+
+索引存储方法：除建立存储结点信息外，还建立附加的索引表来标识结点的地址。
+散列存储方法：就是根据结点的关键字直接计算出该结点的存储地址。
+
+
+在GIS开发实现中，空间索引、空间数据存储、地图管理、地图符号化及渲
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2011/07/29/数据结构在GIS中的应用/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 
 

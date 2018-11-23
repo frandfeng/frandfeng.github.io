@@ -302,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/11/22/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/01/26/京东MVCS框架/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/22/hello-world/" itemprop="url">Hello World</a></h1>
+                <a class="post-title-link" href="/2018/01/26/京东MVCS框架/" itemprop="url">京东MVCS框架</a></h1>
         
 
         <div class="post-meta">
@@ -333,8 +333,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-22T14:30:17+08:00">
-                2018-11-22
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-26T00:00:00+08:00">
+                2018-01-26
               </time>
             
 
@@ -343,6 +343,28 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/框架/" itemprop="url" rel="index">
+                    <span itemprop="name">框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -373,17 +395,1468 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+          
+京东MVCS框架搭建
+NSObject+SYKVO.h/NSObject+SYKVO.m
+typedef void(^SYKVOBlock)(id newValue);
+
+@interface NSObject (SYKVO)
+- (void)addObserverSuny:(NSObject *)observer keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(SYKVOBlock)block;
+// 默认是NSKeyValueObservingOptionNew
+- (void)addObserverSuny:(NSObject *)observer keyPath:(NSString *)keyPath block:(SYKVOBlock)block;
+@end
+CSBaseStore
+@protocol CSBaseStore &lt;NSObject&gt;
+- (CSBasePipeline*)pipeline;
+@end
+
+@interface CSBaseStore : NSObject&lt;CSBaseStore&gt;
+- (void)fecthSeverData;
+@end
+CSBasePipeline
+@interface CSBasePipeline : NSObject
+@end
+CSBaseViewController
+@interface CSBaseViewController : UIViewController
+@property (nonatomic, strong)CSBaseStore *store;
+- (instancetype)initWithViewClass:(Class)viewClass store:(C
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/26/京东MVCS框架/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/06/22/大四毕业有感/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/06/22/大四毕业有感/" itemprop="url">大四毕业有感</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-06-22T00:00:00+08:00">
+                2012-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/杂记/" itemprop="url" rel="index">
+                    <span itemprop="name">杂记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          这些天忙着写毕业设计，一直没发博。。。
+转眼间，都大四要毕业了，今天毕业倒计时了
+回想大一时光，那时候学校还在南充，记得一个人去南充，坐汽车，转火车，再转火车，又转汽车，辗转来到南充校区，然后就在那里开始了我人生中前两年的大学时光。现在想起来，那时候才是一个真正上进的好学生，每天早上坚持上早读，坚持上课，然后吃午饭，吃完午饭午睡一觉，下午有课就去上课，没课就去上自习。那时候坚持每天写作业，积极参加一些素质拓展，社团活动，还参加了青志协和学宣部的面试什么的，但是说起面试，我面试好像都没有怎么成功过，可能是与人交流不咋地吧。所以就好好练习说话，练口才，整天进图书馆看各方面的书。但是效果不怎么样，脸皮太薄太追求完美可能就是我失败的原因吧，那时候整天想着如何出人头地，如何做个成功人士，如何改变我在别人心目中的形象之类的。
+大二的时候，参加了勤工助学，有幸认识了一个同级的小女生，一直想追，不过等到有关她的消息打探清楚后，才知道她是有男朋友的，所以YY便成了我每天的必修课，好像从那时候起，我便学会了YY，整天在YY，YY着她分手了，YY着我和她在一起了，YY着把她带我家去了，从那以后，我便深深喜欢上了YY，干什么事情都要首先YY一番，满足一下我的虚荣心，然后再拿现实做比较，真是惨不忍睹，事情过去之后再YY当时应该怎么做，就这样，大二的时光被我YY完了。
+转眼大三了，学校搬到成都了，一下子感觉自己老了许多，当一名老师在台上激情的讲如何创业，做一名成功人士等等的时候，我完全感到自己的心已经老了，没有精力去听这些东西，没有心情听这些东西，要知道如果是两年前刚入校的我是肯定不会错过这次机会的，而现在的我呢，满不在乎，I don’t care。而那时候我care的是什么东西呢，我care的是奖学金，是钱，是班长，是权，是证书，是荣誉。还清楚的记得我为了拿奖学金，如何半夜11点多都还在背什么是影像
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/06/22/大四毕业有感/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/05/25/数据结构与算法(未完成)/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/05/25/数据结构与算法(未完成)/" itemprop="url">数据结构与算法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-05-25T00:00:00+08:00">
+                2012-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          树和二叉树
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/05/25/数据结构与算法(未完成)/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/04/27/数据结构第二部分(未完成)/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/04/27/数据结构第二部分(未完成)/" itemprop="url">数据结构第二部分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-04-27T00:00:00+08:00">
+                2012-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          树和二叉树
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/04/27/数据结构第二部分(未完成)/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/03/30/数据结构第一部分/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/03/30/数据结构第一部分/" itemprop="url">数据结构第一部分</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-03-30T00:00:00+08:00">
+                2012-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          绪论
+数据(data)：是对客观事物的符号表示，在计算机科学中是指所有能输入到计算机中并被计算机程序处理的符号的总称。
+数据元素(data element)：是数据的基本单位，在计算机程序中经常作为一个整体进行考虑和处理。
+数据对象(data object)：是性质相同的数据元素的集合，是数据的一个子集。
+数据结构(data structure)：是相互之间存在一种或多种特定关系的数据元素的集合。
+结构(structure)：数据源是都不是孤立存在的，而是它们之间存在着某种关系，这种关系就是结构。
+
+根据数据元素之间的关系不同的特性，通常有下列4类基本结构：（逻辑结构）
+
+集合：结构中的数据元素之间除了“同属一个集合”的关系之外，别无其他关系
+线性结构：结构中的数据元素之间存在一个对一个的关系
+树形结构：结构中的数据元素之间存在一个对多个的关系
+图状结构或网状结构：结构中的数据元素之间存在多个对多个的关系
+
+数据结构的形式定义为：数据结构是一个二元组 Data Structure = (D, S)；其中：D是数据元素的有限集，S是D上关系的有限集。
+
+数据结构在计算机中的表示(又称映像)称为数据的物理结构，又称存储结构。
+在计算机中表示信息的最小单位是二进制数的一位，叫做位(bit)。
+在计算机中可以用一个由若干位组合起来形成一个位串表示一个数据元素，通常称这个位串为元素或结点。
+当数据元素由若干个位串组成时，位串中对应于各个数据项的子位串称为数据域(data field)。
+
+数据元素之间的关系在计算机中有两种不同的表示方法：顺序映像和非顺序映像，并由此得到两种不同的存储结构：顺序存储结构和链式存储结构。链式存储结构的特点是借助指示元素存储地址的指针来表示数据元素之间的逻辑关系。
+数据类型(data type)是和数据结构密切相关的一个概念，它是一个值的集合和定义在这个值
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/03/30/数据结构第一部分/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/02/24/C语言程序设计教程2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/02/24/C语言程序设计教程2/" itemprop="url">C语言程序设计教程2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-02-24T00:00:00+08:00">
+                2012-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          函数程序员在设计一个复杂的应用程序时，往往也就是把整个程序划分为若干功能较为单一的程序模块，然后分别予以实现，最后再把所有的程序模块像搭积木一样装配起来，这种策略被称为模块化程序设计方法。
+每个C源程序都是由一个主函数和若干个其他函数组成的。函数时程序的基本组成单位，因此可以很方便地用函数作为程序模块来实现C语言程序。从函数的定义角度，函数可以分为库函数和用户自定义函数两种；从兼有其他语言功能角度分类，函数分有返回值函数和无返回值函数两种；从函数间传送的角度分类，函数分为无参函数和有参函数两种；
+返回值类型 函数名(参数表) {
+    函数体;
+}
+在主调函数中调用某函数之前应对该被调函数进行原型说明，这与使用变量之前要先进行变量说明是一样的。在主调函数中对被调函数作说明的目的是使编译器程序知道被调函数的返回值类型，以便在主调函数中按此种类型值做相应的处理类型说明符 被调用函数名(类型1 形参1, 类型2 形参2);或类型说明符 被调用函数名(类型1, 类型2);。函数的调用方法如下函数名(实际参数表);
+一般来说，有两种方法可以把参数传递给函数，一种方法叫做传值调用，另一种方法是传址调用。
+
+传值调用：把实参的值复制到函数的形参中
+传址调用：将实参的存储地址作为参数传递给形参
+
+数组也可以作为函数的参数使用，进行数据传送。数组用作函数参数有两种形式：一种是把数组元素(下标变量)作为实参使用；另一种是把数组名作为函数的形参和实参使用
+在变量做函数参数时，所进行的值传递是单向的，即只能从实参传向形参，不能从形参传回实参。
+函数的传值调用可以通过参数使用调用环境中变量的值，但不能改变那里的变量值。想要改变那里的变量值，就得利用指针机制：在调用时把变量的地址通过指针参数传进被调函数，在被调用函数里对参数指针间接访问，就能完成对变量的各种操作，包括对变量赋值。
+在C语言中允许一个
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/02/24/C语言程序设计教程2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/01/27/C语言程序设计教程1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/01/27/C语言程序设计教程1/" itemprop="url">C语言程序设计教程1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-01-27T00:00:00+08:00">
+                2012-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          C语言概述1.1 计算机信息社会与C语言到目前为止，计算机语言大致可分为五代，第一代是机器语言，第二代是汇编语言，第三代是面向过程程序设计语言，第四代是面向对象程序设计语言，第五代是基于Web的语言。
+高级语言源程序在计算机中有编译和解释两种执行方式
+
+在解释方式下，源程序由解释程序边解释边执行，不生成目标程序，其执行程序速度较慢
+在编译方式下，源程序首先必须经过编译程序的编译处理，产生相应的目标程序，然后再通过连接和装配，才能生成可执行程序
+
+1.2 C语言简史及其特点ALGOL(1960)–CPL(1963)–BCPL(1967)–B(1970)–C(1972)–发表(1978)–ANSIC标准(1983)–ANSIC标准补充(1987)–获得ISO认证(1997)
+1980年开始，贝尔实验室将Simula67中‘类’的概念引入C语言，1993年将其正式命名为C++
+C语言不仅具有高级语言的特点，并且还有汇编语言的功能，同时具有极强的兼容性和良好的用户界面
+1.3 基本程序结构C程序是一种结构化程序，程序由顺序、循环、分支三种结构组成
+C程序中有三种类型的函数 主函数main 编译程序提供的函数 程序员自己设计的函数
+一个函数由两部分构成 函数说明部分 和 函数体部分
+1.4 基本语法单位在C语言中使用的词汇分为6类：关键字、标识符、操作符、分隔符、常量、注释符等
+
+关键字：C语言规定的具有特定意义的字符串，通常也称保留字，用户定义的标识符不应与关键字相同。C语言的关键字分为以下几类：类型说明符(int) 语句定义符(if else) 预处理命令符(include)
+标识符：用来表示变量名、数组名、函数名、指针名、结构名、联合名、枚举常量名、用户自定义的数据类型名及语句标号等的字符序列统称为标识符
+操作符：在C语言中含有相当丰富的操作符。操作符与变量、函数一起组成表达方
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/01/27/C语言程序设计教程1/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2011/12/31/C和OC的内存分配/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/12/31/C和OC的内存分配/" itemprop="url">C和OC的内存分配</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2011-12-31T00:00:00+08:00">
+                2011-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          在以前上课时经常死记硬背内存都有哪些区，自从参加工作后，从应用启动的过程可以明显的区分出内存的几个分区而不用死记硬背。由于OC是继承C来的，所以其内存分配方式基本相同，只不过iOS系统为每个app分配了一定额度的沙盒空间来供每一个app正常存储和运行。
+不管是C程序还是iOS程序（为了简单，我们一iOS APP为例），当APP没有打开时，ipa或者app文件都是存在于ROM中，即我们说的iPhone16G的16G当中某一个叫Application的文件夹中，在其启动的时候iOS系统会先为app从RAM中分配一个独立的内存空间（即沙盒），app所有的内存操作都在这个独立的沙盒中进行。首先系统会加载二进制代码到内存中，然后加载常量区中的常量，接着加载全局区和静态区（初始化过的静态区和没有初始化过的静态区是分开的），之后程序会找main入口函数开始执行代码，在执行代码的过程中，会创建对象和一些局部变量，其中对象存放在堆中，变量存放在栈上，以上五个区中只有堆是由程序员自己创建和销毁，而其他四个都是系统自己管理。
+由此可见，从低地址到高地址的的内存区域分别是代码区、常量区、全局区、堆区和栈区。
+概念程序代码区代码区用来存放函数体的二进制代码，程序结束后由系统释放
+常量区常量区用来存放常量字符串等，程序结束后由系统释放
+全局区/静态区全局变量和静态变量的存储是放在一块的，初始化的全局变量和静态变量在一块区域，未初始化的全局变量和未初始化的静态变量在相邻的另一块区域，程序结束后有系统释放
+
+全局变量和静态变量要尽量少用。因为这些变量在程序的生命周期中不会变释放，比较容易占用内存空间，不适合存储比较大量的数据。
+
+堆区一般由程序员分配释放，若程序员不释放，程序结束时可能由OS回收 。注意它与数据结构中的堆是两回事，分配方式类似于链表。堆区的变量地址是由下往上分配的，所以在同一线程中先声明的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2011/12/31/C和OC的内存分配/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2011/11/25/Jekyll的使用详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/11/25/Jekyll的使用详解/" itemprop="url">Jekyll的使用详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2011-11-25T00:00:00+08:00">
+                2011-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          上一章介绍了如何在GitHub Pages中搭建Jekyll，参照Jekyll官网给出的使用文档，这一章我们详细解读一下Jekyll，这是我后边找到的中文文档，可供参考
+快速指南上一章简单说了，这是一个简单的静态网页生成器，具体的安装和使用方式请如下：
+
+~ $ gem install jekyll
+~ $ jekyll new myblog/. --force
+~ $ cd myblog
+~/myblog $ bundle install
+~/myblog $ bundle exec jekyll serve
+=&gt; Now browse to http://localhost:4000
+
+目录结构打开Jekyll生成的文件夹后，通过资源管理器可以观察到已经自动生成的目录结构，比较重要的几个如下：
+
+_config.yml :存储配置数据。把配置写在这个文件里面，可以让你不用在命令行中写
+_drafts:草稿，格式是:没有日期.md
+_includes:包含一些模板，可以重复利用
+_layouts:里面的文件通过{ content }包含_posts里面的文章
+_posts:存放你要发表的文章。格式YEAR-MONTH-DAY-title.MARKUP
+_data:保存数据的。jekyll会自动加载这里的所有的YAML文件，如.yml、.yaml、.json、.csv等结尾的文件，比如你有一个members.yml。那么你可以通过site.data.members访问该文件里的数据
+_site：jekyll生成的网站会放在该文件夹下，最好把它放到.gitignore文件里面，这样git就不会管理它了
+.jekyll-metadata：这个文件帮助Jekyll记录网站文件的修改日志，在下一次生成网页的时候，只生成那些修改过的文件，这个文件可以加入到.gitignore文
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2011/11/25/Jekyll的使用详解/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2011/10/28/在GitHubPages上搭建Jekyll/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2011/10/28/在GitHubPages上搭建Jekyll/" itemprop="url">在GitHubPages上搭建Jekyll</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2011-10-28T00:00:00+08:00">
+                2011-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index">
+                    <span itemprop="name">Web</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          在GitHub Pages上搭建blog，使我们既拥有绝对权限管理，又享受github带来的便利
+Jekyll是一个静态站点生成器，提供了模板、变量、插件等功能，来生成整个网站
+GitHub Pages是什么GITHUB是一种分布式的代码仓库管理工具，在GITHUB上每个项目都有一个主页，列出了项目的源文件。但是对于一个新手来说，看到一大堆源码，只会让人头晕脑涨，不知何处入手。他希望看到的是，一个简明易懂的网页，说明每一步应该怎么做。因此，github就设计了Pages功能，允许用户自定义项目首页，用来替代默认的源码列表。所以，github Pages可以被认为是用户编写的、托管在github上的静态网页。github提供模板，允许站内生成网页，但也允许用户自己编写网页，然后上传。有意思的是，这种上传并不是单纯的上传，而是会经过Jekyll程序的再处理。
+Jekyll是什么Jekyll（发音/‘dʒiːk əl/，”杰克尔”）是一个静态站点生成器，它会根据网页源码生成静态文件。它提供了模板、变量、插件等功能，所以实际上可以用来编写整个网站整个思路到这里就很明显了。你先在本地编写符合Jekyll规范的网站源码，然后上传到github，由github生成并托管整个网站。
+如何实现
+注册登录GIT账号
+在账号下添加新的git仓库（用户名+github+io）
+安装jekyll并创建jekyll目录
+安装jekyll目录需要的bundle包
+创建Markdown或HTML页面
+启动jekyll服务，通过http://localhost:4000访问并验证
+将代码上传至github，通过域名来访问
+
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2011/10/28/在GitHubPages上搭建Jekyll/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -420,6 +1893,10 @@
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -465,14 +1942,32 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
             
 
           </nav>

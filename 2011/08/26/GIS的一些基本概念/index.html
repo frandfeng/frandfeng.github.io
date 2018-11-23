@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="GIS,SuperMap,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前些天无聊至极，就翻阅了超图公司的 GIS Deskpro 相关产品的帮助文档，感觉对了解他们公司产品和服务没有多大的帮助，反倒觉得那帮助文档是一个很好的全面学习GIS专业知识的好帮手，现在把自己这几天学习到的东西整理一下下： 各桌面产品与功能模块:各桌面产品与功能模块包括：  桌面集成环境 地图模块 标准图幅图框模块 编辑模块 属性模块 配准模块 布局模块 三维模块 栅格分析模块 网络分析模块">
+<meta name="keywords" content="GIS,SuperMap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GIS的一些基本概念">
+<meta property="og:url" content="https://frandfeng.github.io/2011/08/26/GIS的一些基本概念/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="前些天无聊至极，就翻阅了超图公司的 GIS Deskpro 相关产品的帮助文档，感觉对了解他们公司产品和服务没有多大的帮助，反倒觉得那帮助文档是一个很好的全面学习GIS专业知识的好帮手，现在把自己这几天学习到的东西整理一下下： 各桌面产品与功能模块:各桌面产品与功能模块包括：  桌面集成环境 地图模块 标准图幅图框模块 编辑模块 属性模块 配准模块 布局模块 三维模块 栅格分析模块 网络分析模块">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-23T08:37:26.707Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GIS的一些基本概念">
+<meta name="twitter:description" content="前些天无聊至极，就翻阅了超图公司的 GIS Deskpro 相关产品的帮助文档，感觉对了解他们公司产品和服务没有多大的帮助，反倒觉得那帮助文档是一个很好的全面学习GIS专业知识的好帮手，现在把自己这几天学习到的东西整理一下下： 各桌面产品与功能模块:各桌面产品与功能模块包括：  桌面集成环境 地图模块 标准图幅图框模块 编辑模块 属性模块 配准模块 布局模块 三维模块 栅格分析模块 网络分析模块">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2011/08/26/GIS的一些基本概念/">
+
+
+
+
+
+  <title>GIS的一些基本概念 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2011/08/26/GIS的一些基本概念/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">GIS的一些基本概念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2011-08-26T00:00:00+08:00">
+                2011-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/GIS/" itemprop="url" rel="index">
+                    <span itemprop="name">GIS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前些天无聊至极，就翻阅了超图公司的 GIS Deskpro 相关产品的帮助文档，感觉对了解他们公司产品和服务没有多大的帮助，反倒觉得那帮助文档是一个很好的全面学习GIS专业知识的好帮手，现在把自己这几天学习到的东西整理一下下：</p>
+<h2 id="各桌面产品与功能模块"><a href="#各桌面产品与功能模块" class="headerlink" title="各桌面产品与功能模块:"></a>各桌面产品与功能模块:</h2><p>各桌面产品与功能模块包括：</p>
+<ul>
+<li>桌面集成环境</li>
+<li>地图模块</li>
+<li>标准图幅图框模块</li>
+<li>编辑模块</li>
+<li>属性模块</li>
+<li>配准模块</li>
+<li>布局模块</li>
+<li>三维模块</li>
+<li>栅格分析模块</li>
+<li>网络分析模块</li>
+</ul>
+<h2 id="工作空间"><a href="#工作空间" class="headerlink" title="工作空间"></a>工作空间</h2><p>工作空间用于保存用户的工作环境，包括：</p>
+<ul>
+<li>当前打开的数据源（位置、别名和打开方式）</li>
+<li>底图</li>
+<li>专题地图</li>
+<li>布局</li>
+<li>符号库</li>
+<li>线型库等</li>
+</ul>
+<h2 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h2><p>数据源是由各种类型的数据集（如点、线、面类型数据，TIN、GRID、NetWork）组成的数据集集合, 数据源的属性包括数据源的基本信息和数据源的投影信息</p>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>数据集是由同种类型数据组成的数据集合,包括十六种：</p>
+<ul>
+<li>纯属性数据集</li>
+<li>点数据集</li>
+<li>线数据集</li>
+<li>面数据集</li>
+<li>文本数据集</li>
+<li>网络数据集</li>
+<li>三维点数据集(文本文件\属性生成或点数据集转换)</li>
+<li>三维线数据集</li>
+<li>CAD数据集</li>
+<li>TIN数据集</li>
+<li>路由数据集(存放线类型的数据，线对象的每个节点除了有地理坐标值，还有一个M坐标值，代表该节点到起点的距离)</li>
+<li>影像数据集</li>
+<li>DEM数据集</li>
+<li>Grid数据集</li>
+<li>MrSID数据集</li>
+<li>ECW数据集</li>
+</ul>
+<h2 id="SDB-数据源"><a href="#SDB-数据源" class="headerlink" title="SDB 数据源"></a>SDB 数据源</h2><p>一个SDB数据源文件包括SDB和SDD两个文件，由SDB文件存储空间数据，由SDD存储管理属性数据。SDD文件其实就是一个Access数据库，它管理着数据源中各数据集对应的属性表。一个数据集对应连接一个属性表，系统通过唯一标识SmID将数据集的每一个对象与对应属性表中的记录进行连接，建立起一一对应的关系。</p>
+<h2 id="地图的属性"><a href="#地图的属性" class="headerlink" title="地图的属性"></a>地图的属性</h2><p>地图的属性，包括地图的信息以及地图上对象的设置信息</p>
+<h2 id="TIN"><a href="#TIN" class="headerlink" title="TIN"></a>TIN</h2><p>IN是不规则三角网（Triangulated Irregular Network）的缩写，它是采用不规则三角形拟合地表。TIN数据集由存储有Z值的点组成，通过边相连形成连续的不重叠的三角面。主要用来描述数字高程表面。</p>
+<h2 id="TIN-的创建"><a href="#TIN-的创建" class="headerlink" title="TIN 的创建"></a>TIN 的创建</h2><p>TIN通常可以由多种类型矢量数据集来创建, SuperMap 桌面产品提供了把点/三维点/线数据集转换成TIN数据的功能。</p>
+<h2 id="DEM"><a href="#DEM" class="headerlink" title="DEM"></a>DEM</h2><p>DEM（Digital Elevation Modals，数字高程模型）是地面特性为高程和海拔高程的数字地面模型（DTM）。 DEM数据集可以通过线数据集、点线数据集联合以及TIN数据集来生成。</p>
+<h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><p>布局就是地图（包括专题图）、图例、地图比例尺、方向标图片、文本等各种不同地图内容的混合排版与布置，主要用于电子地图和打印地图。</p>
+<h2 id="创建布局"><a href="#创建布局" class="headerlink" title="创建布局"></a>创建布局</h2><p>创建一个布局就是将所需的布局元素添加到布局窗口中加以整理与修饰，以达到地图所要表示的用途。而布局元素包括了一些地图元素（地图、比例尺、方向标、图例、专题图图例）、绘制元素（点、直线、折线、矩形、圆角矩形、椭圆和多边形）、标注元素（文本和艺术字）和其他相关元素（表格和图片）。</p>
+<h2 id="DirectX"><a href="#DirectX" class="headerlink" title="DirectX"></a>DirectX</h2><p>DirectX加强3d图形和声音效果，并提供设计人员一个共同的硬件驱动标准，让游戏开发者不必为每一品牌的硬件来写不同的驱动程序，也降低用户安装及设置硬件的复杂度。</p>
+<h2 id="SuperMap-SDX"><a href="#SuperMap-SDX" class="headerlink" title="SuperMap SDX+"></a>SuperMap SDX+</h2><p>SuperMap SDX+是SuperMap的空间引擎技术，它提供了一种通用的访问机制（或模式）来访问存储在不同引擎里的数据。这些引擎类型有数据库引擎、文件引擎和 Web 引擎.</p>
+<h2 id="引擎优化"><a href="#引擎优化" class="headerlink" title="引擎优化:"></a>引擎优化:</h2><ul>
+<li>选择合适的硬件平台内存、硬盘、网络</li>
+<li>选择使用文件缓存功能</li>
+<li>为Layer设置合适的MinVisibleGeometrySize属性值</li>
+<li>建立空间索引</li>
+<li>建立空间索引</li>
+<li>影像数据的优化</li>
+</ul>
+<h2 id="SuperMap-SDX-空间索引"><a href="#SuperMap-SDX-空间索引" class="headerlink" title="SuperMap SDX+ 空间索引"></a>SuperMap SDX+ 空间索引</h2><ul>
+<li>R树索引：R树空间索引方法是通过设计虚拟的矩形目标，将一些空间位置相近的目标对象，包含在这个矩形内，把这些矩形作为空间索引，它含有所包含的空间对象的指针。</li>
+<li>四叉树索引：</li>
+<li>图库索引 ：根据数据集的某一属性字段或根据给定的一个范围（图幅的长和宽），将空间对象进行分类，通过索引进行管理已分类的空间对象，以此提高查询检索速度。</li>
+<li>动态索引：将数据集按照一定的规则划分成相等或不相等的网格，记录每一个地理对象所占的网格位置。在GIS中常用的是规则网格。当用户进行空间查询时，首先计算出用户查询对象所在的网格，通过该网格快速查询所选地理对象。可以优化查询操作。</li>
+</ul>
+<h2 id="事务的四个属性"><a href="#事务的四个属性" class="headerlink" title="事务的四个属性"></a>事务的四个属性</h2><p>在数据库应用程序中，事务是一个比较常见的概念，它是作为单个逻辑工作单元执行的一系列操作。一个逻辑工作单元必须有四个属性，称为ACID（原子性、一致性、隔离性和持久性）属性，只有具备这些属性才能成为一个事务。</p>
+<ul>
+<li>原子性:原子性决定事务不可分割，事务必须是原子工作单元，对于其数据所作的修改必须是全执行或全不执行。</li>
+<li>一致性:事务在完成时必须使所有的数据都保持一致状态。在相关数据库中，所有规则都必须应用于事务的修改，以保持所有数据的完整性。事务结束时所有的内部数据结构（如B树索引或双向链表）都必须是正确的。</li>
+<li>隔离性:由并发事务所作的修改必须与其它并发事务所作的修改隔离。事务查看数据时数据所处的状态，要么是另一并发事务修改它之前的状态，要么是另一事务修改它之后的状态，事务不会查看中间状态的数据，这称为可串行性，因为它能够重新装载起始数据，并且回滚一系列事务，以使数据结束时的状态与原始事务执行的状态相同。</li>
+<li>持久性:事务完成之后，它对于系统的影响是永久性的，即使出现系统故障，事务所作的修改也将一直保持。</li>
+</ul>
+<h2 id="地图投影的目的"><a href="#地图投影的目的" class="headerlink" title="地图投影的目的"></a>地图投影的目的</h2><p>地图投影的目的：地球椭球体表面是曲面，而地图通常要绘制在平面图纸上，因此制图时首先要把曲面展为平面。然而球面是个不可展的曲面，所以必须采用特殊的方法将曲面展开，使其成为没有破裂或褶皱的平面，于是就出现了地图投影理论。</p>
+<h2 id="地球椭球体"><a href="#地球椭球体" class="headerlink" title="地球椭球体"></a>地球椭球体</h2><p>地球椭球体（Sphere/Spheroid）由于地球形状的不规则性，不同国家在不同的历史时期对地球进行过无数次测量，导致出现了大量的椭球体，但是由于没有一个椭球体能够准确的描述地球的整体形状，所以在应用时应该根据各个国家或地区的具体情况选择合适的地球椭球体。</p>
+<h2 id="大地参照系"><a href="#大地参照系" class="headerlink" title="大地参照系"></a>大地参照系</h2><p>大地参照系（Datum）大地参照系确定了地球椭球体相对于地球球心的位置，为地表地物的测量提供了一个参照框架，确定了地表经纬网线的原点和方向</p>
+<h2 id="地理坐标系"><a href="#地理坐标系" class="headerlink" title="地理坐标系"></a>地理坐标系</h2><p>地理坐标系（Geographic Coordinate System）一般情况下，一个地理坐标系由三部分组成：大地参照系（Datum），本初子午线（Prime Meridian），角度单位（Angular Units）。</p>
+<h2 id="投影坐标系"><a href="#投影坐标系" class="headerlink" title="投影坐标系"></a>投影坐标系</h2><p>投影坐标系（Projected Coordinate System）投影坐标系是与地理坐标系相对的一个概念，是将椭球面上的点通过地图投影的方式投影到（地图）平面上，分为平面极坐标系和平面直角坐标系。平面直角坐标系按照直角坐标原理确定一点的平面位置，由原点及通过原点的两个垂直相交轴组成，这种坐标也叫笛卡尔坐标或直角坐标。测绘中的直角坐标系与数学中的不同点是，X轴和Y轴互换。</p>
+<p>一般情况下，一个投影坐标系包含以下几部分，投影坐标系的名称，坐标单位，投影方式，地理坐标系，投影参数。投影参数常用的有以下几种:地图投影的方法：</p>
+<ul>
+<li>几何透视法:以平面、圆柱面、圆锥面为承影面，将曲面（地球椭球体面）转绘到平面（地图）上的一种古老方法</li>
+<li>数学解析法:是建立地球椭球体面上的经纬网与平面上相应经纬网之间对应关系的方法。实质就是直接确定球面上某点的地理坐标与平面上对应点的直角坐标之间的函数关系。当前绝大多数地图投影都采用这种方法。</li>
+</ul>
+<h2 id="地图投影分类"><a href="#地图投影分类" class="headerlink" title="地图投影分类"></a>地图投影分类</h2><ul>
+<li>按投影变形性质分类:按照投影的变形性质可以分为以下几类：等角投影、等积投影、任意投影（等距投影是其中特例）。</li>
+<li>按投影构成方式分类:根据投影构成方式可以分为两类：几何投影和解析投影。</li>
+</ul>
+<blockquote>
+<p>几何投影包括方位投影、圆锥投影和圆柱投影。根据投影面与球面的位置关系的不同又可将其划分为：正轴投影、横轴投影、斜轴投影<br>解析投影是不借助于辅助几何面，直接用解析法得到经纬网的一种投影。主要包括：伪圆锥投影，伪圆柱投影，伪方位投影，多圆锥投影。</p>
+</blockquote>
+<h2 id="投影方法"><a href="#投影方法" class="headerlink" title="投影方法"></a>投影方法</h2><p>目前常用的投影方法有莫卡托投影（正轴等角圆柱投影）、高斯-克吕格投影（等角横切圆柱投影）、UTM 投影（等角横轴割圆柱投影）、Lambert投影（等角正割圆锥投影）等。</p>
+<ul>
+<li>莫卡托投影是一种“等角正切圆柱投影”</li>
+<li>高斯-克吕格(Gauss-Kruger)投影，是一种“等角横切圆柱投影”</li>
+<li>UTM投影全称为“通用横轴墨卡托投影”，是一种“等角横轴割圆柱投影”</li>
+<li>兰勃托(Lambert)投影，又名“”等角正割圆锥投影”，</li>
+</ul>
+<h2 id="坐标系分类"><a href="#坐标系分类" class="headerlink" title="坐标系分类"></a>坐标系分类</h2><p>数据的坐标系分为三类：平面坐标系、地理坐标系、投影坐标系。</p>
+<p>##数据编码<br>数据编码：是数据在计算机中的存储方式。通常用来减少数据所占的存储空间以及提高数据的安全性，或者作为一种数据交换的格式。GIS数据分为有编码与无编码两种，而采用编码的主要目的，是用一定的压缩方法减少海量数据的存储，大大提高磁盘读写和网络传输的效率，显著提高性能。数据编码是一个压缩的概念，类似于ZIP，RAR等，矢量数据集有多种编码方式，典型的有SDC和SWC两种。 SWC，WORD编码类型，应用于矢量数据集（线、面类型）的一种编码方式，对点数据集不起作用。压缩比为4倍。精度损失为1/216。数据集中对象大小比较平均的情况下，推荐使用此种编码方式。SDC，DWORD编码类型，应用于矢量数据集（线、面类型）的一种编码方式，对点数据集不起作用。压缩比为2倍。精度损失为1/232，按照全球大小的对象估计，精度损失在毫米级。总结其优势：压缩速度快，损失小，原图和编码后的图对比浏览时，基本看不到差别。可以说SDC是几乎接近无损的一种编码方式，一般的数据推荐使用SDC。对一些在空间上相邻，有公共边的面状数据，用SDC编码完全没有问题，但用SWC，在放大很大时会有缝隙显现。数据压缩的代价：压缩之后的数据不可逆，即不可以返回数据压缩之前的状态，此外在精度上有一定的损失，对查询和分析有影响，如果进行非常精确的查询和空间分析等，SWC会导致一些结果上的误差，但SDC不会有影响，其产生的精度损失在空间分析的容限范围之内。</p>
+<h2 id="地图缓存"><a href="#地图缓存" class="headerlink" title="地图缓存"></a>地图缓存</h2><p>地图缓存是一种用于改善地图浏览用户体验的优化策略。服务器端创建了地图缓存之后，客户端用户的每一次地图浏览，比如平移、放大、缩小地图，都会向服务器端发送一个URL请求，此时，服务器端按照匹配的条件，将已缓存的图片返回到客户端。通常将服务器端在发布地图服务之前，已经创建的地图缓存称为预缓存。</p>
+<h2 id="为什么使用地图缓存"><a href="#为什么使用地图缓存" class="headerlink" title="为什么使用地图缓存"></a>为什么使用地图缓存</h2><p>只需要付出一次缓存的代价，就可以提供给客户端地图显示以快速的响应速度。地图缓存是以一系列不同比例尺下地图图片形式提供的，因此不受矢量地图显示上的约束，比如地图信息量的大小、地物的复杂程度、是否带有标注、所使用的地图符号等限制。因为，一般情况下，地图渲染的细节越多，承载的信息量越丰富，同等环境下，绘制矢量地图就越慢，但使用了地图缓存，客户端在获得了同样分辨率显示效果的同时，等待时间却大大缩短，增强了用户的体验，满足系统对快速地图响应的要求。</p>
+<h2 id="GIS一般出现的问题与优化方法："><a href="#GIS一般出现的问题与优化方法：" class="headerlink" title="GIS一般出现的问题与优化方法："></a>GIS一般出现的问题与优化方法：</h2><ul>
+<li>地图反走样</li>
+<li>交叉线优化</li>
+<li>图层顺序调整</li>
+<li>文本层叠优化</li>
+<li>地图显示速度优化</li>
+</ul>
+<h3 id="反走样-antialiasing-："><a href="#反走样-antialiasing-：" class="headerlink" title="反走样 (antialiasing)："></a>反走样 (antialiasing)：</h3><p>在光栅图形显示器上绘制非水平且非垂直的直线或多边形边界时，或多或少会呈现锯齿状或台阶状外观。这是因为直线、多边形、色彩边界等是连续的，而光栅则是由离散的点组成，在光栅显示设备上表现直线、多边形等，必须在离散位置采样。由于采样不充分重建后造成的信息失真，就叫走样(aliasing)。而用于减少或消除这种效果的技术，就称为反走样(antialiasing)。通过地图优化可以去除一些呈现锯齿状或台阶状的显示，提高地图的美观性：一般提高显示速度最好的方法就是减少地图中图层和显示对象，这样将减少系统更新，达到提供显示速度的目的。</p>
+<h3 id="地图显示速度优化"><a href="#地图显示速度优化" class="headerlink" title="地图显示速度优化"></a>地图显示速度优化</h3><ul>
+<li>对象过滤显示过滤对象尺寸、过滤显示条件、文本字高过滤显示</li>
+<li>图层过滤显示  层是否可显示、图层比例尺过滤显示</li>
+<li>地图缓存用“地图缓存”功能对当前地图按照设置的比例尺和缓存范围生成一系列的缓存图片。在浏览此地图时可以直接读取缓存中的图片，从而提高地图显示的速度</li>
+<li>建立索引提高矢量数据的查询、访问、排序、浏览等操作，提供了多种文件索引，包括字段索引、四叉树索引、R树索引、动态索引和图库索引（原三级索引）</li>
+<li>创建影像金字塔  金字塔是栅格数据集的简化分辨率（reduced resolution）图像的集合。影像金字塔技术通过影像重采样方法，建立一系列不同分辨率的影像图层，每个图层分割存储，并建立相应的空间索引机制，从而提高缩放浏览影像时的显示速度。</li>
+<li>无地图缩放动画效果</li>
+</ul>
+<h3 id="专题图种类"><a href="#专题图种类" class="headerlink" title="专题图种类"></a>专题图种类</h3><p>SuperMap总共提供了七种专题图以供选择。从图中可以看出，单值专题图，范围分段专题图，统计专题图都具有专题图标签，它们在地图中显示为多种风格，在此称为多元风格专题图。而其他的等级符号专题图、点密度专题图、标签专题图和自定义专题图仅有一个专题图项，没有专题图标签，它们在地图中显示为单一风格，在此称为单一风格专题图。</p>
+<ul>
+<li>多元风格专题图<br>这些图都有配色方案，都有标签，都可以设置多个字段（值），在地图中显示可以用多种符号（线型、填充）来表达字段（值）信息，地图画面较为丰富。</li>
+<li>单一风格专题图：只能设置一个字段通过一种符号（线型、填充）来表达字段值的信息</li>
+</ul>
+<h2 id="地图分类"><a href="#地图分类" class="headerlink" title="地图分类"></a>地图分类</h2><p>地图一般分为普通地图和专题地图，根据功能的不同又从专题地图里划分了统计地图。</p>
+<ul>
+<li>普通地图是以相对均衡的详细程度表示制图区域内各种自然和社会经济现象的地图。其内容包含全地图要素</li>
+<li>题地图是以普通地图为地理基础，着重表示制图区域内某一种或几种自然或社会经济现象的地图。这类地图的显著特点是，作为该图主题的专题要素予以详尽表示，其地理基础内容则视主题而异</li>
+</ul>
+<h2 id="常用的颜色模式："><a href="#常用的颜色模式：" class="headerlink" title="常用的颜色模式："></a>常用的颜色模式：</h2><ul>
+<li>RGB 模式：RGB 是Red（红色）、Green（绿色）、Blue（蓝色）的缩写。由红、绿、蓝相叠加可以产生其它颜色，因此该模式也叫加色模式</li>
+<li>CMYK 模式：CMYK 是Cyan（青）、Magenta（洋红）、Yellow（黄色）以及Black（黑色）的缩写。与RGB模式不同的是它的颜色合成方式不是颜色相加，而是颜色相减</li>
+<li>HLS 模式：HLS 是Hue(色调)、Luminance(亮度)、Saturation(饱和度)的缩写。</li>
+</ul>
+<h2 id="色调"><a href="#色调" class="headerlink" title="色调"></a>色调</h2><p>色调是颜色的一种属性，它实质上是色彩的基本颜色，即我们经常讲的红、橙、黄、绿、青、蓝、紫七种，每一种代表一种色调。色调的调整也就是改变它的颜色。</p>
+<h2 id="亮度"><a href="#亮度" class="headerlink" title="亮度"></a>亮度</h2><p>亮度就是各种颜色的图形原色（如RGB的原色为R、G、B三种或各种自的色调）的明暗度，亮度调整也就是明暗度的调整。而我们通常讲的灰度图像，就是在纯白色和纯黑色之间划分了多个级别的亮度，也就是从白到灰，再转黑。同理，在RGB 模式中则代表个原色的明暗度，即红绿蓝三原色的明暗度，从浅到深。</p>
+<h2 id="饱和度"><a href="#饱和度" class="headerlink" title="饱和度"></a>饱和度</h2><p>饱和度是指图像颜色的彩度.对于每一种颜色都有一种人为规定的标准颜色，饱和度就是用描述颜色与标准颜色之间的相近程度的物理量。调整饱和度就是调整图像的彩度。将一个图像的饱和度条为零时，图像则变成一个灰度图像。</p>
+<h2 id="地理空间数据交换格式"><a href="#地理空间数据交换格式" class="headerlink" title="地理空间数据交换格式"></a>地理空间数据交换格式</h2><p>地理空间数据交换格式（Geo-spatial data transfer format）分为矢量、影像和格网三类。其中矢量交换格式，是以VCT为扩展名。</p>
+<h2 id="对象（object）："><a href="#对象（object）：" class="headerlink" title="对象（object）："></a>对象（object）：</h2><p>即几何对象，在GIS中对离散空间实体的数字化表示。一个对象具有自己的属性和行为。单一对象（Single Object）：子对象（part）：简单对象（Simple Object）：复杂对象（Complex Object）：复合对象（Compound Object）：参数化对象：对象类型：绘制对象类型</p>
+<h2 id="对象运算"><a href="#对象运算" class="headerlink" title="对象运算"></a>对象运算</h2><p>对象运算主要包含了合并、求交、交集取反、擦除、擦除外部、组合、分解和保护性分解共8中对象运算方式。合并是同类型融合起来，组合是CAD图中的图形组合起来。参与操作的对象为非岛洞多边形的复杂面对象，则分解与保护性分解效果相同。  </p>
+<h2 id="空间数据的查询和分析"><a href="#空间数据的查询和分析" class="headerlink" title="空间数据的查询和分析"></a>空间数据的查询和分析</h2><p>空间数据的查询和分析在GIS工程项目中处于核心地位，在使用GIS数据时，我们经常需要从已有的数据中查询出部分满足特定条件的数据。GIS 中的查询类型一般可以分为以下三种：单纯的属性查询、单纯的空间查询、以及与空间位置和属性同时相关的综合查询</p>
+<h2 id="SQL语句"><a href="#SQL语句" class="headerlink" title="SQL语句"></a>SQL语句</h2><p>SQL语句是标准的计算机查询语句，SuperMap中的许多查询功能都是通过构建SQL语句来完成的,SQL表达式的语法为“Select …（需要输出的字段名） from … （数据集名）where…（查询条件）(order by …ascending/descending)（结果排序字段，可选）”。</p>
+<ul>
+<li>对数值的查询 :对数值的查询可以使用＝, &lt;&gt;, &gt;, &lt;, &lt;=, &gt;=, Between 等等</li>
+<li>模糊查询:模糊查询使用like，而且不同类型的数据源使用的匹配符不尽相同</li>
+<li>查询特定值 :使用in，确定表达式的值是否等于指定列表内若干值中的任意一个值</li>
+<li>查询某个字段值是否为空 ,使用is NULL (is not NULL) </li>
+<li>通过构造语句进行查询</li>
+<li>组合语句 :使用and，将两个或者多个查询语句组合起来</li>
+<li>比较运算符在字符型字段中的应用</li>
+<li>日期型字段的查询 :World_countries.dat = #08/10/94#</li>
+<li>派生字段(Pop_2000-Pop_1990)/Pop_1990 as Growth_Rate</li>
+</ul>
+<h2 id="SQL特殊"><a href="#SQL特殊" class="headerlink" title="SQL特殊"></a>SQL特殊</h2><ul>
+<li>系统中提供的SQL查询条件运算符除了常用的数学运算符和逻辑运算符外，还提供了一些比较特殊的运算符</li>
+<li>聚合函数对一组值执行计算并得到单一的值。除 COUNT 函数之外，聚合函数忽略空值。聚合函数经常与 SELECT 语句的 GROUP BY 子句一同使用。所有聚合函数都具有确定性。任何时候用一组给定的输入值调用它们时，都得到相同的值。除 COUNT() 外，其它聚合函数均不能对文本数据类型使用. 数学函数对数字表达式进行数学运算并返回运算结果。</li>
+<li>数学函数在 SuperMap 中的表达式一般采用属性表的字段名或字段名构成的表达式，如Cos(Slope）、Ceiling(Pop/Area)等</li>
+<li>字符串函数用于对字符和二进制字符串进行各种操作，它们返回对字符数据进行操作时通常所需要的值</li>
+<li>日期函数用来显示关于日期的信息。这些函数适用于日期类型字段值，并对这些值执行算术运算。可将日期函数用于可使用表达式的任何地方。</li>
+</ul>
+<h2 id="空间查询"><a href="#空间查询" class="headerlink" title="空间查询"></a>空间查询</h2><p>空间查询是通过几何对象之间的空间位置关系来构建过滤条件的一种查询方式。相对于完全由属性过滤条件构建的基于属性的查询，基于空间位置关系且同时可以应用属性过滤条件的称为空间查询。</p>
+<h2 id="查询模式"><a href="#查询模式" class="headerlink" title="查询模式"></a>查询模式</h2><p>22种空间查询模式，其中有9种为基本算子，3种常用算子，10种为组合算子。空间查询涉及三个要素，分别是：搜索对象、被搜索图层及结果记录集</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GIS/" rel="tag"># GIS</a>
+          
+            <a href="/tags/SuperMap/" rel="tag"># SuperMap</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2011/07/29/数据结构在GIS中的应用/" rel="next" title="数据结构在GIS中的应用">
+                <i class="fa fa-chevron-left"></i> 数据结构在GIS中的应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2011/09/30/Markdown语法的使用/" rel="prev" title="Markdown语法的使用">
+                Markdown语法的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#各桌面产品与功能模块"><span class="nav-number">1.</span> <span class="nav-text">各桌面产品与功能模块:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作空间"><span class="nav-number">2.</span> <span class="nav-text">工作空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据源"><span class="nav-number">3.</span> <span class="nav-text">数据源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据集"><span class="nav-number">4.</span> <span class="nav-text">数据集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SDB-数据源"><span class="nav-number">5.</span> <span class="nav-text">SDB 数据源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地图的属性"><span class="nav-number">6.</span> <span class="nav-text">地图的属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TIN"><span class="nav-number">7.</span> <span class="nav-text">TIN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TIN-的创建"><span class="nav-number">8.</span> <span class="nav-text">TIN 的创建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DEM"><span class="nav-number">9.</span> <span class="nav-text">DEM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#布局"><span class="nav-number">10.</span> <span class="nav-text">布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建布局"><span class="nav-number">11.</span> <span class="nav-text">创建布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DirectX"><span class="nav-number">12.</span> <span class="nav-text">DirectX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SuperMap-SDX"><span class="nav-number">13.</span> <span class="nav-text">SuperMap SDX+</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引擎优化"><span class="nav-number">14.</span> <span class="nav-text">引擎优化:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SuperMap-SDX-空间索引"><span class="nav-number">15.</span> <span class="nav-text">SuperMap SDX+ 空间索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务的四个属性"><span class="nav-number">16.</span> <span class="nav-text">事务的四个属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地图投影的目的"><span class="nav-number">17.</span> <span class="nav-text">地图投影的目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地球椭球体"><span class="nav-number">18.</span> <span class="nav-text">地球椭球体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大地参照系"><span class="nav-number">19.</span> <span class="nav-text">大地参照系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地理坐标系"><span class="nav-number">20.</span> <span class="nav-text">地理坐标系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#投影坐标系"><span class="nav-number">21.</span> <span class="nav-text">投影坐标系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地图投影分类"><span class="nav-number">22.</span> <span class="nav-text">地图投影分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#投影方法"><span class="nav-number">23.</span> <span class="nav-text">投影方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坐标系分类"><span class="nav-number">24.</span> <span class="nav-text">坐标系分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地图缓存"><span class="nav-number">25.</span> <span class="nav-text">地图缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么使用地图缓存"><span class="nav-number">26.</span> <span class="nav-text">为什么使用地图缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GIS一般出现的问题与优化方法："><span class="nav-number">27.</span> <span class="nav-text">GIS一般出现的问题与优化方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#反走样-antialiasing-："><span class="nav-number">27.1.</span> <span class="nav-text">反走样 (antialiasing)：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地图显示速度优化"><span class="nav-number">27.2.</span> <span class="nav-text">地图显示速度优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#专题图种类"><span class="nav-number">27.3.</span> <span class="nav-text">专题图种类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地图分类"><span class="nav-number">28.</span> <span class="nav-text">地图分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用的颜色模式："><span class="nav-number">29.</span> <span class="nav-text">常用的颜色模式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#色调"><span class="nav-number">30.</span> <span class="nav-text">色调</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#亮度"><span class="nav-number">31.</span> <span class="nav-text">亮度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#饱和度"><span class="nav-number">32.</span> <span class="nav-text">饱和度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地理空间数据交换格式"><span class="nav-number">33.</span> <span class="nav-text">地理空间数据交换格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象（object）："><span class="nav-number">34.</span> <span class="nav-text">对象（object）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象运算"><span class="nav-number">35.</span> <span class="nav-text">对象运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空间数据的查询和分析"><span class="nav-number">36.</span> <span class="nav-text">空间数据的查询和分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL语句"><span class="nav-number">37.</span> <span class="nav-text">SQL语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL特殊"><span class="nav-number">38.</span> <span class="nav-text">SQL特殊</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空间查询"><span class="nav-number">39.</span> <span class="nav-text">空间查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询模式"><span class="nav-number">40.</span> <span class="nav-text">查询模式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
