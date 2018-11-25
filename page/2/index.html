@@ -302,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/03/27/AFNetworking源码解析/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/03/25/CollectionView原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/03/27/AFNetworking源码解析/" itemprop="url">AFNetworking源码解析</a></h1>
+                <a class="post-title-link" href="/2016/03/25/CollectionView原理及应用案例/" itemprop="url">CollectionView原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -333,8 +333,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-03-27T00:00:00+08:00">
-                2015-03-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-25T00:00:00+08:00">
+                2016-03-25
               </time>
             
 
@@ -395,12 +395,21 @@
       
         
           
-          移动互联网技术中，最常用的一个技术点就是客户端和服务端之间的交互了，在这些技术和协议中，有个应用最广泛的的技术点就是超文本传输协议（HTTP，HyperText Transfer Protocol)。以前做Android的时候了解过此协议，它是一个客户端和服务器端请求和应答的标准（TCP），用于对数据进行格式化，让客户端和服务端两边都能懂得起。客户端向服务器发送一个请求，请求头包含请求的方法、URL、协议版本、以及包含请求修饰符、客户信息和内容的类似于MIME的消息结构。服务器以一个状态行作为响应，响应的内容包括消息协议的版本，成功或者错误编码加上包含服务器信息、实体元信息以及可能的实体内容。
-HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器向客户机的响应消息。这两种类型的消息由一个起始行，一个或者多个头域，一个指示头域结束的空行和可选的消息体组成。HTTP的头域包括通用头
+          日历 UICollectionViewUICollectionView的简单用法
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    _dayAry = [NSMutableArray array];
+    /*
+     代码初始化的时候，一定要用 initWithFrame ：collectionViewLayout 这个
+     UICollectionViewLayout 不能直接初始化这个布局对象（必须实现他的子类）
+     更复杂布局需要 自己写UICollectionViewLayout的子类（如瀑布流）
+     */
+
+    [_collectionView registerNib:[UINib nibWithNibName:@&quot;DateCell&quot; bundle:nil] forCellWith
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/03/27/AFNetworking源码解析/#more" rel="contents">
+            <a class="btn" href="/2016/03/25/CollectionView原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -451,7 +460,7 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/02/14/iOS动态库和静态库/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/02/26/TableView原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -470,7 +479,7 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/02/14/iOS动态库和静态库/" itemprop="url">iOS动态库和静态库</a></h1>
+                <a class="post-title-link" href="/2016/02/26/TableView原理及应用案例/" itemprop="url">TableView原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -482,8 +491,8 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-02-14T00:00:00+08:00">
-                2015-02-14
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-02-26T00:00:00+08:00">
+                2016-02-26
               </time>
             
 
@@ -544,15 +553,23 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
       
         
           
-          库是一段编译好的二进制代码，是共享程序代码的方式，一般分为静态库和动态库。iOS 中静态库是static Library，后缀名是 .a，动态库是dynamic library，后缀名是 .dylib。iOS 中的 Framework 称作框架，框架其实是一种打包方式，将库的二进制文件、头文件和有关的资源文件打包到一起，方便管理和分发，框架根据其在内存中的加载方式分类，可以是动态库，也可以是静态库。以前，系统的.framework是动态库，我们自己建立的.framework是静态库，从swift开始时，我们也可以建立自己的动态库了。
-静态库链接时完整地拷贝至可执行文件中，被多次使用就有多份冗余拷贝
-下边通过一个教程翻译，来更加了解静态库，源地址，内容如下：
-创建静态库如果我们已经做了很长时间的iOS开发了，我们可能会有一些大多数APP都能共用的代码
-如果要共用这些代码，最简单的方式就是拷贝
+          TableView原理UITableView的简单用法
+@implementation SecondViewCtr
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    _cellAry = [NSMutableArray new];
+    UITableView *_tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _tableView.delegate  = self;
+    _tableView.dataSource = self;
+    [self.view addSubview:_tableView];
+}
+
+#pragma mark - tableView delegate
+- (NSInteger)tableV
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/02/14/iOS动态库和静态库/#more" rel="contents">
+            <a class="btn" href="/2016/02/26/TableView原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -603,7 +620,7 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/01/30/iOS工程框架/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/01/29/ScrollView原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -622,7 +639,7 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/01/30/iOS工程框架/" itemprop="url">iOS工程框架</a></h1>
+                <a class="post-title-link" href="/2016/01/29/ScrollView原理及应用案例/" itemprop="url">ScrollView原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -634,8 +651,8 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-01-30T00:00:00+08:00">
-                2015-01-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-01-29T00:00:00+08:00">
+                2016-01-29
               </time>
             
 
@@ -696,26 +713,18 @@ HTTP简介通常HTTP消息包括客户机向服务器的请求消息和服务器
       
         
           
-          当我们进入到新的公司的第一天，看到以前老员工编写的代码，找个东西累死人咧，那个抓耳挠腮的啊，一般情况下都有想揍人的赶脚。 不过，我们先想一下自己的代码！想一下自己写的代码怎么才能新来的人一眼就能看懂，想找什么，在几秒之内就能找到?这个就需要在前期创建项目的时候留神了，要保证项目的易读性、易维护性以及易扩展性等。
-在我看来，作为一个项目开发的领头人，你可以从三个方面着手：
+          ScrollView原理解析UIScrollView(滚动视图)是一个在日常开发中使用频率极高的容器视图控件, 它允许用户通过滚动和缩放的方式查看超出屏幕区域大小的内容, 在应用程序开发中经常使用到的UITableView(列表视图)、UICollectionView(集合视图)和UITextView(文本视图)都是它的子类.
+下面将从用户界面和事件处理两个方面对UIScrollView做一次详细的使用介绍和简要的实现原理分析.
+该属性用于标识内容区域的起点相对于scrollView的起点的偏移量, 默认值为CGPointZero
+@property(nonatomic) CGPoint contentOffset;
 
-项目的代码架构
-项目的组织框架
-代码的规范
+(void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 
-本章内容先来总结一下项目在初期规划时项目的组织框架，其他会在以后的文章中总结
-
-PXSJ工作空间中的每个项目名称，一个工作空间可以有多个项目
-PXSJ每个项目对应的代码主目录，此目录中的所有代码均为自己编写，第三方代码放置于此目录之外
-
-Module
- 项目内的功能模块总文件夹，如账号模块，商品模块，支付模块等
-
-Main 主模块文件夹，如果模块内文件较多，内容过大，一般在文
+该属性用于标识内容区域的尺寸
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/01/30/iOS工程框架/#more" rel="contents">
+            <a class="btn" href="/2016/01/29/ScrollView原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -766,7 +775,7 @@ Main 主模块文件夹，如果模块内文件较多，内容过大，一般在
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/12/26/Effective-OC2.0第二部分/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -785,7 +794,7 @@ Main 主模块文件夹，如果模块内文件较多，内容过大，一般在
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/12/26/Effective-OC2.0第二部分/" itemprop="url">Effective-OC2.0第二部分</a></h1>
+                <a class="post-title-link" href="/2015/12/25/事件传递及应用案例/" itemprop="url">事件传递及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -797,8 +806,8 @@ Main 主模块文件夹，如果模块内文件较多，内容过大，一般在
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-12-26T00:00:00+08:00">
-                2014-12-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-25T00:00:00+08:00">
+                2015-12-25
               </time>
             
 
@@ -859,18 +868,23 @@ Main 主模块文件夹，如果模块内文件较多，内容过大，一般在
       
         
           
-          内存管理理解引用计数Retain递增保留计数 release递减保留计数 autorelease待清理自动释放池时，再递减保留计数
-strong属性表示先retain，后release，再赋值
-在自动释放池中的对象，不会立马释放，通常是在下一次事件循环时保留数递减
-保留环是呈环状相互引用，这将导致内存泄露，因为循环中的对象其保留计数不会降为0
-引用计数机制通过可以递增递减的计数器来管理内存，对象创建好之后，其保留计数至少为1。若保留计数为正，则对象继续存活。当保留计数降为0时，对象就被销毁了。
-在对象生命周期中，其余对象通过引用来保留或释放此对象。保留与释放操作分别会递增及递减保留计数
-以ARC简化引用计数ARC下不能调用以下方法 retain/release/autorelease/dealloc
-ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
+          事件层次分析iOS事件有哪些
+
+UIEventTypeTouches触摸事件
+UIEventTypeMotion “动作”事件(比如摇晃手机设备)
+UIEventTypeRemoteControl远程控制事件
+UIEventTypePresses事件(和触按物理按钮有关)
+
+
+响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIApplication、UIViewController、UIView、UIWindow。
+
+UITouch
+当用一根手指触摸屏幕时，会创建一个与手指相关联的UITouch对象。如果两根手指同时触摸屏幕，则会调用一次touchesBegan方法，创建两个UITouch对象（如果不是同时触摸，调用两次方法，每次的touches参数都只有一个UITouch对象）。
+判断是否多点触摸：NSSet有多少个U
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/12/26/Effective-OC2.0第二部分/#more" rel="contents">
+            <a class="btn" href="/2015/12/25/事件传递及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -921,7 +935,7 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/11/28/Effective-OC2.0第一部分/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/11/27/控制器加载底层原理和UI初始化过程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -940,7 +954,7 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/11/28/Effective-OC2.0第一部分/" itemprop="url">Effective-OC2.0第一部分</a></h1>
+                <a class="post-title-link" href="/2015/11/27/控制器加载底层原理和UI初始化过程/" itemprop="url">控制器加载底层原理和UI初始化过程</a></h1>
         
 
         <div class="post-meta">
@@ -952,8 +966,8 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-11-28T00:00:00+08:00">
-                2014-11-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-11-27T00:00:00+08:00">
+                2015-11-27
               </time>
             
 
@@ -1014,15 +1028,34 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
       
         
           
-          最近将《Effective Objective-C 2.0》这本书浏览了一遍，感觉这本书是ios进阶必看的一本书。如果书中的涉及的主题能够都掌握，那么绝对可以宣称自己是一个高级oc使用者。
-熟悉OC了解OC语言的起源OC为C语言添加了面向对象特性，是其超集。OC使用动态绑定的消息结构，也就是说，在运行时才会检查对象类型。接收一条消息之后，究竟应执行何种代码，由运行期环境而非编译器来决定。
-理解C语言的核心概念有助于写好OC程序。尤其要掌握内存模型与指针。
-在类的头文件中尽量少引入其他头文件除非确有必要，否则不要引入头文件。一般来说，应在某个类的头文件中使用向前声明来提及别的类，并在实现文件中引入那些类的头文件。这样做可以尽量降低类之间的耦合。
-有时无法使用向前声明，比如要声明某个类遵循一项协议。这种情况下，尽量把该类遵循某协议的这条声明移至”class-continuation分类”中，如
+          控制器加载底层原理和UI初始化过程
+层次关系(VC,V,CALayer)
+
+VC管理V，V管理CALayer，V中的子V在上层，不一定其Layer也在上层。
+
+控制器初始化过程
+
+控制器的View是和viewDidLoad有关的
+
+C弱化(VC的精简)
+
+MVCS 调度中心(通讯机制 KVO)
+
+UI初始化过程
+DrawRect(CALayer)分析
+
+绘制富文本(图片和文字)，对CALayer的绘制。
+系统中有一个全局栈stack专门存放CGContextRef，stack中正常是没有上下文的，drawRect会默认push一个上下文到全局的Context的栈stack里。
+
+IB_DESIGNABLE IBInspectable
+
+IB_DESIGNABLE 可以将drawrect函数中绘制的图形显示在xib可视文件中IBInspectable 可以将属性显示在xib中让动态设置
+
+x
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/11/28/Effective-OC2.0第一部分/#more" rel="contents">
+            <a class="btn" href="/2015/11/27/控制器加载底层原理和UI初始化过程/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1073,7 +1106,7 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/10/31/UIScrollView的API及用法/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/10/30/App启动原理/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1092,7 +1125,7 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/10/31/UIScrollView的API及用法/" itemprop="url">UIScrollView的API及用法</a></h1>
+                <a class="post-title-link" href="/2015/10/30/App启动原理/" itemprop="url">iOS App启动原理</a></h1>
         
 
         <div class="post-meta">
@@ -1104,8 +1137,8 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-10-31T00:00:00+08:00">
-                2014-10-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-30T00:00:00+08:00">
+                2015-10-30
               </time>
             
 
@@ -1166,14 +1199,24 @@ ARC下必须遵循方法命名规则，以alloc/new/copy/mutableCopy开头的
       
         
           
-          UIScrollViewUIScrollView 类为那些比应用窗口大的显示内容提供一种支持，它可以让用户在区域内通过手势来滑动，捏合来缩放操作
-概要UIScrollView 是 UITableView 和 UITextView 的基类
-UIScrollView 对象最主要特征就是它的内部有一个可以调整位置的内容视图，它把内容视图剪切到它自己的框架位置，当手指移动时，它自动调整内容视图的位置。UIScrollView的内容视图会根据offset位置来绘制自己。UIScrollView只负责绘制横向和竖向滚动指示器，其他的不负责。UIScrollView必须要知道它的内容视图的大小，这样它才会知道什么时候应该停止滚动。默认的，当滑动超越了边界时，它会弹回来。
-在 UIScrollView 中负责管理内容视图显示的对象应该也管理子视图，从而使视图不会超出屏幕的范围。当用户滑动的时候，这个对象应
+          开课典礼1、课程内容
+a、新增Swift、ARKit等内容b、每个课程有删减c、有些内容变成录播d、课程时间的改变
+2、学习效果
+a、听课 5%b、读 10%c、视听 20%d、案例 30%e、讨论 50%f、练习 75%g、实际应用 90%
+3、听直播
+a、预习相关知识点b、上课跟节奏、思考c、课后实践、总结、写博客
+不要用学习的勤奋，掩盖实践的懒惰！
+iOS启动原理+清晰化布局1、APP启动入口
+a、创建一个application对象b、设置application的代理(AppDelegate)c、创建一个事件循环（runloop）d、读info.plist文件（MainStoryboard）
+2、runloop
+while(mode) {
+    handleRunloopStatus();//runloop状态处理，是否stop
+    cofigPort();//配置port
+ 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/10/31/UIScrollView的API及用法/#more" rel="contents">
+            <a class="btn" href="/2015/10/30/App启动原理/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1224,7 +1267,7 @@ UIScrollView 对象最主要特征就是它的内部有一个可以调整位置�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/09/26/UIView的API及用法/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/09/25/Swift实战/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1243,7 +1286,7 @@ UIScrollView 对象最主要特征就是它的内部有一个可以调整位置�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/09/26/UIView的API及用法/" itemprop="url">UIView的API及用法</a></h1>
+                <a class="post-title-link" href="/2015/09/25/Swift实战/" itemprop="url">Swift实战</a></h1>
         
 
         <div class="post-meta">
@@ -1255,8 +1298,8 @@ UIScrollView 对象最主要特征就是它的内部有一个可以调整位置�
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-09-26T00:00:00+08:00">
-                2014-09-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-25T00:00:00+08:00">
+                2015-09-25
               </time>
             
 
@@ -1317,21 +1360,11 @@ UIScrollView 对象最主要特征就是它的内部有一个可以调整位置�
       
         
           
-          UIViewUIView 类在屏幕上定义了一个长方形区域和及其接口，通过此方式来管理这个区域内的内容
-概要在运行时，一个 view 对象负责对其区域内部的内容进行渲染，并且负责与其内部的内容进行交互。UIView 类为自己背景颜色的填充区域自己提供了基本的行为。通过继承UIView并实现一些必要的绘图和事件处理方法，可以完成更加复杂的内容和功能。UIKit 框架也提供了一些标准的子类来直接运用，比如从简单的buttons到复杂的tables，UILabel来负责绘制文字，UIImageView来负责绘图。
-由于 view 对象是用户和应用交互的主要方式，所以他们有大量的方法：如
-
-绘制和动画
-通过技术(如UIKit，Core Graphics和OpenGL ES等)绘制矩形内的区域
-view 声明的一些属性可以通过动画方式转换到另一个值
-
-
-布局和子view管理
-一个 view 可以包含0
-          ...
+          
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/09/26/UIView的API及用法/#more" rel="contents">
+            <a class="btn" href="/2015/09/25/Swift实战/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1382,7 +1415,7 @@ view 声明的一些属性可以通过动画方式转换到另一个值
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/08/29/UITableView的API及其应用/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1401,7 +1434,7 @@ view 声明的一些属性可以通过动画方式转换到另一个值
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/08/29/UITableView的API及其应用/" itemprop="url">UITableView的API及其应用</a></h1>
+                <a class="post-title-link" href="/2015/08/28/Swift重点基础语法/" itemprop="url">Swift的重点基础语法</a></h1>
         
 
         <div class="post-meta">
@@ -1413,8 +1446,8 @@ view 声明的一些属性可以通过动画方式转换到另一个值
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-08-29T00:00:00+08:00">
-                2014-08-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-08-28T00:00:00+08:00">
+                2015-08-28
               </time>
             
 
@@ -1475,13 +1508,30 @@ view 声明的一些属性可以通过动画方式转换到另一个值
       
         
           
-          UITableView在iOS开发中UITableView可以说是使用最广泛的控件，我们平时使用的软件中到处都可以看到它的影子，类似于微信、QQ、新浪微博等软件基本上随处都是UITableView。当然它的广泛使用自然离不开它强大的功能，这些天仔细看了一遍它的 API 开发文档，感觉内容很多，有一些还不是很理解，在网上搜了一圈中文文档，没有找出一个比较完全的资料，索性自己整理一个，供大家学习，特别是那些英文不好的同学。
-概要UITableView 的目的就是为了展示和编辑一个信息列表
-UITableView 将一系列信息展示在一个表格列中。UITableView 是 UIScrollView 的子集，它只允许用户竖直滑动表格。表格的每一项包括了一个 UITableViewCell 对象。UITableView 用这些 Cell 来绘制可视化界面。Cell 包括内容、标题、图片等，并且在最右
+          
+Swift APP 中的入口函数main
+/*
+  编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果
+  如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错
+ */
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+}
+
+变量和常亮
+func 常量变量(){
+    // 1 let 声明常量 var声明变量
+    //  let 常量只能为他赋值一次
+
+    // 2.1 声明一个变量，编译器会自动推断类型，前提条件：提供的信息不足。
+    // 2.2 需要在变量后面声明类型，用冒号分割
+
+    /
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/08/29/UITableView的API及其应用/#more" rel="contents">
+            <a class="btn" href="/2015/08/28/Swift重点基础语法/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1532,7 +1582,7 @@ UITableView 将一系列信息展示在一个表格列中。UITableView 是 UISc
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/07/25/OC编码规范/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/07/31/Swift编码规范/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1551,7 +1601,7 @@ UITableView 将一系列信息展示在一个表格列中。UITableView 是 UISc
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/07/25/OC编码规范/" itemprop="url">OC 编码规范</a></h1>
+                <a class="post-title-link" href="/2015/07/31/Swift编码规范/" itemprop="url">Swift编码规范</a></h1>
         
 
         <div class="post-meta">
@@ -1563,8 +1613,8 @@ UITableView 将一系列信息展示在一个表格列中。UITableView 是 UISc
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-07-25T00:00:00+08:00">
-                2014-07-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-31T00:00:00+08:00">
+                2015-07-31
               </time>
             
 
@@ -1625,13 +1675,14 @@ UITableView 将一系列信息展示在一个表格列中。UITableView 是 UISc
       
         
           
-          作为一名苹果开发者，我们的工作就是开发出一个流畅的、高质量的 APP，如何保证 APP 的性能和质量，编码规范则是最基本的条件。在网上随便搜寻一下，每个公司都有自己的编码规范，如New York Times 编码规范、GitHub 编码规范、Raywenderlich 编码规范，这些编码规范其实内容都大同小异。
-由于我是 Raywenderlich 团队的忠实粉丝，我以前也通过 Raywenderlich 团队学习过不少的技术和技巧，我自己的编码风格也或多或少被 Raywenderlich 团队的风格所影响，所以本篇文章将翻译 Raywenderlich 的编码规范来做个总结，规范约束自己以后在编码时的风格，保证自己能写出更优雅的代码。
-Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是我们能够在我们的书、教程和初学者工具包的代码保持优雅和一致。即使我们
+          这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。
+我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide May 11, 2017 commit 版本 0f1f0848c4313201006e18cbf3b5c8b1365204ce
+正确性要尽量使你的代码编译时没有警告，甚至把警告当做错误处理。这条规则影响了很多语法的使用，如推荐使用#selector文而不是用字符串
+命名使用具有描述性的和一致的命名使你的代码更加易读和易懂，更多关于Swift的命名方式参见Swift API Design Guid
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/07/25/OC编码规范/#more" rel="contents">
+            <a class="btn" href="/2015/07/31/Swift编码规范/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1682,7 +1733,7 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/06/27/疯狂iOS下册-第二部分/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/06/26/Swift语法学习/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1701,7 +1752,7 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/06/27/疯狂iOS下册-第二部分/" itemprop="url">疯狂iOS下册第二部分</a></h1>
+                <a class="post-title-link" href="/2015/06/26/Swift语法学习/" itemprop="url">Swift2语法学习</a></h1>
         
 
         <div class="post-meta">
@@ -1713,8 +1764,8 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-06-27T00:00:00+08:00">
-                2014-06-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-06-26T00:00:00+08:00">
+                2015-06-26
               </time>
             
 
@@ -1775,24 +1826,17 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
       
         
           
-          本篇主要接着《疯狂iOS讲义》下册第一部分的内容将下册第二部分的重点知识列举一下，包括:iOS网络应用编程、使用CoreLocation定位、使用MapKit开发地图服务、推送机制、iCloud服务与应用五大部分。
-iOS网络应用编程检测网络状态检测设备的网络状态，需要两个步骤：
-
-下载、添加Reachability
-添加SystemConfiguration框架
-
-代码实现：
-Reachability *reach = [Reachability reachabilityWithHostName:site];
-switch([reach currentReachabilityWithHostName:site]) {
-    case NotReachable:
-        break;
-    case ReachableViaWWAN:
-        break;
-    ca
+          从2014-06-03苹果开发者大会发布Swift1.0到2015-12-04苹果公司宣布开源Swift2.1，再从苹果2016-03-21释放稳定成熟版本Swift2.2到2016-09-13Swift3.0的变革，Swift一路走来，在社区以及核心团队的努力下，越来越成熟、稳定。我们这节以关东升老师的《从零开始学Swift》来学习基于Swift2.2的语法知识，关于Swift的后续更新及变革，我会在后续的文章中发专题整理，如果想要看Swift源码的同学或者想膜拜大神的同学可以在本地址中查看
+准备起航本书约定
+示例代码约定：约定示例代码和本书章节之间的关系
+图示约定：图中的圆圈、箭头和手势表示的意思
+函数和方法签名约定：
+  函数和方法签名是函数和方法表示方式，签名由函数和方法的名称和每个参数组成，不包括返回值和参数类型，例如 print函数有两种不同的函数签名
+print(_:sepa
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/06/27/疯狂iOS下册-第二部分/#more" rel="contents">
+            <a class="btn" href="/2015/06/26/Swift语法学习/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1834,7 +1878,7 @@ switch([reach currentReachabilityWithHostName:site]) {
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1882,7 +1926,7 @@ switch([reach currentReachabilityWithHostName:site]) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1904,7 +1948,7 @@ switch([reach currentReachabilityWithHostName:site]) {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

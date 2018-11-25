@@ -1,0 +1,1615 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,UISearchController,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="UISearchController主要API // 初始化方法, 参数是展示搜索结果的控制器, 如果是在当前控制器展示搜索结果, 就传nil - (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController;  // 负责更新搜索结果的代理, 需要遵循 UISe">
+<meta name="keywords" content="OC,iOS,UISearchController">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SearchController原理及应用案例">
+<meta property="og:url" content="https://frandfeng.github.io/2016/04/29/SearchController原理及应用案例/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="UISearchController主要API // 初始化方法, 参数是展示搜索结果的控制器, 如果是在当前控制器展示搜索结果, 就传nil - (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController;  // 负责更新搜索结果的代理, 需要遵循 UISe">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:34:26.387Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SearchController原理及应用案例">
+<meta name="twitter:description" content="UISearchController主要API // 初始化方法, 参数是展示搜索结果的控制器, 如果是在当前控制器展示搜索结果, 就传nil - (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController;  // 负责更新搜索结果的代理, 需要遵循 UISe">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2016/04/29/SearchController原理及应用案例/">
+
+
+
+
+
+  <title>SearchController原理及应用案例 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/04/29/SearchController原理及应用案例/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SearchController原理及应用案例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-29T00:00:00+08:00">
+                2016-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="UISearchController"><a href="#UISearchController" class="headerlink" title="UISearchController"></a>UISearchController</h1><p>主要API</p>
+<pre><code>// 初始化方法, 参数是展示搜索结果的控制器, 如果是在当前控制器展示搜索结果, 就传nil
+- (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController;
+
+// 负责更新搜索结果的代理, 需要遵循 UISearchResultsUpdating 协议
+@property (nullable, nonatomic, weak) id &lt;UISearchResultsUpdating&gt; searchResultsUpdater;
+
+// 搜索控制器是否是活跃状态, 当在一个控制器展示搜索结果的时候, 可以此来判断返回的数据源
+@property (nonatomic, assign, getter = isActive) BOOL active;
+// 控制器代理  遵循 UISearchControllerDelegate协议
+@property (nullable, nonatomic, weak) id &lt;UISearchControllerDelegate&gt; delegate;
+// 当搜索框激活时, 是否添加一个透明视图
+@property (nonatomic, assign) BOOL dimsBackgroundDuringPresentation __TVOS_PROHIBITED; 
+@property (nonatomic, assign) BOOL obscuresBackgroundDuringPresentation NS_AVAILABLE_IOS(9_1); // default is YES
+// 当搜索框激活时, 是否隐藏导航条
+@property (nonatomic, assign) BOOL hidesNavigationBarDuringPresentation;     // default is YES
+
+@property (nullable, nonatomic, strong, readonly) UIViewController *searchResultsController;
+@property (nonatomic, strong, readonly) UISearchBar *searchBar;
+</code></pre><p>简单用法</p>
+<pre><code>@interface EOCSearchControllerDemo ()&lt;UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchControllerDelegate&gt; {
+    NSArray *dataArr;
+    NSArray *filterArr;
+}
+@property(nonatomic, strong)UITableView *tableView;
+@property(nonatomic, strong)UIScrollView *scrollView;
+@property(nonatomic, strong)UISearchController *searchCtrl;
+@end
+
+@implementation EOCSearchControllerDemo
+/**
+ 1、ios11之前的SearchController
+ 1.1   标准情况，searchBar是在tableView
+ 1.2   当我的resultViewController是nil（也就是自己的时候）激活searchCOntroller的时候，searchBar、dimView(暗色的背景)
+ 1.3   当我的resultViewController是另外一个resultViewController，激活searchCOntroller的时候，searchBar、dimView(暗色的背景)、resultViewController.view
+ 1.4 searchController它激活的时候（active）的时候，如果你有resultViewController，我会把它的view添加进来；searchBar会从之前添加的view里面 拿出来重新定义frame
+ 1.5  UISearchController你最好是在默认的情况下：autoAdjustcontentInset=yes，scrllView里来使用（tableView、collectionview）
+ 1.6 UISearchBar的定制：textField的改变（形状、字体）；取消的文字、背景颜色
+
+ 2、ios11的searchController
+ 2.1  会放在NaviationItem.searchController
+ 2.2  searchCOntroller.searchBar 它的位置有改变：UINavigationBar里
+
+ 3、UISearchController 自定义了一个SearchBar
+ */
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.definesPresentationContext = YES;
+    //present
+    //设置数据源
+    dataArr = [[EOCDataModel sharedDataModel] dataArr];
+    filterArr = dataArr;
+
+    [self.view addSubview:self.tableView];
+    self.tableView.tableHeaderView = self.searchCtrl.searchBar;
+
+//    if (@available(iOS 11, *)) {
+//        self.navigationItem.searchController = self.searchCtrl;
+//        self.navigationItem.hidesSearchBarWhenScrolling = NO;
+//    } else {
+//        self.tableView.tableHeaderView = self.searchCtrl.searchBar;
+//    }
+//
+//    [self customSearchbar];
+}
+
+    #pragma mark UISearchController searchUpdating delegate method
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@&quot;(SELF CONTAINS %@)&quot;, searchController.searchBar.text];
+    //查询到的结果如果是在当前控制器中展示，则直接赋值并reload，如果是在别的控制器的展示，则传递值到别的控制器中
+    EOCSearchResultViewCtrl *resultViewCtroller = (EOCSearchResultViewCtrl *)searchController.searchResultsController;
+    filterArr = [dataArr filteredArrayUsingPredicate:predicate];
+    filterArr = searchController.searchBar.text.length&gt;0?filterArr:dataArr;
+    resultViewCtroller.filterDataArr = filterArr;
+    [self.tableView reloadData];
+}
+
+- (void)willPresentSearchController:(UISearchController *)searchController {
+}
+
+- (void)didPresentSearchController:(UISearchController *)searchController {
+}
+
+#pragma mark - delegate &amp;&amp; datasource method
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return filterArr.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@&quot;cell&quot;];
+    cell.textLabel.text = filterArr[indexPath.row];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+}
+
+- (UITableView *)tableView {
+    if (!_tableView) {
+        CGFloat yCoordinate = 0.f;
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.f, yCoordinate, self.view.eoc_width, self.view.eoc_height-yCoordinate) style:UITableViewStylePlain];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+        [_tableView setTableFooterView:[[UIView alloc] init]];
+    }
+    return _tableView;
+}
+
+- (UISearchController *)searchCtrl {
+    if (!_searchCtrl) {
+        EOCSearchResultViewCtrl *resultSearchCtrl = [[EOCSearchResultViewCtrl alloc] init];
+        //如果查询的结果是在当前控制器展示搜索结果, 就传nil，如果需要新的控制器来展示结果，就传定义好的viewController
+        _searchCtrl = [[UISearchController alloc] initWithSearchResultsController:resultSearchCtrl];
+        _searchCtrl.dimsBackgroundDuringPresentation = YES;
+        _searchCtrl.hidesNavigationBarDuringPresentation = YES;
+        _searchCtrl.searchBar.placeholder = @&quot;八点钟学院&quot;;
+        _searchCtrl.searchResultsUpdater = self;
+        _searchCtrl.delegate = self;
+//        _searchCtrl.searchBar.delegate
+//        _seachCtrl.delegate
+
+    }
+    return _searchCtrl;
+}
+</code></pre><p>iOS11以后，self.searchCtrl.searchBar不能放在tableView的header了，会出现界面错乱问题，而要将self.searchCtrl赋值给self.navigationItem.searchController</p>
+<pre><code>if (@available(iOS 11, *)) {
+    self.navigationItem.searchController = self.searchCtrl;
+} else {
+    self.tableView.tableHeaderView = self.searchCtrl.searchBar;
+}
+</code></pre><p>如果需要定制UISearchbar的外刚样式：</p>
+<pre><code>- (void)customSearchbar {
+    //修改取消按钮的文字，从cancel变成取消
+    NSLog(@&quot;subViews %@&quot;, self.searchCtrl.searchBar.subviews.firstObject.subviews);
+    ///kvc 私有属性 来修改取消按钮的标题
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class]]] setTitle:@&quot;取消&quot;];
+
+    //searchBar的取消文字颜色
+    self.searchCtrl.searchBar.tintColor = [UIColor redColor];  //修改取消文字颜色以及光标的颜色
+
+    //searchbar它的背景颜色白色
+    self.searchCtrl.searchBar.barTintColor = [UIColor whiteColor];
+
+    //textField 半圆形
+    UITextField *textField = (UITextField *)[self.searchCtrl.searchBar valueForKey:@&quot;_searchField&quot;];
+    textField.backgroundColor = [UIColor whiteColor];
+    textField.layer.borderColor = [UIColor redColor].CGColor;
+    textField.layer.borderWidth = 2.f;
+    textField.layer.cornerRadius = 14.f;
+    textField.placeholder = @&quot;大家好&quot;;
+    textField.tintColor = [UIColor blueColor];
+    textField.clipsToBounds = YES;
+
+    //iOS11的背景颜色不一样
+    if (@available(iOS 11, *)) {
+        for (UIView *view in textField.subviews) {
+            if ([view isKindOfClass:NSClassFromString(@&quot;_UISearchBarSearchFieldBackgroundView&quot;)]) {
+                [view removeFromSuperview];
+            }
+        }
+    }
+
+    //取消上下两条线
+    for (UIView *view in self.searchCtrl.searchBar.subviews.firstObject.subviews) {
+        if ([view isKindOfClass:NSClassFromString(@&quot;UISearchBarBackground&quot;)]) {
+            [view removeFromSuperview];
+        }
+    }
+}
+</code></pre><blockquote>
+<p>如果需要了解系统view中的一些内部变量，可下载header文件夹进行查找</p>
+</blockquote>
+<h1 id="京东搜索框"><a href="#京东搜索框" class="headerlink" title="京东搜索框"></a>京东搜索框</h1><p>对比textview的addtarget foreditchanged和shouldChangeCharacterInRange的区别</p>
+<p>自定义SearchController</p>
+<pre><code>@class EOCSearchController;
+@protocol EOCSearchControllerDelegate
+- (void)didPresentSearchController:(EOCSearchController *)searchController;
+- (void)didDismissSearchController:(EOCSearchController *)searchController;
+@end
+
+@protocol EOCSearchResultsUpdating
+- (void)updateSearchResultsForSearchController:(EOCSearchController *)searchController;
+@end
+
+@interface EOCSearchController : UIViewController
+@property(nonatomic, strong)EOCSearchBar *searchBar;
+@property(nonatomic, weak)id &lt;EOCSearchResultsUpdating&gt; searchResultsUpdater;
+@property(nonatomic, weak)id &lt;EOCSearchControllerDelegate&gt; delegate;
+@property(nonatomic, strong)UIViewController *searchResultsController;
+- (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController;
+@end
+
+@implementation EOCSearchController
+- (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController {
+    self = [super init];
+    if (searchResultsController) {
+        //赋值searchResultsController
+        self.searchResultsController = searchResultsController;
+        CGFloat yCoordinate = 64.f;
+        if (EOC_iPhoneX) {
+            yCoordinate = 88.f;
+        }
+        self.view.frame = CGRectMake(0.f, yCoordinate, self.view.eoc_width, self.view.eoc_height- yCoordinate);
+        //将结果页面添加进来
+        [self addChildViewController:_searchResultsController];
+        self.searchResultsController.view.frame = self.view.bounds;
+        [self.view addSubview:searchResultsController.view];
+    }
+    return self;
+}
+
+#pragma mark - event method
+- (void)textChange {
+    //需要让自己添加到父的viewController里,我当前有一个文字的时候
+    if (_delegate &amp;&amp; self.searchBar.text.length == 1) {
+        [_delegate didPresentSearchController:self];
+    }
+    //dismiss的时候，没有文字的时候
+    if (_delegate &amp;&amp; self.searchBar.text.length == 0) {
+        [_delegate didDismissSearchController:self];
+    }
+    if (_searchResultsUpdater) {
+        [_searchResultsUpdater updateSearchResultsForSearchController:self];
+    }
+}
+
+#pragma mark - searchBar
+- (EOCSearchBar *)searchBar {
+    if (!_searchBar) {
+        _searchBar = [[EOCSearchBar alloc] init];
+        [_searchBar addTarget:self action:@selector(textChange) forControlEvents:UIControlEventEditingChanged];
+        _searchBar.delegate = self;
+    }
+    return _searchBar;
+}
+@end
+</code></pre><p>在此ViewController中使用自己封装的SearchController</p>
+<pre><code>@interface EOCClassMainSearchCtrl ()&lt;CAAnimationDelegate, EOCSearchResultsUpdating, EOCSearchControllerDelegate&gt; {
+    EOCButton *_scanBtn;
+    EOCButton *_messageBtn;
+}
+@property(nonatomic, strong)EOCSearchTable *searchHistoryTable;
+@property(nonatomic, strong)EOCSearchController *searchController;
+@end
+
+@implementation EOCClassMainSearchCtrl
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self createNavigationView];
+    [self.view addSubview:self.searchHistoryTable];
+    //searchBar 获取焦点
+    [self.searchController.searchBar becomeFirstResponder];
+}
+
+//动画的实现
+- (void)viewDidAppear:(BOOL)animated {
+    //左边的动画
+    [UIView animateWithDuration:0.2f animations:^{
+        self.searchController.searchBar.frame = ({
+            CGRect frame = self.searchController.searchBar.frame;
+            frame.origin.x -= 40.f;
+            frame.size.width += 40.f;
+            frame;
+        });
+        _scanBtn.alpha = 0.f;
+    }];
+
+    //右边的动画
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@&quot;transform.scale&quot;];
+    anim.duration = 0.2f;
+    anim.fromValue = @1;
+    anim.toValue = @0;
+    anim.fillMode = kCAFillModeForwards;  //动画截止的时候，依然保持动画最后的效果
+    anim.removedOnCompletion = NO;
+    anim.delegate = self;
+    [_messageBtn.layer addAnimation:anim forKey:nil];
+    [_messageBtn.layer performSelector:@selector(removeAllAnimations) withObject:nil afterDelay:1];
+}
+
+#pragma mark - CAAnimation delegate
+- (void)animationDidStop:(CABasicAnimation *)anim finished:(BOOL)flag {
+    //anim（深拷贝,内容复制，地址不一样） 它跟  上面的anim  不是一个anim
+    if ([anim.keyPath isEqualToString:@&quot;transform.scale&quot;]) {
+        //改变button
+        _messageBtn.noImage = YES;
+        [_messageBtn setTitle:@&quot;取消&quot; forState:UIControlStateNormal];
+
+        //继续另外一个动画
+        CABasicAnimation *anim1 = [CABasicAnimation animationWithKeyPath:@&quot;transform.scale&quot;];
+        anim1.duration = 0.2f;
+        anim1.fromValue = @0;
+        anim1.toValue = @1;
+        anim1.fillMode = kCAFillModeForwards;
+        anim1.removedOnCompletion = NO;
+        [_messageBtn.layer addAnimation:anim1 forKey:nil];
+    }
+}
+
+#pragma mark - EOCSearchResultsUpdating 以及 EOCSearchControllerDelegate 的实现
+- (void)updateSearchResultsForSearchController:(EOCSearchController *)searchController{
+    NSString *searchText = searchController.searchBar.text;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@&quot;(SELF CONTAINS %@)&quot;, searchText];
+    EOCSearchResultViewCtrl *resultViewCtrl = (EOCSearchResultViewCtrl *)searchController.searchResultsController;
+    NSArray *dataArr = [EOCDataModel sharedDataModel].dataArr;
+    resultViewCtrl.filterDataArr = [dataArr filteredArrayUsingPredicate:predicate];
+}
+
+- (void)didPresentSearchController:(EOCSearchController *)searchController {
+    [self addChildViewController:self.searchController];
+    [self.view addSubview:self.searchController.view];
+}
+
+- (void)didDismissSearchController:(EOCSearchController *)searchController {
+    [self.searchController.view removeFromSuperview];
+    [self.searchController removeFromParentViewController];
+}
+
+#pragma mark - event response 
+- (void)scanAction {
+}
+
+- (void)messageAction {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@&quot;searchBarRemove&quot; object:nil];
+    [self removeFromParentViewController];
+    [self.view removeFromSuperview];
+}
+
+#pragma mark - create navView
+- (void)createNavigationView {
+    CGFloat yCoordinate = 20.f;
+    if (EOC_iPhoneX) {
+        yCoordinate = 44.f;
+    }
+
+    UIView *navView = [[UIView alloc] initWithFrame:CGRectMake(0.f, yCoordinate, self.view.eoc_width, 44.f)];
+    [self.view addSubview:navView];
+
+    //创建扫描按钮
+    _scanBtn = [EOCButton buttonWithType:UIButtonTypeCustom];
+    _scanBtn.frame = CGRectMake(10.f, 7.f, 30.f, 33.f);
+    [_scanBtn setTitle:@&quot;扫一扫&quot; forState:UIControlStateNormal];
+    [_scanBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [_scanBtn setImage:[UIImage imageNamed:@&quot;scan_gray&quot;] forState:UIControlStateNormal];
+    [_scanBtn addTarget:self action:@selector(scanAction) forControlEvents:UIControlEventTouchUpInside];
+    [navView addSubview:_scanBtn];
+
+    //创建消息按钮
+    _messageBtn = [EOCButton buttonWithType:UIButtonTypeCustom];
+    _messageBtn.frame = CGRectMake(SCREENSIZE.width-40.f, 7.f, 30.f, 33.f);
+    [_messageBtn setImage:[UIImage imageNamed:@&quot;message_gray&quot;] forState:UIControlStateNormal];
+    [_messageBtn setTitle:@&quot;消息&quot; forState:UIControlStateNormal];
+    [_messageBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [_messageBtn addTarget:self action:@selector(messageAction) forControlEvents:UIControlEventTouchUpInside];
+    [navView addSubview:_messageBtn];
+
+    //创建UISearchBar
+    self.searchController.searchBar.frame = CGRectMake(50.f, 8.f, [[UIScreen mainScreen] bounds].size.width-103.f, 28.f);
+    [navView addSubview:self.searchController.searchBar];
+}
+
+#pragma mark - getter method
+- (EOCSearchController *)searchController {
+    if (!_searchController) {
+        //搜索结果的viewController
+        EOCSearchResultViewCtrl *resultViewCtrl = [[EOCSearchResultViewCtrl alloc] init];
+        _searchController = [[EOCSearchController alloc] initWithSearchResultsController:resultViewCtrl];
+        _searchController.searchResultsUpdater = self;
+        _searchController.delegate = self;
+    }
+    return _searchController;
+}
+
+- (EOCSearchTable *)searchHistoryTable {
+    if (!_searchHistoryTable) {
+        CGFloat yCoordinate = 64.f;
+        if (EOC_iPhoneX) {
+            yCoordinate = 88.f;
+        }
+        //创建搜索记录tableView
+        _searchHistoryTable = [[EOCSearchTable alloc] initWithFrame:CGRectMake(0.f, yCoordinate, SCREENSIZE.width, SCREENSIZE.height-yCoordinate) style:UITableViewStyleGrouped];
+
+        if (@available(iOS 11, *)) {
+            _searchHistoryTable.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
+        __weak typeof(_searchController)weakSearch = _searchController;
+        _searchHistoryTable.scrollBlock = ^{
+            [weakSearch.searchBar resignFirstResponder];
+        };
+        //初始化历史搜索记录数组
+        _searchHistoryTable.searchHistoryArr = @[@&quot;历史记录&quot;, @&quot;八点钟学院&quot;, @&quot;笔记本&quot;, @&quot;iPhone7&quot;, @&quot;化妆品&quot;, @&quot;台式机&quot;];
+        [self.view addSubview:_searchHistoryTable];
+    }
+    return _searchHistoryTable;
+}
+
+- (void)dealloc {
+    NSLog(@&quot;%s&quot;, __func__);
+}
+</code></pre><p>可以将使用UISearchController的UIViewController作为子ViewController引入主UIViewController</p>
+<pre><code>@interface JDSearchMainCtrl ()
+@property(nonatomic, strong)EOCNavigationView *navigationView;
+@end
+
+@implementation JDSearchMainCtrl
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyPorcess) name:@&quot;searchBarRemove&quot; object:nil];
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    [self.view addSubview:self.navigationView];
+}
+
+#pragma mark - 通知的实现
+- (void)notifyPorcess {
+    //左边动画
+    [UIView animateWithDuration:0.3f animations:^{
+        CGRect frame = _navigationView.searchView.frame;
+        frame = CGRectMake(50.f, frame.origin.y, SCREENSIZE.width-103.f, 28.f);
+        _navigationView.searchView.frame = frame;
+        _navigationView.audioBtn.frame = ({
+            CGRect frame = _navigationView.audioBtn.frame;
+            frame.origin.x = _navigationView.searchView.frame.size.width-20.f;
+            frame;
+        });
+    }];
+    //右边动画
+    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@&quot;transform.scale&quot;];
+    anim.duration = 0.2f;
+    anim.fromValue = @0;
+    anim.toValue = @1;
+    [_navigationView.messageBtn.layer addAnimation:anim forKey:nil];
+}
+
+#pragma mark - event response 
+- (void)goToSearchPage {
+    CGFloat yCoordinate = 8.f;
+    _navigationView.searchView.frame = CGRectMake(10.f, yCoordinate, SCREENSIZE.width-63.f, 28.f);
+    _navigationView.audioBtn.frame = ({
+        CGRect frame = _navigationView.audioBtn.frame;
+        frame.origin.x = _navigationView.searchView.frame.size.width-20.f;
+        frame;
+    });
+    EOCClassMainSearchCtrl *searchCtrl = [[EOCClassMainSearchCtrl alloc] init];
+    [self addChildViewController:searchCtrl];
+    [self.view addSubview:searchCtrl.view];
+}
+
+- (EOCNavigationView *)navigationView {
+    if (!_navigationView) {
+        CGFloat yCoordinate = 20.f;
+        if (EOC_iPhoneX) {  //判断是否是iphoneX
+            yCoordinate = 44.f;
+        }
+        _navigationView = [[EOCNavigationView alloc] initWithFrame:CGRectMake(0.f, yCoordinate, self.view.eoc_width, 44.f)];
+        //创建navView的scanAction、audioAction、messageAction、searchAction的block
+        __weak typeof(self)weakSelf = self;
+        _navigationView.scanActionBlock = ^{};
+        _navigationView.audioActionBlock = ^{};
+        _navigationView.messageActionBlock = ^{};
+        _navigationView.searchActionBlock = ^{
+            [weakSelf goToSearchPage];
+        };
+    }
+    return _navigationView;
+}
+@end
+</code></pre><h1 id="美团搜索框"><a href="#美团搜索框" class="headerlink" title="美团搜索框"></a>美团搜索框</h1><p> beginUpdates、endUpdates的一些观点</p>
+<p> 1、现有池、重用池、model层<br> 2、当我展开的时候，insertrow的时候，把cell从重用池放到现有池里来，就会调用cell方法，同时model层更新数据<br> 3、当我关闭的时候，从现有池拿掉，不会调用cell方法，model层更新</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/UISearchController/" rel="tag"># UISearchController</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/25/CollectionView原理及应用案例/" rel="next" title="CollectionView原理及应用案例">
+                <i class="fa fa-chevron-left"></i> CollectionView原理及应用案例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/27/NavigationController原理及应用案例/" rel="prev" title="NavigationController原理及应用案例">
+                NavigationController原理及应用案例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UISearchController"><span class="nav-number">1.</span> <span class="nav-text">UISearchController</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#京东搜索框"><span class="nav-number">2.</span> <span class="nav-text">京东搜索框</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#美团搜索框"><span class="nav-number">3.</span> <span class="nav-text">美团搜索框</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

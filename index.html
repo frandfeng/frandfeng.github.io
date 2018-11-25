@@ -460,7 +460,7 @@ CSBas
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/12/30/Unity导入Swift工程(待完成)/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -479,7 +479,7 @@ CSBas
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/25/事件传递及应用案例/" itemprop="url">事件传递及应用案例</a></h1>
+                <a class="post-title-link" href="/2016/12/30/Unity导入Swift工程(待完成)/" itemprop="url">Unity导入Swift工程</a></h1>
         
 
         <div class="post-meta">
@@ -491,8 +491,8 @@ CSBas
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-25T00:00:00+08:00">
-                2015-12-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-30T00:00:00+08:00">
+                2016-12-30
               </time>
             
 
@@ -553,23 +553,165 @@ CSBas
       
         
           
-          事件层次分析iOS事件有哪些
+          
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/12/30/Unity导入Swift工程(待完成)/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
 
-UIEventTypeTouches触摸事件
-UIEventTypeMotion “动作”事件(比如摇晃手机设备)
-UIEventTypeRemoteControl远程控制事件
-UIEventTypePresses事件(和触按物理按钮有关)
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
 
 
-响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIApplication、UIViewController、UIView、UIWindow。
+    
+      
 
-UITouch
-当用一根手指触摸屏幕时，会创建一个与手指相关联的UITouch对象。如果两根手指同时触摸屏幕，则会调用一次touchesBegan方法，创建两个UITouch对象（如果不是同时触摸，调用两次方法，每次的touches参数都只有一个UITouch对象）。
-判断是否多点触摸：NSSet有多少个U
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/11/25/Unity导入时小技巧/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/25/Unity导入时小技巧/" itemprop="url">Unity导入时小技巧</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-25T00:00:00+08:00">
+                2016-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          导入Unity时的小技巧解决修改配置繁琐问题从上边的过程可以看出，每次导入Unity之前，都需要更改build settings中的许多配置，这种操作很多很繁琐，如何让其更简单的配置呢，根据此大神的git地址，发现，根据xcconfig文件来配置target的config很容易，所以受此启发，我更新了配置方式
+首先创建一个xcconfig文件，并书写内容
+#include &quot;Pods/Target Support Files/Pods-CityPlus/Pods-CityPlus.debug.xcconfig&quot;
+
+OTHER_CFLAGS = -DINIT_SCRIPTING_BACKEND=1 $(inherited) ${PODS_OTHER_CFLAGS}
+
+OTHER_LDFLAGS = $(inherited) ${PODS_OTHER_LDFLAGS} -w
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/25/事件传递及应用案例/#more" rel="contents">
+            <a class="btn" href="/2016/11/25/Unity导入时小技巧/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -620,7 +762,7 @@ UITouch
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/11/27/控制器加载底层原理和UI初始化过程/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/10/28/Unity导入时填坑/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -639,7 +781,7 @@ UITouch
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/11/27/控制器加载底层原理和UI初始化过程/" itemprop="url">控制器加载底层原理和UI初始化过程</a></h1>
+                <a class="post-title-link" href="/2016/10/28/Unity导入时填坑/" itemprop="url">Unity导入时填坑</a></h1>
         
 
         <div class="post-meta">
@@ -651,8 +793,8 @@ UITouch
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-11-27T00:00:00+08:00">
-                2015-11-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-28T00:00:00+08:00">
+                2016-10-28
               </time>
             
 
@@ -713,34 +855,18 @@ UITouch
       
         
           
-          控制器加载底层原理和UI初始化过程
-层次关系(VC,V,CALayer)
+          实际应用中所遇到的坑unknown type name __declspec该版本unity3d工程编译成xcode可执行文件后，导入IOS过程中会报2次错误，具体描述如下：“unknown type name __declspec”  
+解决方法：xcode中找到il2cpp-config.h文件，在181行（上下）找到
+#define NORETURN __declspec(noreturn)
+改成
+#define NORETURN attribute((noreturn))
+Unknown type name ‘UnityViewControllerBase’有人建议：UnityViewControllerBase报错, 把它改成UIViewController但是我通过前向引用声明解决这个问题：
 
-VC管理V，V管理CALayer，V中的子V在上层，不一定其Layer也在上层。
-
-控制器初始化过程
-
-控制器的View是和viewDidLoad有关的
-
-C弱化(VC的精简)
-
-MVCS 调度中心(通讯机制 KVO)
-
-UI初始化过程
-DrawRect(CALayer)分析
-
-绘制富文本(图片和文字)，对CALayer的绘制。
-系统中有一个全局栈stack专门存放CGContextRef，stack中正常是没有上下文的，drawRect会默认push一个上下文到全局的Context的栈stack里。
-
-IB_DESIGNABLE IBInspectable
-
-IB_DESIGNABLE 可以将drawrect函数中绘制的图形显示在xib可视文件中IBInspectable 可以将属性显示在xib中让动态设置
-
-x
+平台编译报错编译报错，而且多大俩百多个。全是链接错误。最后网上发现，我自己导出工程时
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/11/27/控制器加载底层原理和UI初始化过程/#more" rel="contents">
+            <a class="btn" href="/2016/10/28/Unity导入时填坑/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -791,7 +917,7 @@ x
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/10/30/App启动原理/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/09/30/Unity导入OC工程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -810,7 +936,7 @@ x
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/10/30/App启动原理/" itemprop="url">iOS App启动原理</a></h1>
+                <a class="post-title-link" href="/2016/09/30/Unity导入OC工程/" itemprop="url">Unity导入OC工程</a></h1>
         
 
         <div class="post-meta">
@@ -822,8 +948,8 @@ x
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-30T00:00:00+08:00">
-                2015-10-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-09-30T00:00:00+08:00">
+                2016-09-30
               </time>
             
 
@@ -884,24 +1010,33 @@ x
       
         
           
-          开课典礼1、课程内容
-a、新增Swift、ARKit等内容b、每个课程有删减c、有些内容变成录播d、课程时间的改变
-2、学习效果
-a、听课 5%b、读 10%c、视听 20%d、案例 30%e、讨论 50%f、练习 75%g、实际应用 90%
-3、听直播
-a、预习相关知识点b、上课跟节奏、思考c、课后实践、总结、写博客
-不要用学习的勤奋，掩盖实践的懒惰！
-iOS启动原理+清晰化布局1、APP启动入口
-a、创建一个application对象b、设置application的代理(AppDelegate)c、创建一个事件循环（runloop）d、读info.plist文件（MainStoryboard）
-2、runloop
-while(mode) {
-    handleRunloopStatus();//runloop状态处理，是否stop
-    cofigPort();//配置port
- 
+          iOS工程和Unity工程中界面的交互
+将Unity工程打包成iOS工程，作为库工程准备调用
+新建一个iOS主工程，将Unity库工程添加进来
+调用Unity工程的界面，添加到iOS工程的界面中来显示
+
+将Unity工程打包成iOS工程，作为库工程准备调用1，打开build settting
+
+2，设置playersetting
+
+3，building导出,并选择你要导出的目录,并记录
+新建一个iOS主工程，将Unity库工程添加进来1，新建xcode工程与unity导出的项目在同一级目录下,例如:~/Document/unity ; ~/Document/iostest
+
+2，删除storyboard以及删除plist文件相关设置
+
+
+3，引入unity工程文件
+
+Classes以及Libraries文件夹选择如下引入方式
+
+Data选择如下引入方式
+
+4，清理无用文件引用
+在xcode
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/10/30/App启动原理/#more" rel="contents">
+            <a class="btn" href="/2016/09/30/Unity导入OC工程/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -952,7 +1087,7 @@ while(mode) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/09/25/Swift实战/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/08/26/Unity和OC的交互/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -971,7 +1106,7 @@ while(mode) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/09/25/Swift实战/" itemprop="url">Swift实战</a></h1>
+                <a class="post-title-link" href="/2016/08/26/Unity和OC的交互/" itemprop="url">Unity和OC的交互</a></h1>
         
 
         <div class="post-meta">
@@ -983,8 +1118,8 @@ while(mode) {
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-25T00:00:00+08:00">
-                2015-09-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-26T00:00:00+08:00">
+                2016-08-26
               </time>
             
 
@@ -1045,178 +1180,19 @@ while(mode) {
       
         
           
-          
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/09/25/Swift实战/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/28/Swift重点基础语法/" itemprop="url">Swift的重点基础语法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-08-28T00:00:00+08:00">
-                2015-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-Swift APP 中的入口函数main
-/*
-  编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果
-  如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错
- */
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-}
-
-变量和常亮
-func 常量变量(){
-    // 1 let 声明常量 var声明变量
-    //  let 常量只能为他赋值一次
-
-    // 2.1 声明一个变量，编译器会自动推断类型，前提条件：提供的信息不足。
-    // 2.2 需要在变量后面声明类型，用冒号分割
-
-    /
+          OC和CS交互CS调用OC函数首先，定义一个新建一个.mm文件，然后在里面定义一个C风格接口的函数，如
+extern &quot;C&quot;
+{
+    void test(char* title, char* msg, char* url)
+    {
+        NSString* nstitle = [[NSString alloc] initWithUTF8String:title];
+        NSString* nsmsg = [[NSString alloc] initWithUTF8String:msg];
+        NSString* nsurl = [[NSString alloc] initWithUTF8String:url];
+        UIAlertView* view = [[UIAlertView alloc] initWithTi
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/08/28/Swift重点基础语法/#more" rel="contents">
+            <a class="btn" href="/2016/08/26/Unity和OC的交互/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1267,7 +1243,7 @@ func 常量变量(){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/07/31/Swift编码规范/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/07/29/Unity入门/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1286,7 +1262,7 @@ func 常量变量(){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/07/31/Swift编码规范/" itemprop="url">Swift编码规范</a></h1>
+                <a class="post-title-link" href="/2016/07/29/Unity入门/" itemprop="url">Unity入门</a></h1>
         
 
         <div class="post-meta">
@@ -1298,8 +1274,8 @@ func 常量变量(){
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-31T00:00:00+08:00">
-                2015-07-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-29T00:00:00+08:00">
+                2016-07-29
               </time>
             
 
@@ -1360,14 +1336,15 @@ func 常量变量(){
       
         
           
-          这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。
-我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide May 11, 2017 commit 版本 0f1f0848c4313201006e18cbf3b5c8b1365204ce
-正确性要尽量使你的代码编译时没有警告，甚至把警告当做错误处理。这条规则影响了很多语法的使用，如推荐使用#selector文而不是用字符串
-命名使用具有描述性的和一致的命名使你的代码更加易读和易懂，更多关于Swift的命名方式参见Swift API Design Guid
+          Unity是由Unity Technologies开发的一个让玩家轻松创建诸如三维视频游戏、建筑可视化、实时三维动画等类型互动内容的多平台的综合型游戏开发工具，是一个全面整合的专业游戏引擎。本篇将分为三大部分，第一部分会介绍一些Unity开发工具的简单使用，第二部分会介绍iOS中的OC和Unity中的CS两者方法的交互，第三部分会介绍iOS工程和Unity工程中界面的交互。
+Unity 入门本节将会通过一个案例来介绍Unity的基本使用方法。案例源自Ray Wenderlich教程网站
+此教程中共有三部分：(本节只翻译第一部分，因为第一部分已经是一个完整的流程，后边两个部分如果对Unity开发有浓厚兴趣可以自行参考)
+
+在第一部分，你将会学习到用简单的播放控制机制（player control mechanism）创建游戏所需的unity基础知识，并且学习如何将工程运用（deploy）到i
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/07/31/Swift编码规范/#more" rel="contents">
+            <a class="btn" href="/2016/07/29/Unity入门/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1418,7 +1395,7 @@ func 常量变量(){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/06/26/Swift语法学习/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/06/24/iOS面试回顾/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1437,7 +1414,7 @@ func 常量变量(){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/06/26/Swift语法学习/" itemprop="url">Swift2语法学习</a></h1>
+                <a class="post-title-link" href="/2016/06/24/iOS面试回顾/" itemprop="url">iOS面试回顾</a></h1>
         
 
         <div class="post-meta">
@@ -1449,8 +1426,8 @@ func 常量变量(){
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-06-26T00:00:00+08:00">
-                2015-06-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-24T00:00:00+08:00">
+                2016-06-24
               </time>
             
 
@@ -1511,17 +1488,28 @@ func 常量变量(){
       
         
           
-          从2014-06-03苹果开发者大会发布Swift1.0到2015-12-04苹果公司宣布开源Swift2.1，再从苹果2016-03-21释放稳定成熟版本Swift2.2到2016-09-13Swift3.0的变革，Swift一路走来，在社区以及核心团队的努力下，越来越成熟、稳定。我们这节以关东升老师的《从零开始学Swift》来学习基于Swift2.2的语法知识，关于Swift的后续更新及变革，我会在后续的文章中发专题整理，如果想要看Swift源码的同学或者想膜拜大神的同学可以在本地址中查看
-准备起航本书约定
-示例代码约定：约定示例代码和本书章节之间的关系
-图示约定：图中的圆圈、箭头和手势表示的意思
-函数和方法签名约定：
-  函数和方法签名是函数和方法表示方式，签名由函数和方法的名称和每个参数组成，不包括返回值和参数类型，例如 print函数有两种不同的函数签名
-print(_:sepa
+          好不容易找到iOS的工作,感叹今年的iOS端完全不好找工作,移动前端从业者越来越多,出现僧多粥少的局面,现在将面试的经历记录如下,希望能帮助到以后找工作:
+Camera360camera360一面：
+进去之后填了求职表，是个朋友的大学同学面试的
+
+介绍自己
+安卓和iOS布局的区别
+安卓比较先进强大，有绝对布局、相对布局，线性布局、层次布局、列表布局
+iOS布局比较落后，只有绝对布局和相对布局，但iOS布局出来效果要好很多
+
+
+解决auto layout tabview卡顿问题的解决思路
+滑动时由于复用机制影响，需要重新计算高度，可以缓存高度或用FDTempleLayoutCell第三方库
+将cell中的同步方法改成异步操作方式，并且在cell不显示时停止操作
+设置高度等缓存
+
+
+在何种情况下用autolayout，在何种情况下用代码
+用autolayout可以完成的功能，用代码也可以完成，
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/06/26/Swift语法学习/#more" rel="contents">
+            <a class="btn" href="/2016/06/24/iOS面试回顾/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1572,7 +1560,7 @@ print(_:sepa
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/05/29/Objective-C高级编程2(未完成)/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/05/27/NavigationController原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1591,7 +1579,7 @@ print(_:sepa
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/05/29/Objective-C高级编程2(未完成)/" itemprop="url">OC高级编程2</a></h1>
+                <a class="post-title-link" href="/2016/05/27/NavigationController原理及应用案例/" itemprop="url">NavigationController原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -1603,8 +1591,8 @@ print(_:sepa
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-05-29T00:00:00+08:00">
-                2015-05-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-27T00:00:00+08:00">
+                2016-05-27
               </time>
             
 
@@ -1665,165 +1653,174 @@ print(_:sepa
       
         
           
-          
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/05/29/Objective-C高级编程2(未完成)/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/04/24/Objective-C高级编程1/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/04/24/Objective-C高级编程1/" itemprop="url">OC高级编程1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-04-24T00:00:00+08:00">
-                2015-04-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          自动引用计数自动引用计数(ARC, Automatic Reference Counting)：顾名思义，是指内存管理中对引用采取自动计数的技术。
-在Objective-C中采用Automatic Reference Counting（ARC）机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需再次键入retain或者release代码，这在降低程序奔溃，内存泄漏等风险的同时，很大程序上减少了开发程序的工作量。编译器完全清楚目标对象，并能立刻释放那些不在被使用的对象。如此一来，应用程序将具有可预测性，且能流畅运行，速度也将大幅提升。
-在LLVM编译器中设置ARC为有效状态，就无需再次键入retain或者是release代码。
-ARC的四个标准：
-
-自己生成的对象，自己持有
- 使用以下名称开头的方法名意味着自己生成的对象只有自己持有alloc、new
+          UINavigationController底层实现原理
+Nav容器本质分析 1.1 导航区 1.2 内容区 1.3 toolbar区
+导航区分析2.1 属性分析 edgesForExtendedLayout extendedLayoutIncludesOpaqueBars automaticallyAdjustsScrollViewInsets translucent
+ 导航区 内容区 工具区
+ ios 7.0前 导航条拟物化风格，导航条是不透明（内容区在导航条下：64开始） ios 7.0后 扁平化风格，导航条模式是透明的（0/64） 1 透明 内容全局（0） 2 透明 内容从64开始（0，iphonex 84） 3 不透明 内容全局（0） 4 不透明 内容从64开始（0）
+/ 透明全局（默认）
+- (void)translucentAndAll{
+    self.navigatio
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/04/24/Objective-C高级编程1/#more" rel="contents">
+            <a class="btn" href="/2016/05/27/NavigationController原理及应用案例/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/04/29/SearchController原理及应用案例/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/04/29/SearchController原理及应用案例/" itemprop="url">SearchController原理及应用案例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-29T00:00:00+08:00">
+                2016-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          UISearchController主要API
+// 初始化方法, 参数是展示搜索结果的控制器, 如果是在当前控制器展示搜索结果, 就传nil
+- (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController;
+
+// 负责更新搜索结果的代理, 需要遵循 UISearchResultsUpdating 协议
+@property (nullable, nonatomic, weak) id &lt;UISearchResultsUpdating&gt; searchResultsUpdater;
+
+// 搜索控制器是否是活跃状态, 当在一个控制器展示搜索结果的时候, 可以此来判断返回的数据源
+@property (nonatomic, assign, get
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/04/29/SearchController原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1865,7 +1862,7 @@ ARC的四个标准：
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1913,7 +1910,7 @@ ARC的四个标准：
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1935,7 +1932,7 @@ ARC的四个标准：
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

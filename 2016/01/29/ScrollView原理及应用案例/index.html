@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,UIScrollView,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ScrollView原理解析UIScrollView(滚动视图)是一个在日常开发中使用频率极高的容器视图控件, 它允许用户通过滚动和缩放的方式查看超出屏幕区域大小的内容, 在应用程序开发中经常使用到的UITableView(列表视图)、UICollectionView(集合视图)和UITextView(文本视图)都是它的子类. 下面将从用户界面和事件处理两个方面对UIScrollView做一次详细">
+<meta name="keywords" content="OC,iOS,UIScrollView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ScrollView原理及应用案例">
+<meta property="og:url" content="https://frandfeng.github.io/2016/01/29/ScrollView原理及应用案例/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="ScrollView原理解析UIScrollView(滚动视图)是一个在日常开发中使用频率极高的容器视图控件, 它允许用户通过滚动和缩放的方式查看超出屏幕区域大小的内容, 在应用程序开发中经常使用到的UITableView(列表视图)、UICollectionView(集合视图)和UITextView(文本视图)都是它的子类. 下面将从用户界面和事件处理两个方面对UIScrollView做一次详细">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:32:06.065Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ScrollView原理及应用案例">
+<meta name="twitter:description" content="ScrollView原理解析UIScrollView(滚动视图)是一个在日常开发中使用频率极高的容器视图控件, 它允许用户通过滚动和缩放的方式查看超出屏幕区域大小的内容, 在应用程序开发中经常使用到的UITableView(列表视图)、UICollectionView(集合视图)和UITextView(文本视图)都是它的子类. 下面将从用户界面和事件处理两个方面对UIScrollView做一次详细">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2016/01/29/ScrollView原理及应用案例/">
+
+
+
+
+
+  <title>ScrollView原理及应用案例 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/01/29/ScrollView原理及应用案例/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ScrollView原理及应用案例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-01-29T00:00:00+08:00">
+                2016-01-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ScrollView原理解析"><a href="#ScrollView原理解析" class="headerlink" title="ScrollView原理解析"></a>ScrollView原理解析</h1><p>UIScrollView(滚动视图)是一个在日常开发中使用频率极高的容器视图控件, 它允许用户通过滚动和缩放的方式查看超出屏幕区域大小的内容, 在应用程序开发中经常使用到的UITableView(列表视图)、UICollectionView(集合视图)和UITextView(文本视图)都是它的子类.</p>
+<p>下面将从用户界面和事件处理两个方面对UIScrollView做一次详细的使用介绍和简要的实现原理分析.</p>
+<p>该属性用于标识内容区域的起点相对于scrollView的起点的偏移量, 默认值为CGPointZero</p>
+<p>@property(nonatomic) CGPoint contentOffset;</p>
+<ul>
+<li>(void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;</li>
+</ul>
+<p>该属性用于标识内容区域的尺寸, 默认值为CGSizeZero</p>
+<p>@property(nonatomic) CGSize contentSize;</p>
+<p>该属性用于标识为内容区域周围增加的可滚动区域, 默认值为UIEdgeInsetsZero</p>
+<p>@property(nonatomic) UIEdgeInsets contentInset;</p>
+<p>该属性用于标识为内容区域周围增加的总的可滚动区域, 该属性值的最终结果取决于contentInsetAdjustmentBehavior属性的值</p>
+<p>@property(nonatomic, readonly) UIEdgeInsets adjustedContentInset API_AVAILABLE(ios(11.0));</p>
+<ul>
+<li>(void)adjustedContentInsetDidChange API_AVAILABLE(ios(11.0)) NS_REQUIRES_SUPER;</li>
+</ul>
+<p>该属性用于配置safeAreaInsets如何影响adjustedContentInset属性的值, 该属性可设置四个枚举值:</p>
+<ul>
+<li>UIScrollViewContentInsetAdjustmentAutomatic: 默认, 在UIScrollViewContentInsetAdjustmentScrollableAxes的基础上添加了向前兼容. 不论是否可以滚动, 如果scrollView所在的控制器位于导航控制器中且automaticallyAdjustsScrollViewInsets = YES, 则在上下两个方向上adjustedContentInset = contentInset + safeAreaInsets成立</li>
+<li>UIScrollViewContentInsetAdjustmentScrollableAxes: 在可滚动方向上adjustedContentInset = contentInset + safeAreaInsets成立. 比如: contentSize.width/height &gt; frame.size.width/height或者alwaysBounceHorizontal/Vertical = YES</li>
+<li>UIScrollViewContentInsetAdjustmentNever: 在任何情况下adjustedContentInset = contentInset成立</li>
+<li>UIScrollViewContentInsetAdjustmentAlways: 在任何情况下adjustedContentInset = contentInset + safeAreaInsets成立</li>
+</ul>
+<p>@property(nonatomic) UIScrollViewContentInsetAdjustmentBehavior contentInsetAdjustmentBehavior API_AVAILABLE(ios(11.0));</p>
+<blockquote>
+<p>iOS7版本iOS系统趋向于尽可能完全利用有限的屏幕以展示更多的用户数据，所以UINavigationBar和UITabBar默认都是半透明模糊效果，UIScrollView中的内容在它们后面也是隐约可见的。在此情况下，系统对于作为controller view的第一个subView的全屏UIScrollView，会自动处理其contentInset，使其头部和尾部的内容起始和末尾时不会被UINavigationBar和UITabBar挡住。但是如果你关闭系统这一自动功能的话：<code>self.automaticallyAdjustsScrollViewInsets = NO;</code>UIScrollView的内容就会从frame的（0，0）位置开始显示，这样开头就被UINavigationBar，尾部就被UITabBar挡住而只能看到模糊一片，除非用户使劲下拉上拉。这时就需要你自己去设置contentInset了。</p>
+<p>与此同时，由于现在view的frame都是从（0，0）开始，对于非UIScrollView及其子类就会有些麻烦了，因为如果子控件frame如果不考虑UINavigationBar的高度，就会被UINavigationBar挡住，当然我们可以自己在布局的时候加上UINavigationBar的高度就行了。</p>
+<p>其实还有一种更方便的方法就是设置其edgesForExtendedLayout属性，该属性默认为UIRectEdgeAll，意为view会充分扩展至屏幕边缘包括上下左右，而不管有没有遮挡，此时就是view的frame即为整个屏幕。但是不像UIScrollView，其它view没有contentInset一说，所以automaticallyAdjustsScrollViewInsets对其并不起作用。此时，我们修改edgesForExtendedLayout属性：<code>self.edgesForExtendedLayout = UIRectEdgeNone;</code>系统就会自动根据UINavigationBar和statusBar将view下移64，frame从（0，64）开始。这样，我们在布局内部控件的时候依然可以从（0，0）开始，而不必担心上部被UINavigationBar遮挡了。<br>另一种情况就是我们不想要那种半透明模糊效果，设置UINavigationBar的translucent为NO。此时，view的frame也都会从（0，64）开始，而此时对于UIScrollView，automaticallyAdjustsScrollViewInsets就不再起作用了。</p>
+<p>总结：UIScrollView如果要实现穿透UINavigationBar的效果，其frame就必须从（0，0）开始，然后设置合适的contentInset，如果UINavigationBar下方还有悬浮view的话，就不能依赖系统的automaticallyAdjustsScrollViewInsets了，需要自己来算contentInset。还有其他的特殊需求，就需要组合使用以上属性了。</p>
+</blockquote>
+<p>topLayoutGuide属性表示不希望被透明的状态栏或导航栏遮挡的内容范围的最高位置。这个属性的值是它的length属性的值（topLayoutGuide.length），这个值可能由当前的ViewController或这个ViewController所属的NavigationController或TabBarController决定，有如下情况：</p>
+<p>一个独立的ViewController，不包含于任何其他的ViewController。如果状态栏可见，topLayoutGuide表示状态栏的底部，否则表示这个ViewController的上边缘。</p>
+<p>包含于其他ViewController的ViewController不对这个属性起决定作用，而是由容器ViewController决定这个属性的含义：</p>
+<ul>
+<li>如果导航栏（Navigation Bar）可见，topLayoutGuide表示导航栏的底部。</li>
+<li>如果状态栏可见，topLayoutGuide表示状态栏的底部。</li>
+<li>如果都不可见，表示ViewController的上边缘。</li>
+</ul>
+<ol>
+<li>bounds</li>
+</ol>
+<ol start="2">
+<li>自定义ScrollView事件</li>
+</ol>
+<p>@interface EOCCustomScrollView : UIView<br>@property(nonatomic, assign)CGSize contentSize;<br>@property(nonatomic, strong)EOCPanGestureOne *panGesture;<br>@end</p>
+<ul>
+<li><p>(instancetype)initWithFrame:(CGRect)frame {<br>self = [super initWithFrame:frame];<br>_panGesture = [[EOCPanGestureOne alloc] initWithTarget:self action:@selector(panAction:)];<br>_panGesture.delegate = self;<br>//    _panGesture.cancelsTouchesInView = NO;<br>[self addGestureRecognizer:_panGesture];<br>return self;<br>}</p>
+</li>
+<li><p>(void)panAction:(UIPanGestureRecognizer *)gestureRecognizer {<br>NSLog(@”bounds.x %f”, self.bounds.origin.x);<br>CGRect tmpBounds = self.bounds;<br>///横向的scrollView，往左/往右<br>//UIEvent locationInview  prevLocationInview<br>CGPoint transitionPoint = [gestureRecognizer translationInView:self];<br>///移动距离是有最大值和最小值<br>CGFloat minimumOffset = 0.f;<br>CGFloat maxOffset = _contentSize.width - tmpBounds.size.width;<br>CGFloat actualOffset = fmax(minimumOffset, fmin(maxOffset, (tmpBounds.origin.x - transitionPoint.x)));<br>tmpBounds.origin.x = actualOffset;<br>//    if (transitionPoint.x &lt; 0 &amp;&amp; (tmpBounds.origin.x - transitionPoint.x) &lt;= (_contentSize.width - tmpBounds.size.width)) {  //往左<br>//        tmpBounds.origin.x -= transitionPoint.x;<br>//    } else if (transitionPoint.x &gt; 0 &amp;&amp; (tmpBounds.origin.x - transitionPoint.x) &gt;= 0) {  //往右<br>//        tmpBounds.origin.x -= transitionPoint.x;<br>//    }<br>[gestureRecognizer setTranslation:CGPointZero inView:self];<br>self.bounds = tmpBounds;<br>}</p>
+</li>
+</ul>
+<ol start="3">
+<li>查看系统ScrollView</li>
+</ol>
+<ol start="4">
+<li>contentInset</li>
+</ol>
+<blockquote>
+<p>？？？扩展：<a href="https://www.jianshu.com/p/ba88e12eddc2" target="_blank" rel="noopener">https://www.jianshu.com/p/ba88e12eddc2</a></p>
+</blockquote>
+<h1 id="京东商品详情"><a href="#京东商品详情" class="headerlink" title="京东商品详情"></a>京东商品详情</h1><ol>
+<li>当设置了主scrollView有contentInset，而且主scrollView能滑动，那么首先就会触发主scrollView的滑动,然后需要你用力滑，才会触发子scrollView的滑动；（automaticallyAdjustsScrollViewInsets不设置为NO了，都是为YES；iOS11里contentInsetAdjustmentBehavior利用默认的)</li>
+<li>主scrollView不滑动，修改它的contentSize的值</li>
+<li>navigationItem 的titleView，我要让它能实现滑动的效果，那么，我得让scrollView成为它的titleView</li>
+<li>scrollView的两个子View的覆盖滑动，就是改变前一个view的x或者Y坐标</li>
+<li>我要实现京东的查看商品详情的效果（往上拉的一个动画），我就是修改一个view的transform：translation（改变y坐标实现）</li>
+<li>图片轮播图的覆盖滑动</li>
+<li>图片轮播图，通过3个子view达到5个image内容的切换</li>
+<li>图片轮播图的下标的动画，是根据弧度来实现（旋转的过程中，当达到M_PI／2的时候，需要切换弧度为负值，否则数字会倒立）</li>
+<li>三个scrollView手势的冲突</li>
+<li>封装了kvo</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/UIScrollView/" rel="tag"># UIScrollView</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/25/事件传递及应用案例/" rel="next" title="事件传递及应用案例">
+                <i class="fa fa-chevron-left"></i> 事件传递及应用案例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/02/26/TableView原理及应用案例/" rel="prev" title="TableView原理及应用案例">
+                TableView原理及应用案例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ScrollView原理解析"><span class="nav-number">1.</span> <span class="nav-text">ScrollView原理解析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#京东商品详情"><span class="nav-number">2.</span> <span class="nav-text">京东商品详情</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

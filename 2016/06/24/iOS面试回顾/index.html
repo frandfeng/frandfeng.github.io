@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,面试,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="好不容易找到iOS的工作,感叹今年的iOS端完全不好找工作,移动前端从业者越来越多,出现僧多粥少的局面,现在将面试的经历记录如下,希望能帮助到以后找工作: Camera360camera360一面： 进去之后填了求职表，是个朋友的大学同学面试的  介绍自己 安卓和iOS布局的区别 安卓比较先进强大，有绝对布局、相对布局，线性布局、层次布局、列表布局 iOS布局比较落后，只有绝对布局和相对布局，但i">
+<meta name="keywords" content="iOS,面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS面试回顾">
+<meta property="og:url" content="https://frandfeng.github.io/2016/06/24/iOS面试回顾/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="好不容易找到iOS的工作,感叹今年的iOS端完全不好找工作,移动前端从业者越来越多,出现僧多粥少的局面,现在将面试的经历记录如下,希望能帮助到以后找工作: Camera360camera360一面： 进去之后填了求职表，是个朋友的大学同学面试的  介绍自己 安卓和iOS布局的区别 安卓比较先进强大，有绝对布局、相对布局，线性布局、层次布局、列表布局 iOS布局比较落后，只有绝对布局和相对布局，但i">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:36:01.322Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS面试回顾">
+<meta name="twitter:description" content="好不容易找到iOS的工作,感叹今年的iOS端完全不好找工作,移动前端从业者越来越多,出现僧多粥少的局面,现在将面试的经历记录如下,希望能帮助到以后找工作: Camera360camera360一面： 进去之后填了求职表，是个朋友的大学同学面试的  介绍自己 安卓和iOS布局的区别 安卓比较先进强大，有绝对布局、相对布局，线性布局、层次布局、列表布局 iOS布局比较落后，只有绝对布局和相对布局，但i">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2016/06/24/iOS面试回顾/">
+
+
+
+
+
+  <title>iOS面试回顾 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/06/24/iOS面试回顾/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS面试回顾</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-24T00:00:00+08:00">
+                2016-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>好不容易找到iOS的工作,感叹今年的iOS端完全不好找工作,移动前端从业者越来越多,出现僧多粥少的局面,现在将面试的经历记录如下,希望能帮助到以后找工作:</p>
+<h2 id="Camera360"><a href="#Camera360" class="headerlink" title="Camera360"></a>Camera360</h2><p>camera360一面：</p>
+<p>进去之后填了求职表，是个朋友的大学同学面试的</p>
+<ol>
+<li>介绍自己</li>
+<li>安卓和iOS布局的区别<ol>
+<li>安卓比较先进强大，有绝对布局、相对布局，线性布局、层次布局、列表布局</li>
+<li>iOS布局比较落后，只有绝对布局和相对布局，但iOS布局出来效果要好很多</li>
+</ol>
+</li>
+<li>解决auto layout tabview卡顿问题的解决思路<ol>
+<li>滑动时由于复用机制影响，需要重新计算高度，可以缓存高度或用FDTempleLayoutCell第三方库</li>
+<li>将cell中的同步方法改成异步操作方式，并且在cell不显示时停止操作</li>
+<li>设置高度等缓存</li>
+</ol>
+</li>
+<li>在何种情况下用autolayout，在何种情况下用代码<ol>
+<li>用autolayout可以完成的功能，用代码也可以完成，用autolayout可以完成的，代码未必可以</li>
+<li>用autolayout做比较简单，代码少，mvc模式清晰，很多优势，代码则相反，但代码则更加灵活</li>
+<li>用autolayout和代码结合的方式会产生很好的效果</li>
+</ol>
+</li>
+<li>查询、插入和删除数组、链表、NSDictionary的速度<ol>
+<li>根据下标查询的速度数组最快，下来NSDictionary，最后是链表</li>
+<li>插入和删除的情况相同，链表最快，下来NSDictionary，最后数组</li>
+</ol>
+</li>
+<li>怎么控制项目进度和代码质量<ul>
+<li>项目进度的控制要：1，有尽量详细的计划 2，每日的工作按计划进行</li>
+</ul>
+</li>
+<li>线程有哪些实现方式<ol>
+<li>NSThread</li>
+<li>GCD</li>
+<li>NSOperationQueue</li>
+<li>pThread</li>
+</ol>
+</li>
+<li>在实际开发中，举例哪些情况会用到多线程，哪些情况多线程遇到死锁，资源竞争等问题，以及如何解决<ul>
+<li>下载图片，数据库，http等均要用到多线程</li>
+<li>不要在当前线程中同步执行任务或者sleep，这样会造成死锁</li>
+<li>任何串行队列里面串行任务嵌套执行都有问题</li>
+</ul>
+</li>
+<li>平时都用到哪些设计模式<ol>
+<li>mvc mvvm</li>
+<li>delegate protocol</li>
+<li>扩展 枚举 类别 等</li>
+</ol>
+</li>
+<li>对block的看法<ol>
+<li>类似于一个函数指针</li>
+<li>用handler块降低代码分散程度，回调让代码简洁优雅</li>
+<li>代码角度可以返回多个值</li>
+<li>为常用的块类型创建typedef，可以声明变量，也可以当函数参数</li>
+</ol>
+</li>
+<li>动画的分类<ol>
+<li>CAAnimation「核心动画基类」：不能直接使用，他遵循并实现了 CAMediaTiming 协议，负责动画运行时间和速度的控制。</li>
+<li>CAPropertyAnimation「属性动画基类」：不能直接使用，他通过可动画属性进行动画设置。</li>
+<li>CAAnimationGroup「动画组」：他是一种组合模式，可以组合多个动画进行动画行为的统一控制。</li>
+<li>CATransition「转场动画」：主要通过滤镜进行动画效果设置。</li>
+<li>CABasicAnimation「基础动画」：通过起点和终点状态属性参数进行动画控制。</li>
+<li>CAKeyframeAnimation「关键帧动画」：同 CABasicAnimation 一样通过属性参数进行动画控制，但不同的是他可以有多个状态控制，不单单只有起点和终点</li>
+</ol>
+</li>
+</ol>
+<p>camera360二面</p>
+<p>这次面试官主要想自己主导面试流程，而从中间穿插提问</p>
+<ol>
+<li>技术方面最具挑战性的事情</li>
+<li>UICollectionView移动的动画</li>
+<li>UITableView优化的方法</li>
+<li>FMDB如何做到线程安全</li>
+</ol>
+<p>camera360三面</p>
+<ol>
+<li>为何离职</li>
+<li>期望薪资</li>
+<li>以前的薪资构成</li>
+</ol>
+<p>失败原因</p>
+<ol>
+<li>最具挑战性的事情没有回答好</li>
+<li>跟面试者没有共同语言</li>
+<li>薪资待遇要求较高，公司达不到</li>
+</ol>
+<h2 id="货车帮"><a href="#货车帮" class="headerlink" title="货车帮"></a>货车帮</h2><p>货车帮一面</p>
+<ol>
+<li>定位高级还是中级/定位主程还是项目管理</li>
+<li>技术方面最具挑战性的事情</li>
+<li>NSNotification的实现思路，问到了就不要转移话题</li>
+</ol>
+<p>失败原因</p>
+<ol>
+<li>改成面试中级，公司想招高级</li>
+<li>和面试者思路不一致，面试官问了问题之后转移了话题</li>
+</ol>
+<h2 id="国际私塾"><a href="#国际私塾" class="headerlink" title="国际私塾"></a>国际私塾</h2><p>国际私塾一面</p>
+<ol>
+<li>介绍自己</li>
+<li>技术技能</li>
+<li>管理技能</li>
+</ol>
+<p>国际私塾二面</p>
+<ol>
+<li>简单介绍自己</li>
+<li>对APP的理解</li>
+<li>整个项目最小研发人数与职责</li>
+<li>APP赚钱的途径</li>
+<li>看一下以前做的app及对其理解</li>
+<li>和经理的性格匹配度</li>
+</ol>
+<p>失败原因</p>
+<ol>
+<li>和经理的性格匹配度不高</li>
+<li>没有hold住全场的外表和气势，与职位不符</li>
+</ol>
+<h2 id="亦非云"><a href="#亦非云" class="headerlink" title="亦非云"></a>亦非云</h2><p>亦非云一面</p>
+<p>刚出道或者转行的小伙子面试</p>
+<ol>
+<li>介绍自己</li>
+<li>CoreData是不是线程安全，如何做到线程安全</li>
+<li>淘宝的ScrollView如何嵌套</li>
+<li>同一界面有多个table，其delegate中代码如何简化，如何用block实现</li>
+</ol>
+<p>失败原因</p>
+<ol>
+<li>面试者是一个入门级的小菜，准备的问题有标准答案</li>
+<li>缺少忽悠能力和沟通能力</li>
+<li>技术和经验也比较缺乏</li>
+</ol>
+<h2 id="正兴德"><a href="#正兴德" class="headerlink" title="正兴德"></a>正兴德</h2><p>正兴德一面</p>
+<ol>
+<li>下载图片，显示进度，完成后显示缩略图，长按缩略图显示大图，大图可以用手指缩放</li>
+<li>post加参数请求http中的json数据，解析后显示在table上，图片base64解密，auto layout控制cell</li>
+</ol>
+<p>正兴德二面</p>
+<ol>
+<li>发展方向，主程还是管理</li>
+<li>介绍先有APP小生活</li>
+<li>为何离职<ol>
+<li>职业规划，项目面临停止</li>
+<li>被分配到别的部门，人员懒散</li>
+<li>技术专家得不到提升，前途无望</li>
+</ol>
+</li>
+<li>如何看待加班</li>
+</ol>
+<p>失败原因</p>
+<ol>
+<li>基础知识不扎实</li>
+<li>没有注意各个面试人员的情感</li>
+<li>不要将对上个公司的抱怨表现出来</li>
+</ol>
+<h2 id="美瞳科技"><a href="#美瞳科技" class="headerlink" title="美瞳科技"></a>美瞳科技</h2><p>去了这家公司之后，面试人员简单的走了下流程，最后发给一个视频编码的课题让回去研究，三天后让最终成果发送至人事邮箱，这种公司直接pass了</p>
+<h2 id="景和千城"><a href="#景和千城" class="headerlink" title="景和千城"></a>景和千城</h2><p>跟hr聊了下工作经验，职业规划，当前工资水平和期望的工资范围</p>
+<p>然后是技术总监面试，技术总监没做过iOS，所以我们只聊了一些关乎项目经验和职业规划的一些话题，通过交谈，项目总监比较看重我的全栈经验，我也觉得项目总监比较和蔼低调，公司业务方向VR也比较超前，所以就选择了这家公司，虽然最后被hr忽悠了点期望工资比较遗憾</p>
+<p>成功经验</p>
+<ol>
+<li>和项目总监比较能对脾气</li>
+<li>前边的面试总结出了一套说辞</li>
+<li>公司在规模扩招</li>
+<li>没有笔试、二面等一系列复杂流程</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/27/NavigationController原理及应用案例/" rel="next" title="NavigationController原理及应用案例">
+                <i class="fa fa-chevron-left"></i> NavigationController原理及应用案例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/29/Unity入门/" rel="prev" title="Unity入门">
+                Unity入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Camera360"><span class="nav-number">1.</span> <span class="nav-text">Camera360</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#货车帮"><span class="nav-number">2.</span> <span class="nav-text">货车帮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#国际私塾"><span class="nav-number">3.</span> <span class="nav-text">国际私塾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#亦非云"><span class="nav-number">4.</span> <span class="nav-text">亦非云</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正兴德"><span class="nav-number">5.</span> <span class="nav-text">正兴德</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#美瞳科技"><span class="nav-number">6.</span> <span class="nav-text">美瞳科技</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#景和千城"><span class="nav-number">7.</span> <span class="nav-text">景和千城</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

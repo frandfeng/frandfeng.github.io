@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,UInavigationContoller,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="UINavigationController底层实现原理 Nav容器本质分析 1.1 导航区 1.2 内容区 1.3 toolbar区 导航区分析2.1 属性分析 edgesForExtendedLayout extendedLayoutIncludesOpaqueBars automaticallyAdjustsScrollViewInsets translucent  导航区 内容区 工具区">
+<meta name="keywords" content="OC,iOS,UInavigationContoller">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NavigationController原理及应用案例">
+<meta property="og:url" content="https://frandfeng.github.io/2016/05/27/NavigationController原理及应用案例/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="UINavigationController底层实现原理 Nav容器本质分析 1.1 导航区 1.2 内容区 1.3 toolbar区 导航区分析2.1 属性分析 edgesForExtendedLayout extendedLayoutIncludesOpaqueBars automaticallyAdjustsScrollViewInsets translucent  导航区 内容区 工具区">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:35:22.445Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NavigationController原理及应用案例">
+<meta name="twitter:description" content="UINavigationController底层实现原理 Nav容器本质分析 1.1 导航区 1.2 内容区 1.3 toolbar区 导航区分析2.1 属性分析 edgesForExtendedLayout extendedLayoutIncludesOpaqueBars automaticallyAdjustsScrollViewInsets translucent  导航区 内容区 工具区">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2016/05/27/NavigationController原理及应用案例/">
+
+
+
+
+
+  <title>NavigationController原理及应用案例 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/05/27/NavigationController原理及应用案例/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NavigationController原理及应用案例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-27T00:00:00+08:00">
+                2016-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="UINavigationController底层实现原理"><a href="#UINavigationController底层实现原理" class="headerlink" title="UINavigationController底层实现原理"></a>UINavigationController底层实现原理</h1><ol>
+<li>Nav容器本质分析<br> 1.1 导航区<br> 1.2 内容区<br> 1.3 toolbar区</li>
+<li><p>导航区分析<br>2.1 属性分析<br> edgesForExtendedLayout<br> extendedLayoutIncludesOpaqueBars<br> automaticallyAdjustsScrollViewInsets<br> translucent</p>
+<p> 导航区<br> 内容区<br> 工具区</p>
+<p> ios 7.0前 导航条拟物化风格，导航条是不透明（内容区在导航条下：64开始）<br> ios 7.0后 扁平化风格，导航条模式是透明的（0/64）<br> 1 透明 内容全局（0）<br> 2 透明 内容从64开始（0，iphonex 84）<br> 3 不透明 内容全局（0）<br> 4 不透明 内容从64开始（0）</p>
+<pre><code>/ 透明全局（默认）
+- (void)translucentAndAll{
+    self.navigationController.navigationBar.translucent = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+}
+
+- (void)translucentAnd64{
+    self.navigationController.navigationBar.translucent = YES;
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+}
+
+- (void)noTranslucentAnd64{
+    self.navigationController.navigationBar.translucent = NO;
+   // self.edgesForExtendedLayout = UIRectEdgeNone;
+}
+
+- (void)noTranslucentAndAll{
+    self.navigationController.navigationBar.translucent = NO;
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    //此属性就算设置了也不起作用
+   // self.edgesForExtendedLayout = UIRectEdgeAll;
+}
+</code></pre></li>
+</ol>
+<p>2.2 导航区结构分析<br>  UINavigationBar<br>  UINavigationItem</p>
+<p>3、内容区分析<br>3.1 内容结构分析<br> UINavigationTransitionView<br> 内容区容器</p>
+<p>   第一 结构：<br>  导航区<br>  内容区<br>  toolbar区（忽略）</p>
+<p>  第二、  三个／四个属性 理解作用</p>
+<p>  第三、 UINavigationBar（什么东西，哪些东西会刷新，哪些不会, 管理什么东西，）</p>
+<p>  第四个 了解UINavigationItem 是个什么东西, 管理什么东西</p>
+<p>  第五个 了解UIBarButtonItem</p>
+<p>  UINavigationController</p>
+<p>  导航栏如何设置背景透明</p>
+<pre><code>  - (void)transluentStyle {
+    [self.navigationController.navigationBar setBackgroundImage:self.image forBarMetrics:UIBarMetricsDefault];
+}
+
+- (UIImage*)image{
+    UIGraphicsBeginImageContext(CGSizeMake(100, 100));
+    [[[UIColor whiteColor] colorWithAlphaComponent:0] setFill];
+    UIRectFill(CGRectMake(0, 0, 100, 100));
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+- (void)transluentTwoStyle{
+    NSArray *ary  = [self.navigationController.navigationBar subviews];
+    UIColor *alphaColor = [[UIColor whiteColor] colorWithAlphaComponent:0];
+    for (int i = 0; i &lt; ary.count; i++) {
+        UIView *view = ary[i];
+        view.backgroundColor = alphaColor;
+        for (int j = 0; j &lt; view.subviews.count; j++) {
+            UIView *subView = view.subviews[j];
+            subView.backgroundColor = alphaColor;
+            for (int k = 0; k &lt; subView.subviews.count; k++) {
+                UIView *subsubView = subView.subviews[k];
+                subsubView.backgroundColor = alphaColor;
+            }
+        }
+        if([view isKindOfClass:NSClassFromString(@&quot;_UIBarBackground&quot;)]) {
+            view.backgroundColor = alphaColor;
+        }
+    }
+}
+</code></pre><p>导航栏底部黑色线条处理</p>
+<pre><code>- (void)viewDidLoad {
+    UIImageView *iamgeV = [self findBackLineImageV:self.navigationController.navigationBar];
+    iamgeV.hidden = YES;
+    //[self blackNavLine];
+}
+
+- (UIImageView *)findBackLineImageV:(UIView*)view{
+    if([view isKindOfClass:[UIImageView class]] &amp;&amp; view.frame.size.height &lt;= 1){
+        return (UIImageView*)view;
+    }
+    NSArray *viewAry = view.subviews;
+    for (int i = 0; i &lt; viewAry.count; i++) {
+        UIView *tmpV = [self findBackLineImageV:viewAry[i]];
+        if (tmpV) {
+            return (UIImageView*)tmpV;
+        }
+    }
+    return nil;
+}
+
+- (void)blackNavLine{
+    self.navigationController.navigationBar.clipsToBounds = YES;
+}
+</code></pre><p>导航栏按钮间距处理</p>
+<pre><code>NSMutableArray *barItems = [NSMutableArray array];
+UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@&quot;Nav&quot; style:UIBarButtonItemStylePlain target:self action:@selector(showNav)];
+UIBarButtonItem *barItemSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+barItemSpace.width = 60;
+UIBarButtonItem *barItemT = [[UIBarButtonItem alloc] initWithTitle:@&quot;view&quot; style:UIBarButtonItemStylePlain target:self action:@selector(showNavTwo)];
+[barItems addObject:barItem];
+[barItems addObject:barItemSpace];
+[barItems addObject:barItemT];
+self.navigationItem.rightBarButtonItems = barItems;
+</code></pre><p>导航栏返回按钮处理</p>
+<pre><code>- (void)backArrowImage{
+    UIImage *image = [UIImage imageNamed:@&quot;arrow.png&quot;];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    self.navigationController.navigationBar.backIndicatorImage = image;self.navigationController.navigationBar.backIndicatorTransitionMaskImage = image;
+}
+</code></pre><h1 id="NavigationController的动画原理和深度用法"><a href="#NavigationController的动画原理和深度用法" class="headerlink" title="NavigationController的动画原理和深度用法"></a>NavigationController的动画原理和深度用法</h1><p>转场动画原理解析</p>
+<pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @&quot;动画原理&quot;;
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
+    [self.view addGestureRecognizer:panGesture];
+}
+/*
+ 1 当前的控制器view坐标的移动
+ 2 下一个控制器view的坐标移动
+ */
+- (void)panGesture:(UIPanGestureRecognizer*)gesture{
+    // 获取 当前view（fromview）  pop的view（toView）
+    UIView *containView = [self.view superview];
+    UIView *fromView = self.view;
+    UIView *toView = nil;
+    NSArray *viewCtrAry = self.navigationController.viewControllers;
+    if (viewCtrAry.count &gt;= 2) {
+        UIViewController *toViewCtr = viewCtrAry[viewCtrAry.count-2];
+        toView = toViewCtr.view;
+    }
+    [containView insertSubview:toView belowSubview:fromView];
+    CGPoint movePoint = [gesture translationInView:self.view];
+    [gesture setTranslation:CGPointZero inView:self.view];
+    float moveWidth = movePoint.x;
+    // UINavigationBar *preBar;
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        toView.frame = CGRectMake(-toView.frame.size.width, toView.frame.origin.y, toView.frame.size.width, toView.frame.size.height);
+    }else if (gesture.state == UIGestureRecognizerStateChanged){
+        // moveWidth *scale
+        toView.frame = CGRectMake(toView.frame.origin.x + moveWidth, toView.frame.origin.y, toView.frame.size.width, toView.frame.size.height);
+        fromView.frame = CGRectMake(fromView.frame.origin.x + moveWidth, fromView.frame.origin.y, fromView.frame.size.width, fromView.frame.size.height);
+    }else {
+        if (fromView.frame.origin.x &gt; [UIScreen mainScreen].bounds.size.width/2) {
+            // pop
+            [UIView animateWithDuration:0.4 animations:^{
+                toView.frame = CGRectMake(0, toView.frame.origin.y, toView.frame.size.width, toView.frame.size.height);
+                fromView.frame = CGRectMake(fromView.frame.size.width, fromView.frame.origin.y, fromView.frame.size.width, fromView.frame.size.height);
+            } completion:^(BOOL finished) {
+                NSMutableArray *viewAry = [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+                [viewAry removeLastObject];
+                self.navigationController.viewControllers = viewAry;
+            }];
+        }else {
+            // 还原
+            [UIView animateWithDuration:0.4 animations:^{
+                fromView.frame = CGRectMake(0, fromView.frame.origin.y, fromView.frame.size.width, fromView.frame.size.height);
+                toView.frame = CGRectMake(-toView.frame.size.width, toView.frame.origin.y, toView.frame.size.width, toView.frame.size.height);
+            } completion:^(BOOL finished) {
+            }];
+        }
+    }
+}
+</code></pre><p>替换系统手势</p>
+<pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @&quot;替换系统手势&quot;;
+    //UIPanGestureRecognizer;
+    NSArray *targets = [self.navigationController.interactivePopGestureRecognizer valueForKey:@&quot;targets&quot;];
+    id target = [[targets lastObject] valueForKey:@&quot;target&quot;];
+    SEL actionSel = NSSelectorFromString(@&quot;handleNavigationTransition:&quot;);
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:target action:actionSel];
+    [self.view addGestureRecognizer:panGesture];
+    [self scanMethods:NSClassFromString(@&quot;UIScreenEdgePanGestureRecognizer&quot;)];
+}
+
+- (void)scanMethods:(Class)class{
+    unsigned int outCount = 0;
+    Method *methods = class_copyMethodList(class, &amp;outCount);
+    for (int i = 0; i &lt; outCount; i++) {
+        SEL sel = method_getName(methods[i]);
+        NSLog(@&quot;%@&quot;, NSStringFromSelector(sel));
+    }
+}
+</code></pre><p>转场高级动画</p>
+<pre><code>@interface EOCNavViewCtr : UINavigationController
+@end
+
+@interface EOCNavViewCtr ()&lt;UINavigationControllerDelegate&gt;{
+    UIPercentDrivenInteractiveTransition *percentAnimation;
+}
+@end
+
+@implementation EOCNavViewCtr
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    //设置UINavigationControllerDelegate代理的方法，获取Nav动画进度和动画对象
+    self.delegate = self;
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGesture:)];
+    [self.view addGestureRecognizer:panGesture];
+}
+
+- (void)panGesture:(UIPanGestureRecognizer*)gesture{
+    // 获取 当前view（fromview）  pop的view（toView）
+    CGPoint movePoint = [gesture translationInView:self.view];
+    float precent = movePoint.x/[UIScreen mainScreen].bounds.size.width;
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        percentAnimation = [[UIPercentDrivenInteractiveTransition alloc] init];
+        [self popViewControllerAnimated:YES];
+    }else if (gesture.state == UIGestureRecognizerStateChanged){
+        [percentAnimation updateInteractiveTransition:precent];
+    }else {
+        if (percentAnimation.percentComplete &gt; 0.5) {
+            [percentAnimation finishInteractiveTransition];
+        }else {
+            [percentAnimation cancelInteractiveTransition];
+        }
+        percentAnimation = nil;
+    }
+}
+
+// 返回动画进度对象
+- (nullable id &lt;UIViewControllerInteractiveTransitioning&gt;)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id &lt;UIViewControllerAnimatedTransitioning&gt;) animationController {
+    if ([animationController isKindOfClass:[EOCNavAnimation class]]) {
+        return percentAnimation;
+    }
+    return nil;
+}
+
+// 返回动画对象，所有对象均在EOCNavAnimation中操作
+- (nullable id &lt;UIViewControllerAnimatedTransitioning&gt;)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC {
+    if (operation == UINavigationControllerOperationPop) {
+        return [[EOCNavAnimation alloc] init];
+    }
+    return nil;
+}
+
+@interface EOCNavAnimation : NSObject&lt;UIViewControllerAnimatedTransitioning, CAAnimationDelegate&gt;
+@end
+
+@implementation EOCNavAnimation{
+    id &lt;UIViewControllerContextTransitioning&gt; _transitionContext;
+}
+
+// 时间
+- (NSTimeInterval)transitionDuration:(nullable id &lt;UIViewControllerContextTransitioning&gt;)transitionContext{
+    return 1.0;
+}
+
+// 过程
+- (void)animateTransition:(id &lt;UIViewControllerContextTransitioning&gt;)transitionContext{
+    // 获取 toView（ToViewCtr）／fromView（fromViewCtr）
+    _transitionContext = transitionContext;
+    UIViewController *toViewCtr = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController *fromViewCtr = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIView *transferView =  transitionContext.containerView;
+    [transferView insertSubview:toViewCtr.view belowSubview:fromViewCtr.view];
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+        fromView.frame =  CGRectMake(fromView.frame.size.width, fromView.frame.origin.y, fromView.frame.size.width, fromView.frame.size.height);
+    } completion:^(BOOL finished) {
+        // 务必 compelte Context
+        [transitionContext completeTransition:YES];
+    }];
+    //[self animationTwo:transferView];
+}
+
+- (void)animationTwo:(UIView*)transferView{
+    CATransition *caTrans = [CATransition animation];
+    caTrans.type = @&quot;cube&quot;;
+    caTrans.subtype = @&quot;fromLeft&quot;;
+    caTrans.duration = [self transitionDuration:_transitionContext];
+    caTrans.fillMode = kCAFillModeForwards;
+    caTrans.delegate = self;
+    caTrans.removedOnCompletion = NO;
+    [transferView.layer addAnimation:caTrans forKey:nil];
+    [transferView exchangeSubviewAtIndex:0 withSubviewAtIndex:1];
+}
+
+// context结束
+- (void)animationEnded:(BOOL) transitionCompleted{
+}
+
+// 动画结束
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
+    [_transitionContext completeTransition:YES];
+}
+</code></pre><h1 id="多控制器使用和常见问题-MVVM搭建及路由层"><a href="#多控制器使用和常见问题-MVVM搭建及路由层" class="headerlink" title="多控制器使用和常见问题(MVVM搭建及路由层)"></a>多控制器使用和常见问题(MVVM搭建及路由层)</h1><p>1 多控制搭建 </p>
+<p>tabbar-navbar-vc<br>navbar-tabbar-vc</p>
+<p>2 不同根试图注意事项</p>
+<p>tabbar-nabar-vc<br>正确的设置 self.navigationItem.title来操作（因为self.title操作会影响tabbar的item）<br> tabbar（记得隐藏，因为爷控制器是tabbarViewCtr（儿的所有控制器默认都能看到tabbar））</p>
+<p> navbar-tabbar-vc<br> 正确的设置 self.tabBarController.title来操作（如果self.title操作会影响tabbar的item，但对nabbar没有效果，因为导航条属于爷控制器）<br> navbar（记得刷新，共享了一个navbar）</p>
+<p>3 启动页延时操作</p>
+<pre><code>- (void)delayLaunchImage{
+eocWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+self.window.backgroundColor = [UIColor whiteColor];
+eocWindow.rootViewController = [UIViewController new];
+
+UIImageView *imageView = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+[imageView setImage:[UIImage imageNamed:@&quot;11.PNG&quot;]];
+[eocWindow addSubview:imageView];
+[eocWindow makeKeyAndVisible];
+
+[self performSelector:@selector(cancelLaunImage) withObject:nil afterDelay:5];
+}
+
+- (void)cancelLaunImage{
+    [eocWindow resignKeyWindow];
+    eocWindow = nil;
+}
+</code></pre><p>4 MVVM</p>
+<p>V(视图)(点击刷新)-&gt;C(业务逻辑)(处理事情)-&gt;M(数据)(下载数据)-&gt;V(视图)(刷新数据)</p>
+<p>V(视图)<-->ViewModel<-->M(数据):一个view对应一个viewModel，是双向绑定，view的变动，自动反映到ViewModel上，ViewModel的变动，也自动反映到View上</--></--></p>
+<pre><code>@interface RecommendVCtr ()
+@property (nonatomic, strong)RecommendViewModel *recomendViewModel;
+@end
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    [_headView removeFromSuperview];
+    [_tableView setTableHeaderView:_headView];
+    UITableView *tmpTableV = _tableView;
+    // 下载数据业务
+    [self.recomendViewModel loadDatafromNetWithPage:1 finishNet:^(id infoDict) {
+        [tmpTableV reloadData];
+    }];
+}
+
+- (RecommendViewModel*)recomendViewModel{
+    if (!_recomendViewModel) {
+        _recomendViewModel = [RecommendViewModel new];
+    }
+    return _recomendViewModel;
+}
+
+typedef void(^finishLoadBlock)(id infoDict);
+@interface RecommendViewModel : NSObject
+@property(nonatomic, assign) NSInteger rowNumber;
+- (CGFloat)messageHeightForRow:(NSInteger)row;
+- (MessageModel*)messageModelForRow:(NSInteger)row;
+- (NSString*)messageIdForRow:(NSInteger)row;
+- (void)loadDatafromNetWithPage:(NSInteger)page finishNet:(finishLoadBlock)finishBlock;
+- (void)deleteAdView:(UIView*)deleteView headView:(UIView*)headView tableview:(UITableView*)tableView;
+- (void)pushMessageDetailIndex:(NSIndexPath *)indexPath viewCtr:(UIViewController*)targetVCtr;
+@end
+
+@implementation RecommendViewModel
+@end
+</code></pre><p>5 路由层</p>
+<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+    MenuR *mr = [MenuR new];
+    [mr perferm:[NSClassFromString(@&quot;MainRoute&quot;) new] sel:@selector(skipToMenu:) arg:[NSNumber numberWithInt:2]];
+
+//    [MainRoute skipToMenu:2];
+//    RecommendVCtr *recommendVCtr = [RecommendVCtr new];
+//    [self.navigationController pushViewController:recommendVCtr animated:YES];
+}
+
+@interface MenuR : NSObject
+- (void)perferm:(id)target sel:(SEL)sel arg:(id)arg;
+- (void)perferm:(id)target sel:(SEL)sel;
+@end
+
+@implementation MenuR
+- (void)perferm:(id)target sel:(SEL)sel arg:(id)arg{
+    [target performSelector:sel withObject:arg];
+}
+
+- (void)perferm:(id)target sel:(SEL)sel{
+    [self perferm:target sel:sel arg:nil];
+}
+
+@end
+@interface MainRoute : NSObject
+- (void)skipToMenu:(NSNumber*)index;
+@end
+
+@implementation MainRoute
+- (void)skipToMenu:(NSNumber*)index{
+    UINavigationController *target = (UINavigationController*)[UIApplication sharedApplication].keyWindow.rootViewController;
+    target = [target.viewControllers firstObject];
+    SEL sel = NSSelectorFromString(@&quot;skipToMenuIndex:&quot;);
+    if ([target respondsToSelector:sel]) {
+        [target performSelector:sel withObject:index];
+    }else{
+        NSLog(@&quot;异常 target 找不到 skipToMenuIndex：&quot;);
+    }
+}
+@end
+
+//UITabbarViewContoller
+- (void)skipToMenuIndex:(NSNumber*)indexN{
+    NSInteger index = [indexN integerValue];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    //self.selectedIndex = index;
+    [self selectMenuVC:[_eocTabBar viewWithTag:index]];
+}
+
+- (void)selectMenuVC:(TabBarButtton*)sender{
+    if (self.selectedIndex == sender.tag) {
+        return;
+    }
+    self.selectedIndex = sender.tag;
+    _selectTabBarBt.selected = NO;
+    _selectTabBarBt = sender;
+    _selectTabBarBt.selected = YES;
+}
+</code></pre><p>6 业务布局分析</p>
+<p>MVCC框架介绍</p>
+<p>self.view.addSubview:<br>self.viewController.addSubViewController:</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/UInavigationContoller/" rel="tag"># UInavigationContoller</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/29/SearchController原理及应用案例/" rel="next" title="SearchController原理及应用案例">
+                <i class="fa fa-chevron-left"></i> SearchController原理及应用案例
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/24/iOS面试回顾/" rel="prev" title="iOS面试回顾">
+                iOS面试回顾 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UINavigationController底层实现原理"><span class="nav-number">1.</span> <span class="nav-text">UINavigationController底层实现原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NavigationController的动画原理和深度用法"><span class="nav-number">2.</span> <span class="nav-text">NavigationController的动画原理和深度用法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多控制器使用和常见问题-MVVM搭建及路由层"><span class="nav-number">3.</span> <span class="nav-text">多控制器使用和常见问题(MVVM搭建及路由层)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
