@@ -460,7 +460,7 @@ CSBas
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/12/27/CSS的学习及总结/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -479,7 +479,7 @@ CSBas
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/12/27/CSS的学习及总结/" itemprop="url">CSS的学习及总结</a></h1>
+                <a class="post-title-link" href="/2015/12/25/事件传递及应用案例/" itemprop="url">事件传递及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -491,8 +491,8 @@ CSBas
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-12-27T00:00:00+08:00">
-                2013-12-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-25T00:00:00+08:00">
+                2015-12-25
               </time>
             
 
@@ -514,8 +514,8 @@ CSBas
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -553,23 +553,23 @@ CSBas
       
         
           
-          基本介绍div是用于存放html元素，文字，图片，视频的元素
-css 是层叠样式表，用于指定div中的内容的样式
+          事件层次分析iOS事件有哪些
 
-test.html：
-&lt;!DOCTYPE HTML PUBLIC &quot;-//w3c//DTD HTML 4.0 Transitional//EN&quot;&gt;
-&lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;快速入门&lt;/title&gt;
-        &lt;link href=&quot;my.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;/&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;div class=&quot;style1&quot;&gt;
-   
+UIEventTypeTouches触摸事件
+UIEventTypeMotion “动作”事件(比如摇晃手机设备)
+UIEventTypeRemoteControl远程控制事件
+UIEventTypePresses事件(和触按物理按钮有关)
+
+
+响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIApplication、UIViewController、UIView、UIWindow。
+
+UITouch
+当用一根手指触摸屏幕时，会创建一个与手指相关联的UITouch对象。如果两根手指同时触摸屏幕，则会调用一次touchesBegan方法，创建两个UITouch对象（如果不是同时触摸，调用两次方法，每次的touches参数都只有一个UITouch对象）。
+判断是否多点触摸：NSSet有多少个U
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/12/27/CSS的学习及总结/#more" rel="contents">
+            <a class="btn" href="/2015/12/25/事件传递及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -620,7 +620,7 @@ test.html：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/11/29/Html的学习及总结/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/11/27/控制器加载底层原理和UI初始化过程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -639,7 +639,7 @@ test.html：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/11/29/Html的学习及总结/" itemprop="url">Html的学习及总结</a></h1>
+                <a class="post-title-link" href="/2015/11/27/控制器加载底层原理和UI初始化过程/" itemprop="url">控制器加载底层原理和UI初始化过程</a></h1>
         
 
         <div class="post-meta">
@@ -651,8 +651,8 @@ test.html：
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-11-29T00:00:00+08:00">
-                2013-11-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-11-27T00:00:00+08:00">
+                2015-11-27
               </time>
             
 
@@ -674,8 +674,8 @@ test.html：
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -713,17 +713,34 @@ test.html：
       
         
           
-          Html基础什么是HtmlHTML（HyperText Mark-up Language）即超文本标记语言或超文本链接标示语言，是目前网络上应用最为广泛的语言，也是构成网页文档的主要语言。HTML文本是由HTML命令组成的描述性文本，HTML命令可以说明文字、图形、动画、声音、表格、链接等。
-HTML的结构包括头部（Head）、主体（Body）两大部分，其中头部描述浏览器所需的信息，而主体则包含所要说明的具体内容。
+          控制器加载底层原理和UI初始化过程
+层次关系(VC,V,CALayer)
 
-HTML可以编写静态网页.
-该静态网页可以包括文字、图形、动画、声音、表格、链接。从而构成一个个漂亮的网页。
+VC管理V，V管理CALayer，V中的子V在上层，不一定其Layer也在上层。
 
-W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3C理事会或万维网联盟。W3C于1994年10月在麻省理工学院计算机科学实验室成立。创建者是万维网的发明者Tim Berners-Lee。W3C组织是对网络标准制定的一
+控制器初始化过程
+
+控制器的View是和viewDidLoad有关的
+
+C弱化(VC的精简)
+
+MVCS 调度中心(通讯机制 KVO)
+
+UI初始化过程
+DrawRect(CALayer)分析
+
+绘制富文本(图片和文字)，对CALayer的绘制。
+系统中有一个全局栈stack专门存放CGContextRef，stack中正常是没有上下文的，drawRect会默认push一个上下文到全局的Context的栈stack里。
+
+IB_DESIGNABLE IBInspectable
+
+IB_DESIGNABLE 可以将drawrect函数中绘制的图形显示在xib可视文件中IBInspectable 可以将属性显示在xib中让动态设置
+
+x
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/11/29/Html的学习及总结/#more" rel="contents">
+            <a class="btn" href="/2015/11/27/控制器加载底层原理和UI初始化过程/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -774,7 +791,7 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/10/25/springMvc的学习总结(未完成)/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/10/30/App启动原理/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -793,7 +810,7 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/10/25/springMvc的学习总结(未完成)/" itemprop="url">springMvc的学习和总结</a></h1>
+                <a class="post-title-link" href="/2015/10/30/App启动原理/" itemprop="url">iOS App启动原理</a></h1>
         
 
         <div class="post-meta">
@@ -805,8 +822,8 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-10-25T00:00:00+08:00">
-                2013-10-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-30T00:00:00+08:00">
+                2015-10-30
               </time>
             
 
@@ -828,8 +845,8 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Server/" itemprop="url" rel="index">
-                    <span itemprop="name">Server</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -867,169 +884,24 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
       
         
           
-          
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2013/10/25/springMvc的学习总结(未完成)/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/09/27/spring的学习总结/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/27/spring的学习总结/" itemprop="url">spring的学习和总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-09-27T00:00:00+08:00">
-                2013-09-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Server/" itemprop="url" rel="index">
-                    <span itemprop="name">Server</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          spring是什么
-struts 是 web 框架 (jsp/action/actionfrom)
-hibernate 是 orm框架,处于持久层.
-spring 是容器框架,用于配置bean,并维护bean之间关系的框架
-
-spring中有一个非常概念: bean (是java中的任何一种对象 javabean/service/action/数据源./ dao, ioc(控制反转 inverse of control) di( dependency injection 依赖注入)
-
-快速入门开发一个spring项目
-
-引入spring的开发包(最小配置spring.jar 该包把常用的jar都包括, 还要 写日志包 common-logging.jar
-创建spring的一个核心文件 applicationContext.xml, [hibernate有核心 hibernate.cfg.
+          开课典礼1、课程内容
+a、新增Swift、ARKit等内容b、每个课程有删减c、有些内容变成录播d、课程时间的改变
+2、学习效果
+a、听课 5%b、读 10%c、视听 20%d、案例 30%e、讨论 50%f、练习 75%g、实际应用 90%
+3、听直播
+a、预习相关知识点b、上课跟节奏、思考c、课后实践、总结、写博客
+不要用学习的勤奋，掩盖实践的懒惰！
+iOS启动原理+清晰化布局1、APP启动入口
+a、创建一个application对象b、设置application的代理(AppDelegate)c、创建一个事件循环（runloop）d、读info.plist文件（MainStoryboard）
+2、runloop
+while(mode) {
+    handleRunloopStatus();//runloop状态处理，是否stop
+    cofigPort();//配置port
+ 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/09/27/spring的学习总结/#more" rel="contents">
+            <a class="btn" href="/2015/10/30/App启动原理/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1080,7 +952,7 @@ spring中有一个非常概念: bean (是java中的任何一种对象 javabean/s
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/08/30/struts的学习总结/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/09/25/Swift实战/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1099,7 +971,7 @@ spring中有一个非常概念: bean (是java中的任何一种对象 javabean/s
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/08/30/struts的学习总结/" itemprop="url">struts的学习和总结</a></h1>
+                <a class="post-title-link" href="/2015/09/25/Swift实战/" itemprop="url">Swift实战</a></h1>
         
 
         <div class="post-meta">
@@ -1111,8 +983,8 @@ spring中有一个非常概念: bean (是java中的任何一种对象 javabean/s
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-08-30T00:00:00+08:00">
-                2013-08-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-25T00:00:00+08:00">
+                2015-09-25
               </time>
             
 
@@ -1134,8 +1006,8 @@ spring中有一个非常概念: bean (是java中的任何一种对象 javabean/s
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Server/" itemprop="url" rel="index">
-                    <span itemprop="name">Server</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1173,31 +1045,178 @@ spring中有一个非常概念: bean (是java中的任何一种对象 javabean/s
       
         
           
-          为什么有struts
-struts是一个框架
-struts是一个web框架
-struts提高了程序规范的同时，也约束了程序的自由
+          
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/09/25/Swift实战/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
 
-struts的优势
+    
 
-程序更加规范化
-成都开发的效率提高了
-程序的可读性增加了
-程序的可维护性增加了
+    
 
-struts的不足之处
+    
 
-form表单有点鸡肋
-action是单态(对网站并发性有影响)（在整个程序运行过程中，始终是一个对象）
+    <footer class="post-footer">
+      
 
-因为我们队mvc理解的不同,可能造成不同公司写程序的时候,规范不统一,这样不利于程序的维护和扩展,所以我们有必要用一个统一的规范来开发项目(struts)
-struts的原理
-一个请求从浏览器发送给ｗｅｂ服务器,http://localhost:8080/web应用/action
-web服务器首先解析主机、然后解析web应用的名称、再解析出资源名、转发给总司令ActionServlet(该类由struts框架提供给我们的无需编写
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/28/Swift重点基础语法/" itemprop="url">Swift的重点基础语法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-08-28T00:00:00+08:00">
+                2015-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+Swift APP 中的入口函数main
+/*
+  编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果
+  如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错
+ */
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+}
+
+变量和常亮
+func 常量变量(){
+    // 1 let 声明常量 var声明变量
+    //  let 常量只能为他赋值一次
+
+    // 2.1 声明一个变量，编译器会自动推断类型，前提条件：提供的信息不足。
+    // 2.2 需要在变量后面声明类型，用冒号分割
+
+    /
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/08/30/struts的学习总结/#more" rel="contents">
+            <a class="btn" href="/2015/08/28/Swift重点基础语法/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1248,7 +1267,7 @@ web服务器首先解析主机、然后解析web应用的名称、再解析出�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/07/26/hibernate的学习总结/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/07/31/Swift编码规范/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1267,7 +1286,7 @@ web服务器首先解析主机、然后解析web应用的名称、再解析出�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/07/26/hibernate的学习总结/" itemprop="url">hibernate的学习和总结</a></h1>
+                <a class="post-title-link" href="/2015/07/31/Swift编码规范/" itemprop="url">Swift编码规范</a></h1>
         
 
         <div class="post-meta">
@@ -1279,8 +1298,8 @@ web服务器首先解析主机、然后解析web应用的名称、再解析出�
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-07-26T00:00:00+08:00">
-                2013-07-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-31T00:00:00+08:00">
+                2015-07-31
               </time>
             
 
@@ -1302,8 +1321,8 @@ web服务器首先解析主机、然后解析web应用的名称、再解析出�
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Server/" itemprop="url" rel="index">
-                    <span itemprop="name">Server</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1341,26 +1360,14 @@ web服务器首先解析主机、然后解析web应用的名称、再解析出�
       
         
           
-          hibernate是什么
-hibernate 是一个框架(framework)
-hibernate 是一个orm框架,(object relation mapping) 对象关系映射 框架
-hibernate 处于我们项目的持久层位置(正因为如此，所以有人又把hibernate称为 持久层框架)
-hibernate 实际上就是对jdbc进行了轻量级的封装
-hibernate 的基础还是我们java 反射机制
-
-
-总结: hibernate 是对jdbc进行轻量级封装的 orm 框架，充当项目的持久层
-
-为什么有hibernate
-引入hibernate可以使工作人员角色细化，让程序员更关心业务流程。让数据库人员关注数据库相关的各种操作。
-分层更清晰，耦合性更小。
-通用性强：可以更轻松的从一个数据库平台转移到别的平台。
-对象化：把关系数据库变成了Java的对象，更加方便操作。
-性能保证：hi
+          这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。
+我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide May 11, 2017 commit 版本 0f1f0848c4313201006e18cbf3b5c8b1365204ce
+正确性要尽量使你的代码编译时没有警告，甚至把警告当做错误处理。这条规则影响了很多语法的使用，如推荐使用#selector文而不是用字符串
+命名使用具有描述性的和一致的命名使你的代码更加易读和易懂，更多关于Swift的命名方式参见Swift API Design Guid
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/07/26/hibernate的学习总结/#more" rel="contents">
+            <a class="btn" href="/2015/07/31/Swift编码规范/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1411,7 +1418,7 @@ hibernate 的基础还是我们java 反射机制
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/06/28/Andriod学习5(未完成)/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/06/26/Swift语法学习/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1430,7 +1437,7 @@ hibernate 的基础还是我们java 反射机制
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/06/28/Andriod学习5(未完成)/" itemprop="url">Android学习</a></h1>
+                <a class="post-title-link" href="/2015/06/26/Swift语法学习/" itemprop="url">Swift2语法学习</a></h1>
         
 
         <div class="post-meta">
@@ -1442,8 +1449,8 @@ hibernate 的基础还是我们java 反射机制
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-06-28T00:00:00+08:00">
-                2013-06-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-06-26T00:00:00+08:00">
+                2015-06-26
               </time>
             
 
@@ -1465,8 +1472,8 @@ hibernate 的基础还是我们java 反射机制
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1504,11 +1511,17 @@ hibernate 的基础还是我们java 反射机制
       
         
           
-          树和二叉树
-          
+          从2014-06-03苹果开发者大会发布Swift1.0到2015-12-04苹果公司宣布开源Swift2.1，再从苹果2016-03-21释放稳定成熟版本Swift2.2到2016-09-13Swift3.0的变革，Swift一路走来，在社区以及核心团队的努力下，越来越成熟、稳定。我们这节以关东升老师的《从零开始学Swift》来学习基于Swift2.2的语法知识，关于Swift的后续更新及变革，我会在后续的文章中发专题整理，如果想要看Swift源码的同学或者想膜拜大神的同学可以在本地址中查看
+准备起航本书约定
+示例代码约定：约定示例代码和本书章节之间的关系
+图示约定：图中的圆圈、箭头和手势表示的意思
+函数和方法签名约定：
+  函数和方法签名是函数和方法表示方式，签名由函数和方法的名称和每个参数组成，不包括返回值和参数类型，例如 print函数有两种不同的函数签名
+print(_:sepa
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/06/28/Andriod学习5(未完成)/#more" rel="contents">
+            <a class="btn" href="/2015/06/26/Swift语法学习/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1559,7 +1572,7 @@ hibernate 的基础还是我们java 反射机制
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/05/31/Andriod学习4(未完成)/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/05/29/Objective-C高级编程2(未完成)/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1578,7 +1591,7 @@ hibernate 的基础还是我们java 反射机制
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/05/31/Andriod学习4(未完成)/" itemprop="url">Android学习</a></h1>
+                <a class="post-title-link" href="/2015/05/29/Objective-C高级编程2(未完成)/" itemprop="url">OC高级编程2</a></h1>
         
 
         <div class="post-meta">
@@ -1590,8 +1603,8 @@ hibernate 的基础还是我们java 反射机制
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-05-31T00:00:00+08:00">
-                2013-05-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-05-29T00:00:00+08:00">
+                2015-05-29
               </time>
             
 
@@ -1613,8 +1626,8 @@ hibernate 的基础还是我们java 反射机制
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1652,11 +1665,11 @@ hibernate 的基础还是我们java 反射机制
       
         
           
-          树和二叉树
+          
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/05/31/Andriod学习4(未完成)/#more" rel="contents">
+            <a class="btn" href="/2015/05/29/Objective-C高级编程2(未完成)/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1707,7 +1720,7 @@ hibernate 的基础还是我们java 反射机制
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/04/26/Andriod学习3(未完成) /">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/04/24/Objective-C高级编程1/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1726,7 +1739,7 @@ hibernate 的基础还是我们java 反射机制
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/04/26/Andriod学习3(未完成) /" itemprop="url">Android学习</a></h1>
+                <a class="post-title-link" href="/2015/04/24/Objective-C高级编程1/" itemprop="url">OC高级编程1</a></h1>
         
 
         <div class="post-meta">
@@ -1738,8 +1751,8 @@ hibernate 的基础还是我们java 反射机制
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-04-26T00:00:00+08:00">
-                2013-04-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-04-24T00:00:00+08:00">
+                2015-04-24
               </time>
             
 
@@ -1761,8 +1774,8 @@ hibernate 的基础还是我们java 反射机制
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1800,11 +1813,17 @@ hibernate 的基础还是我们java 反射机制
       
         
           
-          树和二叉树
-          
+          自动引用计数自动引用计数(ARC, Automatic Reference Counting)：顾名思义，是指内存管理中对引用采取自动计数的技术。
+在Objective-C中采用Automatic Reference Counting（ARC）机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需再次键入retain或者release代码，这在降低程序奔溃，内存泄漏等风险的同时，很大程序上减少了开发程序的工作量。编译器完全清楚目标对象，并能立刻释放那些不在被使用的对象。如此一来，应用程序将具有可预测性，且能流畅运行，速度也将大幅提升。
+在LLVM编译器中设置ARC为有效状态，就无需再次键入retain或者是release代码。
+ARC的四个标准：
+
+自己生成的对象，自己持有
+ 使用以下名称开头的方法名意味着自己生成的对象只有自己持有alloc、new
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/04/26/Andriod学习3(未完成) /#more" rel="contents">
+            <a class="btn" href="/2015/04/24/Objective-C高级编程1/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1846,7 +1865,7 @@ hibernate 的基础还是我们java 反射机制
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1894,7 +1913,7 @@ hibernate 的基础还是我们java 反射机制
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1905,7 +1924,7 @@ hibernate 的基础还是我们java 反射机制
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1916,7 +1935,7 @@ hibernate 的基础还是我们java 反射机制
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">31</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
