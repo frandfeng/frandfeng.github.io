@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,RunTime,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="RunTime1在Objective-C中，任何类的定义都是对象。类和类的实例（对象）没有任何本质上的区别。任何对象都有isa指针。 什么是类？什么是对象？ NSObject *object = [[NSObject alloc] init];  //NSObject.h @interface NSObject &amp;lt;NSObject&amp;gt; { #pragma clang diagnostic">
+<meta name="keywords" content="OC,iOS,RunTime">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOSRunTime">
+<meta property="og:url" content="https://frandfeng.github.io/2018/05/25/iOSRunTime/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="RunTime1在Objective-C中，任何类的定义都是对象。类和类的实例（对象）没有任何本质上的区别。任何对象都有isa指针。 什么是类？什么是对象？ NSObject *object = [[NSObject alloc] init];  //NSObject.h @interface NSObject &amp;lt;NSObject&amp;gt; { #pragma clang diagnostic">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T10:24:31.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOSRunTime">
+<meta name="twitter:description" content="RunTime1在Objective-C中，任何类的定义都是对象。类和类的实例（对象）没有任何本质上的区别。任何对象都有isa指针。 什么是类？什么是对象？ NSObject *object = [[NSObject alloc] init];  //NSObject.h @interface NSObject &amp;lt;NSObject&amp;gt; { #pragma clang diagnostic">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2018/05/25/iOSRunTime/">
+
+
+
+
+
+  <title>iOSRunTime | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/05/25/iOSRunTime/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOSRunTime</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-25T00:00:00+08:00">
+                2018-05-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="RunTime1"><a href="#RunTime1" class="headerlink" title="RunTime1"></a>RunTime1</h1><p>在Objective-C中，任何类的定义都是对象。类和类的实例（对象）没有任何本质上的区别。任何对象都有isa指针。</p>
+<p>什么是类？什么是对象？</p>
+<pre><code>NSObject *object = [[NSObject alloc] init];
+
+//NSObject.h
+@interface NSObject &lt;NSObject&gt; {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored &quot;-Wobjc-interface-ivars&quot;
+    Class isa  OBJC_ISA_AVAILABILITY;
+#pragma clang diagnostic pop
+}
+
+//objc.h
+#if !OBJC_TYPES_DEFINED
+/// An opaque type that represents an Objective-C class.
+typedef struct objc_class *Class;
+
+/// Represents an instance of a class.
+struct objc_object {
+    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;
+};
+
+/// A pointer to an instance of a class.
+typedef struct objc_object *id;
+#endif
+
+/// An opaque type that represents a method selector.
+typedef struct objc_selector *SEL;
+
+/// A pointer to the function of a method implementation. 
+#if !OBJC_OLD_DISPATCH_PROTOTYPES
+
+struct objc_class {
+Class _Nonnull isa  OBJC_ISA_AVAILABILITY;
+
+#if !__OBJC2__
+    Class _Nullable super_class                              OBJC2_UNAVAILABLE;
+    const char * _Nonnull name                               OBJC2_UNAVAILABLE;
+    long version                                             OBJC2_UNAVAILABLE;
+    long info                                                OBJC2_UNAVAILABLE;
+    long instance_size                                       OBJC2_UNAVAILABLE;
+    struct objc_ivar_list * _Nullable ivars                  OBJC2_UNAVAILABLE;
+    struct objc_method_list * _Nullable * _Nullable methodLists                    OBJC2_UNAVAILABLE;
+    struct objc_cache * _Nonnull cache                       OBJC2_UNAVAILABLE;
+    struct objc_protocol_list * _Nullable protocols          OBJC2_UNAVAILABLE;
+#endif
+
+} OBJC2_UNAVAILABLE;
+</code></pre><p>可以看出：Class 是一个 objc_class 结构类型的指针, id是一个 objc_object 结构类型的指针.</p>
+<p>每一个对象本质上都是一个类的实例。其中类定义了成员变量和成员方法的列表。对象通过对象的isa指针指向类。</p>
+<p>每一个类本质上都是一个对象，类其实是元类（meteClass）的实例。元类定义了类方法的列表。类通过类的isa指针指向元类。</p>
+<p>所有的元类最终继承一个根元类，根元类isa指针指向本身，形成一个封闭的内循环。</p>
+<p>类的变量和元类</p>
+<pre><code>@interface EOCObject : NSObject {
+    NSString *_ecoString;
+}
+@end
+
+@implementation EOCObject
+- (void)eocMothod {
+}
+@end
+
+//查看方法列表
+//2018-10-17 09:46:42.795766+0800 EOCRuntimeClass[33064:2309568] eocMothod
+//2018-10-17 09:46:42.796275+0800 EOCRuntimeClass[33064:2309568] .cxx_destruct
+- (void)scanMethods {
+    unsigned int outCount;
+    Method *methods = class_copyMethodList([EOCObject class], &amp;outCount);
+    for (int i=0; i&lt;outCount; i++) {
+        Method method = methods[i];
+        SEL methodSel = method_getName(method);
+        NSLog(@&quot;%s&quot;, sel_getName(methodSel));
+    }
+}
+
+//查看变量列表
+//2018-10-17 09:44:28.914333+0800 EOCRuntimeClass[33004:2307063] _ecoString
+- (void)scanIvars {
+    unsigned int outCount;
+    Ivar *ivars = class_copyIvarList([EOCObject class], &amp;outCount);
+    for (int i=0; i&lt;outCount; i++) {
+        Ivar ivar = ivars[i];
+        NSLog(@&quot;%s&quot;, ivar_getName(ivar));
+    }
+}
+
+//查看isa，有元类（类本身）影响，所以会打印两个EOCObject
+//2018-10-17 10:13:20.923652+0800 EOCRuntimeClass[33447:2332572] 1==EOCObject
+//2018-10-17 10:13:20.923874+0800 EOCRuntimeClass[33447:2332572] 2==EOCObject
+//2018-10-17 10:13:20.924052+0800 EOCRuntimeClass[33447:2332572] 3==NSObject
+//2018-10-17 10:13:20.924172+0800 EOCRuntimeClass[33447:2332572] 4==NSObject
+//2018-10-17 10:13:20.924317+0800 EOCRuntimeClass[33447:2332572] 5==NSObject
+//2018-10-17 10:35:15.841205+0800 EOCRuntimeClass[33746:2351271] 1==NSObject
+//2018-10-17 10:35:15.841617+0800 EOCRuntimeClass[33746:2351271] 2==(null)
+//2018-10-17 10:35:15.841757+0800 EOCRuntimeClass[33746:2351271] 3==(null)
+- (void)isaForward {
+    EOCObject *eocObject = [[EOCObject alloc] init];
+    NSLog(@&quot;1==%@&quot;, object_getClass(eocObject));
+    NSLog(@&quot;2==%@&quot;, object_getClass(object_getClass(eocObject)));
+    NSLog(@&quot;3==%@&quot;, object_getClass(object_getClass(object_getClass(eocObject))));
+    NSLog(@&quot;4==%@&quot;, object_getClass(object_getClass(object_getClass(object_getClass(eocObject)))));
+    NSLog(@&quot;5==%@&quot;, object_getClass(object_getClass(object_getClass(object_getClass(object_getClass(eocObject))))));
+
+    NSLog(@&quot;1==%@&quot;, class_getSuperclass([EOCObject class]));
+    NSLog(@&quot;2==%@&quot;, class_getSuperclass(class_getSuperclass([EOCObject class])));
+    NSLog(@&quot;3==%@&quot;, class_getSuperclass(class_getSuperclass(class_getSuperclass([EOCObject class]))));
+}
+
+- (void)structAnly{
+    EOCObject *eocObject = [[EOCObject alloc] init];
+
+    Class isa = object_getClass(eocObject);
+    Class metaIsa = objc_getMetaClass(&quot;EOCObject&quot;);
+    Class metaIsaOther = object_getClass(object_getClass(eocObject));
+    NSLog(@&quot;%@::元类%@ -- %@&quot;, isa, metaIsa, metaIsaOther);
+    NSLog(@&quot;%p::元类%p -- %p&quot;, isa, metaIsa, metaIsaOther);
+    //2018-10-17 13:07:47.336590+0800 EOCRuntimeClass[35671:2447195] EOCObject::元类EOCObject -- EOCObject
+    //2018-10-17 13:07:47.336768+0800 EOCRuntimeClass[35671:2447195] 0x10af764e8::元类0x10af764c0 -- 0x10af764c0
+
+    Class metaIsaTwoGrade = object_getClass(object_getClass(object_getClass(eocObject)));
+    NSLog(@&quot;元类的元类（父元类）%@--&gt;%p&quot;, metaIsaTwoGrade, metaIsaTwoGrade);
+    //2018-10-17 13:07:47.337094+0800 EOCRuntimeClass[35671:2447195] 元类的元类（父元类）NSObject--&gt;0x10bf23e58
+
+    Class metaIsaThreeGrade = object_getClass(object_getClass(object_getClass(object_getClass(eocObject))));
+    NSLog(@&quot;元类的元类的元类（爷元类）%@--&gt;%p&quot;, metaIsaThreeGrade, metaIsaThreeGrade);
+    //2018-10-17 13:07:47.337325+0800 EOCRuntimeClass[35671:2447195] 元类的元类的元类（爷元类）NSObject--&gt;0x10bf23e58
+
+    NSLog(@&quot;==%p&quot;,  class_getSuperclass([eocObject class]));
+    NSLog(@&quot;==%p&quot;, class_getSuperclass(class_getSuperclass([eocObject class])));
+    //2018-10-17 13:07:47.338250+0800 EOCRuntimeClass[35671:2447195] ==0x10bf23ea8
+    //2018-10-17 13:07:47.338406+0800 EOCRuntimeClass[35671:2447195] ==0x0
+}
+</code></pre><p>对象的isa在内存中的示意举例：</p>
+<p>EOCObject类-&gt;Class isa-&gt;元类-&gt;super元类（指向自己）<br>EOCObject类-&gt;Class isa-&gt;superClass-&gt;superSuperClass-&gt;nil</p>
+<p>[[EOCObject alloc] init]初始化步骤：</p>
+<blockquote>
+<ol>
+<li><p>[EOCObject alloc] 先执行，因为EOCObject检测，没有alloc方法， 就去父类里面去查找。</p>
+</li>
+<li><p>检测父类是否响应 alloc， 如果有，那么执行， 开始分配内存空间大小（成员变量）。// 方法（类有关系）</p>
+</li>
+<li><p>init 方法，检测是否响应，如果没有去父类查找。</p>
+</li>
+<li><p>方法执行完，会存缓存（所以一般第二次操作，会更快）</p>
+</li>
+</ol>
+</blockquote>
+<p>类的方法：</p>
+<pre><code>/*
+ struct objc_method {
+    SEL method_name                                          OBJC2_UNAVAILABLE;
+    char *method_types                                       OBJC2_UNAVAILABLE;
+    IMP method_imp                                           OBJC2_UNAVAILABLE;
+ }
+ IMP 是函数指针
+ SEL 方法名（和类没关系的）
+ Method 包含方法名和函数指针
+ */
+
+ static void testCMehtod(id self, SEL _cmd, NSString *argu){
+    NSLog(@&quot;%@---%@&quot;, self, argu);
+}
+
+- (void)addC_Method{
+    if(class_addMethod([self class], @selector(testCMehtod), (IMP)testCMehtod, &quot;v@:@&quot;)){
+        [self performSelector:@selector(testCMehtod) withObject:@&quot;abc&quot;];
+    }
+}
+
+//方法交换
+@implementation NSMutableDictionary (Exception)
++ (void)load {
+    [self resolveNilExceptionMethod];
+}
+
++ (void)resolveNilExceptionMethod{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    SEL originalSel = NSSelectorFromString(@&quot;setObject:forKey:&quot;);
+    SEL exceSel = @selector(haneldeException:forKey:);
+    Method originalMethod = class_getInstanceMethod(object_getClass(dict), originalSel);
+    Method exchangeMethod = class_getInstanceMethod(object_getClass(dict), exceSel);
+    method_exchangeImplementations(originalMethod, exchangeMethod);
+}
+
+- (void)haneldeException:(id)anObject forKey:(id&lt;NSCopying&gt;)aKey{
+    if (anObject == nil) {
+        NSLog(@&quot;你传了个空过来了&quot;);
+        anObject = @&quot;&quot;;
+    }
+    [self haneldeException:anObject forKey:aKey];
+}
+@end
+</code></pre><blockquote>
+<p>交换方法时为何要先实例化NSMutableDictionary？</p>
+<p>NSNumber *numberOne = [NSNumber numberWithInt:1];</p>
+<p>NSNumber *numberTwo = [NSNumber numberWithBool:YES];</p>
+<p>NSLog(@”NSNumber::%@, %@, %@”, [numberOne class], [numberTwo class], [numberThr class]);</p>
+<p>NSDictionary–&gt; mutableDict 和 不可变的 （类簇），抽象类。在实际交换中，并不是交换了NSDictionary的方法，而是交换了__NSDictionaryM 这个类的方法。object_getClass(dict)</p>
+</blockquote>
+<p>添加方法：</p>
+<pre><code>- (void)addC_Method{
+    if(class_addMethod([self class], @selector(testCMehtod), (IMP)testCMehtod, &quot;v@:@&quot;)){
+        [self performSelector:@selector(testCMehtod) withObject:@&quot;abc&quot;];
+    }
+}
+
+static void testCMehtod(id self, SEL _cmd, NSString *argu){
+    NSLog(@&quot;%@---%@&quot;, self, argu);
+}
+</code></pre><p>获取invocation</p>
+<pre><code>- (void)scanInvocation{
+    NSMethodSignature *signature = [self methodSignatureForSelector:@selector(methodIMP:TwoArg:)];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+}
+
+- (void)methodIMP:(NSString*)str TwoArg:(NSString*)testInt{
+    NSLog(@&quot;%@::%@&quot;, self, _cmd);
+}
+</code></pre><h1 id="RunTime2"><a href="#RunTime2" class="headerlink" title="RunTime2"></a>RunTime2</h1><p>给现有类动态添加方法和变量：</p>
+<pre><code>/*
+ 方法是属于类的：可以通过类别方法给类添加方法，如果原类有名称相同的方法，将会添加成功，但是在寻找执行的时候只会找到类别中的方法
+ 变量是属于实例的：如果对基类添加动态变量对内存来说将是灾难性的，只能根据关联对象方法给类关联对象
+ */
+@interface EOCObject : NSObject
+@property (nonatomic, strong)NSString *testOne;
+- (void)testMethod:(NSString*)str;
+@end
+
+@implementation EOCObject
+- (void)testMethod:(NSString*)str{
+    NSLog(@&quot;testMethod::%@&quot;, str);
+}
+@end
+
+//关联对象方法添加变量
+//添加方法时可以名称相同，通过遍历类的方法时可以看得到有两个testMethod方法存在，但执行时仅执行类别中的方法
+@interface EOCObject (AddIvar)
+@property (nonatomic,strong)TestObject *eocClassName;
+- (void)testMethod:(NSString*)str;
+@end
+
+@implementation EOCObject (AddIvar)
+- (NSString*)eocClassName{
+    return  objc_getAssociatedObject(self, &quot;eocClassName&quot;);
+}
+- (void)setEocClassName:(NSString *)eocClassName{
+    objc_setAssociatedObject(self, &quot;eocClassName&quot;, eocClassName,  OBJC_ASSOCIATION_RETAIN);
+}
+- (void)testMethod:(NSString*)str{
+    NSLog(@&quot;testMethod::%@&quot;, str);
+}
+@end
+</code></pre><p>调用方法时的动态特性</p>
+<pre><code>- (void)messaegSend{
+    NSString* (*test)(id, SEL, NSString*) =  nil;
+    test = (__typeof__(test))objc_msgSend;
+    NSLog(@&quot;%@&quot;, test(self, @selector(messageMethod:), @&quot;Test&quot;));
+}
+
+- (NSString*)messageMethod:(NSString*)test{
+    NSLog(@&quot;%@&quot;, test);
+    return @&quot;messageMethod&quot;;
+}
+</code></pre><p>block方式实现方法交换</p>
+<pre><code>+ (void)load{
+    [self exchangeMethod];
+}
+
++ (void)exchangeMethod{
+    SEL originSEL = @selector(testMethod:);
+    //  定一个函数指针（因为imp【函数指针】没有传参数的方式）
+    __block void (*originIMP)(__unsafe_unretained id, SEL, NSString*) = NULL;
+    // 将要用来替换原有的函数实现
+    id newBlock = ^(__unsafe_unretained id self, NSString *str){
+        NSLog(@&quot;newBlock::%@&quot;, str);
+        // 执行旧的方法
+        if (originIMP) {
+            originIMP(self, _cmd, str);
+        }
+    };
+
+    // 把block转化成 IMP
+    IMP newIMP = imp_implementationWithBlock(newBlock);
+    Method originMethod = class_getInstanceMethod([self class], originSEL);
+    // 替换原有的函数指针，返回原有的函数指针originIMP
+    originIMP =  (__typeof__(originIMP))method_setImplementation(originMethod, newIMP);
+    if(originIMP){
+        NSLog(@&quot;method_setImplementation 成功&quot;);
+    }
+}
+</code></pre><p>在运行时动态创建类</p>
+<pre><code>- (void)createNewClass{
+    if (NSClassFromString(EOCClassOne)) {
+        return;
+    }
+
+    // 1.动态去生成一个类
+    Class NewClass = objc_allocateClassPair(self.class, &quot;EOCClassOne&quot;, 0);
+
+    // 2.添加变量
+    if(class_addIvar(NewClass, &quot;eocStr&quot;, sizeof(NSString*), log(sizeof(NSString*)), &quot;NSString&quot;)){
+        NSLog(@&quot;添加成功&quot;);
+    }
+
+    // 3.添加属性
+    objc_property_attribute_t type = {&quot;T&quot;, &quot;@\&quot;NSString\&quot;&quot;};
+    objc_property_attribute_t owner = { &quot;C&quot;, &quot;&quot; };
+    objc_property_attribute_t ivarT = { &quot;V&quot;, &quot;_ivar1&quot;};
+    objc_property_attribute_t ivarN = { &quot;N&quot;, &quot;&quot;};
+    objc_property_attribute_t atrrs[] = {type, owner, ivarT, ivarN};
+    if(class_addProperty(NewClass, &quot;_ivar1&quot;, atrrs, 4)){
+        NSLog(@&quot;属性添加成功&quot;);
+    }
+
+    // 4.提交
+    objc_registerClassPair(NewClass);
+
+    // 提交后，不能再添加变量了，结构固定了
+    id testObject = [NewClass new];
+    [testObject setValue:@&quot;testString&quot; forKey:@&quot;eocStr&quot;];
+    NSLog(@&quot;%@&quot;, [testObject valueForKey:@&quot;eocStr&quot;]);
+
+
+    // 课堂里的bug，添加变量，可以通过下面的方式来设置和获取， KVC来操作有bug
+    Ivar ivar = class_getInstanceVariable(NewClass, &quot;_ivar1&quot;);
+    object_setIvar(testCls, ivar, @&quot;testValue&quot;);
+
+    NSLog(@&quot;::%@&quot;, object_getIvar(testCls, ivar));
+
+  //  [testCls setObject:@&quot;dd&quot; forKey:@&quot;V_ivar1&quot;]; // 这样会奔溃
+
+  //  NSLog(@&quot;%@&quot;, [testCls objectForKey:@&quot;V_ivar1&quot;]);
+
+    unsigned int outCount, i;
+    objc_property_t *properties = class_copyPropertyList([testCls class], &amp;outCount);
+    for (i = 0; i &lt; outCount; i++) {
+        objc_property_t property = properties[i];
+        fprintf(stdout, &quot;mytest %s %s\n&quot;, property_getName(property), property_getAttributes(property));
+    }
+}
+</code></pre><p>运行时的应用场景：</p>
+<ol>
+<li>NSDictionary转换为类时，动态获取类的变量或属性方法和NSDictionary的key来比较，然后类的对象直接setValue:forKey就可以完成转换</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/RunTime/" rel="tag"># RunTime</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/27/实时音频功能开发/" rel="next" title="实时音频功能开发">
+                <i class="fa fa-chevron-left"></i> 实时音频功能开发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/29/视频直播系统开发/" rel="prev" title="视频直播系统开发">
+                视频直播系统开发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RunTime1"><span class="nav-number">1.</span> <span class="nav-text">RunTime1</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RunTime2"><span class="nav-number">2.</span> <span class="nav-text">RunTime2</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

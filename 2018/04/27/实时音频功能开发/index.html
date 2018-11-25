@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,音频,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概念：先对音频的概念有一些了解  音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ">
+<meta name="keywords" content="OC,iOS,音频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实时音频功能开发">
+<meta property="og:url" content="https://frandfeng.github.io/2018/04/27/实时音频功能开发/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="概念：先对音频的概念有一些了解  音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T10:23:55.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实时音频功能开发">
+<meta name="twitter:description" content="概念：先对音频的概念有一些了解  音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2018/04/27/实时音频功能开发/">
+
+
+
+
+
+  <title>实时音频功能开发 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/04/27/实时音频功能开发/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">实时音频功能开发</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-27T00:00:00+08:00">
+                2018-04-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>概念：先对音频的概念有一些了解</p>
+<ol>
+<li><p>音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程<br>人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。<br>根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，<br>所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。</p>
+</li>
+<li><p>对声音进行采样、量化过程被称为脉冲编码调制（Pulse Code Modulation）简称PCM，PCM是最原始的音频数据完全无损，所以PCM数据虽然音质优秀但体积庞大<br>然后就诞生了一系列的音频格式，如MP3（有损压缩）目前最为常用的音频格式之一   苹果默认音频格式是aac</p>
+</li>
+<li><p>MP3格式中的码率（BitRate）代表了MP3数据的压缩质量，现在常用的码率有128kbit/s、160kbit/s、320kbit/s等等，这个值越高声音质量也就越高</p>
+</li>
+<li><p>MP3格式中的数据通常由两部分组成:<br>一部分为ID3 用来存储歌名、演唱者、专辑、音轨数等信息<br>另一部分为音频数据<br>DataOffset +（我选择的时间点／总时间）*（音频数据总长度） seek（）</p>
+</li>
+<li><p>音频数据部分以帧(frame)为单位存储，每个音频都有自己的帧头<br>帧头其中存储了采样率等解码必须的信息,所以每一个帧都可以独立于文件存在和播放<br>帧头之后存储着音频数据，这些音频数据是若干个PCM数据帧经过压缩算法压缩得到的</p>
+</li>
+</ol>
+<p>流程：之上我们就可以了解到的音频播放流程（MP3为例）</p>
+<ol>
+<li>读取MP3文件（data 每次读一千bytes）</li>
+<li>解析采样率、码率、时长等信息，分离MP3中的音频帧（看上四） （audioParse，一个文件头，音频文件数据（帧头，音频帧数据））</li>
+<li>对分离出来的音频帧解码得到PCM数据（看上五）</li>
+<li>对PCM数据进行音效处理（均衡器、混响器等，非必须）</li>
+<li>把PCM数据解码成音频信号</li>
+<li>把音频信号交给硬件播放 （播放 AudioQueue）</li>
+<li>重复1-6步直到播放完成</li>
+</ol>
+<blockquote>
+<p>业务：</p>
+<ol>
+<li><p>可以边播放边下载</p>
+</li>
+<li><p>从4步骤可以来做音效处理,需要把音频数据转换成PCM数据，<br>再由AudioUnit+AUGraph来进行音效处理和播放</p>
+</li>
+</ol>
+</blockquote>
+<ol>
+<li><p>基本流程：</p>
+<pre><code>NSString *filePath  = [[NSBundle mainBundle] pathForResource:@&quot;MP3Sample&quot; ofType:@&quot;mp3&quot;];
+fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+_fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil] fileSize];
+
+- (void)audioThread {
+    // 1 建立audioSession 会话
+    BOOL isSuccess = [eocAudioSession eocAVAudioSessionActive:YES];
+    if (!isSuccess) {
+        return;
+    }
+    isSuccess = [eocAudioSession configAVAudioSessionCategory:AVAudioSessionCategoryPlayback];
+    if (!isSuccess) {
+        return;
+    }
+
+    BOOL isEOF = NO;
+    // 需要文件size，和一个偏移量，知道文件的eof
+    while (_fileSize &gt; 0) {】
+        // 2 读音频文件 1000字节 fileHandle
+        NSData *data = nil;
+        if (!isEOF) {
+            /*
+             从网络读取数据
+             网络速度很慢，数据如果没有达到 500，要阻塞，等网络下好数据，在启动
+             网络很快，就没问题
+             */
+            data = [fileHandle readDataOfLength:500];
+            _fileOffset += data.length;
+            if (_fileOffset &gt;= _fileSize) {
+                isEOF = YES;
+                NSLog(@&quot;finish EOF&quot;);
+            }
+        }
+
+        if (_playing &amp;&amp; data) {
+            // 3 解析 eocAudioStreamParse
+            isSuccess = [eocAudioStreamParse parserAudioStream:data];
+            if (!isSuccess) {
+                NSLog(@&quot;解析数据出问题了&quot;);
+                break;
+            }
+
+            // 5 读数据（从缓冲区里读）
+            // 5.1 需要判断是否已经解析完文件头
+            if ([eocAudioStreamParse isReadyProductPacket]) {
+                // 5.2 读音频数据
+                if (!eocAudioQueueRead.audioQueue) {
+                    // 创建队列
+                    isSuccess = [eocAudioQueueRead createQueue:eocAudioStreamParse.audioStreamBasicDescription bufferSize:(UInt32)_bufferSize]; // _bufferSize*3
+                    if (!isSuccess) {
+                        NSLog(@&quot;createQueue出问题了&quot;);
+                        break;
+                    }
+                }
+
+                // 从缓冲区里读
+                if (eocBuffersPool.bufferSize &lt; _bufferSize) {
+                    // pool数据不够，那么继续解析文件数据
+                    continue;
+                }
+
+                UInt32 packetCount = 0;
+                AudioStreamPacketDescription *packetDescription;
+                NSData *streamData = [eocBuffersPool dequeuePoolStreamPacketDataSize:(UInt32)_bufferSize packetCount:&amp;packetCount audioStreamPacketDescription:&amp;packetDescription];】
+                if (streamData) {
+                    isSuccess = [eocAudioQueueRead playerAudioQueue:streamData numPackets:packetCount packetDescription:packetDescription];
+                    if (!isSuccess) {
+                        NSLog(@&quot;playerAudioQueue fail&quot;);
+                        break;
+                    }
+                } else {
+                    NSLog(@&quot;dequeuePoolStream fail&quot;);
+                    break;
+                }
+            }
+        }
+    }
+    NSLog(@&quot;finish&quot;);
+}
+
+// 4 数据缓存区
+- (void)eocAudioStreamParseForPackets:(NSArray *)packetAry{
+    [eocBuffersPool enqueuePoolStreamPacketsAry:packetAry];
+}
+</code></pre></li>
+<li><p>创建Session并设置激活、类型和监听打断</p>
+<pre><code>@implementation EOCAudioSession
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(avAudioSessionInterruptionNotification:) name:AVAudioSessionInterruptionNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(avAudioSessionRouteChangeNotification:) name:AVAudioSessionRouteChangeNotification object:nil];
+    }
+    return self;
+}
+
+- (void)avAudioSessionInterruptionNotification:(NSNotification*)notifi{
+    NSLog(@&quot;打断了&quot;);
+}
+
+- (void)avAudioSessionRouteChangeNotification:(NSNotification*)notifi{
+    NSLog(@&quot;耳机／蓝牙&quot;);
+}
+
+- (BOOL)eocAVAudioSessionActive:(BOOL)active{
+    AVAudioSession *avAudioSeesion = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+    [avAudioSeesion setActive:active error:&amp;error];
+    if (error) {
+        NSLog(@&quot;AVAudioSession setActive fail:%@&quot;, error);
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)configAVAudioSessionCategory:(NSString*)category{
+    AVAudioSession *avAudioSeesion = [AVAudioSession sharedInstance];
+    NSError *error = nil;
+    [avAudioSeesion setCategory:category error:&amp;error];
+    if (error) {
+        NSLog(@&quot;AVAudioSession setCategory fail:%@&quot;, error);
+        return NO;
+    }
+    return YES;
+}
+@end
+</code></pre></li>
+<li><p>创建头和内容解析器</p>
+<pre><code>/*
+属性解析的key值
+ kAudioFileStreamProperty_ReadyToProducePackets
+ kAudioFileStreamProperty_DataOffset
+ kAudioFileStreamProperty_BitRate
+ kAudioFileStreamProperty_DataFormat
+ kAudioFileStreamProperty_AudioDataByteCount 
+ 音频数据总量
+ */
+ //解析属性的回调
+static void EOCAudioFileStream_PropertyListenerProc(void *inClientData,
+                                             AudioFileStreamID inAudioFileStream,
+                                             AudioFileStreamPropertyID    inPropertyID,
+                                             AudioFileStreamPropertyFlags *    ioFlags){
+    EOCAudioStreamParse *eocAudioStreamParse = (__bridge EOCAudioStreamParse *)inClientData;
+    [eocAudioStreamParse handleAudioFileStream_PropertyListenerProc:inPropertyID];
+}
+
+// 解析音频数据frame的回调
+static void EOCAudioFileStream_PacketsProc(void *inClientData,
+                                    UInt32 inNumberBytes,
+                                    UInt32 inNumberPackets,
+                                    const void *inInputData,
+                                    AudioStreamPacketDescription    *inPacketDescriptions){
+    EOCAudioStreamParse *eocAudioStreamParse = (__bridge EOCAudioStreamParse *)inClientData;
+    NSData *data = [NSData dataWithBytes:inInputData length:inNumberBytes];
+    [eocAudioStreamParse handleAudioFileStream_PacketsProc:inNumberBytes Packets:inNumberPackets PacketData:data PacketDescription:inPacketDescriptions];
+}
+
+// 解析
+@implementation EOCAudioStreamParse
+- (instancetype)initWithFile:(AudioFileTypeID)fileType filezize:(UInt32)filesize{
+    self = [super init];
+    if (self) {
+        _audioFileTypeID = fileType;
+        _fileSize = filesize;
+        _isContinue = YES;
+        [self createAudioSessionStream];
+    }
+    return self;
+}
+
+//创建解析器，并设置property和packets的解析回调
+- (BOOL)createAudioSessionStream{
+    AudioFileStreamOpen((__bridge void*)self, EOCAudioFileStream_PropertyListenerProc, EOCAudioFileStream_PacketsProc, _audioFileTypeID, &amp;_audioFileStreamID);
+    return YES;
+}
+
+- (BOOL)parserAudioStream:(NSData*)data {
+  // 刚开始解析的时候，是解析的文件头,解析完的数据到了 EOCAudioFileStream_PropertyListenerProc
+    // 文件解析完后那么就是音频数据，这个之后解析的数据到了EOCAudioFileStream_PacketsProc
+    // 文件属性在文件尾，不支持流播放，返回kAudioFileStreamError_NotOptimized   seek
+    OSStatus status = AudioFileStreamParseBytes(_audioFileStreamID, (UInt32)data.length, [data bytes], _isContinue?0:kAudioFileStreamParseFlag_Discontinuity);
+    if (status != noErr) {
+        NSLog(@&quot;StreamParseBytes error!&quot;);
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)isReadyProductPacket{
+    return isReadyProductPacket;
+}
+
+// 文件属性处理
+- (void)handleAudioFileStream_PropertyListenerProc:(AudioFileStreamPropertyID)inPropertyID {
+    if (inPropertyID == kAudioFileStreamProperty_DataOffset) {
+        UInt32 size = sizeof(_audioDataOffset);
+        AudioFileStreamGetProperty(_audioFileStreamID, inPropertyID, &amp;size, &amp;_audioDataOffset);
+    } else if (inPropertyID == kAudioFileStreamProperty_BitRate) {
+        UInt32 size = sizeof(_biteRate);
+        AudioFileStreamGetProperty(_audioFileStreamID, inPropertyID, &amp;size, &amp;_biteRate);
+    } else if (inPropertyID == kAudioFileStreamProperty_AudioDataByteCount) {
+        UInt32 size = sizeof(_audioDataByteCount);
+        AudioFileStreamGetProperty(_audioFileStreamID, inPropertyID, &amp;size, &amp;_audioDataByteCount);
+    } else if (inPropertyID == kAudioFileStreamProperty_DataFormat) {
+        UInt32 size = sizeof(_audioStreamBasicDescription);
+        AudioFileStreamGetProperty(_audioFileStreamID, inPropertyID, &amp;size, &amp;_audioStreamBasicDescription);
+    } else if (inPropertyID == kAudioFileStreamProperty_ReadyToProducePackets) {
+        // 文件属性解析完了
+        isReadyProductPacket = YES;
+        _isContinue = NO;
+        [self calcultateDuration];
+    }
+}
+
+- (void)calcultateDuration{
+    if (_biteRate &gt; 0 &amp;&amp; _fileSize &gt; 0) {
+        _duration = (_fileSize-_audioDataOffset)*8.0/_biteRate;
+    }
+}
+
+// 音频帧的处理 （buffer）
+- (void)handleAudioFileStream_PacketsProc:(UInt32)inNumberBytes Packets:(UInt32)inNumberPackets PacketData:(NSData*)packetData PacketDescription:(AudioStreamPacketDescription*)inPacketDescriptions{
+    if (inNumberBytes == 0 || inNumberPackets == 0) {
+        return;
+    }
+    if (!_isContinue) {
+        _isContinue = YES;
+    }
+    if (inPacketDescriptions == NULL) {
+        NSLog(@&quot;inPacketDescriptions 是空&quot;);
+        AudioStreamPacketDescription *descriptions = malloc(sizeof(AudioStreamPacketDescription)*inNumberBytes);
+        UInt32 packSize = inNumberBytes/inNumberPackets;
+        for (int i = 0; i &lt; inNumberPackets; i++) {
+            UInt32 packeOffset = packSize * i;
+            AudioStreamPacketDescription packetDes = inPacketDescriptions[i];
+            packetDes.mStartOffset = packeOffset;
+            packetDes.mVariableFramesInPacket = 0;//自己算的，varibable设置为O
+            if (i == inNumberPackets - 1) {
+                packetDes.mDataByteSize = inNumberBytes - packeOffset;
+            }else{
+                packetDes.mDataByteSize = packSize;
+            }
+        }
+        inPacketDescriptions = descriptions;
+    }
+
+    NSMutableArray *packetAry = [NSMutableArray array];
+    for (int i = 0; i &lt; inNumberPackets; i++) {
+        AudioStreamPacketDescription packetDes = inPacketDescriptions[i];
+        SInt64 startOffset = packetDes.mStartOffset;
+        SInt64 dateSize = packetDes.mDataByteSize;
+        NSData *data = [packetData subdataWithRange:NSMakeRange(startOffset, dateSize)];
+        EOCAudioStreamPacketModel *eocAudioPacketModel = [[EOCAudioStreamPacketModel alloc] initWithPacketData:data packetDescription:packetDes];
+        [packetAry addObject:eocAudioPacketModel];
+    }
+    // 数据解析完了，回调加入pool中
+    if (self.delege &amp;&amp; [self.delege respondsToSelector:@selector(eocAudioStreamParseForPackets:)]) {
+        [self.delege eocAudioStreamParseForPackets:packetAry];
+    }
+}
+@end
+</code></pre></li>
+<li><p>创建数据池，存储已经解析了的packet，每次存入固定大小个packet，取出某个size的data</p>
+<pre><code>@implementation EOCAudioStreamPacketBuffersPool
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        _packetBufferAry = [NSMutableArray new];
+        _bufferSize = 0;
+    }
+    return self;
+}
+
+// 入池子保存解析后的音频数据
+- (void)enqueuePoolStreamPacketsAry:(NSArray*)packets{
+    for (int i = 0; i &lt; packets.count; i++) {
+        [self enqueueStreamPacket:packets[i]];
+    }
+}
+
+- (void)enqueueStreamPacket:(EOCAudioStreamPacketModel *)steamPacketsModel{
+    [_packetBufferAry addObject:steamPacketsModel];
+    _bufferSize += steamPacketsModel.data.length;
+}
+
+// 出池子，给audioQueue读  3000
+- (NSData*)dequeuePoolStreamPacketDataSize:(UInt32)dataSize packetCount:(UInt32*)packetCount audioStreamPacketDescription:(AudioStreamPacketDescription**)packetDescription{
+    if (dataSize &lt;= 0 || _packetBufferAry.count == 0) {
+        return nil;
+    }
+    NSMutableData *streamData = [NSMutableData data];
+    // 首先计算包的数量
+    int32_t packetSize = dataSize;
+    int32_t i;
+    for (i = 0; i &lt; _packetBufferAry.count; i++) {
+        EOCAudioStreamPacketModel *packetModel = _packetBufferAry[i];
+        packetSize -= packetModel.data.length;
+        if (packetSize &lt; 0) {
+            break;
+        }
+    }
+
+    // 异常
+    UInt32 pCount = (i &gt;= _packetBufferAry.count)? (UInt32)_packetBufferAry.count:(i+1);
+    *packetCount = (UInt32)pCount;
+
+    // 提供内存空间
+    if (packetDescription != NULL) {
+        *packetDescription = (AudioStreamPacketDescription*)malloc(sizeof(AudioStreamPacketDescription)*pCount);
+    }
+    for (int j = 0; j &lt; pCount; j++) {
+        EOCAudioStreamPacketModel *packetModel = _packetBufferAry[j];
+        if (packetDescription != NULL) {
+            AudioStreamPacketDescription desc = packetModel.packetDes;
+            desc.mStartOffset = streamData.length;
+            (*packetDescription)[j] = desc;
+        }
+        [streamData appendData:packetModel.data];
+    }
+
+    //从池子中移除
+    [_packetBufferAry removeObjectsInRange:NSMakeRange(0, pCount)];
+    _bufferSize -= streamData.length;
+    //NSLog(@&quot;pool总大小：%ld--减少了:%ld&quot;, _bufferSize, streamData.length);
+    return streamData;
+}
+@end
+</code></pre></li>
+<li><p>创建读取器，对pool中的packet读取，放入AudioQueueBuff中去播放，并设置播放完成后的回调</p>
+<pre><code>//播放完成Buff后的回调
+static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
+                                        AudioQueueRef inAQ,
+                                        AudioQueueBufferRef inBuffer) {
+    EOCAudioQueueRead *queueRead = (__bridge EOCAudioQueueRead*)inUserData;
+    [queueRead eocAudioQueueOutputCallback:inBuffer];
+}
+
+@implementation EOCAudioQueueRead
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        _condition = [[NSCondition alloc] init];
+        _bufferQueue = [NSMutableArray array];
+        _reuserBufferQueue = [NSMutableArray array];
+        [self _mutexInit];
+    }
+    return self;
+}
+
+- (BOOL)createQueue:(AudioStreamBasicDescription)basicDescription bufferSize:(UInt32)bufferSize{
+    _baiseDescription = basicDescription;
+    /// 可以配置回调runloop
+    OSStatus status = AudioQueueNewOutput(&amp;basicDescription, EOCAudioQueueOutputCallback, (__bridge void*)self, NULL, NULL, 0, &amp;_audioQueue);
+    if (status != noErr) {
+        NSLog(@&quot;AudioQueueNewOutput error&quot;);
+        _audioQueue = nil;
+        return NO;
+    }
+    status = AudioQueueStart(_audioQueue, NULL);
+    if (status != noErr) {
+        AudioQueueDispose(_audioQueue, YES);
+        _audioQueue = nil;
+        return NO;
+    }
+
+    UInt32 property = kAudioQueueHardwareCodecPolicy_PreferSoftware;
+    AudioQueueSetProperty(_audioQueue, kAudioQueueHardwareCodecPolicy_PreferSoftware, &amp;property, sizeof(UInt32));
+
+    _bufferSize = bufferSize;
+    if (_bufferQueue.count == 0) {
+        for (int i = 0; i &lt; EOCNumAQBufs; i++) {
+            AudioQueueBufferRef buffer;
+            status = AudioQueueAllocateBuffer(_audioQueue, bufferSize, &amp;buffer);
+            EOCAudioQueueReadModel *queueReadModel = [[EOCAudioQueueReadModel alloc] init];
+            queueReadModel.buffer = buffer;
+            [_bufferQueue addObject:queueReadModel];
+            [_reuserBufferQueue addObject:queueReadModel];
+        }
+    }
+    return YES;
+}
+
+//播放等待，当没有空余的buff来装数据时，设置等待，当读完某个buff后，会将buff清空来装载新的数据，注意锁的应用
+- (BOOL)playerAudioQueue:(NSData*)audioData numPackets:(UInt32)numPackets packetDescription:(AudioStreamPacketDescription*)packetDescs{
+    if (_reuserBufferQueue.count == 0) {
+        [self _mutexWait];
+    }
+    EOCAudioQueueReadModel *queueReadModel = [_reuserBufferQueue firstObject];
+    [_reuserBufferQueue removeObject:queueReadModel];
+    memcpy(queueReadModel.buffer-&gt;mAudioData, [audioData bytes], audioData.length);
+    queueReadModel.buffer-&gt;mAudioDataByteSize = (UInt32)audioData.length;
+    OSStatus status = AudioQueueEnqueueBuffer(_audioQueue, queueReadModel.buffer, numPackets, packetDescs);
+    if (status != noErr) {
+        NSLog(@&quot;AudioQueueEnqueueBuffer error&quot;);
+        return NO;
+    }else{
+        if (_reuserBufferQueue.count == 0) {
+            if (!_started &amp;&amp; ![self _start]) {
+                return NO;
+            }
+        }
+    }
+    return YES;
+}
+
+- (void)eocAudioQueueOutputCallback:(AudioQueueBufferRef)inBuffer{
+    for (int i = 0; i &lt; _bufferQueue.count; i++) {
+        EOCAudioQueueReadModel *readModel = _bufferQueue[i];
+        if (readModel.buffer == inBuffer) {
+            // 重新利用
+            [_reuserBufferQueue addObject:readModel];
+            break;
+        }
+    }
+    // 有新的可以利用了
+    [self _mutexSignal];
+    // [_condition signal];
+    // NSLog(@&quot;signal~&quot;);
+}
+
+- (BOOL)_start{
+    OSStatus status =  AudioQueueStart(_audioQueue, NULL);
+    _started = status == noErr;
+    return _started;
+}
+
+- (BOOL)pause{
+    // 马上停止／读完缓存再停止
+    AudioQueueStop(_audioQueue, YES);
+    AudioQueuePause(_audioQueue);
+    return YES;
+}
+
+- (void)_mutexInit{
+    pthread_mutex_init(&amp;_mutex, NULL);
+    pthread_cond_init(&amp;_cond, NULL);
+}
+
+- (void)_mutexDestory {
+    pthread_mutex_destroy(&amp;_mutex);
+    pthread_cond_destroy(&amp;_cond);
+}
+
+- (void)_mutexWait{
+    pthread_mutex_lock(&amp;_mutex);
+    //NSLog(@&quot;我在等待&quot;);
+    pthread_cond_wait(&amp;_cond, &amp;_mutex);
+    pthread_mutex_unlock(&amp;_mutex);
+}
+
+- (void)_mutexSignal {
+    pthread_mutex_lock(&amp;_mutex);
+   // NSLog(@&quot;不用等待了&quot;);
+    pthread_cond_signal(&amp;_cond);
+    pthread_mutex_unlock(&amp;_mutex);
+}
+@end
+</code></pre></li>
+<li><p>将本地数据改成网络音频数据</p>
+<pre><code>@implementation EOCAudioStreamNet
+- (void)startLoadMusic:(NSString*)urlStr offset:(long)offset {
+    if (urlStr.length == 0)
+        return;
+    if (_task) {
+        [_task cancel];
+    }
+    NSURL *musicUrl = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:musicUrl];
+    [request setHTTPMethod:@&quot;GET&quot;];
+    [request setCachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData];
+    if (offset &gt; 0) {
+        [request setValue:[NSString stringWithFormat:@&quot;bytes=%@-&quot;, @(offset)] forHTTPHeaderField:@&quot;Range&quot;];
+    }
+
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+    _task = [session dataTaskWithRequest:request];
+    if (_task) {
+        [_task resume];
+    }
+}
+
+// 每次读1000
+- (NSData*)readDataOfLength:(int)length{
+    NSData *backMusicData = nil;
+    if (audioNetData.length - audioReadedData.length &gt;= length) {
+        backMusicData = [audioNetData subdataWithRange:NSMakeRange(audioReadedData.length, length)];
+    }else{
+        // 数据不足length 读取数据阻塞，等网络下载到足够的数据时再解锁读取
+        [self waitNetData];
+    }
+    [audioReadedData appendData:backMusicData];
+    return backMusicData;
+}
+
+- (void)_mutexInit{
+    pthread_mutex_init(&amp;_mutex, NULL);
+    pthread_cond_init(&amp;_cond, NULL);
+}
+
+- (void)waitNetData{
+    NSLog(@&quot;waitNetData&quot;);
+    pthread_mutex_lock(&amp;_mutex);
+    pthread_cond_wait(&amp;_cond, &amp;_mutex);
+    pthread_mutex_unlock(&amp;_mutex);
+}
+
+- (void)signalEnughtData{
+    NSLog(@&quot;数据足了&quot;);
+    pthread_mutex_lock(&amp;_mutex);
+    pthread_cond_signal(&amp;_cond);
+    pthread_mutex_unlock(&amp;_mutex);
+}
+
+- (void)mutexDestory{
+    pthread_mutex_destroy(&amp;_mutex);
+    pthread_cond_destroy(&amp;_cond);
+}
+
+#pragma  mark - NSURLSession Delegate
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler{
+    completionHandler(NSURLSessionResponseAllow);
+    audioNetData = [NSMutableData data];
+    audioReadedData  = [NSMutableData data];
+    if (self.delegate &amp;&amp; [self.delegate respondsToSelector:@selector(netHandleDataWithResponse:)]) {
+        NSHTTPURLResponse *httpRespon = (NSHTTPURLResponse*)response;
+        [self.delegate netHandleDataWithResponse:httpRespon.allHeaderFields];
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data{
+    [audioNetData appendData:data];
+    [self signalEnughtData];
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error{
+    _isFinish = YES;
+}
+
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
+}
+@end
+</code></pre></li>
+</ol>
+<p>总结：</p>
+<p> AudioQueue的工作模式</p>
+<ol>
+<li>在使用AudioQueue之前首先必须理解其工作模式，它之所以这么命名是因为在其内部有一套缓冲队列BufferQueue的机制。</li>
+<li><p>在AudioQueue启动之后需要通过AudioQueueAllocateBuffer生成若干个AudioQueueBufferRef结构，</p>
+<ul>
+<li>这些Buffer将用来存储即将要播放的音频数据，</li>
+<li>并且这些Buffer是受生成他们的AudioQueue实例管理的，<br>内存空间也已经被分配（按照Allocate方法的参数），</li>
+<li>当AudioQueue被Dispose时这些Buffer也会随之被销毁。</li>
+</ul>
+</li>
+<li><p>当有音频数据需要被播放时首先需要被memcpy到AudioQueueBufferRef的mAudioData中（mAudioData所指向的内存已经被分配，之前AudioQueueAllocateBuffer所做的工作），并给mAudioDataByteSize字段赋值传入的数据大小。</p>
+</li>
+<li>完成之后需要调用AudioQueueEnqueueBuffer把存有音频数据的Buffer插入到AudioQueue内置的Buffer队列中。</li>
+<li>在Buffer队列中有buffer存在的情况下调用AudioQueueStart，此时AudioQueue就回按照Enqueue顺序逐个使用Buffer队列中的buffer进行播放，<br>每当一个Buffer使用完毕之后就会从Buffer队列中被移除并且在使用者指定的RunLoop上触发一个回调来告诉使用者</li>
+<li>某个AudioQueueBufferRef对象已经使用完成，你可以继续重用这个对象来存储后面的音频数据。如此循环往复音频数据就会被逐个播放直到结束。</li>
+</ol>
+<p>根据Apple提供的AudioQueue工作原理结合自己理解，可以得到其工作流程大致如下：</p>
+<ol>
+<li>创建AudioQueue，创建一个自己的buffer数组BufferArray;</li>
+<li>使用AudioQueueAllocateBuffer创建若干个AudioQueueBufferRef，放入BufferArray；</li>
+<li>有数据时从BufferArray取出一个buffer，memcpy数据后用AudioQueueEnqueueBuffer方法把buffer插入AudioQueue中；</li>
+<li>AudioQueue中存在Buffer后，调用AudioQueueStart播放。（具体等到填入多少buffer后再播放可以自己控制，只要能保证播放不间断即可）；</li>
+<li>AudioQueue播放音乐后消耗了某个buffer，在另一个线程回调并送出该buffer，把buffer放回BufferArray供下一次使用；</li>
+<li>返回步骤3继续循环直到播放结束</li>
+</ol>
+<p>从以上步骤其实不难看出，AudioQueue播放的过程其实就是一个典型的生产者消费者问题。生产者是AudioFileStream，它们生产处音频数据帧，放入到AudioQueue的buffer队列中，直到buffer填满后需要等待消费者消费；AudioQueue作为消费者，消费了buffer队列中的数据，并且在另一个线程回调通知数据已经被消费,生产者可以继续生产。所以在实现AudioQueue播放音频的过程中必然会接触到一些多线程同步、信号量的使用、死锁的避免等等问题。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/音频/" rel="tag"># 音频</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/30/YYImage框架解析/" rel="next" title="YYImage框架解析">
+                <i class="fa fa-chevron-left"></i> YYImage框架解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/25/iOSRunTime/" rel="prev" title="iOSRunTime">
+                iOSRunTime <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,MJRefresh,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="MJRefresh框架级解析之HeaderView UIScrollView扩展属性HeaderView @interface UIScrollView (UIScrollView_EOCRefresh) @property(nonatomic, strong)EOCRefreshHeaderView *EOCRefreshHeaderView; @end  @implementation UIS">
+<meta name="keywords" content="OC,iOS,MJRefresh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MJRefresh框架级解析">
+<meta property="og:url" content="https://frandfeng.github.io/2017/08/25/MJRefresh框架级解析/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="MJRefresh框架级解析之HeaderView UIScrollView扩展属性HeaderView @interface UIScrollView (UIScrollView_EOCRefresh) @property(nonatomic, strong)EOCRefreshHeaderView *EOCRefreshHeaderView; @end  @implementation UIS">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:58:43.914Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MJRefresh框架级解析">
+<meta name="twitter:description" content="MJRefresh框架级解析之HeaderView UIScrollView扩展属性HeaderView @interface UIScrollView (UIScrollView_EOCRefresh) @property(nonatomic, strong)EOCRefreshHeaderView *EOCRefreshHeaderView; @end  @implementation UIS">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2017/08/25/MJRefresh框架级解析/">
+
+
+
+
+
+  <title>MJRefresh框架级解析 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/08/25/MJRefresh框架级解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MJRefresh框架级解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-25T00:00:00+08:00">
+                2017-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="MJRefresh框架级解析之HeaderView"><a href="#MJRefresh框架级解析之HeaderView" class="headerlink" title="MJRefresh框架级解析之HeaderView"></a>MJRefresh框架级解析之HeaderView</h1><ol>
+<li><p>UIScrollView扩展属性HeaderView</p>
+<pre><code>@interface UIScrollView (UIScrollView_EOCRefresh)
+@property(nonatomic, strong)EOCRefreshHeaderView *EOCRefreshHeaderView;
+@end
+
+@implementation UIScrollView (UIScrollView_EOCRefresh)
+- (EOCRefreshHeaderView *)EOCRefreshHeaderView {
+    return objc_getAssociatedObject(self, @selector(EOCRefreshHeaderView));
+}
+
+- (void)setEOCRefreshHeaderView:(EOCRefreshHeaderView *)EOCRefreshHeaderView {
+    if (self.EOCRefreshHeaderView != EOCRefreshHeaderView) {
+        //移除之前的下拉刷新控件，保证一个scrollView只有一个下拉刷新控件
+        [self.EOCRefreshHeaderView removeFromSuperview];
+        objc_setAssociatedObject(self, @selector(EOCRefreshHeaderView), EOCRefreshHeaderView, OBJC_ASSOCIATION_RETAIN);
+        //添加到界面上，两种方式都可以的
+        [self addSubview:self.EOCRefreshHeaderView];
+        //[self insertSubview:self.EOCRefreshHeaderView atIndex:0];
+    } 
+}
+</code></pre></li>
+<li><p>定义HeaderView的状态</p>
+<pre><code>typedef NS_ENUM(NSInteger, EOCRefreshState) {
+    EOCRefreshStateIdle = 1,        //闲置状态
+    EOCRefreshStatePulling,         //释放就刷新的状态
+    EOCRefreshStateRefreshing,      //正在刷新状态
+};
+</code></pre></li>
+<li><p>定义RefreshBaseView</p>
+<pre><code>typedef void(^eocrefreshBlock)(void);
+@interface EOCRefreshBaseView : UIView
+@property(nonatomic, strong)eocrefreshBlock headerRefreshingBlock;
+@property(nonatomic, strong)UIScrollView *scrollView;
+@property(nonatomic, assign)EOCRefreshState state;
+@property(nonatomic, assign)CGFloat pullingPercent;
+//方法
+- (void)placeSubViews;
+- (void)scrollViewOffsetChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change;
+- (void)beginRefresh;
+- (void)endRefresh;
+- (void)prepare;
+@end
+</code></pre></li>
+<li><p>实现RefreshBaseView</p>
+<pre><code>@implementation EOCRefreshBaseView
+//init
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    [self prepare];
+    self.state = EOCRefreshStateIdle;
+    return self;
+}
+- (void)prepare {
+    self.backgroundColor = [UIColor redColor];
+}
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self placeSubViews];
+}
+- (void)placeSubViews{}
+- (void)setState:(EOCRefreshState)state {
+    _state = state;
+}
+
+//你这个控件还没有添加到superView上（因为是will），会触发了这个方法；（当你的控件添加到superView的时候调用 ；  当你从superView移除的时候  它也会调用）
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    //当你移除的时候，你这个newSuperView为nil；所以要在判断的外面移除
+    [self.superview removeObserver:self forKeyPath:@&quot;contentOffset&quot;];
+    if (newSuperview &amp;&amp; [newSuperview isKindOfClass:[UIScrollView class]]) {
+        //添加了对newSuperView的kvo的观察机制
+        UIScrollView *scrollView = (UIScrollView *)newSuperview;
+        self.scrollView = scrollView;
+        [scrollView addObserver:self forKeyPath:@&quot;contentOffset&quot; options:NSKeyValueObservingOptionNew context:nil];
+        ///设置一下frame 的宽度和x坐标
+        self.eoc_w = scrollView.eoc_w;
+        self.eoc_x = 0.f;
+    }
+}
+
+- (void)beginRefresh {
+    if (self.headerRefreshingBlock) {
+        self.headerRefreshingBlock();
+    }
+}
+
+- (void)endRefresh {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@&quot;lastUpdateDate&quot;];
+    self.state = EOCRefreshStateIdle;
+}
+
+#pragma mark - KVO的实现
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context {
+    if ([keyPath isEqualToString:@&quot;contentOffset&quot;]) {
+        [self scrollViewOffsetChanged:change];
+    }
+}
+
+- (void)scrollViewOffsetChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change {}
+
+@end
+</code></pre></li>
+<li><p>定义EOCRefreshHeaderView(最简单headerview，无任何内容)</p>
+<pre><code>@interface EOCRefreshHeaderView : EOCRefreshBaseView
++ (instancetype)headerWithRefreshingBlock:(eocrefreshBlock)block;
+@end
+</code></pre></li>
+<li><p>实现EOCRefreshHeaderView</p>
+<pre><code>@implementation EOCRefreshHeaderView
++ (instancetype)headerWithRefreshingBlock:(eocrefreshBlock)block {
+    //如果你在外层，是通过[EOCRefreshStateHeaderView headerWithRefreshingBlock]
+    //父类 *对象 = 子类 alloc init 没问题
+    //子类 *对象 = 父类 alloc init 有问题   对象（父类对象）.子类方法  会崩溃
+    EOCRefreshHeaderView *headerView = [[self alloc] init];
+    headerView.headerRefreshingBlock = block;
+    return headerView;
+}
+
+- (void)placeSubViews {
+    [super placeSubViews];
+    self.eoc_h = 50.f;
+    self.eoc_y = -self.eoc_h;
+}
+
+//完成kvo的实现
+- (void)scrollViewOffsetChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change {
+    //superView的offset
+    CGFloat yOffset = self.scrollView.contentOffset.y;
+    //临界值
+    CGFloat boundararyOffset = -self.eoc_h;
+    CGFloat alphaRatio = (-yOffset)/self.eoc_h;
+    self.pullingPercent = alphaRatio;
+    if (self.state == EOCRefreshStateRefreshing) {
+        self.alpha = 1.f;
+        return;
+    }
+
+    if (self.scrollView.isDragging) {  //你的superView：也就是scrollVIew正在被拖动
+        self.alpha = alphaRatio;
+        if (self.state == EOCRefreshStateIdle &amp;&amp; yOffset &lt;= boundararyOffset) {
+            self.state = EOCRefreshStatePulling;
+        } else if (self.state == EOCRefreshStatePulling &amp;&amp; yOffset &gt; boundararyOffset)  {
+            self.state = EOCRefreshStateIdle;
+        }
+    } else {  //你的superView：也就是scrollVIew停止拖动的时候
+        if (self.state == EOCRefreshStatePulling) {  //此时是释放立即刷新的状态
+            self.state = EOCRefreshStateRefreshing;
+        }
+        self.alpha = alphaRatio;
+    }
+}
+
+- (void)setState:(EOCRefreshState)state {
+    [super setState:state];
+    if (state == EOCRefreshStateRefreshing) {
+        //悬停设置
+        [UIView animateWithDuration:0.2f animations:^{
+            self.scrollView.contentInset = UIEdgeInsetsMake(self.eoc_h, 0.f, 0.f, 0.f);
+        }];
+        //开始刷新
+        [self beginRefresh];
+    } else if (state == EOCRefreshStateIdle) {
+        //恢复默认值，也就是初始值
+        [UIView animateWithDuration:0.4f animations:^{
+            self.scrollView.contentInset = UIEdgeInsetsZero;
+        }];
+    }
+}
+</code></pre></li>
+<li><p>定义EOCRefreshStateHeaderView（文字型提示）</p>
+<pre><code>@interface EOCRefreshStateHeaderView : EOCRefreshHeaderView
+@property(nonatomic, strong)UILabel *descriptionLable;
+@property(nonatomic, strong)UILabel *lastUpdatedTimeLabel;
+@end
+</code></pre></li>
+<li><p>实现EOCRefreshStateHeaderView</p>
+<pre><code>@implementation EOCRefreshStateHeaderView
+- (void)prepare {
+    [super prepare];
+    [self addSubview:self.descriptionLable];
+    [self addSubview:self.lastUpdatedTimeLabel];
+}
+
+//就相当于调用了layoutSubViews，改变子view的frame
+- (void)placeSubViews {
+    [super placeSubViews];
+    //改变两个label的frame
+    self.descriptionLable.frame = ({
+        CGRect frame = self.bounds;
+        frame.size.height = self.eoc_h/2;
+        frame;
+    });
+    self.lastUpdatedTimeLabel.frame = ({
+        CGRect frame = self.bounds;
+        frame.origin.y = self.descriptionLable.eoc_h;
+        frame.size.height = self.eoc_h/2;
+        frame;
+    });
+
+}
+
+- (void)setState:(EOCRefreshState)state {
+    [super setState:state];
+    if (state == EOCRefreshStateIdle) {
+        self.descriptionLable.text = @&quot;下拉进行刷新&quot;;
+        //上次更新的时间
+        self.lastUpdatedTimeLabel.text = [self lastUpdatedTime];
+    } else if (state == EOCRefreshStatePulling) {
+        self.descriptionLable.text = @&quot;松开即将刷新&quot;;
+    } else if (state == EOCRefreshStateRefreshing) {
+        self.descriptionLable.text = @&quot;正在刷新...&quot;;
+    }
+}
+</code></pre></li>
+<li><p>定义EOCRefreshNormalHeaderView（不仅有文字还有箭头和加载圈）</p>
+<pre><code>@interface EOCRefreshNormalHeaderView : EOCRefreshStateHeaderView
+@property(nonatomic, strong)UIImageView *arrowImageView;
+@property(nonatomic, strong)UIActivityIndicatorView *loadView;
+@end
+</code></pre></li>
+<li><p>实现EOCRefreshNormalHeaderView</p>
+<pre><code>- (void)prepare {
+    [super prepare];
+    [self addSubview:self.arrowImageView];
+    [self addSubview:self.loadView];
+    self.loadView.hidden = YES;
+}
+
+- (void)placeSubViews {
+    [super placeSubViews];
+    CGFloat descritionTextWidth = self.descriptionLable.textWidth;
+    CGFloat lastTimeTextWidth = self.lastUpdatedTimeLabel.textWidth;
+    CGFloat actualWidth = (descritionTextWidth&gt;lastTimeTextWidth?descritionTextWidth:lastTimeTextWidth);
+    self.arrowImageView.center = CGPointMake((self.eoc_w-actualWidth)/4, self.eoc_h/2);
+    self.arrowImageView.eoc_size = self.arrowImageView.image.size;
+    self.loadView.center = CGPointMake((self.eoc_w-actualWidth)/4, self.eoc_h/2);
+    self.loadView.eoc_size = self.arrowImageView.image.size;
+}
+
+- (void)setState:(EOCRefreshState)state {
+    [super setState:state];
+    //1、角度为正，顺时针；角度为负，逆时针
+    //3、基本按照最短路径来，如果顺时针、逆时针角度一样的，按顺时针来
+    if (state == EOCRefreshStatePulling) {
+        [UIView animateWithDuration:0.2f animations:^{
+            self.arrowImageView.transform = CGAffineTransformMakeRotation(0.0001-M_PI);
+        }];
+    } else if (state == EOCRefreshStateIdle) {
+        [self.loadView stopAnimating];
+        [UIView animateWithDuration:0.2f animations:^{
+             self.arrowImageView.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished) {
+            self.arrowImageView.hidden = NO;
+            self.loadView.hidden = YES;
+        }];
+    } else if (state == EOCRefreshStateRefreshing) {
+        self.arrowImageView.hidden = YES;
+        self.loadView.hidden = NO;
+        [self.loadView startAnimating];
+    }
+}
+</code></pre></li>
+<li><p>定义EOCRefreshGifHeader</p>
+<pre><code>@interface EOCRefreshGifHeader : EOCRefreshStateHeaderView
+/** 设置state状态下的动画图片images 动画持续时间duration*/
+- (void)setImages:(NSArray *)images duration:(NSTimeInterval)duration forState:(EOCRefreshState)state;
+- (void)setImages:(NSArray *)images forState:(EOCRefreshState)state;
+@property (nonatomic, strong)UIImageView *gifImageView;
+@property (nonatomic, strong)NSArray *images;
+@property (nonatomic, strong)NSMutableDictionary *stateImages;
+@property (nonatomic, strong)NSMutableDictionary *stateAnimationDurations;
+@end
+</code></pre></li>
+<li><p>实现EOCRefreshGifHeader</p>
+<pre><code>@implementation EOCRefreshGifHeader
+- (void)setImages:(NSArray *)images duration:(NSTimeInterval)duration forState:(EOCRefreshState)state {
+    self.stateImages[@(state)] = images;
+    self.stateAnimationDurations[@(state)] = @(duration);
+}
+- (void)setImages:(NSArray *)images forState:(EOCRefreshState)state {
+    [self setImages:images duration:images.count * 0.1 forState:state];
+
+}
+#pragma mark - 覆盖父类方法
+- (void)prepare {
+    [super prepare];
+    [self addSubview:self.gifImageView];
+}
+
+- (void)placeSubViews {
+    [super placeSubViews];
+    CGFloat stateTextWidth = self.descriptionLable.textWidth;
+    CGFloat lastTimeTextWidth = self.lastUpdatedTimeLabel.textWidth;
+    CGFloat finalTextWidth = MAX(stateTextWidth, lastTimeTextWidth);
+    self.gifImageView.eoc_size = _gifImageView.image.size;
+    self.gifImageView.center = CGPointMake((self.eoc_w - finalTextWidth)/4, self.eoc_h/2);
+    self.gifImageView.image = [_stateImages[@(EOCRefreshStateIdle)] firstObject];
+}
+
+- (void)setState:(EOCRefreshState)state {
+    [super setState:state];
+    if (state == EOCRefreshStateRefreshing || state == EOCRefreshStatePulling) {
+        _gifImageView.animationImages = _stateImages[@(EOCRefreshStateRefreshing)];
+        _gifImageView.animationDuration = [_stateAnimationDurations[@(EOCRefreshStateRefreshing)] doubleValue];
+        [_gifImageView startAnimating];
+    } else if (state == EOCRefreshStateIdle) {
+        [_gifImageView stopAnimating];
+    }
+}
+</code></pre></li>
+<li><p>定义和实现EOCRefreshChiBaoZhiHeader</p>
+<pre><code>@interface EOCRefreshChiBaoZhiHeader : EOCRefreshGifHeader
+@end
+@implementation EOCRefreshChiBaoZhiHeader
+#pragma mark - 覆盖父类方法
+- (void)prepare {
+    [super prepare];
+    // 设置空闲状态的动画图片
+    NSMutableArray *idleImages = [NSMutableArray array];
+    for (NSUInteger i = 1; i&lt;=60; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@&quot;dropdown_anim__000%zd&quot;, i]];
+        [idleImages addObject:image];
+    }
+    [self setImages:idleImages forState:EOCRefreshStateIdle];
+    // 设置即将刷新状态的动画图片（一松开就会刷新的状态）
+    NSMutableArray *refreshingImages = [NSMutableArray array];
+    for (NSUInteger i = 1; i&lt;=3; i++) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@&quot;dropdown_loading_0%zd&quot;, i]];
+        [refreshingImages addObject:image];
+    }
+    [self setImages:refreshingImages forState:EOCRefreshStateRefreshing];
+}
+</code></pre></li>
+</ol>
+<h1 id="MJRefresh框架级解析之FooterView"><a href="#MJRefresh框架级解析之FooterView" class="headerlink" title="MJRefresh框架级解析之FooterView"></a>MJRefresh框架级解析之FooterView</h1><ol>
+<li><p>定义EOCRefreshFooter</p>
+<pre><code>@interface EOCRefreshFooter : EOCRefreshBaseView
++ (instancetype)footerWithRefreshingBlock:(eocrefreshBlock)block;
+- (void)endRefreshWithNomoreData;
+@end
+</code></pre></li>
+<li><p>实现EOCRefreshFooter</p>
+<pre><code>@implementation EOCRefreshFooter
++ (instancetype)footerWithRefreshingBlock:(eocrefreshBlock)block {
+    EOCRefreshFooter *footerView = [[self alloc] init];
+    footerView.refreshingBlock = block;
+    return footerView;
+}
+- (void)placeSubViews {
+    self.eoc_h = 50.f;
+}
+- (void)endRefreshWithNomoreData {
+    self.state = EOCRefreshStateNoMoreData;
+}
+- (void)setState:(EOCRefreshState)state {
+    [super setState:state];
+}
+@end
+</code></pre></li>
+<li><p>定义和实现EOCRefreshAutoFooter</p>
+<pre><code>@interface EOCRefreshAutoFooter : EOCRefreshFooter
+@end
+@implementation EOCRefreshAutoFooter
+- (void)placeSubViews {
+    [super placeSubViews];
+    //修改self的布局:baseView:x,width   refreshFooter:height  现在：y
+    self.eoc_y = self.scrollView.contentSize.height;
+}
+
+//当scrollView的内容超过frame的时候，根据偏移量修改状态
+- (void)scrollViewOffsetChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change {
+    [super scrollViewContentSizeChanged:change];
+    CGFloat yOffset = self.scrollView.contentOffset.y;
+    CGFloat boundararyOffsetY;
+    if (self.scrollView.contentSize.height &gt; self.scrollView.frame.size.height) {
+        boundararyOffsetY = self.scrollView.contentSize.height - self.scrollView.frame.size.height + self.frame.size.height;
+        if (self.state != EOCRefreshStateRefreshing &amp;&amp; yOffset &gt; boundararyOffsetY)  {
+            self.state = EOCRefreshStateRefreshing;
+        }
+    }
+}
+
+//监听ContentSize，每次contentSize变化的时候，重新定义Refresh的位置
+- (void)scrollViewContentSizeChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change {
+    [super scrollViewContentSizeChanged:change];
+    self.eoc_y = self.scrollView.contentSize.height;
+}
+
+//如果此时在一屏的时候往上拉
+- (void)scrollViewGestureStateChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change {
+    [super scrollViewGestureStateChanged:change];
+    if (self.scrollView.frame.size.height &gt; self.scrollView.contentSize.height) {
+        CGPoint transitionPoint = [self.scrollView.panGestureRecognizer translationInView:self.scrollView];
+        if (transitionPoint.y &lt; 0 &amp;&amp; self.scrollView.panGestureRecognizer.state == UIGestureRecognizerStateEnded &amp;&amp; self.state != EOCRefreshStateRefreshing) {
+            self.state = EOCRefreshStateRefreshing;
+        }
+    }
+}
+
+- (void)setState:(EOCRefreshState)state {
+    [super setState:state];
+    if (state == EOCRefreshStateRefreshing) {
+        [self beginRefresh];
+    }
+}
+</code></pre></li>
+<li><p>定义和实现EOCRefreshBackFooter</p>
+<pre><code>@interface EOCRefreshBackFooter : EOCRefreshFooter
+@end
+@implementation EOCRefreshBackFooter
+
+- (void)placeSubViews {
+    [super placeSubViews];
+    [self scrollViewContentSizeChanged:nil];  
+}
+
+- (void)scrollViewContentSizeChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change {
+    [super scrollViewContentSizeChanged:change];
+    //分为两种情况1、内容小于frame  2、内容大于等于frame
+    if (self.scrollView.contentSize.height &gt; self.scrollView.frame.size.height) {
+        self.eoc_y = self.scrollView.contentSize.height;
+    } else {
+        self.eoc_y = self.scrollView.frame.size.height-self.originalInsets.top;
+    }
+}
+
+//监听offset的改变，修改状态
+- (void)scrollViewOffsetChanged:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change {
+    [super scrollViewOffsetChanged:change];
+    CGFloat yOffset = self.scrollView.contentOffset.y;
+    CGFloat boundararyOffsetY;   //边界值
+    if (self.scrollView.contentSize.height &lt; self.scrollView.frame.size.height) {
+        //内容小于frame
+        boundararyOffsetY = self.frame.size.height-self.originalInsets.top;
+    } else {
+        //内容大于frame
+        boundararyOffsetY = self.scrollView.contentSize.height - self.scrollView.frame.size.height + self.frame.size.height;
+    }
+
+    //刚刚出现footer的时候的偏移
+    CGFloat theFooterBoundararyOffset;
+    if (self.scrollView.contentSize.height &lt; self.scrollView.frame.size.height) {
+        theFooterBoundararyOffset = - self.originalInsets.top;
+    } else {
+        theFooterBoundararyOffset = self.scrollView.contentSize.height - self.scrollView.frame.size.height;
+    }
+    CGFloat alphaRatio = (yOffset-theFooterBoundararyOffset)/self.frame.size.height;
+    self.pullingPercent = alphaRatio;
+
+    if (self.state == EOCRefreshStateRefreshing) {
+        self.alpha = 1.f;  //当你刷新的时候，alpha不需要改变
+        return;
+    }
+    self.originalInsets = self.scrollView.contentInset;
+    if (self.scrollView.isDragging) {
+        self.alpha = alphaRatio;
+        if (yOffset &gt;= boundararyOffsetY) {
+            self.state = EOCRefreshStatePulling;
+        } else {
+            self.state = EOCRefreshStateIdle;
+        }
+    } else {
+        if (self.state == EOCRefreshStatePulling) {
+            self.state = EOCRefreshStateRefreshing;
+        }
+        self.alpha = alphaRatio;
+    }
+}
+
+- (void)setState:(EOCRefreshState)state {
+    [super setState:state];
+    if (state == EOCRefreshStateRefreshing) {
+        CGFloat insetBottom;
+        //内容小于frame
+        if (self.scrollView.contentSize.height &lt; self.scrollView.frame.size.height) {
+            insetBottom = self.scrollView.frame.size.height - self.scrollView.contentSize.height + self.frame.size.height - self.originalInsets.top;
+        } else {
+            //内容大于frame
+            insetBottom = self.frame.size.height;
+        }
+
+        //能够完全显示上拉刷新控件
+        [UIView animateWithDuration:0.2f animations:^{
+            self.scrollView.eoc_insetB = insetBottom;
+        } completion:^(BOOL finished) {
+            [self beginRefresh];
+        }];
+    } else if (state == EOCRefreshStateIdle || state == EOCRefreshStateNoMoreData){
+        [UIView animateWithDuration:0.4f animations:^{
+            self.scrollView.eoc_insetB = self.originalInsets.bottom;
+        }];
+    }
+}
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/MJRefresh/" rel="tag"># MJRefresh</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/28/带你掌握微信朋友圈实现/" rel="next" title="带你掌握微信朋友圈实现">
+                <i class="fa fa-chevron-left"></i> 带你掌握微信朋友圈实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/" rel="prev" title="APP文件结构分析(沙盒分析)+数据存储安全">
+                APP文件结构分析(沙盒分析)+数据存储安全 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MJRefresh框架级解析之HeaderView"><span class="nav-number">1.</span> <span class="nav-text">MJRefresh框架级解析之HeaderView</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MJRefresh框架级解析之FooterView"><span class="nav-number">2.</span> <span class="nav-text">MJRefresh框架级解析之FooterView</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

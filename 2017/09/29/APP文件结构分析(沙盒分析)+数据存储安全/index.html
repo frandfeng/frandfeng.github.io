@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,App文件结构,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="APP文件结构分析(沙盒分析)+数据存储安全 沙盒结构分析 /*  Documents (backup 备份){             大文件要做 非备份设置（如视频文件，多媒体文件）             审核的，如果检查出来，就会被拒         }   Librayry     1 Caches{         系统的缓存存放在这个文件夹（如NSURLSessionTask的net">
+<meta name="keywords" content="iOS,App文件结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="APP文件结构分析(沙盒分析)+数据存储安全">
+<meta property="og:url" content="https://frandfeng.github.io/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="APP文件结构分析(沙盒分析)+数据存储安全 沙盒结构分析 /*  Documents (backup 备份){             大文件要做 非备份设置（如视频文件，多媒体文件）             审核的，如果检查出来，就会被拒         }   Librayry     1 Caches{         系统的缓存存放在这个文件夹（如NSURLSessionTask的net">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:59:51.492Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="APP文件结构分析(沙盒分析)+数据存储安全">
+<meta name="twitter:description" content="APP文件结构分析(沙盒分析)+数据存储安全 沙盒结构分析 /*  Documents (backup 备份){             大文件要做 非备份设置（如视频文件，多媒体文件）             审核的，如果检查出来，就会被拒         }   Librayry     1 Caches{         系统的缓存存放在这个文件夹（如NSURLSessionTask的net">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/">
+
+
+
+
+
+  <title>APP文件结构分析(沙盒分析)+数据存储安全 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">APP文件结构分析(沙盒分析)+数据存储安全</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-29T00:00:00+08:00">
+                2017-09-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="APP文件结构分析-沙盒分析-数据存储安全"><a href="#APP文件结构分析-沙盒分析-数据存储安全" class="headerlink" title="APP文件结构分析(沙盒分析)+数据存储安全"></a>APP文件结构分析(沙盒分析)+数据存储安全</h1><ol>
+<li><p>沙盒结构分析</p>
+<pre><code>/*
+ Documents (backup 备份){
+            大文件要做 非备份设置（如视频文件，多媒体文件）
+            审核的，如果检查出来，就会被拒
+        }
+
+ Librayry
+    1 Caches{
+        系统的缓存存放在这个文件夹（如NSURLSessionTask的net获取缓存XXX/Cache/com.test.eoc/Cache.db）
+    }
+    2 Preferences (backup 备份) (如 NSUserDefaults存储在XXX/Preferences/com.test.eoc.plist
+
+ tmp 临时文件夹（系统会不定期删除里面的文件）
+    不重要性的文件 （断点下载的时候 （当文件下载没完成的时候，下载完之后会转移到目的文件夹））
+ */
+</code></pre></li>
+<li><p>Bundle分析</p>
+<pre><code>Bundle里边存放的是资源文件，不参与编译
+
+Bundle中的资源icon.png，在xib中设置icon.png，其在xib中正常显示，而在运行时显示不正常，如果设置为bundle.bunld/icon.png，则虽在xib中显示不正常，但在运行时正常显示
+
+//如果需要读取bundle中的文件
+NSString *boundPath =  [[NSBundle mainBundle] pathForResource:@&quot;EOCBundle&quot; ofType:@&quot;bundle&quot;];
+NSBundle *eocBoundle = [NSBundle bundleWithPath:boundPath];
+NSString *imagePath = [eocBoundle pathForResource:@&quot;11&quot; ofType:@&quot;png&quot;];
+NSData *imageData =  [NSData dataWithContentsOfFile:imagePath];
+</code></pre></li>
+<li><p>归档</p>
+<pre><code>@interface EOCClass : NSObject &lt;NSCoding, NSCopying&gt;
+@property (nonatomic, strong)NSString *name;
+@property (nonatomic, strong)NSString *age;
+@property (nonatomic, strong)NSString *classId;
+@end
+
+@implementation EOCClass
+- (id)copyWithZone:(nullable NSZone *)zone{
+    EOCClass *eocClass = [EOCClass new];
+    eocClass.name = self.name;
+    eocClass.age = self.age;
+    eocClass.classId = self.classId;
+    return eocClass;
+}
+</code></pre></li>
+</ol>
+<pre><code>    // 归档
+    - (void)encodeWithCoder:(NSCoder *)aCoder{
+        [aCoder encodeObject:self.name    forKey:@&quot;name&quot;];
+        [aCoder encodeObject:self.age     forKey:@&quot;age&quot;];
+        [aCoder encodeObject:self.classId forKey:@&quot;classId&quot;];
+    }
+
+    // 解挡
+    - (instancetype)initWithCoder:(NSCoder *)aDecoder{
+        EOCClass *eocClass = [EOCClass new];
+        eocClass.name = [aDecoder decodeObjectForKey:@&quot;name&quot;];
+        eocClass.age = [aDecoder decodeObjectForKey:@&quot;age&quot;];
+        eocClass.classId = [aDecoder decodeObjectForKey:@&quot;classId&quot;];
+        return eocClass;
+    }
+
+    @implementation ArchiveViewCtr
+
+    - (void)viewDidLoad {
+        [super viewDidLoad];
+        EOCClass *eocClass = [EOCClass new];
+        eocClass.name = @&quot;11&quot;;
+        eocClass.age = @&quot;10&quot;;
+        eocClass.classId = @&quot;eocClass&quot;;
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:eocClass];
+        NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        filePath = [filePath stringByAppendingPathComponent:@&quot;eocClass&quot;];
+        [data writeToFile:filePath atomically:NO];
+        EOCClass *tempEOC = [eocClass copy];// 深拷贝（copy）  浅拷贝 （strong）
+    }
+
+    //eocClass 从文件里面对出来，是不是要解压（）
+    - (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+        NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        filePath = [filePath stringByAppendingPathComponent:@&quot;eocClass&quot;];
+        EOCClass *eocClass = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+        NSLog(@&quot;%@, %@, %@&quot;, eocClass.name, eocClass.age, eocClass.classId);
+}
+@end
+</code></pre><ol start="4">
+<li><p>钥匙链的增删改查及跨应用</p>
+<pre><code>//保存KeyChain
+- (void)saveDataToKeyChain{
+    // 根据 attributes这个字典的key进行 操作
+    NSMutableDictionary *infoDict = [NSMutableDictionary new];
+    // 数据类型 key (kSecClass)
+    /*
+     kSecClassInternetPassword // 互联网密码
+     kSecClassGenericPassword // 通用密码
+     kSecClassCertificate // 证书
+     kSecClassKey // 密钥
+     kSecClassIdentity // 身份ID
+     */
+    [infoDict setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+
+    //// ======= 跨应用数据，如果没有跨应用，则不需要配置 ======= 1
+    /*
+     1 kSecAttrAccessGroup 条件key配置
+     2 配置一个plist  keychain-access-groups = （机构号+(Bundle identifier) 一个key
+     3 配置工程的 coding entitlement
+     */
+    [infoDict setObject:@&quot;4SH84H8MFB.com.test.EocClass&quot; forKey:(id)kSecAttrAccessGroup];
+    //// ======= 跨应用数据 =======
+
+    // 数据 value
+    NSString *passWord = @&quot;abcdefg&quot;;
+    [infoDict setObject:[passWord dataUsingEncoding:NSUTF8StringEncoding] forKey:(id)kSecValueData];
+
+    // 查寻 设置条件
+   // kSecAttrServer; // 服务id
+    //kSecAttrGeneric; // 标示符
+   // kSecAttrAccount; // 账户
+    [infoDict setObject:@&quot;EOCClassAll&quot; forKey:(id)kSecAttrAccount];
+    OSStatus status = SecItemAdd((CFDictionaryRef)infoDict, NULL);
+    if (status == noErr) {
+        NSLog(@&quot;success&quot;);
+    }else{
+        NSLog(@&quot;SecItemAdd::%d&quot;, status);
+    }
+}
+
+//删除KeyChain
+- (void)deleteArchData{
+    NSMutableDictionary *conditionDict = [NSMutableDictionary new];
+    [conditionDict setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+    [conditionDict setObject:@&quot;EOCClass&quot; forKey:(id)kSecAttrAccount];
+    [conditionDict setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
+
+    OSStatus status = SecItemDelete((CFDictionaryRef)conditionDict);
+    if (status == noErr) {
+        NSLog(@&quot;success&quot;);
+    }else {
+        NSLog(@&quot;SecItemCopyMatching::%d&quot;, status);
+    }
+}
+
+//更新KeyChain
+- (void)updateArch{
+    NSMutableDictionary *conditionDict = [NSMutableDictionary new];
+    [conditionDict setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+    [conditionDict setObject:@&quot;EOCClass&quot; forKey:(id)kSecAttrAccount];
+
+    // 数据value
+    NSMutableDictionary *newValueDict = [NSMutableDictionary new];
+    NSString *passWord = @&quot;987654&quot;;
+    [newValueDict setObject:[passWord dataUsingEncoding:NSUTF8StringEncoding] forKey:(id)kSecValueData];
+
+    OSStatus status = SecItemUpdate((CFDictionaryRef)conditionDict, (CFDictionaryRef)newValueDict);
+    if (status == noErr) {
+        NSLog(@&quot;success&quot;);
+    }else {
+        NSLog(@&quot;SecItemCopyMatching::%d&quot;, status);
+    }
+}
+
+//获取KeyChain
+- (void)getArchData{
+    NSMutableDictionary *conditionDict = [NSMutableDictionary new];
+    [conditionDict setObject:(id)kSecClassGenericPassword forKey:(id)kSecClass];
+    [conditionDict setObject:@&quot;EOCClass&quot; forKey:(id)kSecAttrAccount];
+    [conditionDict setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
+
+    CFDataRef data = NULL;
+    OSStatus status =  SecItemCopyMatching((CFDictionaryRef)conditionDict, (CFTypeRef*)&amp;data);
+    if (status == noErr) {
+        NSLog(@&quot;success&quot;);
+    }else {
+        NSLog(@&quot;SecItemCopyMatching::%d&quot;, status);
+    }
+    NSData *backData = (__bridge NSData*)data;
+    NSLog(@&quot;%s&quot;, [backData bytes]);
+}
+</code></pre></li>
+</ol>
+<h1 id="Local数据层方案设计一"><a href="#Local数据层方案设计一" class="headerlink" title="Local数据层方案设计一"></a>Local数据层方案设计一</h1><ol>
+<li><p>SQL语法复习</p>
+<pre><code>/*
+ id(事件抽)  name（消息内容）
+ 一次拿3条记录当作一页
+ */
+
+/*
+ 1  sql 增查删改
+ .help
+ .table 看数据库里面的表
+ .schema 看表结构
+
+  命令不区分大小的， 值是区分大小的
+  二进制 bolb  整形integer 字符串 char， text， varcha， 浮点型 real
+  表名不能中文
+
+ 唯一健（unique） 和 主键(primary key)（主键也是唯一的，一个表里只能有一个主键，而唯一健可以有很多个）
+
+1 创建表 Sql
+ create table if not exists eoctable(id char, name char);
+
+2 插入
+  insert into eoctable values(&apos;1&apos;, &apos;eoc1&apos;)
+  insert into eoctable(id) values (&apos;3&apos;)
+
+3 查找
+ select *from eoctable;
+
+ 结果排序 order by (id+0 转化id格式就行排序)
+ select *from eoctable order by id
+ select *from eoctable order by id+0
+ select *from eoctable order by id+0 desc
+ select *from eoctable order by id+0 desc limit 1 // limit 限制条数
+ select max(id+0) from eoctable // max 最大值 min sum avg
+ select *from eoctable where id+0 &gt; 7  order by id+0 limit 3  // where条件
+ select *from (select *from eoctable where id+0 &gt; 7) order by id+0 limit 3;
+ select *from eoctable where name like &apos;%c1%&apos;;  // 匹配符 %
+
+ 3 删除 delete
+ delete from eoctable where id = &apos;3&apos;
+
+ 4 更新 update
+ update eoctable set name = &apos;eocChange5&apos;  where id = &apos;5&apos;
+
+ 5 修改表
+ alter table eoctable add column grade char default &apos;1&apos;;
+
+ 6 删除表
+ drop table eoctable2;
+
+ 2  sqlite3
+
+*/
+</code></pre></li>
+<li><p>功能实现</p>
+<pre><code>@implementation EOCClassSQL
+// 第一步创建db
++ (void)createEOCDBFile{
+    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *eocDBFile = [filePath stringByAppendingPathComponent:@&quot;eoc.db&quot;];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:eocDBFile]) {
+        if([[NSFileManager defaultManager] createFileAtPath:eocDBFile contents:nil attributes:nil]){
+            NSLog(@&quot;创建成功&quot;);
+        }else {
+            NSLog(@&quot;创建失败&quot;);
+        }
+    }else{
+        NSLog(@&quot;文件存在了&quot;);
+    }
+}
+
+static sqlite3 *database;
+//第二种方式创建db
++ (void)createEOCDBFileSQL{
+    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *eocDBFile = [filePath stringByAppendingPathComponent:@&quot;eoc.db&quot;];
+    // 如果文件不存在，就创建该文件，其配置属性是 SQLITE_OPEN_CREATE
+    int status =  sqlite3_open_v2([eocDBFile UTF8String], &amp;database, SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE, NULL);
+    if (status != SQLITE_OK) {
+        NSLog(@&quot;sqlite3_open_v2 fail&quot;);
+    }
+}
+
+// 第二步创建表
+/*
+ sqlite3 *database; 文件指针
+ sql 语句是 对文件进行操作
+ */
++ (void)createTable{
+    // 操作 ⚠️sqlite3_stmt 失败一定要释放 即进行sqlite3_finalize操作
+    // sqlite3_stmt 默认不能重复在利用
+    // 1 先语句
+    NSString *sqlStr = @&quot;create table if not exists eoctable(id char, name char)&quot;;
+    // 2 检测语句
+    sqlite3_stmt *stmt; // 可以理解为 代表一条指令
+    int status = sqlite3_prepare_v2(database, [sqlStr UTF8String], -1, &amp;stmt, 0);
+    if (status != SQLITE_OK) {
+        NSLog(@&quot;sqlite3_prepare_v2 fail&quot;);
+        sqlite3_finalize(stmt);
+        return;
+    }
+    // 3 执行指令
+    status = sqlite3_step(stmt);
+    if (status != SQLITE_DONE) {
+        NSLog(@&quot;sqlite3_step fail&quot;);
+    }
+    // 4 结束
+    sqlite3_finalize(stmt);
+}
+
+// 增删改
++ (void)insertSQLValue:(NSString*)idStr name:(NSString*)name{
+    // 操作 ⚠️sqlite3_stmt 失败一定要释放 即进行sqlite3_finalize操作
+    // sqlite3_stmt 默认不能重复在利用
+    // 1 先语句
+    NSString *sqlStr = [NSString stringWithFormat:@&quot;insert into eoctable values(&apos;%@&apos;, &apos;%@&apos;)&quot;, idStr, name];
+    // 2 检测语句
+    sqlite3_stmt *stmt; // 可以理解为 代表一条指令
+    int status = sqlite3_prepare_v2(database, [sqlStr UTF8String], -1, &amp;stmt, 0);
+    if (status != SQLITE_OK) {
+        NSLog(@&quot;sqlite3_prepare_v2 fail&quot;);
+        sqlite3_finalize(stmt);
+        return;
+    }
+    // 3 执行指令
+    status = sqlite3_step(stmt);
+    if (status != SQLITE_DONE) {
+        NSLog(@&quot;sqlite3_step fail&quot;);
+    }
+    // 4 结束
+    sqlite3_finalize(stmt);
+}
+
+//查
++ (NSArray*)getAllRecord{
+    // 1 先语句
+    NSString *sqlStr = @&quot;select *from eoctable&quot;;
+    sqlite3_stmt *stmt; // 可以理解为 代表一条指令
+    // 2 检测语句
+    int status = sqlite3_prepare_v2(database, [sqlStr UTF8String], -1, &amp;stmt, 0);
+    if (status != SQLITE_OK) {
+        NSLog(@&quot;sqlite3_prepare_v2 fail&quot;);
+        sqlite3_finalize(stmt);
+        return nil;
+    }
+    // 3 执行指令
+    NSMutableArray *recordAry = [NSMutableArray new];
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+        int columns = sqlite3_column_count(stmt);
+        NSMutableDictionary *infoDict = [NSMutableDictionary new];
+        for (int i = 0; i &lt; columns; i++) {
+            char *keyC = (char *)sqlite3_column_name(stmt, i);
+            NSString *keyStr = [NSString stringWithUTF8String:keyC];
+            char *valueC = (char *)sqlite3_column_text(stmt, i);
+            NSString *valueStr = [NSString stringWithUTF8String:valueC];
+            [infoDict setObject:valueStr forKey:keyStr];
+        }
+        [recordAry addObject:infoDict];
+</code></pre></li>
+</ol>
+<pre><code>//        char *idC   =  (char*)sqlite3_column_text(stmt, 0);
+//        char *nameC = (char*)sqlite3_column_text(stmt, 1);
+//        NSString *idStr = [NSString stringWithUTF8String:idC];
+//        NSString *nameStr = [NSString stringWithUTF8String:nameC];
+//        NSMutableDictionary *infoDict = [NSMutableDictionary new];
+//        [infoDict setObject:idStr forKey:@&quot;id&quot;];
+//        [infoDict setObject:nameStr forKey:@&quot;name&quot;];
+//        [recordAry addObject:infoDict];
+    }
+
+    // 4 结束
+    sqlite3_finalize(stmt);
+    return recordAry;
+}
+
+// 第三步操作表
+
+
+// 第四步 关闭
++ (void)closeSQL{
+    sqlite3_close_v2(database);
+}
+</code></pre><h1 id="Local数据层方案设计二（数据库框架的封装）"><a href="#Local数据层方案设计二（数据库框架的封装）" class="headerlink" title="Local数据层方案设计二（数据库框架的封装）"></a>Local数据层方案设计二（数据库框架的封装）</h1><ol>
+<li><p>数据库对应的类，用于提供数据库的名称、路径等</p>
+<pre><code>//SQLDataBase类
+@interface SQLDataBase : NSObject
+- (instancetype)initWithFileName:(NSString*)dataBaseName;
+@property (nonatomic, strong, readonly)NSString *dataBaseName; // db文件名
+@property (nonatomic, assign,readonly)sqlite3 *dataBaseSql;
+@end
+// 创建db文件，并生成一个文件指针 sqlite3
+@implementation SQLDataBase
+- (instancetype)initWithFileName:(NSString*)dataBaseName{
+    self = [super init];
+    if (self) {
+        _dataBaseName = dataBaseName;
+        NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        NSString *eocDBFile = [filePath stringByAppendingPathComponent:dataBaseName];
+        // 如果文件不存在，就创建该文件，其配置属性是 SQLITE_OPEN_CREATE
+        int status =  sqlite3_open_v2([eocDBFile UTF8String], &amp;_dataBaseSql, SQLITE_OPEN_CREATE | SQLITE_OPEN_FULLMUTEX | SQLITE_OPEN_READWRITE, NULL);
+        if (status != SQLITE_OK) {
+            NSLog(@&quot;sqlite3_open_v2 fail&quot;);
+        }
+    }
+    return self;
+}
+@end
+</code></pre></li>
+<li><p>数据表对应的类，先用协议获得数据库名，表名，表结构，再根据初始化方法拼凑sql语句生成对应的表        </p>
+<pre><code>@protocol SQLBaseTableProtocol &lt;NSObject&gt;
+@required
+// 1 文件名 db文件
+- (NSString*)dataBaseName;
+// 2 表名
+- (NSString*)tableName;
+// 3 表结构
+- (NSDictionary*)colomnValue;
+@end
+
+@interface SQLBaseTable : NSObject
+- (void)insertTable:(id)object;
+@end
+@implementation SQLBaseTable
+/*
+ 创建文件db 和 表
+ */
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        // 判断子类是否实现了协议（目的是按照框架规则来）
+        if ([self conformsToProtocol:@protocol(SQLBaseTableProtocol)]) {
+            id&lt;SQLBaseTableProtocol&gt; tmpSelf = (id&lt;SQLBaseTableProtocol&gt;) self;
+            // 1 创建一个 sql对象
+            SQLCommandHandle *sqlCommandHandel = [[SQLCommandHandle alloc] init];
+            sqlCommandHandel.dataBaseName = [tmpSelf dataBaseName];
+            //备注：用懒加载的方式来创建db文件 （只有涉及到sql语句执行的时候，才去创建）
+            // 2 准备sql 语句对象 对sqlCommand 对象操作
+            //  @&quot;create table if not exists eoctable(id char, name char)&quot;
+            [sqlCommandHandel preSqlCreateTableName:[tmpSelf tableName] colomnInfo:[tmpSelf colomnValue]];
+            // 3  执行语句（执行create表语句）
+            [sqlCommandHandel sqlExcuteWriteCommand];
+            // 4 操作123 发现，我们可以把创建文件db 当作是一个SQLCommandHandle的属性
+        }else{
+            NSException *exception = [NSException exceptionWithName:@&quot;SQLBaseTable Error&quot; reason:@&quot;SQLBaseTableProtocol no comform&quot; userInfo:nil];
+            [exception raise];
+        }
+    }
+    return self;
+}
+@end
+</code></pre></li>
+<li><p>记录对应的类，用于对象和NSDictionary之间的转换，NSDictionary和列名列值之间的转换</p>
+<pre><code>@protocol SQLBaseRecordProtocol &lt;NSObject&gt;
+- (NSDictionary*)dictFromObjectProAndMatchTableColumn:(id&lt;SQLBaseTableProtocol&gt;)table;
+- (void)setRecordProValue:(id)propertyValue property:(NSString*)propertyName;
+@end
+@implementation SQLBaseRecord
+//对象转字典
+- (NSDictionary*)dictFromObjectProAndMatchTableColumn:(id&lt;SQLBaseTableProtocol&gt;)table{
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    unsigned int count = 0;
+    // 1 第一个把对象的属性名和value存放到 dict（key 属性名； value 属性的值）
+    // 获取属性 数组
+    objc_property_t *properties = class_copyPropertyList([self class], &amp;count);
+    for (int i = 0; i &lt; count; i++) {
+        NSString *keyStr = [NSString stringWithUTF8String:property_getName(properties[i])];
+        NSString *valueStr = [self valueForKey:keyStr];
+        if (valueStr == nil) {
+            [dict setObject:[NSNull null] forKey:keyStr];
+        }else{
+            [dict setObject:valueStr forKey:keyStr];
+        }
+    }
+    free(properties);
+
+    // dict 和表 结构的字段关系； dict的key是否和表结构里面的key是一样的
+    // 匹配表字段
+    NSMutableDictionary *columnDict = [NSMutableDictionary dictionary];
+    [table.colomnValue enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        if ([dict objectForKey:key]) {
+            [columnDict setObject:[dict objectForKey:key] forKey:key];
+        }else{
+            [columnDict setObject:@&quot;&quot; forKey:key];
+        }
+    }];
+    return columnDict;
+}
+
+// 字典转对象
+- (void)setRecordProValue:(id)propertyValue property:(NSString*)propertyName{
+    if (!propertyName || propertyName.length == 0) {
+        return;
+    }
+    NSString *setterSEL = [NSString stringWithFormat:@&quot;set%@%@:&quot;, [[propertyName substringToIndex:1] capitalizedString], [propertyName substringFromIndex:1]];
+    if([self respondsToSelector:NSSelectorFromString(setterSEL)]){
+        // value异常没处理
+        [self setValue:propertyValue forKey:propertyName];
+    }else {
+        NSLog(@&quot;%@没有这个%@属性&quot;, NSStringFromClass([self class]), propertyName);
+    }
+}
+@end
+</code></pre></li>
+<li><p>SQLCommandHandle类用于来拼凑sql语句，拼凑的增删改查等语句放在扩展里，公共语句放于此类中</p>
+<pre><code>//SQLCommandHandle类
+@interface SQLCommandHandle : NSObject
+// sqlCommand = insert into table values (&quot;1&quot;, &quot;2&quot;)
+@property (nonatomic, strong)NSString *dataBaseName;
+@property (nonatomic, strong)NSMutableString *sqlCommand;
+@property (nonatomic, strong)SQLDataBase *dataBase;
+// 写操作 （增删改）
+- (void)sqlExcuteWriteCommand;
+// 读操作 （查）
+- (NSArray*)sqlExcuteReadCommand;
+@end
+
+@implementation SQLCommandHandle
+
+// 增删改write   查read
+- (void)sqlExcuteWriteCommand{
+    // sql语句，和表结构有关系的
+    if ( !self.sqlCommand  || self.sqlCommand.length == 0) {
+        NSLog(@&quot;sqlCommand 不存在&quot;);
+        return ;
+    }
+    sqlite3_stmt *stmt;
+    int status = sqlite3_prepare_v2(self.dataBase.dataBaseSql, [self.sqlCommand UTF8String], -1, &amp;stmt, 0);
+    if (status != SQLITE_OK) {
+        NSLog(@&quot;sqlite3_prepare_v2 fail&quot;);
+        sqlite3_finalize(stmt);
+        return;
+    }
+    status = sqlite3_step(stmt);
+    if (status != SQLITE_DONE) {
+        NSLog(@&quot;sqlite3_step fail&quot;);
+    }
+    sqlite3_finalize(stmt);
+}
+
+- (NSArray*)sqlExcuteReadCommand{
+    if ( !self.sqlCommand  || self.sqlCommand.length == 0) {
+        NSLog(@&quot;sqlCommand 不存在&quot;);
+        return  nil;
+    }
+    sqlite3_stmt *stmt;
+    int status = sqlite3_prepare_v2(self.dataBase.dataBaseSql, [self.sqlCommand UTF8String], -1, &amp;stmt, 0);
+    if (status != SQLITE_OK) {
+        NSLog(@&quot;sqlite3_prepare_v2 fail&quot;);
+        sqlite3_finalize(stmt);
+        return nil;
+    }
+    NSMutableArray *recordAry = [NSMutableArray new];
+    while(sqlite3_step(stmt) == SQLITE_ROW){
+        int columns = sqlite3_column_count(stmt);
+        NSMutableDictionary *infoDict = [NSMutableDictionary new];
+        for (int i = 0; i &lt; columns; i++) {
+            NSString *keyStr = [NSString stringWithUTF8String:sqlite3_column_name(stmt, i)];
+            NSString *valueStr = [NSString stringWithUTF8String:sqlite3_column_text(stmt, i)];
+            [infoDict setObject:valueStr forKey:keyStr];
+        }
+        [recordAry addObject:infoDict];
+    }
+    sqlite3_finalize(stmt);
+    return recordAry;
+}
+
+- (SQLDataBase*)dataBase{
+    if (!_dataBase) {
+        _dataBase = [[SQLDataBase alloc] initWithFileName:self.dataBaseName];
+    }
+    return _dataBase;
+}
+@end
+</code></pre></li>
+<li><p>对SQLBaseTable进行增删改查扩展，如插入</p>
+<pre><code>@interface SQLBaseTable (Insert)
+- (void)insertDataContainBinary:(id&lt;SQLBaseRecordProtocol&gt;)object;
+@end
+@implementation SQLBaseTable (Insert)
+- (void)insertDataContainBinary:(id&lt;SQLBaseRecordProtocol&gt;)object{
+    id&lt;SQLBaseTableProtocol&gt; tmpSelf = (id&lt;SQLBaseTableProtocol&gt;) self;
+    // 1 创建一个 sql对象
+    SQLCommandHandle *sqlCommandHandel = [[SQLCommandHandle alloc] init];
+    sqlCommandHandel.dataBaseName = [tmpSelf dataBaseName];
+    // 2 准备sql 语句对象 对sqlCommand 对象操作
+    // object 转化成字典格式 （写到基类对象里） 字典里面key（表的相关的字段名）value插入的值
+    NSDictionary *columnDict = [object dictFromObjectProAndMatchTableColumn:tmpSelf];
+    [sqlCommandHandel preSqlInsertToTableName:[tmpSelf tableName] columnInfo:columnDict];
+    // 3  执行语句（执行create表语句）
+    [sqlCommandHandel sqlExcuteWriteCommand];
+}
+@end
+</code></pre></li>
+<li><p>对SQLCommandHandle进行增删改查的扩展来生成sql语句，如createTable</p>
+<pre><code>@interface SQLCommandHandle (CreateTable)
+- (void)preSqlCreateTableName:(NSString*)tableName  colomnInfo:(NSDictionary*)colomnInfo;
+@end
+@implementation SQLCommandHandle (CreateTable)
+- (void)preSqlCreateTableName:(NSString*)tableName  colomnInfo:(NSDictionary*)colomnInfo{
+    //  @&quot;create table if not exists eoctable(id char, name char)&quot;
+    self.sqlCommand = [NSMutableString string];
+    NSMutableArray *colomnAry = [NSMutableArray new];
+    [colomnInfo enumerateKeysAndObjectsUsingBlock:^(NSString*  _Nonnull key, NSString*  _Nonnull obj, BOOL * _Nonnull stop) {
+        if (key.length == 0 || obj.length == 0) {
+            NSLog(@&quot;创建表是，表的字段设置有问题&quot;);
+        }else{
+            NSString *colomnStr = [NSString stringWithFormat:@&quot;%@ %@&quot;, key, obj];
+            [colomnAry addObject:colomnStr];
+        }
+    }];
+    NSString *tableStructStr = [colomnAry componentsJoinedByString:@&quot;,&quot;];
+    [self.sqlCommand appendFormat:@&quot;create table if not exists %@(%@)&quot;, tableName, tableStructStr];
+}
+@end
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/App文件结构/" rel="tag"># App文件结构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/25/MJRefresh框架级解析/" rel="next" title="MJRefresh框架级解析">
+                <i class="fa fa-chevron-left"></i> MJRefresh框架级解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/27/主题模型切换框架解析/" rel="prev" title="主题模型切换框架解析">
+                主题模型切换框架解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#APP文件结构分析-沙盒分析-数据存储安全"><span class="nav-number">1.</span> <span class="nav-text">APP文件结构分析(沙盒分析)+数据存储安全</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Local数据层方案设计一"><span class="nav-number">2.</span> <span class="nav-text">Local数据层方案设计一</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Local数据层方案设计二（数据库框架的封装）"><span class="nav-number">3.</span> <span class="nav-text">Local数据层方案设计二（数据库框架的封装）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

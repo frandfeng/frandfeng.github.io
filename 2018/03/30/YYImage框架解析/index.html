@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,YYImage,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。 UIImage的底层是通过ImageIO库">
+<meta name="keywords" content="OC,iOS,YYImage">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YYImage框架解析">
+<meta property="og:url" content="https://frandfeng.github.io/2018/03/30/YYImage框架解析/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。 UIImage的底层是通过ImageIO库">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T10:22:24.774Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YYImage框架解析">
+<meta name="twitter:description" content="目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。 UIImage的底层是通过ImageIO库">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2018/03/30/YYImage框架解析/">
+
+
+
+
+
+  <title>YYImage框架解析 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/03/30/YYImage框架解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">YYImage框架解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-30T00:00:00+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。</p>
+<p>UIImage的底层是通过ImageIO库实现的，ImageIO库的.h头如下：</p>
+<pre><code>//ImageIO的基本库
+#include &lt;ImageIO/ImageIOBase.h&gt;
+//负责读取数据
+#include &lt;ImageIO/CGImageSource.h&gt;
+//负责写入数据
+#include &lt;ImageIO/CGImageDestination.h&gt;
+//图片属性
+#include &lt;ImageIO/CGImageProperties.h&gt;
+//图片元数据
+#include &lt;ImageIO/CGImageMetadata.h&gt;
+</code></pre><p>打印ImageIO框架所支持的可读取的图片格式和支持写入的图片格式</p>
+<pre><code>- (void)logImageType {
+   CFArrayRef sourceArr = CGImageSourceCopyTypeIdentifiers();
+   CFShow(sourceArr);
+   CFArrayRef destinationArr = CGImageDestinationCopyTypeIdentifiers();
+   CFShow(destinationArr);
+}
+//&quot;public.jpeg&quot;,
+&quot;public.png&quot;,
+&quot;com.compuserve.gif&quot;,
+&quot;com.canon.tif-raw-image&quot;,
+&quot;com.adobe.raw-image&quot;,
+&quot;com.dxo.raw-image&quot;,等
+//&quot;public.jpeg&quot;,
+&quot;public.png&quot;,
+&quot;com.compuserve.gif&quot;,
+&quot;public.tiff&quot;,
+&quot;public.jpeg-2000&quot;,等
+</code></pre><p>获取图片信息, 这里颜色空间、颜色模型、色品、InterlaceType都得详细标注</p>
+<pre><code>//imageMetaData表示单个图片的信息，比较详细，imageData表示的是一个图片组的信息，没有那么详细
+- (void)getImageInfo {
+    NSString *path = [[NSBundle mainBundle] pathForResource:@&quot;mew_interlaced&quot; ofType:@&quot;png&quot;];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+    //CGImageSourceCopyProperties  用这个获取的是图片组的信息，没单个图片多,  有文件大小
+    CFDictionaryRef imageMetaData = CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
+    CFDictionaryRef imageData = CGImageSourceCopyProperties(source, NULL);
+    CFRelease(source);
+    NSDictionary *metaDataInfo    = CFBridgingRelease(imageData);
+    NSLog(@&quot;%@&quot;, metaDataInfo);
+}
+</code></pre><blockquote>
+<p>注意：写CoreFoundation代码时，如果包含了alloc/copy/create这三个关键字来生成一段内存空间，则必须自己手动用CFRelease来释放，其他的如GetValue等则不需要自己来手动释放。</p>
+<p>_bridge_transfer:常用在将CF对象转换成OC对象时使用，将CF对象的所有权交给OC对象，此时ARC就能自动管理该内存：(作用同CFBridgingRelease())，其实相当于释放CF对象，同时生成一个OC对象</p>
+<p>_bridge_ratain:与_bridge_transfer作用相反，常用在将OC对象转换成CF对象时，将OC对象的所有权交给CF对象来管理。相当于释放OC对象，同时生成一个CF对象</p>
+</blockquote>
+<p>图片格式可以理解为一种压缩包，就像我们的文件压缩成zip一样，但是你要在屏幕上渲染，必然是需要解码的，解码方式有以下几种：</p>
+<pre><code>- (UIImage *)customImage {
+    NSString * path = [[NSBundle mainBundle] pathForResource:@&quot;mew_baseline&quot; ofType:@&quot;jpg&quot;];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    CFDataRef dataRef = (__bridge CFDataRef)data;
+    CFStringRef myKeys[2];
+    CFTypeRef myValues[2];
+
+    //解码就缓存
+    myKeys[0] = kCGImageSourceShouldCache;
+    myValues[0] = kCFBooleanFalse;
+    myKeys[1] = kCGImageSourceShouldCacheImmediately;
+    myValues[1] = kCFBooleanFalse;
+
+    CFDictionaryRef options = CFDictionaryCreate(NULL, (const void **)myKeys, (const void **)myValues, 2, &amp;kCFTypeDictionaryKeyCallBacks, &amp;kCFTypeDictionaryValueCallBacks);
+
+    CGImageSourceRef source = CGImageSourceCreateWithData(dataRef, options);
+    CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, 0, options);
+
+    UIImage *tmpImg = [UIImage imageWithCGImage:imageRef];
+
+    CFRelease(source);
+    CGImageRelease(imageRef);
+    CFRelease(options);
+    return tmpImg;
+}
+
+- (UIImage *)customImageTwo {
+    NSString * path = [[NSBundle mainBundle] pathForResource:@&quot;1&quot; ofType:@&quot;png&quot;];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    allImg = [UIImage imageWithData:data];
+    CGImageRef cgImage = allImg.CGImage;
+
+    size_t width = CGImageGetWidth(cgImage);
+    size_t height = CGImageGetHeight(cgImage);
+
+    CGImageAlphaInfo alphaInfo = CGImageGetAlphaInfo(cgImage) &amp; kCGBitmapAlphaInfoMask;
+    BOOL hasAlpha = NO;
+    if (alphaInfo == kCGImageAlphaPremultipliedLast ||
+        alphaInfo == kCGImageAlphaPremultipliedFirst ||
+        alphaInfo == kCGImageAlphaLast ||
+        alphaInfo == kCGImageAlphaFirst) {
+        hasAlpha = YES;
+    }
+
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrder32Host;
+    bitmapInfo |= hasAlpha ? kCGImageAlphaPremultipliedFirst : kCGImageAlphaNoneSkipFirst;
+
+    if (!twoContext) {
+        //字节对齐：bytePerRow：260，64字节整数倍来读取的，64字节的整数倍：bytePerRow*height
+        twoContext = CGBitmapContextCreate(NULL, width, height, 8, 0, CGColorSpaceCreateDeviceRGB(), bitmapInfo);
+    }
+
+    CGContextDrawImage(twoContext, CGRectMake(0, 0, width, height), cgImage);
+    CGImageRef newImage = CGBitmapContextCreateImage(twoContext);
+//    CGContextClearRect(twoContext, CGRectMake(0, 0, width, height));
+    return [UIImage imageWithCGImage:newImage];
+}
+
+
+- (UIImage *)customImageThree {
+    NSString * path = [[NSBundle mainBundle] pathForResource:@&quot;1&quot; ofType:@&quot;png&quot;];
+    NSData *tmpData = [NSData dataWithContentsOfFile:path];
+    allImg = [UIImage imageWithData:tmpData];
+    CGImageRef imageRef = allImg.CGImage;
+
+    CGColorSpaceRef space = CGImageGetColorSpace(imageRef);
+    size_t bitsPerComponent = CGImageGetBitsPerComponent(imageRef);
+    size_t bitsPerPixel = CGImageGetBitsPerPixel(imageRef);
+    size_t bytesPerRow = CGImageGetBytesPerRow(imageRef);
+    size_t width = CGImageGetWidth(imageRef);
+    size_t height = CGImageGetHeight(imageRef);
+    CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(imageRef);
+
+    CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
+    if (!dataProvider) return NULL;
+    CFDataRef data = CGDataProviderCopyData(dataProvider); // decode
+    if (!data) return NULL;
+
+    CGDataProviderRef newProvider = CGDataProviderCreateWithCFData(data);
+    CFRelease(data);
+    if (!newProvider) return NULL;
+
+    CGImageRef newImage = CGImageCreate(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, space, bitmapInfo, newProvider, NULL, false, kCGRenderingIntentDefault);
+    CFRelease(newProvider);
+
+    return [UIImage imageWithCGImage:newImage];
+}
+</code></pre><p>imageWithContentsOfFile将图片显示在屏幕上的过程：</p>
+<pre><code>1. 假设我们使用 +imageWithContentsOfFile: 方法从磁盘中加载一张图片，这个时候的图片并没有解压缩；
+2. 然后将生成的 UIImage 赋值给 UIImageView ；
+3. 接着一个隐式的 CATransaction 捕获到了 UIImageView 图层树的变化；
+4. 在主线程的下一个 run loop 到来时，Core Animation 提交了这个隐式的 transaction ，这个过程可能会对图片进行 copy 操作，而受图片是否字节对齐等因素的影响，这个 copy 操作可能会涉及以下部分或全部步骤：
+5. 分配内存缓冲区用于管理文件 IO 和解压缩操作；
+6. 将文件数据从磁盘读到内存中；
+7. 将压缩的图片数据解码成未压缩的位图形式，这是一个非常耗时的 CPU 操作；
+8. 最后 Core Animation 使用未压缩的位图数据渲染 UIImageView 的图层。
+在上面的步骤中，我们提到了图片的解压缩是一个非常耗时的 CPU 操作，并且它默认是在主线程中执行的。
+</code></pre><p>查看解码和未解码的数据源发现：iOS 对png进行了优化，对jpg未进行优化</p>
+<p>UIImage的底层操作是ImageIO，经过验证可以得出如下结论</p>
+<p>imageWithData:底层调用的是CGImageSourceCreateWithData(添加symbolic breakpoint，在symbol里添加CGImageSourceCreateWithData，如果调用CGImageSourceCreateWithData函数，则会自动调试)</p>
+<p>imageNamed:背后是调用的CGImageSourceCreateWithFile和CGImageSourceCreateImageAtIndex来获取到CGImageRef的（同样的图片只调用了一次，后面不会调用）</p>
+<p>判断平台是大端还是小端：无论是32位还是64位，char都是1个字节</p>
+<pre><code>- (void)isBigEndianOrLittleEndian {
+    unsigned int a, *p;
+    p = &amp;a;
+    a = 0;//*p = 0x00000000
+    *(char *)p = 0xff;//p[0]
+    //大端的话，高位存储在低地址;小端，低位存于低地址
+    //所以，大端会是：0xff000000;小端是:0x000000ff//11111111
+    NSLog(@&quot;p%d&quot;, *p);
+    //linux的大端和小端判断
+    static union {
+        char c[4];
+        unsigned int mylong;
+    }
+    endian_test = {&apos;l&apos;, &apos;?&apos;, &apos;?&apos;, &apos;b&apos; };
+    NSLog(@&quot;%c&quot;, ((char)endian_test.mylong));
+}
+</code></pre><p>YYImage应用：</p>
+<pre><code>//YYImage支持GIF格式、APNG格式、WEBP格式
+[self addImageWithName:@&quot;niconiconi&quot; text:@&quot;Animated GIF&quot;];
+[self addImageWithName:@&quot;cube&quot; text:@&quot;Animated PNG (APNG)&quot;];
+[self addImageWithName:@&quot;wall-e&quot; text:@&quot;Animated WebP&quot;];
+
+- (void)addImageWithName:(NSString *)name text:(NSString *)text {
+    YYImage *image = [YYImage imageNamed:name];
+    [self addImage:image size:CGSizeZero text:text];
+}
+
+- (void)addImage:(UIImage *)image size:(CGSize)size text:(NSString *)text {
+    YYAnimatedImageView *imageView = [[YYAnimatedImageView alloc] initWithImage:image];
+
+    if (size.width &gt; 0 &amp;&amp; size.height &gt; 0) imageView.size = size;
+    imageView.centerX = self.view.width / 2;
+    imageView.top = [(UIView *)[_scrollView.subviews lastObject] bottom] + 30;
+    [_scrollView addSubview:imageView];
+    [YYImageExampleHelper addTapControlToAnimatedImageView:imageView];
+    [YYImageExampleHelper addPanControlToAnimatedImageView:imageView];
+    for (UIGestureRecognizer *g in imageView.gestureRecognizers) {
+        g.delegate = self;
+    }
+
+    UILabel *imageLabel = [UILabel new];
+    imageLabel.backgroundColor = [UIColor clearColor];
+    imageLabel.frame = CGRectMake(0, 0, self.view.width, 20);
+    imageLabel.top = imageView.bottom + 10;
+    imageLabel.textAlignment = NSTextAlignmentCenter;
+    imageLabel.text = text;
+    [_scrollView addSubview:imageLabel];
+
+    _scrollView.contentSize = CGSizeMake(self.view.width, imageLabel.bottom + 20);
+}
+
+//YYImage支持Frame数组的图片(举例：表情动态切换包)
+- (void)addFrameImageWithText:(NSString *)text {
+    NSString *basePath = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@&quot;EmoticonWeibo.bundle/com.sina.default&quot;];
+    NSMutableArray *paths = [NSMutableArray new];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_aini@3x.png&quot;]];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_baibai@3x.png&quot;]];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_chanzui@3x.png&quot;]];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_chijing@3x.png&quot;]];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_dahaqi@3x.png&quot;]];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_guzhang@3x.png&quot;]];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_haha@2x.png&quot;]];
+    [paths addObject:[basePath stringByAppendingPathComponent:@&quot;d_haixiu@3x.png&quot;]];
+
+    UIImage *image = [[YYFrameImage alloc] initWithImagePaths:paths oneFrameDuration:0.1 loopCount:0];
+    [self addImage:image size:CGSizeZero text:text];
+}
+
+//YYImage支持表单形式的图片（举例：星星表单）
+- (void)addSpriteSheetImageWithText:(NSString *)text {
+    NSString *path = [[NSBundle mainBundle].bundlePath stringByAppendingPathComponent:@&quot;ResourceTwitter.bundle/fav02l-sheet@2x.png&quot;];
+    UIImage *sheet = [[UIImage alloc] initWithData:[NSData dataWithContentsOfFile:path] scale:2];
+    NSMutableArray *contentRects = [NSMutableArray new];
+    NSMutableArray *durations = [NSMutableArray new];
+
+
+    // 8 * 12 sprites in a single sheet image
+    CGSize size = CGSizeMake(sheet.size.width / 8, sheet.size.height / 12);
+    for (int j = 0; j &lt; 12; j++) {
+        for (int i = 0; i &lt; 8; i++) {
+            CGRect rect;
+            rect.size = size;
+            rect.origin.x = sheet.size.width / 8 * i;
+            rect.origin.y = sheet.size.height / 12 * j;
+            [contentRects addObject:[NSValue valueWithCGRect:rect]];
+            [durations addObject:@(1 / 60.0)];
+        }
+    }
+    YYSpriteSheetImage *sprite;
+    sprite = [[YYSpriteSheetImage alloc] initWithSpriteSheetImage:sheet
+                                                     contentRects:contentRects
+                                                   frameDurations:durations
+                                                        loopCount:0];
+    [self addImage:sprite size:size text:text];
+}
+</code></pre><p>YYImage流程跟踪：</p>
+<pre><code>//YYImage类
++ (YYImage *)imageNamed:(NSString *)name {
+    if (name.length == 0) return nil;
+    if ([name hasSuffix:@&quot;/&quot;]) return nil;
+
+    NSString *res = name.stringByDeletingPathExtension;
+    NSString *ext = name.pathExtension;
+    NSString *path = nil;
+    CGFloat scale = 1;
+
+    // If no extension, guess by system supported (same as UIImage).
+    NSArray *exts = ext.length &gt; 0 ? @[ext] : @[@&quot;&quot;, @&quot;png&quot;, @&quot;jpeg&quot;, @&quot;jpg&quot;, @&quot;gif&quot;, @&quot;webp&quot;, @&quot;apng&quot;];
+    NSArray *scales = _NSBundlePreferredScales();
+    for (int s = 0; s &lt; scales.count; s++) {
+        scale = ((NSNumber *)scales[s]).floatValue;
+        NSString *scaledName = _NSStringByAppendingNameScale(res, scale);
+        for (NSString *e in exts) {
+            path = [[NSBundle mainBundle] pathForResource:scaledName ofType:e];
+            if (path) break;
+        }
+        if (path) break;
+    }
+    if (path.length == 0) return nil;
+
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (data.length == 0) return nil;
+
+    return [[self alloc] initWithData:data scale:scale];
+}
+
+- (instancetype)initWithData:(NSData *)data scale:(CGFloat)scale {
+    if (data.length == 0) return nil;
+    if (scale &lt;= 0) scale = [UIScreen mainScreen].scale;
+    _preloadedLock = dispatch_semaphore_create(1);
+    @autoreleasepool {
+        //用来获取图片数组里每个图片的属性：每张图片停留的时间等其他属性、循环次数、图片方向、图片宽高
+        YYImageDecoder *decoder = [YYImageDecoder decoderWithData:data scale:scale];
+        //图片解压
+        YYImageFrame *frame = [decoder frameAtIndex:0 decodeForDisplay:YES];
+        UIImage *image = frame.image;
+        if (!image) return nil;
+        self = [self initWithCGImage:image.CGImage scale:decoder.scale orientation:image.imageOrientation];
+        if (!self) return nil;
+        _animatedImageType = decoder.type;
+        if (decoder.frameCount &gt; 1) {
+            _decoder = decoder;
+            _bytesPerFrame = CGImageGetBytesPerRow(image.CGImage) * CGImageGetHeight(image.CGImage);
+            _animatedImageMemorySize = _bytesPerFrame * decoder.frameCount;
+        }
+        self.yy_isDecodedForDisplay = YES;
+    }
+    return self;
+}
+
+//YYImageCoder类
++ (instancetype)decoderWithData:(NSData *)data scale:(CGFloat)scale {
+    if (!data) return nil;
+    YYImageDecoder *decoder = [[YYImageDecoder alloc] initWithScale:scale];
+    [decoder updateData:data final:YES];
+    if (decoder.frameCount == 0) return nil;
+    return decoder;
+}
+
+- (BOOL)updateData:(NSData *)data final:(BOOL)final {
+    BOOL result = NO;
+    pthread_mutex_lock(&amp;_lock);
+    result = [self _updateData:data final:final];
+    pthread_mutex_unlock(&amp;_lock);
+    return result;
+}
+
+- (BOOL)_updateData:(NSData *)data final:(BOOL)final {
+    if (_finalized) return NO;
+    if (data.length &lt; _data.length) return NO;
+    _finalized = final;
+    _data = data;
+
+    YYImageType type = YYImageDetectType((__bridge CFDataRef)data);
+    if (_sourceTypeDetected) {
+        if (_type != type) {
+            return NO;
+        } else {
+            [self _updateSource];
+        }
+    } else {
+        if (_data.length &gt; 16) {
+            _type = type;
+            _sourceTypeDetected = YES;
+            [self _updateSource];
+        }
+    }
+    return YES;
+}
+
+- (void)_updateSource {
+    switch (_type) {
+        case YYImageTypeWebP: {
+            [self _updateSourceWebP];
+        } break;
+
+        case YYImageTypePNG: {
+            [self _updateSourceAPNG];
+        } break;
+
+        default: {
+            [self _updateSourceImageIO];
+        } break;
+    }
+}
+
+//YYImageCoder解码
+- (YYImageFrame *)frameAtIndex:(NSUInteger)index decodeForDisplay:(BOOL)decodeForDisplay {
+    YYImageFrame *result = nil;
+    pthread_mutex_lock(&amp;_lock);
+    //真正的解码，很长的一段代码
+    result = [self _frameAtIndex:index decodeForDisplay:decodeForDisplay];
+    pthread_mutex_unlock(&amp;_lock);
+    return result;
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/YYImage/" rel="tag"># YYImage</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/23/网络及框架/" rel="next" title="网络及框架">
+                <i class="fa fa-chevron-left"></i> 网络及框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/27/实时音频功能开发/" rel="prev" title="实时音频功能开发">
+                实时音频功能开发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

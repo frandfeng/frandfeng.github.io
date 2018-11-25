@@ -1,0 +1,2119 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,性能优化,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？ Instruments使用：用工具来监测App的各项性能，让性能了然于心。  Activity Monitor   一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。  Allocations   内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在">
+<meta name="keywords" content="iOS,性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS性能优化实践">
+<meta property="og:url" content="https://frandfeng.github.io/2017/06/30/iOS性能优化实践/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？ Instruments使用：用工具来监测App的各项性能，让性能了然于心。  Activity Monitor   一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。  Allocations   内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:56:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS性能优化实践">
+<meta name="twitter:description" content="iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？ Instruments使用：用工具来监测App的各项性能，让性能了然于心。  Activity Monitor   一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。  Allocations   内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2017/06/30/iOS性能优化实践/">
+
+
+
+
+
+  <title>iOS性能优化实践 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/06/30/iOS性能优化实践/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS性能优化实践</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-30T00:00:00+08:00">
+                2017-06-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="iOS性能优化实践一"><a href="#iOS性能优化实践一" class="headerlink" title="iOS性能优化实践一"></a>iOS性能优化实践一</h1><p>腾讯bugly？？？<br>dysm日志分析？？？</p>
+<p>Instruments使用：用工具来监测App的各项性能，让性能了然于心。</p>
+<ul>
+<li><p>Activity Monitor</p>
+<p>  一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。</p>
+</li>
+<li><p>Allocations</p>
+<p>  内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在哪些对象上</p>
+</li>
+<li><p>Core Animation</p>
+<ul>
+<li><p>Blended像素混合：当图层有半透明时，GPU需要进行像素混合，需要先绘制透明层下层的内容，再叠加透明层以达到透明的效果，而不影响帧率的情况下，GPU可绘制的像素是有限制的。通常优化方式：backgroundColor设置为不透明色/Opaque设置为YES/图片能不用透明的切图成不透明。没有像素混合的显示绿色，有像素混合的显示红色。重要的是backgroundColor属性，如果不设置这个属性，控件依然被认为是透明的，所以我们做的第一个优化是设置控件的backgroundColor属性。</p>
+<pre><code>//如果label文字有中文，依然会出现图层混合，这是因为此时label多了一个sublayer
+//只有最后一个没有出现像素混合的情况
+[self testBlendedLayer:^(UILabel *label) {
+    label.frame = CGRectMake(leftOffset, topOffset, width, 30);
+    topOffset += 50;
+    label.text = @&quot;背景颜色：默认&quot;;
+}];
+
+[self testBlendedLayer:^(UILabel *label) {
+    label.frame = CGRectMake(leftOffset, topOffset, width, 30);
+    topOffset += 50;
+    label.text = @&quot;背景颜色：半透明&quot;;
+    label.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+}];
+
+[self testBlendedLayer:^(UILabel *label) {
+    label.frame = CGRectMake(leftOffset, topOffset, width, 30);
+    topOffset += 50;
+    label.text = @&quot;背景颜色：不透明&quot;;
+    label.backgroundColor = [UIColor lightGrayColor];
+}];
+
+[self testBlendedLayer:^(UILabel *label) {
+    label.frame = CGRectMake(leftOffset, topOffset, width, 30);
+    topOffset += 50;
+    label.text = @&quot;背景颜色：无混合情况&quot;;
+    label.backgroundColor = [UIColor lightGrayColor];
+    label.layer.masksToBounds = YES;
+}];
+</code></pre></li>
+<li><p>Color Copied images 像素在内存中的布局和它在磁盘中的存储方式并不相同。考虑一种简单的情况：每个像素有R、G、B和alpha四个值，每个值占用1字节，因此每个像素占用4字节的内存空间。一张1920*1080的照片(iPhone6 Plus的分辨率)一共有2,073,600个像素，因此占用了超过8Mb的内存。但是一张同样分辨率的PNG格式或JPEG格式的图片一般情况下不会有这么大。这是因为JPEG将像素数据进行了一种非常复杂且可逆的转化。所以CPU主要处理两件事：</p>
+<ol>
+<li>把图片从PNG或JPEG等格式中解压出来，得到像素数据</li>
+<li><p>如果GPU不支持这种颜色格式，CPU需要进行格式转换</p>
+<p>图片能否需CPU要转码，需要的显示蓝色。如果图片格式GPU不能直接绘制，则会交给CPU先转码处理</p>
+<p> //如果直接赋值origin，则图片会出现蓝色，赋值image才是正常显示<br> UIImageView <em>imageView = [[UIImageView alloc]  initWithFrame:self.view.bounds];<br> UIImage </em>origin = [UIImage imageNamed:@”16.png”];<br> UIImage *image = [EOCUtil decodeImage:origin toSize:imageView.layer.bounds.size];<br> imageView.image = image;<br> imageView.opaque = YES;<br> [self.view addSubview:imageView];</p>
+<ul>
+<li><p>(UIImage <em>)decodeImage:(UIImage </em>)image toSize:(CGSize)size {<br>if (image == nil) { // Prevent “CGBitmapContextCreateImage: invalid context 0x0” error<br>  return nil;<br>}</p>
+<p>@autoreleasepool{<br>  // do not decode animated images<br>  if (image.images != nil) {</p>
+<pre><code>return image;
+</code></pre><p>  }</p>
+<p>  CGImageRef imageRef = image.CGImage;</p>
+<p>  CGImageAlphaInfo alpha = CGImageGetAlphaInfo(imageRef);<br>  BOOL anyAlpha = (alpha == kCGImageAlphaFirst ||</p>
+<pre><code>alpha == kCGImageAlphaLast ||
+alpha == kCGImageAlphaPremultipliedFirst ||
+alpha == kCGImageAlphaPremultipliedLast);
+</code></pre><p>  if (anyAlpha) {</p>
+<pre><code>NSLog(@&quot;图片解压失败，存在alpha通道&quot;);
+return image;
+</code></pre><p>  }</p>
+<p>  // current<br>  CGColorSpaceModel imageColorSpaceModel = CGColorSpaceGetModel(CGImageGetColorSpace(imageRef));<br>  CGColorSpaceRef colorspaceRef = CGImageGetColorSpace(imageRef);</p>
+<p>  BOOL unsupportedColorSpace = (imageColorSpaceModel == kCGColorSpaceModelUnknown ||</p>
+<pre><code>imageColorSpaceModel == kCGColorSpaceModelMonochrome ||
+imageColorSpaceModel == kCGColorSpaceModelCMYK ||
+imageColorSpaceModel == kCGColorSpaceModelIndexed);
+</code></pre><p>  if (unsupportedColorSpace) {</p>
+<pre><code>colorspaceRef = CGColorSpaceCreateDeviceRGB();
+</code></pre><p>  }<br>  CGFloat scale = [UIScreen mainScreen].scale;<br>  size_t width = size.width;<br>  size_t height = size.height;<br>  NSUInteger bytesPerPixel = 4;<br>  NSUInteger bytesPerRow = bytesPerPixel * width;<br>  NSUInteger bitsPerComponent = 8;</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>            // kCGImageAlphaNone is not supported in CGBitmapContextCreate.
+            // Since the original image here has no alpha info, use kCGImageAlphaNoneSkipLast
+            // to create bitmap graphics contexts without alpha info.
+            CGContextRef context = CGBitmapContextCreate(NULL,
+                                                         width,
+                                                         height,
+                                                         bitsPerComponent,
+                                                         bytesPerRow,
+                                                         colorspaceRef,
+                                                         kCGBitmapByteOrderDefault|kCGImageAlphaNoneSkipLast);
+
+            // Draw the image into the context and retrieve the new bitmap image without alpha
+            CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
+            CGImageRef imageRefWithoutAlpha = CGBitmapContextCreateImage(context);
+            UIImage *imageWithoutAlpha = [UIImage imageWithCGImage:imageRefWithoutAlpha
+                                                             scale:scale
+                                                       orientation:image.imageOrientation];
+
+            if (unsupportedColorSpace) {
+                CGColorSpaceRelease(colorspaceRef);
+            }
+
+            CGContextRelease(context);
+            CGImageRelease(imageRefWithoutAlpha);
+            NSLog(@&quot;图片解压成功&quot;);
+            return imageWithoutAlpha;
+        }
+
+* Misaligned图像无法重合。在项目中，我们网络请求图片，大小不一，但是展示的UIImageView有时候是固定大小。这时候我们就需要图片的缩放了。图片的缩放需要占用时间，因此我们要尽可能保证无论是本地图片还是从网络或取得图片的大小，都与其frame保持一致。
+
+Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时系统需要进行缩放，抗锯齿等操作，增加了图形负担，通常这种问题出在对某些View的Frame重新计算和设置时产生的
+
+        //如果图片需要缩放则标记为黄色，如果没有像素对齐则标记为紫色，下例中如果赋值image1则会出现黄色蒙层，用image正常显示
+        EOCImageView *imageView = [[EOCImageView alloc] initWithFrame:CGRectMake(0, 70, 382, 200)];
+        UIImage *image = [EOCUtil decodeImage:[UIImage imageNamed:@&quot;770CB6EB-1524-44DE-987A-DB929C4AA544.jpeg&quot;] toSize:CGSizeMake(imageView.layer.bounds.size.width*2, imageView.layer.bounds.size.height*2)];
+        UIImage *image1 = [UIImage imageNamed:@&quot;770CB6EB-1524-44DE-987A-DB929C4AA544.jpeg&quot;];
+        imageView.image = image;
+        imageView.opaque = YES;
+        imageView.backgroundColor = [UIColor lightGrayColor];
+        imageView.clipsToBounds = YES;
+        [self.view addSubview:imageView];
+
+* Offscreen-Rendered工具：离屏渲染（CPU）：离屏渲染表示渲染发生在屏幕之外。离屏渲染意味着把渲染结果临时保存，等用到时再取出，因此相对于普通渲染更占用资源。
+
+“Color Offscreen-Rendered Yellow”会把需要离屏渲染的地方标记为黄色，大部分情况下我们需要尽可能避免黄色的出现。离屏渲染可能会自动触发，也可以手动触发。以下情况可能会导致触发离屏渲染：
+
+1. 重写drawRect方法；（自动触发离屏渲染） 
+2. 有mask或者是阴影(layer.masksToBounds, layer.shadow*)，模糊效果也是一种mask；（自动触发离屏渲染） 
+3. layer.shouldRasterize = true；
+
+&gt; （手动开启离屏渲染）drawRect UIGraphicGetCurrentContext()
+</code></pre><p>、使用Core Graphics  CreateBitMapContext()，以上两种情况都会开辟一个CGContext，分配一块内存空间，用于离屏渲染。离屏渲染（GPU）：设置cornerRadius, masks, shadows,edge antialiasing等，设置layer.shouldRasterize ＝ YES，用在view界面后续没有变化？？？</p>
+<pre><code>    //如果图片使用了阴影，也是黄色，这说明它也进行了离屏渲染，解决方案，在设置阴影效果的四行代码下面添加一行：
+    //这行代码制定了阴影路径，如果没有手动指定，Core Animation会去自动计算，这就会触发离屏渲染。如果人为指定了阴影路径，就可以免去计算，从而避免产生离屏渲染。
+    imgView.layer.shadowPath = UIBezierPath(rect: imgView.bounds).CGPath
+
+* Color Hits Green and Misses Red ：由于Shadow、Mask和Gradient等原因渲染很高，通常通过设置shouldRasterize栅格化属性为YES，缓存渲染内容。命中缓存image，显示绿色，未命中，显示红色，显然绿色越多越好，红色越少越好？？？
+
+        //光栅化是将一个layer预先渲染成位图(bitmap)，然后加入缓存中。如果对于阴影效果这样比较消耗资源的静态内容进行缓存，可以得到一定幅度的性能提升
+        - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+            __block UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;EOCTableViewCell&quot; forIndexPath:indexPath];
+            // Configure the cell...
+            static int i = 0;
+            for (UILabel *label in cell.contentView.subviews) {
+                if ([label isKindOfClass:[UILabel class]]) {
+                    label.text = [NSString stringWithFormat:@&quot;helloworld %d&quot;, i++];
+                    label.layer.shouldRasterize = YES;
+                }
+            }
+            return cell;
+        }
+
+&gt; 光栅化的缓存机制是一把双刃剑，先写入缓存再读取有可能消耗较多的时间。因此光栅化仅适用于较复杂的、静态的效果。通过Instrument的调试发现，这里使用光栅化经常出现未命中缓存的情况，如果没有特殊需要则可以关闭光栅化
+
+* Color Compositing Fast-Path Blue:离屏渲染的最后一步是把此前的多个路径组合起来。如果这个组合过程能由CPU完成，就会大量减少GPU的工作。这种技术在绘制地图中可能用到。工具用于标记由硬件绘制的路径，蓝色越多越好
+* Flash updated Regions：刷新视图时，我们应该把需要重绘的区域尽可能缩小。对于未发生变化的内容则不应该重绘。工具用于标记发生重绘的区域
+</code></pre><blockquote>
+<ol>
+<li>避免图层混合<ul>
+<li>确保控件的opaque属性设置为true，确保backgroundColor和父视图颜色一致且不透明；</li>
+<li>如无特殊需要，不要设置低于1的alpha值；</li>
+<li>确保UIImage没有alpha通道；</li>
+</ul>
+</li>
+<li>避免临时转换<ul>
+<li>确保图片大小和frame一致，不要在滑动时缩放图片；</li>
+<li>确保图片颜色格式被GPU支持，避免劳烦CPU转换；</li>
+</ul>
+</li>
+<li>慎用离屏渲染<ul>
+<li>绝大多数时候离屏渲染会影响性能；</li>
+<li>重写drawRect方法，设置圆角、阴影、模糊效果，光栅化都会导致离屏渲染；</li>
+<li>设置阴影效果是加上阴影路径；</li>
+<li>滑动时若需要圆角效果，开启光栅化；</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>Counter</p>
+<p>  查看App的可能的性能瓶颈，Performance monitor counters (PMCs) 即Counter工具，衡量处理器发生的事件个数</p>
+</li>
+<li><p>System trace工具</p>
+<p>  它显示线程的调度、系统线程的转化和内存使用情况。简单点说就是记录一个App运行过程中所有底层系统线程、内存的调度使用过程的工具。</p>
+</li>
+<li><p>Timer Profiler</p>
+<p>  它按照固定的时间间隔来跟踪每一个线程的堆栈信息，通过统计比较时间间隔之间的堆栈状态，来推算某个方法执行了多久，并获得一个近似值。其实从根本上来说与我们的原始分析方法异曲同工，只不过其将各个方法消耗的时间统计起来。</p>
+</li>
+</ul>
+<h1 id="iOS性能优化实践二"><a href="#iOS性能优化实践二" class="headerlink" title="iOS性能优化实践二"></a>iOS性能优化实践二</h1><p>autolayout性能分析：frame&gt;autolayout(absolute)&gt;autolayout(relative)</p>
+<p>OpenGL、CoreAnimation在GPU上，CoreGraphic在CPU上</p>
+<ul>
+<li><p>轻量化主线程</p>
+<pre><code>- (void)showImageView {
+    if (self.imageView.image) {
+        self.imageView.image = nil;
+    }else {
+        //这里占用主线程过多
+        //改为后台线程加载，再用主线程设置
+        //self.imageView.image = [UIImage imageNamed:@&quot;timg.jpg&quot;];
+        __weak typeof(self) weakSelf = self;
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UIImage *image = [UIImage imageNamed:@&quot;timg.jpg&quot;];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                weakSelf.imageView.image = image;
+            });
+        });
+    }
+    [self.imageView setNeedsDisplay];
+}
+</code></pre></li>
+<li><p>UITableView封装</p>
+<pre><code>//EOCBaseTableViewController类
+@interface EOCBaseTableViewController ()
+@property (assign, nonatomic) int pageIndex;
+@property (assign, nonatomic) BOOL isLoading;
+@end
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self refresh];
+}
+- (void)refresh {
+        self.pageIndex = 0;
+        [self loadMore];
+    }
+- (void)loadMore {
+    __block typeof(self) weakSelf = self;
+    NSLog(@&quot;load %d&quot;,self.pageIndex);
+    [[EOCNet shareManager] loadNewsWithStart:self.pageIndex complete:^(NSDictionary *object) {
+        NSLog(@&quot;result %@&quot;, object);
+        if ([[object valueForKey:@&quot;result&quot;] isKindOfClass:[NSDictionary class]]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSArray *newArray = [[object valueForKey:@&quot;result&quot;] valueForKey:@&quot;list&quot;];
+                if (weakSelf.pageIndex == 0) {
+                    [weakSelf.dataManager removeAllObjcets];
+                }
+                [weakSelf.dataManager appendData:newArray];
+                weakSelf.pageIndex += (int)[newArray count];
+                [weakSelf.tableView.infiniteScrollingView stopAnimating];
+                [weakSelf.tableView.pullToRefreshView stopAnimating];
+                [weakSelf.tableView reloadData];
+                weakSelf.isLoading = NO;
+            });
+        }else {
+            weakSelf.isLoading = NO;
+        }
+    } failed:^(NSError *error) {
+        NSLog(@&quot;%@&quot;,error);
+        [weakSelf.tableView.infiniteScrollingView stopAnimating];
+        [weakSelf.tableView.pullToRefreshView stopAnimating];
+        weakSelf.isLoading = NO;
+    }];
+}
+
+//EOCNewsTableViewController类
+- (EOCNewsDataManager *)dataManager {
+    if (!_dataManager) {
+        _dataManager = [EOCNewsDataManager manager];
+
+        __weak typeof(self) weakSelf = self;
+        [_dataManager setUpdateRowHeightBlock:^(NSDictionary *info) {
+            [weakSelf.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+        }];
+    }
+    return _dataManager;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.dataManager.newsInfo count];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //主线程---&gt;子线程移除所有数据---&gt;主线程继续执行
+    NSDictionary *rowInfo = [self.dataManager.newsInfo objectAtIndex:indexPath.row];
+    return [rowInfo rowHeight];
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    EOCNewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;EOCNewsTableViewCell&quot; forIndexPath:indexPath];
+    if (indexPath.row &gt; [self.dataManager.newsInfo count]) {
+        return cell;
+    }
+    cell.info = [self.dataManager.newsInfo objectAtIndex:indexPath.row];
+    return cell;
+}
+
+//EOCNewsDataManager类
+@interface EOCNewsDataManager : NSObject
+@property (strong, nonatomic) NSMutableArray *newsInfo;
++ (EOCNewsDataManager *)manager;
+//缓存行高等，新增value key对时使用
+- (void)modifyRowInfo:(NSDictionary *)rowInfo value:(id)value key:(NSString *)key;
+//刷新行高回调
+- (void)setUpdateRowHeightBlock:(void (^)(NSDictionary *info))UpdateRowHeightBlock;
+@end
+
+@interface EOCNewsDataManager ()
+@property (strong, nonatomic) void (^UpdateRowHeightBlock)(NSDictionary *info);
+@end
+
+@implementation EOCNewsDataManager
++ (EOCNewsDataManager *)manager {
+    static EOCNewsDataManager *__manager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        if (!__manager) {
+            __manager = [[EOCNewsDataManager alloc] init];
+        }
+    });
+    return __manager;
+}
+- (NSMutableArray *)newsInfo {
+    if (!_newsInfo) {
+        _newsInfo = [NSMutableArray arrayWithCapacity:100];
+    }
+    return _newsInfo;
+}
+- (void)modifyRowInfo:(NSDictionary *)rowInfo value:(id)value key:(NSString *)key {
+    if ([key isEqualToString:@&quot;bitmapImage&quot;]) {
+        rowInfo.bitmapImage = value;
+    }else if ([key isEqualToString:@&quot;titleHeight&quot;]) {
+        if (fabs(rowInfo.titleHeight - [value floatValue]) &lt; 1.0) {
+            return;
+        }
+        rowInfo.titleHeight = [value floatValue];
+    }else if ([key isEqualToString:@&quot;imageHeight&quot;]) {
+        if (fabs(rowInfo.titleHeight - [value floatValue]) &lt; 1.0) {
+            return;
+        }
+        rowInfo.imageHeight = [value floatValue];
+    }else if ([key isEqualToString:@&quot;rowHeight&quot;]) {
+        if (fabs(rowInfo.titleHeight - [value floatValue]) &lt; 1.0) {
+            return;
+        }
+        rowInfo.rowHeight = [value floatValue];
+    }else {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:rowInfo];
+        [dic setObject:value forKey:key];
+        if ([self.newsInfo containsObject:rowInfo]) {
+            NSInteger rowNum = [self.newsInfo indexOfObject:rowInfo];
+            [self.newsInfo replaceObjectAtIndex:rowNum withObject:dic];
+        }else {
+            return;
+        }
+    }
+    if (([key isEqualToString:@&quot;imageHeight&quot;] ||
+         [key isEqualToString:@&quot;titleHeight&quot;]) &amp;&amp;
+        self.UpdateRowHeightBlock) {
+
+        self.UpdateRowHeightBlock(rowInfo);
+    }
+}
+@end
+
+//NSDictionary + NewsInfo类
+@interface NSDictionary (NewsInfo)
+@property (weak, readonly) NSString *title;
+@property (weak, readonly) NSString *time;
+@property (weak, readonly) NSString *src;
+@property (weak, readonly) NSString *pic;
+@property (weak, readonly) NSString *content;
+@property (assign, nonatomic) float imageHeight;
+@property (assign, nonatomic) float titleHeight;
+@property (assign, nonatomic) float rowHeight;
+@property (strong, nonatomic) UIImage *bitmapImage;
++ (CGFloat)heightForImage:(UIImage *)image fitWidth:(CGFloat)width;
++ (float)heightForString:(NSString *)string size:(CGSize)boundingSize font:(UIFont *)font;
+@end
+@implementation NSDictionary (NewsInfo)
+- (NSString *)title { return [self valueForKey:@&quot;title&quot;]; }
+- (NSString *)time { return [self valueForKey:@&quot;time&quot;]; }
+- (NSString *)src { return [self valueForKey:@&quot;src&quot;]; }
+- (NSString *)pic { return [self valueForKey:@&quot;pic&quot;]; }
+- (NSString *)content { return [self valueForKey:@&quot;content&quot;]; }
+- (void)dealloc {
+    objc_removeAssociatedObjects(self);
+}
+- (float)rowHeight {
+    NSNumber *height = objc_getAssociatedObject(self, @&quot;rowHeight&quot;);
+    if (!height) {
+        height = @([self imageHeight] + [self titleHeight] + 48 /*22.0 + 8.0*2 + 5.0 + 5.0*/);
+        self.rowHeight = [height floatValue];
+    }
+    return [height floatValue];
+}
+- (void)setRowHeight:(float)rowHeight {
+    objc_setAssociatedObject(self, &quot;rowHeight&quot;, @(rowHeight), OBJC_ASSOCIATION_RETAIN);
+}
+- (float)imageHeight {
+    NSNumber *height = objc_getAssociatedObject(self, &quot;imageHeight&quot;);
+    if (!height) {
+        return 120.0;
+    }else {
+        return height.floatValue;
+    }
+}
+- (void)setImageHeight:(float)imageHeight {
+    objc_setAssociatedObject(self, &quot;imageHeight&quot;, @(imageHeight), OBJC_ASSOCIATION_RETAIN);
+}
+- (float)titleHeight {
+    NSNumber *height = objc_getAssociatedObject(self, &quot;titleHeight&quot;);
+    if (!height) {
+        return 0.0;
+    }else {
+        return height.floatValue;
+    }
+}
+- (void)setTitleHeight:(float)titleHeight {
+    objc_setAssociatedObject(self, &quot;titleHeight&quot;, @(titleHeight), OBJC_ASSOCIATION_RETAIN);
+}
+- (UIImage *)bitmapImage {
+    UIImage *image = objc_getAssociatedObject(self, &quot;bitmapImage&quot;);
+    return image;
+}
+- (void)setBitmapImage:(UIImage *)bitmapImage {
+    objc_setAssociatedObject(self, &quot;bitmapImage&quot;, bitmapImage, OBJC_ASSOCIATION_RETAIN);
+}
++ (float)heightForString:(NSString *)string size:(CGSize)boundingSize font:(UIFont *)font {
+    return [string?:@&quot;&quot; boundingRectWithSize:boundingSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size.height;
+}
++ (CGFloat)heightForImage:(UIImage *)image fitWidth:(CGFloat)width {
+    if (!image) {
+        NSLog(@&quot;heightForImage 图片为空&quot;);
+        return 0.0;
+    }
+    return  width/(image.size.width * image.scale) * (image.size.height * image.scale);
+}
+
+//EOCNewsTableViewCell类
+@interface EOCNewsTableViewCell ()
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageViewHeight;
+@property (weak, nonatomic) IBOutlet UIImageView *leftImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeight;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@end
+@implementation EOCNewsTableViewCell
+- (void)setInfo:(NSDictionary *)info {
+    _info = info;
+    __weak typeof(self) weakSelf = self;
+    NSURL *url = [NSURL URLWithString:info.pic];
+    [self.leftImageView sd_setImageWithURL:url placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        if (image) {
+            weakSelf.leftImageView.image = image;
+            weakSelf.imageViewHeight.constant = [NSDictionary heightForImage:image fitWidth:weakSelf.leftImageView.frame.size.width];
+        } else {
+            weakSelf.imageViewHeight.constant = 1.0;
+        }
+        [[EOCNewsDataManager manager] modifyRowInfo:info value:@(weakSelf.imageViewHeight.constant) key:@&quot;imageHeight&quot;];
+    }];
+    self.titleLabel.text = info.title?:@&quot;&quot;;
+    self.timeLabel.numberOfLines = 100;
+    CGFloat titleHeight = [info titleHeight];
+    if (titleHeight &lt; 1.0) {
+        CGFloat height = [[info class] heightForString:self.titleLabel.text size:CGSizeMake([UIScreen mainScreen].bounds.size.width - 8*2, CGFLOAT_MAX) font:self.titleLabel.font];
+        [[EOCNewsDataManager manager] modifyRowInfo:info value:@(height) key:@&quot;titleHeight&quot;];
+    }
+    self.titleHeight.constant = [info titleHeight];
+    self.titleLabel.text = info.title?:@&quot;&quot;;
+    self.timeLabel.text = info.time;
+}
+@end
+</code></pre></li>
+</ul>
+<blockquote>
+<p>UITableView的复用机制是享元设计模式，当其复用时，会生成N+1个Cell</p>
+</blockquote>
+<p>上例中可以看到执行过程如下，每次改变都需要reloadData，如果下载的图片多，会造成主线程卡顿，所以为了减少不必要的刷新，减轻主线程的任务，可以监听RunLoop，在RunLoop空闲时去刷新</p>
+<ul>
+<li>[EOCBaseTableViewController refresh]</li>
+<li>[EOCBaseTableViewController reloadData]</li>
+<li>[EOCNewsTableViewController cellForRowAtIndexPath]</li>
+<li>[EOCNewsTableViewCell setInfo:]</li>
+<li>条件执行[EOCNewsDataManager modifyRowInfo:]</li>
+<li>[EOCNewsDataManager UpdateRowHeightBlock]</li>
+<li><p>[EOCBaseTableViewController reloadData]</p>
+<pre><code>//EOCNewsTableViewControllerNew类
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.indexs = [NSMutableArray array];
+    __weak typeof(self) weakSelf = self;
+    self.runloop =  CFRunLoopObserverCreateWithHandler(CFAllocatorGetDefault(), kCFRunLoopBeforeWaiting, YES, 0, ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity) {
+        CFStringRef model = CFRunLoopCopyCurrentMode(CFRunLoopGetCurrent());
+        NSLog(@&quot;%@&quot;,(__bridge NSString *) model);
+        CFRelease(model);
+        [weakSelf.indexs removeAllObjects];
+        NSArray *visibleCells = [weakSelf.tableView visibleCells];
+        for (EOCNewsTableViewCell *cell in visibleCells) {
+            if (fabs([cell.info rowHeight] - cell.frame.size.height) &gt; 1.0) {
+                [weakSelf.indexs addObject:[weakSelf.tableView indexPathForCell:cell]];
+            }
+        }
+        if (weakSelf.indexs.count &gt; 0) {
+            [EOCUtil runInMain:^{
+                NSLog(@&quot;update Row&quot;);
+                [weakSelf.tableView reloadRowsAtIndexPaths:weakSelf.indexs withRowAnimation:UITableViewRowAnimationFade];
+            }];
+        }
+    });
+    CFRunLoopAddObserver(CFRunLoopGetMain(), self.runloop, kCFRunLoopCommonModes);
+}
+</code></pre></li>
+</ul>
+<p>上述例子虽然可以减轻主线程的负担，但是引起UITableView卡顿的原因来自各个方面，比较常见的原因有cell的层级过多、cell中有触发离屏渲染的代码（譬如：cornerRadius、maskToBounds 同时使用）、像素是否对齐、是否使用UITableView自动计算cell高度的方法等。而使用core text可以将文本绘制在一个CGContextRef上，最后再通过UIGraphicsGetImageFromCurrentImageContext()生成图片，再将图片赋值给cell.contentView.layer，从而达到减少cell层级的目的。当然在生成图片的时候，是很耗资源的，将图片的绘制放在子线程里会更加有一个更好的UI体验。可以把生成的图片和cell的info数据相关联，存储起来，等到下次需要显示的时候，直接拿出来用。</p>
+<pre><code>//EOCCoreTextNewsTableViewCell类
+- (void)setInfo:(NSDictionary *)info {
+    _info = info;
+    CGFloat titleHeight = [info titleHeight];
+    if (titleHeight &lt; 1.0) {
+        CGFloat height = [[info class] heightForString:info.title size:CGSizeMake([UIScreen mainScreen].bounds.size.width - 8*2, CGFLOAT_MAX) font:[UIFont systemFontOfSize:17]];
+        [[EOCNewsDataManager manager] modifyRowInfo:info value:@(height) key:@&quot;titleHeight&quot;];
+    }
+    self.coretextView.info = _info;
+    [self.coretextView setNeedsDisplay];
+}
+
+//EOCNewsCoreTextView类
+- (void)setInfo:(NSDictionary *)info {
+    _info = info;
+    CGFloat titleHeight = [info titleHeight];
+    if (titleHeight &lt; 1.0) {
+        CGFloat height = [[info class] heightForString:info.title size:CGSizeMake([UIScreen mainScreen].bounds.size.width - 8*2, CGFLOAT_MAX) font:[UIFont systemFontOfSize:17]];
+        [[EOCNewsDataManager manager] modifyRowInfo:info value:@(height) key:@&quot;titleHeight&quot;];
+    }
+#ifdef ENABLE_BACKGRUOND_CORETEXT
+    if (!_info.bitmapImage) {
+        [self drawInBackgound];
+    } else {
+        [self setNeedsDisplay];
+    }
+#else
+    [self setNeedsDisplay];
+#endif
+}
+
+- (void)drawRect:(CGRect)rect {
+    [super drawRect:rect];
+#ifdef ENABLE_BACKGRUOND_CORETEXT
+    if (self.info.bitmapImage) {
+        CGContextTranslateCTM(context, 0, rect.size.height);
+        CGContextRotateCTM(context, M_PI);
+        CGContextScaleCTM(context, -1.0, 1.0);
+        CGContextDrawImage(context, rect, self.info.bitmapImage.CGImage);
+    }else {
+        [self drawInBackgound];
+    }
+#else 
+    [self drawInMainThreadRect:rect];
+#endif
+}
+
+- (void)drawInMainThreadRect:(CGRect)rect {
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    //设置当前文本矩阵
+    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+    //文本沿y轴移动
+    CGContextTranslateCTM(context, 0, self.bounds.size.height);
+    //文本翻转成为CoreText坐标系
+    CGContextScaleCTM(context, 1, -1);
+    //创建绘制区域
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRect(path, NULL, CGRectMake(0, 0, rect.size.width, rect.size.height));
+    //创建需要绘制的文字
+    NSString *string = [self.info.title?:@&quot;&quot; stringByAppendingFormat:@&quot;\n%@&quot;,self.info.time];
+    NSMutableAttributedString *titleAttributeString = [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17], NSForegroundColorAttributeName:[UIColor blackColor]}];
+
+    NSString *imageUrl = self.info.pic;
+    __weak typeof(self) weakSelf = self;
+    UIImage *image = [[EOCImageDownManager shareInstance] loadImageWithUrl:imageUrl complete:^(UIImage *image, NSURL *imageURL, NSError *error) {
+        if (image) {
+            CGFloat imageHeight = [[weakSelf.info class] heightForImage:image fitWidth:SCREEN_WIDTH - 8*2];
+            if (fabs(weakSelf.info.imageHeight - imageHeight) &lt; 1.0) {
+                return ;
+            } else {
+                [[EOCNewsDataManager manager] modifyRowInfo:weakSelf.info value:@(imageHeight) key:@&quot;imageHeight&quot;];
+                [weakSelf performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:NO];
+            }
+        }
+    }];
+    if (image) {
+        //图片绘制，设置代理
+        CTRunDelegateCallbacks callBacks;
+        memset(&amp;callBacks,0,sizeof(CTRunDelegateCallbacks));
+        callBacks.version = kCTRunDelegateVersion1;
+        callBacks.getAscent = ascentCallBacks;
+        callBacks.getDescent = descentCallBacks;
+        callBacks.getWidth = widthCallBacks;
+        callBacks.dealloc = delegateDealloc;
+
+        //创建CTRunDelegate
+        CTRunDelegateRef delegate = CTRunDelegateCreate(&amp;callBacks, (__bridge void *)weakSelf.info);
+
+        //使用0xfffc作为空白占位符
+        unichar placeHolder = 0xFFFC;
+        NSString *emptyStr = [NSString stringWithCharacters:&amp;placeHolder length:1];
+        NSMutableAttributedString *imageSpace = [[NSMutableAttributedString alloc] initWithString:emptyStr];
+        //设置代理
+        CFAttributedStringSetAttribute((CFMutableAttributedStringRef)imageSpace, CFRangeMake(0, 1), kCTRunDelegateAttributeName, delegate);
+        [titleAttributeString insertAttributedString:imageSpace atIndex:0];
+        CFRelease(delegate);
+    }
+
+    CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)titleAttributeString);
+    CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, titleAttributeString.length), path, NULL);
+
+    //绘制文本
+    CTFrameDraw(frame, context);
+
+    //绘制图像
+    CGRect imageRect = [self calculateImageRectWithFrame:frame];
+    CGContextDrawImage(context, imageRect, image.CGImage);
+
+    CFRelease(frame);
+    CFRelease(path);
+    CFRelease(frameSetter);
+}
+
+- (void)drawInBackgound {
+    __block typeof(self) blockSelf = self;
+    NSString *imageUrl = self.info.pic;
+    [[EOCImageDownManager shareInstance] loadImageWithUrl:imageUrl complete:^(UIImage *image, NSURL *imageURL, NSError *error) {
+        if (image) {
+            CGFloat imageHeight = [[blockSelf.info class] heightForImage:image fitWidth:SCREEN_WIDTH - 8*2];
+            [[EOCNewsDataManager manager] modifyRowInfo:blockSelf.info value:@(imageHeight) key:@&quot;imageHeight&quot;];
+            if (!blockSelf.info.bitmapImage) {
+                [EOCUtil runBackground:^{
+                    UIImage *bitmapImage = [blockSelf drawInBackgroundWithImage:image info:blockSelf.info];
+                    [[EOCNewsDataManager manager] modifyRowInfo:blockSelf.info value:bitmapImage key:@&quot;bitmapImage&quot;];
+                    [blockSelf performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:NO];
+                }];
+            }
+        }
+    }];
+}
+
+- (UIImage *)drawInBackgroundWithImage:(UIImage *)image info:(NSDictionary *)info {
+    NSString *string = [self.info.title?:@&quot;&quot; stringByAppendingFormat:@&quot;\n%@&quot;,self.info.time];
+    NSMutableAttributedString *titleAttributeString = [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17*2], NSForegroundColorAttributeName:[UIColor blackColor]}];
+    CGRect rect = CGRectMake(0, 0, (SCREEN_WIDTH - 8*2)*2, (info.rowHeight - 8*2)*2);
+    CGContextRef context = [EOCUtil createARGBContextOfSize:CGSizeMake(rect.size.width, rect.size.height)];
+
+    //创建绘制区域
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddRect(path, NULL, CGRectMake(0, 0, rect.size.width, rect.size.height));
+
+    if (image) {
+        //图片绘制，设置代理
+        CTRunDelegateCallbacks callBacks;
+        memset(&amp;callBacks,0,sizeof(CTRunDelegateCallbacks));
+        callBacks.version = kCTRunDelegateVersion1;
+        callBacks.getAscent = ascentCallBacks;
+        callBacks.getDescent = descentCallBacks;
+        callBacks.getWidth = widthCallBacks;
+        callBacks.dealloc = delegateDealloc;
+
+        //创建CTRunDelegate
+        CTRunDelegateRef delegate = CTRunDelegateCreate(&amp;callBacks, (__bridge void *)self.info);
+
+        //使用0xfffc作为空白占位符
+        unichar placeHolder = 0xFFFC;
+        NSString *emptyStr = [NSString stringWithCharacters:&amp;placeHolder length:1];
+        NSMutableAttributedString *imageSpace = [[NSMutableAttributedString alloc] initWithString:emptyStr];
+
+        //绑定代理
+        CFAttributedStringSetAttribute((CFMutableAttributedStringRef)imageSpace, CFRangeMake(0, 1), kCTRunDelegateAttributeName, delegate);
+        CFRelease(delegate);
+
+        [titleAttributeString insertAttributedString:imageSpace atIndex:0];
+    }
+
+    CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)titleAttributeString);
+    CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, titleAttributeString.length), path, NULL);
+
+    //绘制文本
+    CTFrameDraw(frame, context);
+
+    //绘制图像
+    CGRect imageRect = [self calculateImageRectWithFrame:frame];
+    CGContextDrawImage(context, imageRect, image.CGImage);
+
+    CFRelease(frame);
+    CFRelease(path);
+    CFRelease(frameSetter);
+
+    CGImageRef bitmapImage = CGBitmapContextCreateImage(context);
+
+    CFAutorelease(bitmapImage);
+    return [UIImage imageWithCGImage:bitmapImage scale:2.0 orientation:UIImageOrientationUp];
+}
+
+-(CGRect)calculateImageRectWithFrame:(CTFrameRef)frame {
+    //获取所有行
+    NSArray * arrLines = (NSArray *)CTFrameGetLines(frame);
+
+    NSInteger count = [arrLines count];
+    //获取所有行的起始坐标
+    CGPoint points[count];
+    CTFrameGetLineOrigins(frame, CFRangeMake(0, 0), points);
+
+    for (int i = 0; i &lt; count; i ++) {
+        CTLineRef line = (__bridge CTLineRef)arrLines[i];
+
+        //获取每行中的所有CTRun
+        NSArray * arrGlyphRun = (NSArray *)CTLineGetGlyphRuns(line);
+        for (int j = 0; j &lt; arrGlyphRun.count; j ++) {
+            CTRunRef run = (__bridge CTRunRef)arrGlyphRun[j];
+            NSDictionary * attributes = (NSDictionary *)CTRunGetAttributes(run);
+            CTRunDelegateRef delegate = (__bridge CTRunDelegateRef)[attributes valueForKey:(id)kCTRunDelegateAttributeName];
+            if (delegate == nil) {
+                continue;
+            }
+            NSDictionary * dic = CTRunDelegateGetRefCon(delegate);
+            if (![dic isKindOfClass:[NSDictionary class]]) {
+                continue;
+            }
+            //当前行的起点坐标
+            CGPoint point = points[i];
+            CGFloat ascent;
+            CGFloat descent;
+
+            //图片在绘制区域中的rect
+            CGRect boundsRun;
+            boundsRun.size.width = CTRunGetTypographicBounds(run, CFRangeMake(0, 0), &amp;ascent, &amp;descent, NULL);
+            boundsRun.size.height = ascent + descent;
+            //获取run中字符串的最大长度
+            CGFloat xOffset = CTLineGetOffsetForStringIndex(line, CTRunGetStringRange(run).location, NULL);
+            boundsRun.origin.x = point.x + xOffset;
+            boundsRun.origin.y = point.y - descent;
+
+            CGPathRef path = CTFrameGetPath(frame);
+            //绘制区域
+            CGRect colRect = CGPathGetBoundingBox(path);
+            //偏移得到绝对坐标
+            CGRect imageBounds = CGRectOffset(boundsRun, colRect.origin.x, colRect.origin.y);
+            return imageBounds;
+        }
+    }
+    return CGRectZero;
+}
+
+@implementation EOCUtil
+
++ (void)runInMain:(void (^) ())block
+{
+    if ([[NSThread currentThread] isMainThread]) {
+        block();
+    }else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+}
+
++ (void)runBackground:(void (^) ())block
+{
+    if ([[NSThread currentThread] isMainThread]) {
+        dispatch_async(dispatch_get_global_queue(0, 0), block);
+    }else {
+        block();
+    }
+}
+
++ (CGSize)sizeToForImage:(UIImage *)image fitWidth:(CGFloat)width
+{
+    if (!image) {
+        return CGSizeMake(0, 0);
+    }
+    return CGSizeMake(width, width/(image.size.width * image.scale) * (image.size.height * image.scale));
+}
+
++ (UIImage *)decodeImage:(UIImage *)image toSize:(CGSize)size
+{
+    if (image == nil) { // Prevent &quot;CGBitmapContextCreateImage: invalid context 0x0&quot; error
+        return nil;
+    }
+
+    @autoreleasepool{
+        // do not decode animated images
+        if (image.images != nil) {
+            return image;
+        }
+
+        CGImageRef imageRef = image.CGImage;
+
+        CGImageAlphaInfo alpha = CGImageGetAlphaInfo(imageRef);
+        BOOL anyAlpha = (alpha == kCGImageAlphaFirst ||
+                         alpha == kCGImageAlphaLast ||
+                         alpha == kCGImageAlphaPremultipliedFirst ||
+                         alpha == kCGImageAlphaPremultipliedLast);
+        if (anyAlpha) {
+            NSLog(@&quot;图片解压失败，存在alpha通道&quot;);
+            return image;
+        }
+
+        // current
+        CGColorSpaceModel imageColorSpaceModel = CGColorSpaceGetModel(CGImageGetColorSpace(imageRef));
+        CGColorSpaceRef colorspaceRef = CGImageGetColorSpace(imageRef);
+
+        BOOL unsupportedColorSpace = (imageColorSpaceModel == kCGColorSpaceModelUnknown ||
+                                      imageColorSpaceModel == kCGColorSpaceModelMonochrome ||
+                                      imageColorSpaceModel == kCGColorSpaceModelCMYK ||
+                                      imageColorSpaceModel == kCGColorSpaceModelIndexed);
+        if (unsupportedColorSpace) {
+            colorspaceRef = CGColorSpaceCreateDeviceRGB();
+        }
+
+        size_t width = size.width;
+        size_t height = size.height;
+        NSUInteger bytesPerPixel = 4;
+        NSUInteger bytesPerRow = bytesPerPixel * width;
+        NSUInteger bitsPerComponent = 8;
+
+
+        // kCGImageAlphaNone is not supported in CGBitmapContextCreate.
+        // Since the original image here has no alpha info, use kCGImageAlphaNoneSkipLast
+        // to create bitmap graphics contexts without alpha info.
+        CGContextRef context = CGBitmapContextCreate(NULL,
+                                                     width,
+                                                     height,
+                                                     bitsPerComponent,
+                                                     bytesPerRow,
+                                                     colorspaceRef,
+                                                     kCGBitmapByteOrderDefault|kCGImageAlphaNoneSkipLast);
+
+        // Draw the image into the context and retrieve the new bitmap image without alpha
+        CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
+        CGImageRef imageRefWithoutAlpha = CGBitmapContextCreateImage(context);
+        UIImage *imageWithoutAlpha = [UIImage imageWithCGImage:imageRefWithoutAlpha
+                                                         scale:image.scale
+                                                   orientation:image.imageOrientation];
+
+        if (unsupportedColorSpace) {
+            CGColorSpaceRelease(colorspaceRef);
+        }
+
+        CGContextRelease(context);
+        CGImageRelease(imageRefWithoutAlpha);
+        NSLog(@&quot;图片解压成功&quot;);
+        return imageWithoutAlpha;
+    }
+
+}
+
++ (CGContextRef)createARGBContextOfSize:(CGSize)size
+{
+    CGContextRef    context = NULL;
+    CGColorSpaceRef colorSpace;
+    void *          bitmapData;
+    int             bitmapByteCount;
+    int             bitmapBytesPerRow;
+
+    // Get image width, height. We&apos;ll use the entire image.
+    size_t pixelsWide = size.width;
+    size_t pixelsHigh = size.height;
+
+    // Declare the number of bytes per row. Each pixel in the bitmap in this
+    // example is represented by 4 bytes; 8 bits each of red, green, blue, and
+    // alpha.
+    bitmapBytesPerRow   = (int)(pixelsWide * 4);
+    bitmapByteCount     = (int)(bitmapBytesPerRow * pixelsHigh);
+
+    // Use the generic RGB color space.
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+
+    if (colorSpace == NULL)
+    {
+        fprintf(stderr, &quot;Error allocating color space\n&quot;);
+        return NULL;
+    }
+    NSMutableData *data = [NSMutableData dataWithLength:bitmapByteCount];
+    bitmapData = [data mutableBytes];
+    memset(bitmapData, 0, [data length]);
+    context = CGBitmapContextCreate (bitmapData,
+                                     pixelsWide,
+                                     pixelsHigh,
+                                     8,      // bits per component
+                                     bitmapBytesPerRow,
+                                     colorSpace,
+                                     kCGImageAlphaPremultipliedFirst);
+    if (context == NULL)
+    {
+        free (bitmapData);
+        fprintf (stderr, &quot;Context not created!&quot;);
+    }
+
+    // Make sure and release colorspace before returning
+    CGColorSpaceRelease( colorSpace );//create copy  一般都要release
+    CFAutorelease(context);
+    return context;
+}
+@end
+</code></pre><h1 id="iOS性能优化实践三"><a href="#iOS性能优化实践三" class="headerlink" title="iOS性能优化实践三"></a>iOS性能优化实践三</h1><pre><code>    @interface EOCImageDownManager ()
+    @property (strong, nonatomic) NSMutableDictionary *downOperations;
+    @property (strong, nonatomic) NSMutableArray *nextDownQueue;
+    @end
+
+    @implementation EOCImageDownManager
+    + (EOCImageDownManager *)shareInstance {
+        static dispatch_once_t onceToken;
+        static EOCImageDownManager *__downloadManager = nil;
+        dispatch_once(&amp;onceToken, ^{
+            if (!__downloadManager) {
+                __downloadManager = [[EOCImageDownManager alloc] init];
+            }
+        });
+        return __downloadManager;
+    }
+
+    - (UIImage *)loadImageWithUrl:(NSString *)urlStr complete:(void (^) (UIImage *image, NSURL *imageURL, NSError *error))complete {
+        /*
+        一层： UIImageView+Cache  UIButton+Cache，CacheInterface
+        二层：下载层  Download（queue）
+        三层：缓存，一级缓存Cache， 二级缓存：DiskCache
+        */
+        if ([urlStr length] == 0) {
+            if (complete) {
+                complete(nil, nil, [NSError errorWithDomain:@&quot;com.leo.news&quot; code:-1 userInfo:@{@&quot;msg&quot;:@&quot;下载失败，图片url为空!&quot;}]);
+            }
+            return nil;
+        }
+        NSURL *url = [NSURL URLWithString:urlStr];
+        //内存中缓存
+        UIImage *cacheImage = [self cacheImageForUrl:url];
+        if (cacheImage) {
+            if (complete) {
+                complete(cacheImage, url, nil);
+            }
+            return cacheImage;
+        }
+
+        //磁盘中缓存
+        if ([SDWEBIMAGE_MANAGER.imageCache diskImageExistsWithKey:[SDWEBIMAGE_MANAGER cacheKeyForURL:url]]) {
+            [EOCUtil runBackground:^{
+                UIImage *image = [SDWEBIMAGE_MANAGER.imageCache imageFromDiskCacheForKey:[SDWEBIMAGE_MANAGER cacheKeyForURL:url]];
+                if (complete) {
+                    complete(image, url, nil);
+                }
+            }];
+            return nil;
+        }
+
+        //如果正在下载
+        if ([self.downOperations objectForKey:url]) {
+            return nil;
+        }
+
+    #ifdef ENABLE_LIMIT_MAX_DOWNQUEUE
+        if ([self.downOperations count] &gt; EOCIMAGEDOWN_MAX_COUNT) {
+            [[self nextDownQueue] addObject:[EOCDownTask taskWithUrl:url complete:complete]];
+            return nil;
+        }
+    #endif
+        __block typeof(self) weakSelf = self;
+        NSOperation *operation = [[SDWebImageManager sharedManager] downloadImageWithURL:url options:SDWebImageRefreshCached progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            if (complete) {
+    #ifdef ENABLE_IMAGEDECODE
+                if (image) {
+                    image = [EOCUtil decodeImage:image toSize:[EOCUtil sizeToForImage:image fitWidth:([UIScreen mainScreen].bounds.size.width - 8*2)*[UIScreen mainScreen].scale]];
+                }
+    #endif
+                complete(image, imageURL, error);
+            }
+            [weakSelf.downOperations removeObjectForKey:url];
+
+    #ifdef ENABLE_LIMIT_MAX_DOWNQUEUE
+            //开启下一个下载
+            EOCDownTask *task = [weakSelf.nextDownQueue firstObject];
+            if (task) {
+                [weakSelf.nextDownQueue removeObjectAtIndex:0];
+            }
+            [weakSelf loadImageWithUrl:[task.url absoluteString] complete:task.complete];
+    #endif
+        }];
+        [self.downOperations setObject:operation forKey:url];
+        return nil;
+    }
+
+    - (UIImage *)cacheImageForUrl:(NSURL *)url {
+        SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
+        NSString *cacheKey = [[SDWebImageManager sharedManager] cacheKeyForURL:url];
+        UIImage *image = [cache imageFromMemoryCacheForKey:cacheKey];
+        return image;
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/26/GCD深度使用和底层源码分析/" rel="next" title="GCD深度使用和底层源码分析">
+                <i class="fa fa-chevron-left"></i> GCD深度使用和底层源码分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/28/带你掌握微信朋友圈实现/" rel="prev" title="带你掌握微信朋友圈实现">
+                带你掌握微信朋友圈实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS性能优化实践一"><span class="nav-number">1.</span> <span class="nav-text">iOS性能优化实践一</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS性能优化实践二"><span class="nav-number">2.</span> <span class="nav-text">iOS性能优化实践二</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS性能优化实践三"><span class="nav-number">3.</span> <span class="nav-text">iOS性能优化实践三</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

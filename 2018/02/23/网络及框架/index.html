@@ -1,0 +1,2358 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,网络及框架,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="断点下载原理及文件上传 断点下载方式 1. 断点下载（URL） 2. 判断过渡区(中转站tmp)是否存在该请求的网络数据? 3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求 4. 过度区没有相关数据:直接发起网络请求 5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开 6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Do">
+<meta name="keywords" content="OC,iOS,网络及框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络及框架">
+<meta property="og:url" content="https://frandfeng.github.io/2018/02/23/网络及框架/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="断点下载原理及文件上传 断点下载方式 1. 断点下载（URL） 2. 判断过渡区(中转站tmp)是否存在该请求的网络数据? 3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求 4. 过度区没有相关数据:直接发起网络请求 5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开 6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Do">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T10:21:46.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网络及框架">
+<meta name="twitter:description" content="断点下载原理及文件上传 断点下载方式 1. 断点下载（URL） 2. 判断过渡区(中转站tmp)是否存在该请求的网络数据? 3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求 4. 过度区没有相关数据:直接发起网络请求 5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开 6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Do">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2018/02/23/网络及框架/">
+
+
+
+
+
+  <title>网络及框架 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/02/23/网络及框架/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">网络及框架</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-23T00:00:00+08:00">
+                2018-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="断点下载原理及文件上传"><a href="#断点下载原理及文件上传" class="headerlink" title="断点下载原理及文件上传"></a>断点下载原理及文件上传</h1><ol>
+<li><p>断点下载方式</p>
+<pre><code>1. 断点下载（URL）
+2. 判断过渡区(中转站tmp)是否存在该请求的网络数据?
+3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求
+4. 过度区没有相关数据:直接发起网络请求
+5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开
+6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Document)
+#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
+@interface BreakLoadImageVC ()&lt;NSURLSessionDelegate, NSURLSessionDataDelegate&gt; {
+    NSString *filePathTmp;
+    NSString *filePathDocument;
+    NSOutputStream *outputStream;
+}
+@end
+
+@implementation BreakLoadImageVC
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @&quot;断点下载&quot;;
+    //ImageURL 通过md5 生成一个唯一文件名   AF
+    NSString *fileName = [[ImageURL componentsSeparatedByString:@&quot;/&quot;] lastObject];
+
+    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSLog(@&quot;%@&quot;, filePath);
+
+    filePathDocument = [filePath stringByAppendingPathComponent:fileName];
+    filePathTmp = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+}
+</code></pre></li>
+</ol>
+<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+    [self netLoadImage];
+}
+
+- (void)netLoadImage{
+    outputStream = [[NSOutputStream alloc] initToFileAtPath:filePathTmp append:YES];
+    [outputStream open];
+
+    NSURL *url = [NSURL URLWithString:ImageURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+
+    NSDictionary *fileInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:filePathTmp error:nil];
+    long filesize = [[fileInfo objectForKey:NSFileSize] longValue];
+    [request setHTTPMethod:@&quot;GET&quot;];
+    [request setValue:[NSString stringWithFormat:@&quot;bytes=%ld-&quot;, filesize] forHTTPHeaderField:@&quot;Range&quot;];
+
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration] delegate:self delegateQueue:nil];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+}
+
+//1 响应头  这次网络数据的属性（下载的总数据大小 content-Length, Content-Type）
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler{
+    // 获取文件总长度
+    completionHandler(NSURLSessionResponseAllow);
+}
+
+// 2 数据接收
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data{
+    // 把数据图片数据存储到 tmp文件下面（中转站）
+//    NSMutableData *fileData = [NSMutableData dataWithContentsOfFile:filePathTmp];
+//    if (!fileData) {
+//        fileData = [NSMutableData data];
+//    }
+//    [fileData appendData:data];
+//    [fileData writeToFile:filePathTmp atomically:YES];
+    // 后去当前已下载的数据 长度
+    [outputStream write:[data bytes] maxLength:data.length];
+}
+
+// 3 完成
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error{
+    // 把tmp文件的图片数据移动document下面（目标路径）
+    [outputStream close];
+    [[NSFileManager defaultManager] moveItemAtPath:filePathTmp toPath:filePathDocument error:nil];
+}
+@end
+</code></pre><ol start="2">
+<li><p>AF方式下载</p>
+<pre><code>//所以AF框架不能做断点下载，因为断点下载需要一个中转站文件我们才能知道断点下载时的Range，AF采用的NSURLSessionDownloadTask只给出了下载完成后的目标地址，没有给出中转文件的地址，我们如果需要中转文件地址，则必须自己用NSURLSessionTask来做
+#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
+@interface AFFileLoadVC ()&lt;NSURLSessionDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate&gt;{
+    NSString *filePathTmp;
+    NSString *filePathDocument;
+    NSOutputStream *outputStream;
+}
+@end
+
+@implementation AFFileLoadVC
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @&quot;断点下载&quot;;
+    //ImageURL 通过md5 生成一个唯一文件名   AF
+    NSString *fileName = [[ImageURL componentsSeparatedByString:@&quot;/&quot;] lastObject];
+    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSLog(@&quot;%@&quot;, filePath);
+    filePathDocument = [filePath stringByAppendingPathComponent:fileName];
+}
+</code></pre></li>
+</ol>
+<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+    [self netLoadAFImage];
+}
+
+- (void)netLoadAFImage{
+    NSURL *url = [NSURL URLWithString:ImageURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPMethod:@&quot;GET&quot;];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration] delegate:self delegateQueue:nil];
+    NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request];
+    [task resume];
+}
+
+//1 响应头  这次网络数据的属性（下载的总数据大小 content-Length, Content-Type）
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler{
+    completionHandler(NSURLSessionResponseAllow);
+}
+
+// 2下载过程  下载的进度 接收数据回掉
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
+      didWriteData:(int64_t)bytesWritten
+ totalBytesWritten:(int64_t)totalBytesWritten
+totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
+    // bytesWritten 当前包收到的数据 totalBytesWritten已经接受的数据的， totalBytesExpectedToWrite图片数据大小
+    NSLog(@&quot;URLSession:%ld-%ld-%ld&quot;, bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+}
+
+// 3文件下载完成 需要对这个NSURL文件进行拷贝
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
+didFinishDownloadingToURL:(NSURL *)location{
+    NSLog(@&quot;didFinishDownloadingToURL:%@&quot;, location);
+    [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:filePathDocument] error:nil];
+}
+
+// 4网络任务结束
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error{
+    NSLog(@&quot;didCompleteWithError:%@&quot;, error);
+}
+@end
+</code></pre><ol start="3">
+<li><p>上传文件</p>
+<pre><code>/*
+ 1 请求头  boundary（分界线） ******
+
+ 2 请求体（body） 开始分界线  属性数据  图片数据  结束分界线
+
+ */
+#define UpdateImageURL @&quot;http://www.8pmedu.com/themes/jianmo/img/upload.php&quot;
+
+@implementation UpdateFileVC
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @&quot;文件上传&quot;;
+}
+
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+    [self netLoadImage];
+}
+
+- (void)netLoadImage{
+    NSURL *url = [NSURL URLWithString:UpdateImageURL];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    [request setHTTPMethod:@&quot;POST&quot;];
+
+    NSString *bounary = @&quot;******&quot;; // 分界线
+    [request setValue:[NSString stringWithFormat:@&quot;multipart/form-data;charset=utf-8;boundary=%@&quot;, bounary] forHTTPHeaderField:@&quot;Content-Type&quot;];
+
+    NSMutableData *bodyData = [NSMutableData data];
+    // 1 开始边界  \n 为结束标识
+    NSString *beginBoundary = [NSString stringWithFormat:@&quot;--%@\r\n&quot;, bounary];
+    [bodyData appendData:[beginBoundary dataUsingEncoding:NSUTF8StringEncoding]];
+
+    // 2 属性  name和服务器的name要匹配,相当于服务获取图片的key
+    //  filename 服务器图片文件命名
+    NSString *serverFileKey = @&quot;image&quot;;
+    NSString *serverFileName = @&quot;eoc10121222111.png&quot;;
+    NSString *serverContentTypes = @&quot;image/png&quot;;
+    NSMutableString *string = [NSMutableString string];
+    [string appendFormat:@&quot;Content-Disposition:form-data; name=\&quot;%@\&quot;; filename=\&quot;%@\&quot; \r\n&quot;,serverFileKey, serverFileName];
+    [string appendFormat:@&quot;Content-Type: %@\r\n&quot;, serverContentTypes];
+    [string appendFormat:@&quot;\r\n&quot;];
+    [bodyData appendData:[string dataUsingEncoding:NSUTF8StringEncoding]];
+
+    // 3文件数据
+    UIImage *image = [UIImage imageNamed:@&quot;1.png&quot;];
+    NSData *imageData = UIImagePNGRepresentation(image);
+    [bodyData appendData:imageData];
+
+    // 4结束边界
+    NSString *endBoundary = [NSString stringWithFormat:@&quot;\r\n--%@&quot;, bounary];
+    [bodyData appendData:[endBoundary dataUsingEncoding:NSUTF8StringEncoding]];
+
+    [request setHTTPBody:bodyData];
+
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration] delegate:self delegateQueue:nil];
+    NSURLSessionTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+}
+
+//1 响应头  这次网络数据的属性（下载的总数据大小 content-Length, Content-Type）
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler{
+    completionHandler(NSURLSessionResponseAllow);
+}
+</code></pre></li>
+</ol>
+<pre><code>// 2 进度
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend{
+    // 每次发送 32kb （32768）数据，bytesSent本次发送，totalBytesSent总共已发送，totalBytesExpectedToSend总共需发送，即文件大小
+    NSLog(@&quot;didSendBodyData:: %ld--%ld--%ld&quot;, bytesSent, totalBytesSent, totalBytesExpectedToSend);
+}
+
+// 3 数据接收
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data{
+    NSDictionary *infoDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    NSLog(@&quot;didReceiveData::%@&quot;, infoDict);
+}
+
+// 4 完成
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error{
+    NSLog(@&quot;didCompleteWithError:%@&quot;, error);
+}
+@end
+</code></pre><ol start="4">
+<li><p>流上传</p>
+<pre><code>- (void)netLoadDelegate {
+    NSString *bodyStr = @&quot;versions_id=1&amp;system_type=1&quot;;
+    NSURL *url = [NSURL URLWithString:URLPath];
+    //请求体
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+
+    [request setHTTPMethod:@&quot;POST&quot;];
+    [request setHTTPBody:[bodyStr dataUsingEncoding:NSUTF8StringEncoding]];
+
+    [request setValue:@&quot;en;q=1&quot; forHTTPHeaderField:@&quot;Accept-Language&quot;];
+    [request setValue:@&quot;application/x-www-form-urlencoded&quot; forHTTPHeaderField:@&quot;Content-Type&quot;];
+    [request setValue:@&quot;LoadUpdateNet/1.0 (iPhone; iOS 11.1; Scale/3.00)&quot; forHTTPHeaderField:@&quot;User-Agent&quot;];
+    /*
+     AF写了一个 NSInputStream的子类 并且重写了
+     - (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len
+     这个方法。
+     在这个重写的方法里面进行表单的拼接
+
+      之前会处理 表单的属性保存，如边界，name，value等字段
+     */
+    NSInputStream *inputsteam = [[NSInputStream alloc] initWithData:[bodyStr dataUsingEncoding:NSUTF8StringEncoding]];
+   // [request setHTTPBodyStream:inputsteam]; // 请求的时候，系统底层会对NSInputStream执行read操作
+
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:nil];
+
+    NSURLSessionTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+}
+
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+   didSendBodyData:(int64_t)bytesSent
+    totalBytesSent:(int64_t)totalBytesSent
+totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
+    NSLog(@&quot;totalBytesExpectedToSend&quot;);
+}
+
+//NSURLConnection
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
+    NSLog(@&quot;NSURLSessionResponseDisposition&quot;);
+    completionHandler(NSURLSessionResponseAllow);
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
+    NSDictionary *infoDict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    NSLog(@&quot;%@&quot;, infoDict);
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    NSLog(@&quot;==%@&quot;, error);
+}        
+</code></pre></li>
+</ol>
+<h1 id="AF框架分析"><a href="#AF框架分析" class="headerlink" title="AF框架分析"></a>AF框架分析</h1><ol>
+<li><p>AF简单流程跟踪</p>
+<pre><code>//调用
+- (void)netLoad{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@&quot;1&quot; forKey:@&quot;versions_id&quot;];
+    [params setObject:@&quot;1&quot; forKey:@&quot;system_type&quot;];
+    [manager GET:URLPath parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@&quot;%@&quot;, responseObject);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    }];
+}
+
+//AFHTTPSessionManager初始化，其父类为AFURLSessionManager
+- (instancetype)initWithBaseURL:(NSURL *)url
+   sessionConfiguration:(NSURLSessionConfiguration *)configuration {
+    self = [super initWithSessionConfiguration:configuration];
+    if (!self) {
+        return nil;
+    }
+    // Ensure terminal slash for baseURL path, so that NSURL +URLWithString:relativeToURL: works as expected
+    if ([[url path] length] &gt; 0 &amp;&amp; ![[url absoluteString] hasSuffix:@&quot;/&quot;]) {
+        url = [url URLByAppendingPathComponent:@&quot;&quot;];
+    }
+    self.baseURL = url;
+    self.requestSerializer = [AFHTTPRequestSerializer serializer];
+    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    return self;
+}
+
+//AFURLSessionManager初始化
+- (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    if (!configuration) {
+        configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    }
+    self.sessionConfiguration = configuration;
+    self.operationQueue = [[NSOperationQueue alloc] init];
+    self.operationQueue.maxConcurrentOperationCount = 1;
+
+    self.session = [NSURLSession sessionWithConfiguration:self.sessionConfiguration delegate:self delegateQueue:self.operationQueue];
+    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    self.securityPolicy = [AFSecurityPolicy defaultPolicy];
+
+#if !TARGET_OS_WATCH
+    self.reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+#endif
+
+    self.mutableTaskDelegatesKeyedByTaskIdentifier = [[NSMutableDictionary alloc] init];
+
+    self.lock = [[NSLock alloc] init];
+    self.lock.name = AFURLSessionManagerLockName;
+
+    [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        for (NSURLSessionDataTask *task in dataTasks) {
+            [self addDelegateForDataTask:task uploadProgress:nil downloadProgress:nil completionHandler:nil];
+        }
+        for (NSURLSessionUploadTask *uploadTask in uploadTasks) {
+            [self addDelegateForUploadTask:uploadTask progress:nil completionHandler:nil];
+        }
+        for (NSURLSessionDownloadTask *downloadTask in downloadTasks) {
+            [self addDelegateForDownloadTask:downloadTask progress:nil destination:nil completionHandler:nil];
+        }
+    }];
+    return self;
+}
+
+//AFHTTPSessionManager Get方法调用，组装dataTask并执行
+- (NSURLSessionDataTask *)GET:(NSString *)URLString
+           parameters:(id)parameters
+             progress:(void (^)(NSProgress * _Nonnull))downloadProgress
+              success:(void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
+              failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure {
+    NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@&quot;GET&quot;
+                                                        URLString:URLString
+                                                       parameters:parameters
+                                                   uploadProgress:nil
+                                                 downloadProgress:downloadProgress
+                                                          success:success
+                                                          failure:failure];
+
+    [dataTask resume];
+    return dataTask;
+}
+
+//AFHTTPSessionManager组装dataTask：根据HTTPMothod，路径等先组装request，然后将request传入父类真正组装dataTask
+- (NSURLSessionDataTask *)dataTaskWithHTTPMethod:(NSString *)method
+                               URLString:(NSString *)URLString
+                              parameters:(id)parameters
+                          uploadProgress:(nullable void (^)(NSProgress *uploadProgress)) uploadProgress
+                        downloadProgress:(nullable void (^)(NSProgress *downloadProgress)) downloadProgress
+                                 success:(void (^)(NSURLSessionDataTask *, id))success
+                                 failure:(void (^)(NSURLSessionDataTask *, NSError *))failure {
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&amp;serializationError];
+    if (serializationError) {
+        if (failure) {
+            dispatch_async(self.completionQueue ?: dispatch_get_main_queue(), ^{
+                failure(nil, serializationError);
+            });
+        }
+        return nil;
+    }
+
+    __block NSURLSessionDataTask *dataTask = nil;
+    dataTask = [self dataTaskWithRequest:request
+                          uploadProgress:uploadProgress
+                        downloadProgress:downloadProgress
+                       completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
+        if (error) {
+            if (failure) {
+                failure(dataTask, error);
+            }
+        } else {
+            if (success) {
+                success(dataTask, responseObject);
+            }
+        }
+    }];
+    return dataTask;
+}
+
+//AFURLSessionManager中组装dataTask并将block保留来实现回调
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
+                       uploadProgress:(nullable void (^)(NSProgress *uploadProgress)) uploadProgressBlock
+                     downloadProgress:(nullable void (^)(NSProgress *downloadProgress)) downloadProgressBlock
+                    completionHandler:(nullable void (^)(NSURLResponse *response, id _Nullable responseObject,  NSError * _Nullable error))completionHandler {
+    __block NSURLSessionDataTask *dataTask = nil;
+    url_session_manager_create_task_safely(^{
+        dataTask = [self.session dataTaskWithRequest:request];
+    });
+    [self addDelegateForDataTask:dataTask uploadProgress:uploadProgressBlock downloadProgress:downloadProgressBlock completionHandler:completionHandler];
+    return dataTask;
+}
+
+- (void)addDelegateForDataTask:(NSURLSessionDataTask *)dataTask
+        uploadProgress:(nullable void (^)(NSProgress *uploadProgress)) uploadProgressBlock
+      downloadProgress:(nullable void (^)(NSProgress *downloadProgress)) downloadProgressBlock
+     completionHandler:(void (^)(NSURLResponse *response, id responseObject, NSError *error))completionHandler {
+    AFURLSessionManagerTaskDelegate *delegate = [[AFURLSessionManagerTaskDelegate alloc] initWithTask:dataTask];
+    delegate.manager = self;
+    delegate.completionHandler = completionHandler;
+    dataTask.taskDescription = self.taskDescriptionForSessionTasks;
+    [self setDelegate:delegate forTask:dataTask];
+    delegate.uploadProgressBlock = uploadProgressBlock;
+    delegate.downloadProgressBlock = downloadProgressBlock;
+}
+
+- (void)setDelegate:(AFURLSessionManagerTaskDelegate *)delegate forTask:(NSURLSessionTask *)task {
+    NSParameterAssert(task);
+    NSParameterAssert(delegate);
+    [self.lock lock];
+    self.mutableTaskDelegatesKeyedByTaskIdentifier[@(task.taskIdentifier)] = delegate;
+    [self addNotificationObserverForTask:task];
+    [self.lock unlock];
+}
+</code></pre></li>
+<li><p>详解组装request请求</p>
+<pre><code>// 上传头像
+- (void)uploadUserHeadImage:(UIImage *)image {
+    // 获得网络manager
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@&quot;application/json&quot;, @&quot;text/json&quot;, @&quot;text/javascript&quot;,@&quot;text/html&quot;, nil];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setObject:@&quot;value1&quot; forKey:@&quot;key1&quot;];
+     [params setObject:@&quot;value2&quot; forKey:@&quot;key2&quot;];
+    [manager POST:@&quot;http://www.8pmedu.com/themes/jianmo/img/upload.php&quot; parameters:params constructingBodyWithBlock:^(id&lt;AFMultipartFormData&gt;  _Nonnull formData) {
+        // 获取图片数据
+        NSData *fileData = UIImageJPEGRepresentation(image, 1.0);
+        // 设置上传图片的名字
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @&quot;yyyyMMddHHmmss&quot;;
+        NSString *str = [formatter stringFromDate:[NSDate date]];
+        NSString *fileName = [NSString stringWithFormat:@&quot;%@.png&quot;, str];
+        [formData appendPartWithFileData:fileData name:@&quot;image&quot; fileName:fileName mimeType:@&quot;image/png&quot;];
+    } progress:^(NSProgress * _Nonnull uploadProgress) {
+        NSLog(@&quot;uploadProgress:::%@&quot;, uploadProgress);
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        // 返回结果
+        NSLog(@&quot;----%@&quot;, responseObject[@&quot;datas&quot;]);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@&quot;+++++%@&quot;, error);
+    }];
+}
+
+- (NSURLSessionDataTask *)POST:(NSString *)URLString
+                    parameters:(id)parameters
+     constructingBodyWithBlock:(void (^)(id &lt;AFMultipartFormData&gt; formData))block
+                      progress:(nullable void (^)(NSProgress * _Nonnull))uploadProgress
+                       success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
+                       failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
+{
+    /* 分两块
+            一个AFURLRequestSerialization
+            一个 AFURLSessionManager
+     */
+    // AFURLRequestSerialization  对 请求体body处理 请求头处理
+    NSError *serializationError = nil;
+    // 主要是处理表单，主要是处理request body
+    /*
+     表单拼接之前，对所有的相关数据进行保存
+     拼接 read步骤（重写了 inputstream的read方法，在这个步骤统一拼接）
+     保存是保存在相关对象里面（）
+     */
+    NSMutableURLRequest *request = [self.requestSerializer multipartFormRequestWithMethod:@&quot;POST&quot; URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters constructingBodyWithBlock:block error:&amp;serializationError];
+    if (serializationError) {
+        if (failure) {
+            dispatch_async(self.completionQueue ?: dispatch_get_main_queue(), ^{
+                failure(nil, serializationError);
+            });
+        }
+        return nil;
+    }
+
+    //AFURLSessionManager  涉及到NSURLSession系统的代理
+    __block NSURLSessionDataTask *task = [self uploadTaskWithStreamedRequest:request progress:uploadProgress completionHandler:^(NSURLResponse * __unused response, id responseObject, NSError *error) {
+        if (error) {
+            if (failure) {
+                failure(task, error);
+            }
+        } else {
+            if (success) {
+                success(task, responseObject);
+            }
+        }
+    }];
+    [task resume];
+    return task;
+}
+
+//AFURLRequestSerialization类
+- (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method
+                                      URLString:(NSString *)URLString
+                                     parameters:(NSDictionary *)parameters
+                      constructingBodyWithBlock:(void (^)(id &lt;AFMultipartFormData&gt; formData))block
+                                          error:(NSError *__autoreleasing *)error {
+    NSParameterAssert(method);
+    NSParameterAssert(![method isEqualToString:@&quot;GET&quot;] &amp;&amp; ![method isEqualToString:@&quot;HEAD&quot;]);
+
+    // 1 生成一个mutableRequest 配置了method 和 url
+    NSMutableURLRequest *mutableRequest = [self requestWithMethod:method URLString:URLString parameters:nil error:error];
+
+    // AFStreamingMultipartFormData 处理表单的对象
+    __block AFStreamingMultipartFormData *formData = [[AFStreamingMultipartFormData alloc] initWithURLRequest:mutableRequest stringEncoding:NSUTF8StringEncoding];
+
+    // 2 处理表单
+    if (parameters) { // 2.1这个主要是处理非文件数据的表单
+        for (AFQueryStringPair *pair in AFQueryStringPairsFromDictionary(parameters)) { // 把字典转化成 AFQueryStringPair数组对象，一个key和value对应一个AFQueryStringPair对象， 因为一个参数对应一个小表单（边界+属性+值）
+            NSData *data = nil;
+            if ([pair.value isKindOfClass:[NSData class]]) {
+                data = pair.value;
+            } else if ([pair.value isEqual:[NSNull null]]) {
+                data = [NSData data];
+            } else {
+                data = [[pair.value description] dataUsingEncoding:self.stringEncoding];
+            }
+            // AFStreamingMultipartFormData 对象 处理表单
+            if (data) {
+                // 主要是保存 表单的属性  在read的时候拼接  name：key1  data：value1
+                [formData appendPartWithFormData:data name:[pair.field description]];
+            }
+        }
+    }
+    if (block) { // 2.2这个主要是处理文件数据的表单 block在外边赋值处理
+        block(formData);
+    }
+    // 配置请求头和请求体
+    return [formData requestByFinalizingMultipartFormData];
+}
+
+//AFStreamingMultipartFormData类
+- (NSMutableURLRequest *)requestByFinalizingMultipartFormData {
+    if ([self.bodyStream isEmpty]) {
+        return self.request;
+    }
+
+    // Reset the initial and final boundaries to ensure correct Content-Length
+    [self.bodyStream setInitialAndFinalBoundaries];
+    [self.request setHTTPBodyStream:self.bodyStream];
+
+    [self.request setValue:[NSString stringWithFormat:@&quot;multipart/form-data; boundary=%@&quot;, self.boundary] forHTTPHeaderField:@&quot;Content-Type&quot;];
+    [self.request setValue:[NSString stringWithFormat:@&quot;%llu&quot;, [self.bodyStream contentLength]] forHTTPHeaderField:@&quot;Content-Length&quot;];
+
+    return self.request;
+}
+</code></pre></li>
+</ol>
+<h1 id="HTTPS及AFNetworking"><a href="#HTTPS及AFNetworking" class="headerlink" title="HTTPS及AFNetworking"></a>HTTPS及AFNetworking</h1><p>HTTPS = HTTP + 加密 + 认证 + 完整性保护，其实HTTPS是身披SSL外壳的HTTP</p>
+<p>常用加密方法：</p>
+<ol>
+<li><p>共享密钥加密（也称为对称加密）：共享密钥加密就是加密和解密通用一个密钥，加密和解密是一个逆向的过程。</p>
+<p> 优点是加密解密速度快，缺点是一旦密钥泄露，别人也能解密数据。</p>
+</li>
+<li><p>公开密钥加密（也称非对称加密），恰恰能解决共享密钥加密的困难， 其过程是这样的： 加密用公钥，解密用私钥，公钥加密后，必须要私钥 才能解密</p>
+<ul>
+<li>发文方使用对方的公开密钥进行加密</li>
+<li><p>接受方在使用自己的私有密钥进行解密</p>
+<p>就算知道了结果和公钥，破解出被机密的数据是非常难的</p>
+</li>
+</ul>
+</li>
+<li><p>HTTPS采用混合加密机制：共享密钥加密和公开密钥加密两者并用</p>
+</li>
+</ol>
+<p>HTTPS工作原理</p>
+<p>HTTPS工作在客户端和服务器端之间。客户端和服务器本身都会自带一些加密的算法，用于双方协商加密的选择项。</p>
+<ol>
+<li>客户端首先会将自己支持的加密算法，打个包告诉服务器端。</li>
+<li>服务器端从客户端发来的加密算法中，选出一组加密算法和HASH算法（注，HASH也属于加密），并将自己的身份信息以证书的形式发回给客户端。而证书中包含了网站的地址，加密用的公钥，以及证书的颁发机构等。这里，服务器就将自己用来加密用的公钥一同发给客户端，而私钥则服务器保存着，用户解密客户端加密过后的内容。</li>
+<li><p>客户端收到了服务器发来的数据包后，会做这么几件事情：</p>
+<ul>
+<li>验证一下证书是否合法。一般来说，证书是用来标示一个站点是否合法的标志。如果说该证书由权威的第三方颁发和签名的，则说明证书合法。</li>
+<li>如果证书合法，或者客户端接受和信任了不合法的证书，则客户端就会随机产生一串序列号，使用服务器发来的公钥进行加密。这时候，一条返回的消息就基本就绪。</li>
+<li>最后使用服务器挑选的HASH算法，将刚才的消息使用刚才的随机数进行加密，生成相应的消息校验值，与刚才的消息一同发还给服务器。</li>
+</ul>
+</li>
+<li><p>服务器接受到客户端发来的消息后，会做这么几件事情：</p>
+<ul>
+<li>使用私钥解密上面第3.2中公钥加密的消息，得到客户端产生的随机序列号。</li>
+<li>使用该随机序列号，对该消息进行加密，验证的到的校验值是否与客户端发来的一致。如果一致则说明消息未被篡改，可以信任。</li>
+<li>最后，使用该随机序列号，加上之前第2步中选择的加密算法，加密一段握手消息，发还给客户端。同时HASH值也带上。</li>
+</ul>
+</li>
+<li><p>客户端收到服务器端的消息后，接着做这么几件事情：</p>
+<ul>
+<li>计算HASH值是否与发的消息一致</li>
+<li>检查消息是否为握手消息</li>
+</ul>
+</li>
+<li><p>握手结束后，客户端和服务器端使用握手阶段产生的随机数以及挑选出来的算法进行对称加解密的传输。</p>
+</li>
+</ol>
+<p>总结：随机序列号–(公钥加密)–消息–(随机序列号加密)–加密消息–(HASH加密)–消息校验值，客户端给服务端发送的是消息和消息校验值</p>
+<blockquote>
+<p>为什么不直接全程使用非对称加密算法进行数据传输？这个问题的答案是因为非对称算法的效率对比起对称算法来说，要低得多得多；因此往往只用在HTTPS的握手阶段。</p>
+</blockquote>
+<p>AFNetworking</p>
+<pre><code>//UIViewController类
+//// NSURLSessionDelegate
+- (void)URLSession:(NSURLSession *)session
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler {
+     // 验证
+    NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
+    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+}
+
+//AFURLSessionManager类
+/*
+ 两种方式： 本地证书验证 （需要验证本地证书）
+            1 验证服务器
+            2 本地证书生成NSURLCredential对象，代理回掉block来处理相关事务
+
+          无本地证书验证NSURLAuthenticationMethodServerTrust（直接信任服务器）
+            1 验证服务器
+            2 直接通过服务器传过来的challenge 生成NSURLCredential对象(这个对象关联了客户端https相关信息)，代理回掉block来处理相关事务
+ */
+- (void)URLSession:(NSURLSession *)session
+didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+ completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
+{
+    NSURLSessionAuthChallengeDisposition disposition = NSURLSessionAuthChallengePerformDefaultHandling;
+    __block NSURLCredential *credential = nil;
+    // 两种方式 1 外部处理NSURLSessionAuthChallengeDisposition 2 AF内部默认处理它
+    if (self.sessionDidReceiveAuthenticationChallenge) {// 1外部（你自己处理）
+        disposition = self.sessionDidReceiveAuthenticationChallenge(session, challenge, &amp;credential);
+    } else {// 2内部(AF处理)
+        // challenge 服务器过来的，方式（NSURLAuthenticationMethodServerTrust），本地验证
+        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+
+            if ([self.securityPolicy evaluateServerTrust:challenge.protectionSpace.serverTrust forDomain:challenge.protectionSpace.host]) {
+                // 返回YES，server是没问题的
+                credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];// 生成一个信任的NSURLCredential对象
+                if (credential) {
+                    //Use the specified credential
+                    disposition = NSURLSessionAuthChallengeUseCredential;
+                } else {
+                    disposition = NSURLSessionAuthChallengePerformDefaultHandling;
+                }
+            } else {
+                disposition = NSURLSessionAuthChallengeCancelAuthenticationChallenge;
+            }
+        } else {
+            disposition = NSURLSessionAuthChallengePerformDefaultHandling;
+        }
+    }
+
+    if (completionHandler) {
+        completionHandler(disposition, credential);
+    }
+}
+
+//AFSecurityPolicy类
+/*
+ AFSSLPinningModeNone： 这个模式表示不做SSL pinning，只跟浏览器一样在系统的信任机构列表里验证服务端返回的证书。若证书是信任机构签发的就会通过，若是自己服务器生成的证书，这里是不会通过的。
+ AFSSLPinningModeCertificate：这个模式表示用证书绑定方式验证证书，需要客户端保存有服务端的证书拷贝，这里验证分两步，第一步验证证书的域名/有效期等信息，第二步是对比服务端返回的证书跟客户端返回的是否一致。
+ AFSSLPinningModePublicKey：这个模式同样是用证书绑定方式验证，客户端要有服务端的证书拷贝，只是验证时只验证证书里的公钥，不验证证书的有效期等信息。
+
+ */
+typedef NS_ENUM(NSUInteger, AFSSLPinningMode) {
+    AFSSLPinningModeNone, //代表无条件信任服务器的证书 EOCClass
+    AFSSLPinningModePublicKey, //代表会对服务器返回的证书中的PublicKey进行验证，通过则通过，否则不通过
+    AFSSLPinningModeCertificate, //代表会对服务器返回的证书同本地证书全部进行校验，通过则通过，否则不通过
+};
+
+/*
+ 要做什么事情，然去拿什么东西（SecTrustRef）
+ */
+//验证服务器证书serverTrust/域名domain（服务器那边的）
+- (BOOL)evaluateServerTrust:(SecTrustRef)serverTrust
+                  forDomain:(NSString *)domain
+{
+    if (domain &amp;&amp; self.allowInvalidCertificates &amp;&amp; self.validatesDomainName &amp;&amp; (self.SSLPinningMode == AFSSLPinningModeNone || [self.pinnedCertificates count] == 0)) {
+        // https://developer.apple.com/library/mac/documentation/NetworkingInternet/Conceptual/NetworkingTopics/Articles/OverridingSSLChainValidationCorrectly.html
+        //  According to the docs, you should only trust your provided certs for evaluation.
+        //  Pinned certificates are added to the trust. Without pinned certificates,
+        //  there is nothing to evaluate against.
+        //
+        //  From Apple Docs:
+        //          &quot;Do not implicitly trust self-signed certificates as anchors (kSecTrustOptionImplicitAnchors).
+        //           Instead, add your own (self-signed) CA certificate to the list of trusted anchors.&quot;
+        NSLog(@&quot;In order to validate a domain name for self signed certificates, you MUST use pinning.&quot;);
+        return NO;
+    }
+    // 1 获取验证策略的数据  2 设置策略  3 验证
+    NSMutableArray *policies = [NSMutableArray array];
+    if (self.validatesDomainName) { // 验证域名
+        [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)domain)];// （SecPolicyCreateSSL 返回一个用于评估SSL证书链的策略对象）
+    } else {/// 不验证域名
+        //通过X.509(数字证书的标准)的数字证书和公开密钥进行的安全网络连接是否值得信任
+        [policies addObject:(__bridge_transfer id)SecPolicyCreateBasicX509()];
+    }
+    // 设置策略（在evaluating中设置要使用的策略）
+    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
+
+    //AFSSLPinningModeNone 不校验证书
+    /*
+     ⚠️AFServerTrustIsValid(serverTrust) 执行这句试试
+
+     如果self.allowInvalidCertificates = NO；验证这个证书要有效（）
+      + AFServerTrustIsValid(serverTrust); 只验证域名
+      那么证书过期／没有过期都一样（不验证证书是否过期，【如果服务器没有去更新证书也事没问题】）  （APP）
+
+     */
+    if (self.SSLPinningMode == AFSSLPinningModeNone) {
+        return self.allowInvalidCertificates || AFServerTrustIsValid(serverTrust);
+    } else if (!AFServerTrustIsValid(serverTrust) &amp;&amp; !self.allowInvalidCertificates) {
+        //  根据策略 验证证书是否有效 &amp;&amp; 不允许无效证书
+        return NO;
+    }
+
+    /*
+      代码能够走到这里说明了
+     1 全部信任：allowInvalidCertificates = YES 或者 域名是对的 信任
+     2 通过了根证书的验证（AFServerTrustIsValid）
+
+     */
+
+    //
+
+    // 进步一认证
+    // // 1 获取验证策略的数据  2 设置策略  3 验证
+    switch (self.SSLPinningMode) {
+//        case AFSSLPinningModeNone:
+//        default:
+//            return NO;
+        case AFSSLPinningModeCertificate: { // 全部校验
+            /*
+             self.pinnedCertificates
+             取本地证书文件.cer，转化成NSData类型
+             */
+            NSMutableArray *pinnedCertificates = [NSMutableArray array];
+            for (NSData *certificateData in self.pinnedCertificates) {
+                [pinnedCertificates addObject:(__bridge_transfer id)SecCertificateCreateWithData(NULL, (__bridge CFDataRef)certificateData)]; // 根据data生成证书对象
+            }
+            /*
+             给serverTrust设置锚证书，即再SecTrustEvaluate评估过程中，会根据锚(pinnedCertificates)来进行验证
+             */
+
+            SecTrustSetAnchorCertificates(serverTrust, (__bridge CFArrayRef)pinnedCertificates); //
+
+            // 校验能够信任
+            if (!AFServerTrustIsValid(serverTrust)) {
+                return NO;
+            }
+
+            // obtain the chain after being validated, which *should* contain the pinned certificate in the last position (if it&apos;s the Root CA)
+            //从serverTrust评估信任的证书链中获取的证书（AFServerTrustIsValid后再次验证）
+            NSArray *serverCertificates = AFCertificateTrustChainForServerTrust(serverTrust);
+            // 判断本地证书和服务器证书是否相同
+            for (NSData *trustChainCertificate in [serverCertificates reverseObjectEnumerator]) {
+                if ([self.pinnedCertificates containsObject:trustChainCertificate]) {
+                    return YES;
+                }
+            }
+
+            return NO;
+        }
+        case AFSSLPinningModePublicKey: {
+            NSUInteger trustedPublicKeyCount = 0;
+            NSArray *publicKeys = AFPublicKeyTrustChainForServerTrust(serverTrust);// 从证书中拿公钥数据
+            // 找到相同的公钥就通过
+            for (id trustChainPublicKey in publicKeys) {
+                for (id pinnedPublicKey in self.pinnedPublicKeys) {
+                    if (AFSecKeyIsEqualToKey((__bridge SecKeyRef)trustChainPublicKey, (__bridge SecKeyRef)pinnedPublicKey)) {
+                        trustedPublicKeyCount += 1;
+                       // break;
+                    }
+                }
+            }
+            return trustedPublicKeyCount &gt; 0;
+        }
+    }
+
+    return NO;
+}
+</code></pre><p>AFNetworkReachabilityManager源码</p>
+<pre><code>/*
+ 通过导入了这个头文件，我们得知：网络监控的实现是依赖SystemConfiguration这个api的。
+ 说明这个api能够提供这样的功能，至少让我们明白了我们平时都会导入它的一个用途。
+ */
+#import &lt;SystemConfiguration/SystemConfiguration.h&gt;
+
+// 当满足一个有限的并具有统一主题集合的时候， 我们就考虑用枚举
+typedef NS_ENUM(NSInteger, AFNetworkReachabilityStatus) {
+    //未知
+    AFNetworkReachabilityStatusUnknown          = -1,
+    // 无网络
+    AFNetworkReachabilityStatusNotReachable     = 0,
+    //  WWAN 手机自带网络
+    AFNetworkReachabilityStatusReachableViaWWAN = 1,
+    // WIFI
+    AFNetworkReachabilityStatusReachableViaWiFi = 2,
+};
+
+#pragma mark - 判断状态
+// 属性
+- (BOOL)isReachable {
+    return [self isReachableViaWWAN] || [self isReachableViaWiFi];
+}
+
+- (BOOL)isReachableViaWWAN {
+    return self.networkReachabilityStatus == AFNetworkReachabilityStatusReachableViaWWAN;
+}
+
+- (BOOL)isReachableViaWiFi {
+    return self.networkReachabilityStatus == AFNetworkReachabilityStatusReachableViaWiFi;
+}
+
+#pragma mark - 开始监听／停止监听
+
+- (void)startMonitoring {
+    [self stopMonitoring];
+
+    if (!self.networkReachability) {
+        return;
+    }
+
+    __weak __typeof(self)weakSelf = self;
+    AFNetworkReachabilityStatusBlock callback = ^(AFNetworkReachabilityStatus status) {
+        __strong __typeof(weakSelf)strongSelf = weakSelf;
+
+        strongSelf.networkReachabilityStatus = status;
+        if (strongSelf.networkReachabilityStatusBlock) {
+            strongSelf.networkReachabilityStatusBlock(status);
+        }
+
+    };
+    // context 可以看作是一个环境，如layer层的context上下文
+    SCNetworkReachabilityContext context = {0, (__bridge void *)callback, AFNetworkReachabilityRetainCallback, AFNetworkReachabilityReleaseCallback, NULL};
+    //  设置回调 状态变化会回掉
+    SCNetworkReachabilitySetCallback(self.networkReachability, AFNetworkReachabilityCallback, &amp;context);
+    SCNetworkReachabilityScheduleWithRunLoop(self.networkReachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+
+    // 主动做一次网络信息测试
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+        SCNetworkReachabilityFlags flags;
+        if (SCNetworkReachabilityGetFlags(self.networkReachability, &amp;flags)) {
+            AFPostReachabilityStatusChange(flags, callback);
+        }
+    });
+}
+
+- (void)stopMonitoring {
+    if (!self.networkReachability) {
+        return;
+    }
+
+    SCNetworkReachabilityUnscheduleFromRunLoop(self.networkReachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+}
+
+static void AFNetworkReachabilityCallback(SCNetworkReachabilityRef __unused target, SCNetworkReachabilityFlags flags, void *info) {
+    AFPostReachabilityStatusChange(flags, (__bridge AFNetworkReachabilityStatusBlock)info);
+}
+
+/**
+ * Queue a status change notification for the main thread.
+ *
+ * This is done to ensure that the notifications are received in the same order
+ * as they are sent. If notifications are sent directly, it is possible that
+ * a queued notification (for an earlier status condition) is processed after
+ * the later update, resulting in the listener being left in the wrong state.
+
+    接受网络变化有两种方式 1 Block， 2 通知
+    为了保证来年观众方式的数据统一， 把这个过程分装到一个函数中
+    根据一个标识 来处理Block和通知。保证两者同一状态
+ */
+static void AFPostReachabilityStatusChange(SCNetworkReachabilityFlags flags, AFNetworkReachabilityStatusBlock block) {
+    AFNetworkReachabilityStatus status = AFNetworkReachabilityStatusForFlags(flags);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // block 方式 和 通知方式
+        if (block) {
+            block(status);
+        }
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        NSDictionary *userInfo = @{ AFNetworkingReachabilityNotificationStatusItem: @(status) };
+        [notificationCenter postNotificationName:AFNetworkingReachabilityDidChangeNotification object:nil userInfo:userInfo];
+    });
+}
+</code></pre><p>AFNetworkReachabilityManager应用</p>
+<pre><code>- (void)addMonitor{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(testNet:) name:AFNetworkingReachabilityDidChangeNotification object:nil];
+    _netReachabilityManager = [AFNetworkReachabilityManager managerForDomain:@&quot;www.baidu.com&quot;];
+
+//    _netReachabilityManager = [AFNetworkReachabilityManager manager];
+//    [self addObserver:self forKeyPath:@&quot;netReachabilityManager&quot; options:NSKeyValueObservingOptionNew context:nil];
+
+    [_netReachabilityManager startMonitoring];
+}
+
+- (void)testNet:(NSNotification*)notif {
+    AFNetworkReachabilityStatus status = [[notif.userInfo objectForKey:AFNetworkingReachabilityNotificationStatusItem] intValue];
+    NSLog(@&quot;NetStatus:%@&quot;, AFStringFromNetworkReachabilityStatus(status));
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context{
+    NSLog(@&quot;===%@&quot;, change);
+}
+</code></pre><h1 id="面向切面的编程AOP"><a href="#面向切面的编程AOP" class="headerlink" title="面向切面的编程AOP"></a>面向切面的编程AOP</h1><blockquote>
+<p>一位著名的iOS大神Mattt Thompson在<a href="http://nshipster.com/nsurlprotocol/" target="_blank" rel="noopener">http://nshipster.com/nsurlprotocol/</a> 博客里说过，说“NSURLProtocol is both the most obscure and the most powerful part of the URL Loading System.”NSURLProtocol是URL Loading System中功能最强大也是最晦涩的部分。</p>
+</blockquote>
+<p>这句话给了NSURLProtocol一个非常准确的定性。NSURLProtocol作为URL Loading System中的一个独立部分存在，能够拦截所有的URL Loading System发出的网络请求，拦截之后便可根据需要做各种自定义处理，是iOS网络层实现AOP(面向切面编程)的终极利器，所以功能和影响力都是非常强大的。但是关于NSURLProtocol的文档非常少，文档陈旧，包括苹果官方的文档也介绍得比较简单。而且，对于NSURLProtocol的使用，有坑的地方非常多。所以说它也是晦涩的并且是危险的。</p>
+<p>什么是 NSURLProtocol</p>
+<p>NSURLProtocol是URL Loading System的重要组成部分。<br>首先虽然名叫NSURLProtocol，但它却不是协议。它是一个抽象类。我们要使用它的时候需要创建它的一个子类。<br>NSURLProtocol在iOS系统中大概处于这样一个位置：net–protocol–NSURLSession–UIWebview–NSURLProtocol</p>
+<p>可以拦截的网络请求包括NSURLSession，NSURLConnection以及UIWebVIew。<br>基于CFNetwork的网络请求，以及WKWebView的请求是无法拦截的。<br>现在主流的iOS网络库，例如AFNetworking，Alamofire等网络库都是基于NSURLSession或NSURLConnection的，所以这些网络库的网络请求都可以被NSURLProtocol所拦截。<br>还有一些年代比较久远的网络库，例如ASIHTTPRequest，MKNetwokit等网路库都是基于CFNetwork的，所以这些网络库的网络请求无法被NSURLProtocol拦截。</p>
+<p>使用 NSURLProtocol</p>
+<p>如上文所说，NSURLProtocol是一个抽象类。我们要使用它的时候需要创建它的一个子类。</p>
+<pre><code>@interface CustomURLProtocol : NSURLProtocol
+</code></pre><p>使用NSURLProtocol的主要可以分为5个步骤：注册—&gt;拦截—&gt;转发—&gt;回调—&gt;结束</p>
+<ol>
+<li><p>注册：</p>
+<p> 对于基于NSURLConnection或者使用[NSURLSession sharedSession]创建的网络请求，调用registerClass方法即可。</p>
+<pre><code>[NSURLProtocol registerClass:[NSClassFromString(@&quot;CustomURLProtocol&quot;) class]];
+</code></pre><p> 对于基于NSURLSession的网络请求，需要通过配置NSURLSessionConfiguration对象的protocolClasses属性。</p>
+<pre><code>NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProtocol&quot;) class]];
+</code></pre></li>
+<li><p>拦截：</p>
+<p> 在拦截到网络请求后，NSURLProtocol会依次执行下列方法：</p>
+<pre><code>+ (BOOL)canInitWithRequest:(NSURLRequest *)request
+</code></pre><p> 该方法会拿到request的对象，我们可以通过该方法的返回值来筛选request是否需要被NSURLProtocol做拦截处理。<br>比如：</p>
+<pre><code>+ (BOOL)canInitWithRequest:(NSURLRequest *)request {
+    NSString * scheme = [[request.URL scheme] lowercaseString];
+    if ([scheme isEqual:@&quot;http&quot;]) {
+        return YES;
+    }
+    return NO;
+}
+</code></pre><p> 这里我们就只会拦截http的请求。</p>
+<pre><code>+ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request
+</code></pre><p> 在该方法中，我们可以对request进行处理。例如修改头部信息等。最后返回一个处理后的request实例。</p>
+</li>
+<li><p>转发：</p>
+<p> 在拦截到网络请求，并且对网络请求进行定制处理以后。我们需要将网络请求重新发送出去。</p>
+<pre><code>- (id)initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)cachedResponse client:(id&lt;NSURLProtocolClient&gt;)client
+</code></pre><p> 该方法会创建一个NSURLProtocol实例，这里每一个网络请求都会创建一个新的实例。</p>
+<pre><code>- (void)startLoading
+</code></pre><p> 接下来就是转发的核心方法startLoading。在该方法中，我们把处理过的request重新发送出去。至于发送的形式，可以是基于NSURLConnection，NSURLSession甚至CFNetwork。</p>
+</li>
+<li><p>回调：</p>
+<p> 既是面向切面的编程，就不能影响到原来网络请求的逻辑。所以上一步将网络请求转发出去以后，当收到网络请求的返回，还需要再将返回值返回给原来发送网络请求的地方。<br>主要需要需要调用到</p>
+<pre><code>[self.client URLProtocol:self didFailWithError:error];
+[self.client URLProtocolDidFinishLoading:self];
+[self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+[self.client URLProtocol:self didLoadData:data];
+</code></pre><p> 这四个方法来回调给原来发送网络请求的地方。<br>这里假设我们在转发过程中是使用NSURLSession发送的网络请求，那么在NSURLSession的回调方法中，我们做相应的处理即可。并且我们也可以对这些返回，进行定制化处理。</p>
+<pre><code>- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    if (error) {
+        [self.client URLProtocol:self didFailWithError:error];
+    } else {
+        [self.client URLProtocolDidFinishLoading:self];
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
+    [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
+
+    completionHandler(NSURLSessionResponseAllow);
+}
+
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
+    [self.client URLProtocol:self didLoadData:data];
+}
+</code></pre></li>
+<li><p>结束：</p>
+<p> 在一个网络请求完全结束以后，NSURLProtocol回调用到</p>
+<pre><code>- (void)stopLoading
+在该方法里，我们完成在结束网络请求的操作。以NSURLSession为例：
+
+- (void)stopLoading {
+    [self.session invalidateAndCancel];
+    self.session = nil;
+}
+</code></pre><p> 以上便是NSURLProtocol的基本流程。</p>
+</li>
+</ol>
+<p>应用场景：</p>
+<ul>
+<li>网络请求缓存</li>
+<li>网络请求mock stub，知名的库OHHTTPStubs就是基于NSURLProtocol</li>
+<li>网络相关的数据统计</li>
+<li>URL重定向</li>
+<li>配合实现HTTPDNS</li>
+</ul>
+<h1 id="性能优化之网络缓存层搭建"><a href="#性能优化之网络缓存层搭建" class="headerlink" title="性能优化之网络缓存层搭建"></a>性能优化之网络缓存层搭建</h1><p>封装的作用 1.搭建缓存层 2.业务隔离层(如登录失效，json解析错误)</p>
+<pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSDictionary *infodict = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;1&quot;, @&quot;versions_id&quot;, @&quot;1&quot;, @&quot;system_type&quot;, nil];
+    [[SYNetMananger sharedInstance] syPostNoCacheWithUrl:URLPath parameters:infodict completionHandler:^(NSError * _Nullable error, BOOL isCache, NSDictionary * _Nullable result) {
+        if (isCache) {
+            NSLog(@&quot;isCache&quot;);
+        }
+    }];
+}
+
+- (void)syPostNoCacheWithUrl:(NSString*)urlString
+              parameters:(NSDictionary * _Nullable)parameters
+       completionHandler:(SYRequestCompletionHandler)completionHandler{
+    [self syPostWithURLString:urlString parameters:parameters ignoreCache:YES cacheDuration:0 completionHandler:completionHandler];
+}
+
+- (void)syPostWithURLString:(NSString *)URLString
+             parameters:(NSDictionary * _Nullable)parameters
+            ignoreCache:(BOOL)ignoreCache
+          cacheDuration:(NSTimeInterval)cacheDuration
+      completionHandler:(SYRequestCompletionHandler)completionHandler{
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_SYNetQueue, ^{
+        [weakSelf taskWithMethod:@&quot;POST&quot; urlString:URLString parameters:parameters ignoreCache:ignoreCache cacheDuration:cacheDuration completionHandler:completionHandler];
+    });
+}
+
+- (void)taskWithMethod:(NSString*)method
+         urlString:(NSString*)urlStr
+        parameters:(NSDictionary *)parameters
+       ignoreCache:(BOOL)ignoreCache
+     cacheDuration:(NSTimeInterval)cacheDuration
+ completionHandler:(SYRequestCompletionHandler)completionHandler{
+    // 1 url+参数 生成唯一码
+    NSString *fileKeyFromUrl = SYConvertMD5FromParameter(urlStr, method, parameters);
+    __weak typeof(self) weakSelf = self;
+
+    // 2 缓存+失效 判断是否有有效缓存
+    if (!ignoreCache &amp;&amp; [self.cache checkIfShouldUseCacheWithCacheDuration:cacheDuration cacheKey:fileKeyFromUrl]) {
+        NSMutableDictionary *localCache = [NSMutableDictionary dictionary];
+        NSDictionary *cacheDict = [self.cache searchCacheWithUrl:fileKeyFromUrl];
+        [localCache setDictionary:cacheDict];
+        if (cacheDict) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (weakSelf.exceptionBlock) {
+                    weakSelf.exceptionBlock(nil, localCache);
+                }
+                completionHandler(nil, YES, localCache);
+            });
+            return;
+        }
+    }
+
+    // 5 处理网络返回来的数据，即缓存处理
+    SYRequestCompletionHandler newCompletionBlock = ^( NSError* error,  BOOL isCache, NSDictionary* result){
+        //5.1处理缓存  ⚠️参数ignoreCache(网络task发起前，是否从本来缓存中获取数据)  cacheDuration(网络task结束后，是否对网络数据缓存)
+        result = [NSMutableDictionary dictionaryWithDictionary:result];
+        if (cacheDuration &gt; 0) {// 缓存时效(即缓存时间)大于0
+            if (result) {
+                if (weakSelf.cacheConditionBlock) {
+                    if (weakSelf.cacheConditionBlock(result)) {
+                        [weakSelf.cache saveCacheData:result forKey:fileKeyFromUrl];
+                    }
+                }else{
+                    [weakSelf.cache saveCacheData:result forKey:fileKeyFromUrl];
+                }
+            }
+        }
+
+        //5.2回掉
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (weakSelf.exceptionBlock) {
+                weakSelf.exceptionBlock(error, (NSMutableDictionary*)result);
+            }
+            completionHandler(error, NO, result);
+        });
+
+    };
+
+    //3  发起AF网络任务
+    NSURLSessionTask *task = nil;
+    if ([method isEqualToString:@&quot;GET&quot;]) {
+        task = [self.afHttpManager  GET:urlStr parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            /*
+             4 处理数据 （处理数据的时候，需要处理下载的网络数据是否要缓存）
+             这里可以直接使用 completionHandler，如果这样，网络返回的数据没有做缓存处理机制
+             */
+            newCompletionBlock(nil,NO, responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            newCompletionBlock(error,NO, nil);;
+        }];
+    }else{
+        task = [self.afHttpManager POST:urlStr parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            newCompletionBlock(nil,NO, responseObject);
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            newCompletionBlock(error,NO, nil);
+        }];
+    }
+    [task resume];
+}
+
+@implementation AppDelegate (NetCache)
+// 配置缓存条件
+- (void)configNetCacheCondition{
+    // return YES 缓存， NO不缓存
+    [SYNetMananger sharedInstance].cacheConditionBlock = ^BOOL(NSDictionary * _Nonnull result) {
+        if([result isKindOfClass:[NSDictionary class]]){
+            if([[result objectForKey:@&quot;success&quot;] intValue] == 0){
+                return NO;
+            }
+        }
+        return YES;
+    };
+}
+@end
+
+@implementation AppDelegate (NetException)
+// 统一处理网络部分异常
+- (void)configHandleNetException{
+    [SYNetMananger sharedInstance].exceptionBlock = ^(NSError * _Nullable error, NSMutableDictionary* result) {
+        if(![result isKindOfClass:[NSDictionary class]]){
+            return ;
+        }
+        // 统一处理网络异常错误信息
+        if(error &amp;&amp; [result allKeys].count == 0){
+            // 这个地方就可以在内部不需要去判断error，统一直接判断result相关信息
+            // result错误信息配置
+            [result setObject:error.localizedDescription forKey:@&quot;msg&quot;];
+        }
+        // (单点登录)登录异常处理
+        if([[result objectForKey:@&quot;statusCode&quot;] integerValue] == 401){
+            [[NSNotificationCenter defaultCenter] postNotificationName:@&quot;LoginNotification&quot; object:nil];
+        }
+    };
+}
+@end
+</code></pre><p>多网络请求</p>
+<pre><code>// 多任务处理
+- (void)multiNetTask{
+    NSDictionary *infodictOne = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;1&quot;, @&quot;versions_id&quot;, @&quot;1&quot;, @&quot;system_type&quot;, nil];
+    SYNetRequestInfo *infoNetOne = [[SYNetMananger sharedInstance] syNetRequestWithURLStr:URLPath method:@&quot;POST&quot; parameters:infodictOne ignoreCache:NO cacheDuration:2 completionHandler:^(NSError * _Nullable error, BOOL isCache, NSDictionary * _Nullable result) {
+        if (isCache) {
+            NSLog(@&quot;isCache&quot;);
+        }
+    }];
+
+    NSDictionary *infodictTwo = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;1&quot;, @&quot;versions_id&quot;, @&quot;1&quot;, @&quot;system_type&quot;, nil];
+    SYNetRequestInfo *infoNetTwo = [[SYNetMananger sharedInstance] syNetRequestWithURLStr:URLPath method:@&quot;POST&quot; parameters:infodictTwo ignoreCache:NO cacheDuration:2 completionHandler:^(NSError * _Nullable error, BOOL isCache, NSDictionary * _Nullable result) {
+        if (isCache) {
+            NSLog(@&quot;isCache&quot;);
+        }
+    }];
+
+    NSArray *taskAry = [NSArray arrayWithObjects:infoNetOne, infoNetTwo, nil];
+    [[SYNetMananger sharedInstance] syBatchOfRequestOperations:taskAry progressBlock:^(NSUInteger numberOfFinishedTasks, NSUInteger totalNumberOfTasks) {
+
+    } completionBlock:^(NSArray * _Nonnull operationAry) {
+
+    }];
+}
+
+- (void)syBatchOfRequestOperations:(NSArray&lt;SYNetRequestInfo *&gt; *)tasks
+                 progressBlock:(void (^)(NSUInteger numberOfFinishedTasks, NSUInteger totalNumberOfTasks))progressBlock
+               completionBlock:(netSuccessbatchBlock)completionBlock{
+    /*
+     使用 dispatch_group_t 技术点
+     多少个任务  对group添加多少个 空任务数(dispatch_group_enter)
+     任务完成后  对group的任务数-1 操作(dispatch_group_leave);
+     当group的任务数为0了，就会执行dispatch_group_notify的block块操作，即所有的网络任务请求完了。
+     可以看作是一个信号量的处理， 刚开始有3个信号量 sem = 3， 当 sem = 0时 处理
+     */
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(_SYNetQueue, ^{
+        __block dispatch_group_t group = dispatch_group_create();
+        [weakSelf.batchGroups addObject:group];
+        __block NSInteger finishedTasksCount = 0;
+        __block NSInteger totalNumberOfTasks = tasks.count;
+        [tasks enumerateObjectsUsingBlock:^(SYNetRequestInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj) {
+                // 网络任务启动前dispatch_group_enter
+                dispatch_group_enter(group);
+                SYRequestCompletionHandler newCompletionBlock = ^( NSError* error,  BOOL isCache, NSDictionary* result){
+                    progressBlock(finishedTasksCount, totalNumberOfTasks);
+                    if (obj.completionBlock) {
+                        obj.completionBlock(error, isCache, result);
+                    }
+                    // 网络任务结束后dispatch_group_enter
+                    dispatch_group_leave(group);
+                };
+                if ([obj.method isEqual:@&quot;POST&quot;]) {
+                    [[SYNetMananger sharedInstance] syPostWithURLString:obj.urlStr parameters:obj.parameters ignoreCache:obj.ignoreCache cacheDuration:obj.cacheDuration completionHandler:newCompletionBlock];
+                }else{
+                    [[SYNetMananger sharedInstance] syGetWithURLString:obj.urlStr parameters:obj.parameters ignoreCache:obj.ignoreCache cacheDuration:obj.cacheDuration completionHandler:newCompletionBlock];
+                }
+            }
+        }];
+        //监听
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            [weakSelf.batchGroups removeObject:group];
+            if (completionBlock) {
+                completionBlock(tasks);
+            }
+        });
+    });
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/网络及框架/" rel="tag"># 网络及框架</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/26/京东MVCS框架/" rel="next" title="京东MVCS框架">
+                <i class="fa fa-chevron-left"></i> 京东MVCS框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/30/YYImage框架解析/" rel="prev" title="YYImage框架解析">
+                YYImage框架解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#断点下载原理及文件上传"><span class="nav-number">1.</span> <span class="nav-text">断点下载原理及文件上传</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AF框架分析"><span class="nav-number">2.</span> <span class="nav-text">AF框架分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTPS及AFNetworking"><span class="nav-number">3.</span> <span class="nav-text">HTTPS及AFNetworking</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向切面的编程AOP"><span class="nav-number">4.</span> <span class="nav-text">面向切面的编程AOP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能优化之网络缓存层搭建"><span class="nav-number">5.</span> <span class="nav-text">性能优化之网络缓存层搭建</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

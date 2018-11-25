@@ -302,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/03/25/CollectionView原理及应用案例/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/12/29/iOS动画/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/03/25/CollectionView原理及应用案例/" itemprop="url">CollectionView原理及应用案例</a></h1>
+                <a class="post-title-link" href="/2017/12/29/iOS动画/" itemprop="url">iOS动画</a></h1>
         
 
         <div class="post-meta">
@@ -333,8 +333,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-25T00:00:00+08:00">
-                2016-03-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-29T00:00:00+08:00">
+                2017-12-29
               </time>
             
 
@@ -395,21 +395,21 @@
       
         
           
-          日历 UICollectionViewUICollectionView的简单用法
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    _dayAry = [NSMutableArray array];
-    /*
-     代码初始化的时候，一定要用 initWithFrame ：collectionViewLayout 这个
-     UICollectionViewLayout 不能直接初始化这个布局对象（必须实现他的子类）
-     更复杂布局需要 自己写UICollectionViewLayout的子类（如瀑布流）
-     */
+          iOS动画之动画原理UIView和CALayer
 
-    [_collectionView registerNib:[UINib nibWithNibName:@&quot;DateCell&quot; bundle:nil] forCellWith
+UIView继承于：UIResponder、NSObject
+CALayer继承于：NSObject
+UIView 响应事件
+CALayer 显示内容
+
+没有CoreAnimation框架，CoreAnimation.h文件存在于QuartzCore框架中；Core Animation 包含了 CAAnimation
+
+Layer坐标
+ view的坐标  其实本质上是layer坐标来实现的，可以屏蔽掉layer的setFrame、setBounds、setPostion方法来达到验证。UIView 的 setFrame 方法，实际是在给 CALayer 设置 frame。每一个UIView内部都默认关联着一个CALayer, UIView有frame、bounds和center三个属性，CALayer也有类似的属性，分别为frame、bo
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/03/25/CollectionView原理及应用案例/#more" rel="contents">
+            <a class="btn" href="/2017/12/29/iOS动画/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -460,7 +460,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/02/26/TableView原理及应用案例/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/11/24/IM知识框架/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -479,7 +479,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/02/26/TableView原理及应用案例/" itemprop="url">TableView原理及应用案例</a></h1>
+                <a class="post-title-link" href="/2017/11/24/IM知识框架/" itemprop="url">IM知识框架</a></h1>
         
 
         <div class="post-meta">
@@ -491,8 +491,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-02-26T00:00:00+08:00">
-                2016-02-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-24T00:00:00+08:00">
+                2017-11-24
               </time>
             
 
@@ -553,23 +553,26 @@
       
         
           
-          TableView原理UITableView的简单用法
-@implementation SecondViewCtr
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    _cellAry = [NSMutableArray new];
-    UITableView *_tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    _tableView.delegate  = self;
-    _tableView.dataSource = self;
-    [self.view addSubview:_tableView];
-}
+          IM英文为InstantMessaging，即时通讯
+客户端网络自顶而下分为应用层(应用层、表示层、会话层)、传输层(TCP/UDP)、硬件层(网络层、数据链路层、物理层)
 
-#pragma mark - tableView delegate
-- (NSInteger)tableV
+物理层–        wire,radio协议                 
+数据链路层–    Ethernet, Token ring协议等
+网络层–        IP协议
+传输层–        TCP、UDP协议
+会话层–        ASAP，TLS协议
+表示层–        XDR协议
+应用层–        HTTP协议
+
+
+TCP/IP连接
+ 手机能够使用联网功能是因为手机底层实现了TCP/IP协议，可以使手机终端通过无线网络建立TCP连接。TCP协议可以对上层网络提供接口，使上层网络数据的传输建立在“无差别”的网络之上。
+ 建立起一个TCP连接需要经过“三次握手”：
+ 第一次握手：客户端
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/02/26/TableView原理及应用案例/#more" rel="contents">
+            <a class="btn" href="/2017/11/24/IM知识框架/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -620,7 +623,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/01/29/ScrollView原理及应用案例/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/10/27/主题模型切换框架解析/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -639,7 +642,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/01/29/ScrollView原理及应用案例/" itemprop="url">ScrollView原理及应用案例</a></h1>
+                <a class="post-title-link" href="/2017/10/27/主题模型切换框架解析/" itemprop="url">主题模型切换框架解析</a></h1>
         
 
         <div class="post-meta">
@@ -651,8 +654,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-01-29T00:00:00+08:00">
-                2016-01-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-27T00:00:00+08:00">
+                2017-10-27
               </time>
             
 
@@ -713,18 +716,22 @@
       
         
           
-          ScrollView原理解析UIScrollView(滚动视图)是一个在日常开发中使用频率极高的容器视图控件, 它允许用户通过滚动和缩放的方式查看超出屏幕区域大小的内容, 在应用程序开发中经常使用到的UITableView(列表视图)、UICollectionView(集合视图)和UITextView(文本视图)都是它的子类.
-下面将从用户界面和事件处理两个方面对UIScrollView做一次详细的使用介绍和简要的实现原理分析.
-该属性用于标识内容区域的起点相对于scrollView的起点的偏移量, 默认值为CGPointZero
-@property(nonatomic) CGPoint contentOffset;
-
-(void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
-
-该属性用于标识内容区域的尺寸
+          主题模型切换
+给NSObject扩展Theme，添加pickers属性来保存方法，这些方法用来更改主题颜色
+@interface NSObject (EOCTheme)
+@property(nonatomic, strong)NSMutableDictionary *pickers;
+@end
+@implementation NSObject (EOCTheme)
+@dynamic pickers;
+- (NSMutableDictionary *)pickers {
+    NSMutableDictionary *dict = objc_getAssociatedObject(self, @selector(pickers));
+    if (!dict) {
+        //添加通知
+        [[NSNotificationCenter defaultCenter] a
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/01/29/ScrollView原理及应用案例/#more" rel="contents">
+            <a class="btn" href="/2017/10/27/主题模型切换框架解析/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -775,7 +782,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -794,7 +801,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/25/事件传递及应用案例/" itemprop="url">事件传递及应用案例</a></h1>
+                <a class="post-title-link" href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/" itemprop="url">APP文件结构分析(沙盒分析)+数据存储安全</a></h1>
         
 
         <div class="post-meta">
@@ -806,8 +813,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-25T00:00:00+08:00">
-                2015-12-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-29T00:00:00+08:00">
+                2017-09-29
               </time>
             
 
@@ -868,670 +875,185 @@
       
         
           
-          事件层次分析iOS事件有哪些
-
-UIEventTypeTouches触摸事件
-UIEventTypeMotion “动作”事件(比如摇晃手机设备)
-UIEventTypeRemoteControl远程控制事件
-UIEventTypePresses事件(和触按物理按钮有关)
-
-
-响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIApplication、UIViewController、UIView、UIWindow。
-
-UITouch
-当用一根手指触摸屏幕时，会创建一个与手指相关联的UITouch对象。如果两根手指同时触摸屏幕，则会调用一次touchesBegan方法，创建两个UITouch对象（如果不是同时触摸，调用两次方法，每次的touches参数都只有一个UITouch对象）。
-判断是否多点触摸：NSSet有多少个U
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/12/25/事件传递及应用案例/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/11/27/控制器加载底层原理和UI初始化过程/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/11/27/控制器加载底层原理和UI初始化过程/" itemprop="url">控制器加载底层原理和UI初始化过程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-11-27T00:00:00+08:00">
-                2015-11-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          控制器加载底层原理和UI初始化过程
-层次关系(VC,V,CALayer)
-
-VC管理V，V管理CALayer，V中的子V在上层，不一定其Layer也在上层。
-
-控制器初始化过程
-
-控制器的View是和viewDidLoad有关的
-
-C弱化(VC的精简)
-
-MVCS 调度中心(通讯机制 KVO)
-
-UI初始化过程
-DrawRect(CALayer)分析
-
-绘制富文本(图片和文字)，对CALayer的绘制。
-系统中有一个全局栈stack专门存放CGContextRef，stack中正常是没有上下文的，drawRect会默认push一个上下文到全局的Context的栈stack里。
-
-IB_DESIGNABLE IBInspectable
-
-IB_DESIGNABLE 可以将drawrect函数中绘制的图形显示在xib可视文件中IBInspectable 可以将属性显示在xib中让动态设置
-
-x
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/11/27/控制器加载底层原理和UI初始化过程/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/10/30/App启动原理/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/30/App启动原理/" itemprop="url">iOS App启动原理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-30T00:00:00+08:00">
-                2015-10-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          开课典礼1、课程内容
-a、新增Swift、ARKit等内容b、每个课程有删减c、有些内容变成录播d、课程时间的改变
-2、学习效果
-a、听课 5%b、读 10%c、视听 20%d、案例 30%e、讨论 50%f、练习 75%g、实际应用 90%
-3、听直播
-a、预习相关知识点b、上课跟节奏、思考c、课后实践、总结、写博客
-不要用学习的勤奋，掩盖实践的懒惰！
-iOS启动原理+清晰化布局1、APP启动入口
-a、创建一个application对象b、设置application的代理(AppDelegate)c、创建一个事件循环（runloop）d、读info.plist文件（MainStoryboard）
-2、runloop
-while(mode) {
-    handleRunloopStatus();//runloop状态处理，是否stop
-    cofigPort();//配置port
- 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/10/30/App启动原理/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/09/25/Swift实战/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/09/25/Swift实战/" itemprop="url">Swift实战</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-25T00:00:00+08:00">
-                2015-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/09/25/Swift实战/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/28/Swift重点基础语法/" itemprop="url">Swift的重点基础语法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-08-28T00:00:00+08:00">
-                2015-08-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-Swift APP 中的入口函数main
+          APP文件结构分析(沙盒分析)+数据存储安全
+沙盒结构分析
 /*
-  编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果
-  如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错
- */
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
+ Documents (backup 备份){
+            大文件要做 非备份设置（如视频文件，多媒体文件）
+            审核的，如果检查出来，就会被拒
+        }
+
+ Librayry
+    1 Caches{
+        系统的缓存存放在这个文件夹（如NSURLSessionTask的net获取缓存XXX/Cache/com.test.eoc/Cache.db）
+    }
+    2 Preferences (backup 备份) (如 NSUserDefaults存储在XXX/Preferences/com.test.eoc.plist
+
+ tmp 临时文件夹（系统会不定期删除里面的文件）
+    不重要性的文件 （断点下载的时候 （当文件下载没完成的时候，下载完之后会转移到目的
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/08/25/MJRefresh框架级解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/25/MJRefresh框架级解析/" itemprop="url">MJRefresh框架级解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-25T00:00:00+08:00">
+                2017-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          MJRefresh框架级解析之HeaderView
+UIScrollView扩展属性HeaderView
+@interface UIScrollView (UIScrollView_EOCRefresh)
+@property(nonatomic, strong)EOCRefreshHeaderView *EOCRefreshHeaderView;
+@end
+
+@implementation UIScrollView (UIScrollView_EOCRefresh)
+- (EOCRefreshHeaderView *)EOCRefreshHeaderView {
+    return objc_getAssociatedObject(self, @selector(EOCRefreshHeaderView));
 }
 
-变量和常亮
-func 常量变量(){
-    // 1 let 声明常量 var声明变量
-    //  let 常量只能为他赋值一次
-
-    // 2.1 声明一个变量，编译器会自动推断类型，前提条件：提供的信息不足。
-    // 2.2 需要在变量后面声明类型，用冒号分割
-
-    /
+- (void)setEOCRefreshHeaderView:(EOC
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/08/28/Swift重点基础语法/#more" rel="contents">
+            <a class="btn" href="/2017/08/25/MJRefresh框架级解析/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1582,7 +1104,7 @@ func 常量变量(){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/07/31/Swift编码规范/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/07/28/带你掌握微信朋友圈实现/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1601,7 +1123,7 @@ func 常量变量(){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/07/31/Swift编码规范/" itemprop="url">Swift编码规范</a></h1>
+                <a class="post-title-link" href="/2017/07/28/带你掌握微信朋友圈实现/" itemprop="url">带你掌握微信朋友圈实现</a></h1>
         
 
         <div class="post-meta">
@@ -1613,8 +1135,8 @@ func 常量变量(){
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-31T00:00:00+08:00">
-                2015-07-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-28T00:00:00+08:00">
+                2017-07-28
               </time>
             
 
@@ -1675,14 +1197,20 @@ func 常量变量(){
       
         
           
-          这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。
-我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide May 11, 2017 commit 版本 0f1f0848c4313201006e18cbf3b5c8b1365204ce
-正确性要尽量使你的代码编译时没有警告，甚至把警告当做错误处理。这条规则影响了很多语法的使用，如推荐使用#selector文而不是用字符串
-命名使用具有描述性的和一致的命名使你的代码更加易读和易懂，更多关于Swift的命名方式参见Swift API Design Guid
+          朋友圈粗糙实现
+可以在xib中布局，然后在其VC中重新定义其位置或高度；也可以直接用代码生成及布局控件
+//WXFriendCircleVCtr.m
+[theHeadView removeFromSuperview];
+[theFootView removeFromSuperview];
+[theTableView setTableHeaderView:theHeadView];
+[theTableView setTableFooterView:theFootView];
+
+theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
+theTableView.separatorStyle = UITabl
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/07/31/Swift编码规范/#more" rel="contents">
+            <a class="btn" href="/2017/07/28/带你掌握微信朋友圈实现/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1733,7 +1261,7 @@ func 常量变量(){
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/06/26/Swift语法学习/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/06/30/iOS性能优化实践/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1752,7 +1280,7 @@ func 常量变量(){
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/06/26/Swift语法学习/" itemprop="url">Swift2语法学习</a></h1>
+                <a class="post-title-link" href="/2017/06/30/iOS性能优化实践/" itemprop="url">iOS性能优化实践</a></h1>
         
 
         <div class="post-meta">
@@ -1764,8 +1292,8 @@ func 常量变量(){
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-06-26T00:00:00+08:00">
-                2015-06-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-30T00:00:00+08:00">
+                2017-06-30
               </time>
             
 
@@ -1826,17 +1354,508 @@ func 常量变量(){
       
         
           
-          从2014-06-03苹果开发者大会发布Swift1.0到2015-12-04苹果公司宣布开源Swift2.1，再从苹果2016-03-21释放稳定成熟版本Swift2.2到2016-09-13Swift3.0的变革，Swift一路走来，在社区以及核心团队的努力下，越来越成熟、稳定。我们这节以关东升老师的《从零开始学Swift》来学习基于Swift2.2的语法知识，关于Swift的后续更新及变革，我会在后续的文章中发专题整理，如果想要看Swift源码的同学或者想膜拜大神的同学可以在本地址中查看
-准备起航本书约定
-示例代码约定：约定示例代码和本书章节之间的关系
-图示约定：图中的圆圈、箭头和手势表示的意思
-函数和方法签名约定：
-  函数和方法签名是函数和方法表示方式，签名由函数和方法的名称和每个参数组成，不包括返回值和参数类型，例如 print函数有两种不同的函数签名
-print(_:sepa
+          iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？
+Instruments使用：用工具来监测App的各项性能，让性能了然于心。
+
+Activity Monitor
+  一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。
+
+Allocations
+  内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在哪些对象上
+
+Core Animation
+
+Blended像素混合：当图层有半透明时，GPU需要进行像素混合，需要先绘制透明层下层的内容，再叠加透明层以达到透明的效果，而不影响帧率的情况下，GPU可绘制的像素是有限制的。通常优化方式：backgroundColor设置为不透明色/Opaque设置为YES/图片能不用透明的切图成不透明。没有像素混合的显示绿色，有像素混合的显示红色。重要的是back
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/06/26/Swift语法学习/#more" rel="contents">
+            <a class="btn" href="/2017/06/30/iOS性能优化实践/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/05/26/GCD深度使用和底层源码分析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/05/26/GCD深度使用和底层源码分析/" itemprop="url">GCD深度使用和底层源码分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-26T00:00:00+08:00">
+                2017-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          GCD深度使用和底层源码分析
+串行队列
+// 串行队列 只能开启一个任务 （串发dispatch_sync）
+- (void)serialQueue{
+    //执行结果是同一个线程上依次执行多个任务
+    dispatch_queue_t queue = dispatch_queue_create(&quot;serQueue&quot;, DISPATCH_QUEUE_SERIAL);
+    dispatch_async(queue, ^{
+        NSLog(@&quot;1:%@&quot;, [NSThread currentThread]);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@&quot;2:%@&quot;, [NSThread currentThread]);
+    });
+    dis
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/26/GCD深度使用和底层源码分析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/04/28/OC多线程分析及使用和死锁处理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/28/OC多线程分析及使用和死锁处理/" itemprop="url">OC多线程分析及使用和死锁处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-28T00:00:00+08:00">
+                2017-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          OC多线程分析及使用和死锁处理
+线程方式:NSThread，NSOperation, GCD
+
+NSThread 一线程对象 对应一个线程，当执行完之后，不能重新开启一个线程也是单独存在
+// 主动开线程
+// [NSThread detachNewThreadSelector:@selector(threadOne) toTarget:self withObject:nil];
+
+//手动开启，手动开启线程只能开一次
+_thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) object:nil];
+[_thread start];
+
+线程队列NSQueueOperation
+
+Operation抽象类必须用其子类实现
+系统的Operation对象
+
+NSBlockOperation
+/*
+
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/04/28/OC多线程分析及使用和死锁处理/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2017/03/31/block原理及详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/31/block原理及详解/" itemprop="url">block原理及详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-31T00:00:00+08:00">
+                2017-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Block原理细纠Block就是一个结构体，里面存储了指向函数体中包含定义block时的代码块的函数指针，以及block外部上下文变量等信息
+block的内存分布
+理解：
+
+当你的block没有使用外部变量的时候，通通都是global的，无论你怎么修饰、无论是否成员变量；
+全局变量、静态变量、静态局部变量在block中的存储，block都为globalBlock
+当在block里添加了外部变量，那么block的内存就会变成不一样: 当block赋值给strong变量、(非weak的)成员变量，block为mallocBlock；
+如果把block作为自定义函数的参数，那么该block是在栈区（系统的方法，会自动把block从栈区放到堆区）
+static变量无法加__block符的
+
+细究：
+
+当你的block使用了外部局部变量的时候，block本身就是在栈区，arc，当你有外部变量，str
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/31/block原理及详解/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1878,7 +1897,7 @@ print(_:sepa
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1926,7 +1945,7 @@ print(_:sepa
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1948,7 +1967,7 @@ print(_:sepa
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

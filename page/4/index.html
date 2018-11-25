@@ -302,7 +302,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/07/25/OC编码规范/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/04/29/SearchController原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/07/25/OC编码规范/" itemprop="url">OC 编码规范</a></h1>
+                <a class="post-title-link" href="/2016/04/29/SearchController原理及应用案例/" itemprop="url">SearchController原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -333,8 +333,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-07-25T00:00:00+08:00">
-                2014-07-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-29T00:00:00+08:00">
+                2016-04-29
               </time>
             
 
@@ -395,13 +395,19 @@
       
         
           
-          作为一名苹果开发者，我们的工作就是开发出一个流畅的、高质量的 APP，如何保证 APP 的性能和质量，编码规范则是最基本的条件。在网上随便搜寻一下，每个公司都有自己的编码规范，如New York Times 编码规范、GitHub 编码规范、Raywenderlich 编码规范，这些编码规范其实内容都大同小异。
-由于我是 Raywenderlich 团队的忠实粉丝，我以前也通过 Raywenderlich 团队学习过不少的技术和技巧，我自己的编码风格也或多或少被 Raywenderlich 团队的风格所影响，所以本篇文章将翻译 Raywenderlich 的编码规范来做个总结，规范约束自己以后在编码时的风格，保证自己能写出更优雅的代码。
-Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是我们能够在我们的书、教程和初学者工具包的代码保持优雅和一致。即使我们
+          UISearchController主要API
+// 初始化方法, 参数是展示搜索结果的控制器, 如果是在当前控制器展示搜索结果, 就传nil
+- (instancetype)initWithSearchResultsController:(nullable UIViewController *)searchResultsController;
+
+// 负责更新搜索结果的代理, 需要遵循 UISearchResultsUpdating 协议
+@property (nullable, nonatomic, weak) id &lt;UISearchResultsUpdating&gt; searchResultsUpdater;
+
+// 搜索控制器是否是活跃状态, 当在一个控制器展示搜索结果的时候, 可以此来判断返回的数据源
+@property (nonatomic, assign, get
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/07/25/OC编码规范/#more" rel="contents">
+            <a class="btn" href="/2016/04/29/SearchController原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -452,7 +458,7 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/06/27/疯狂iOS下册-第二部分/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/03/25/CollectionView原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -471,7 +477,7 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/06/27/疯狂iOS下册-第二部分/" itemprop="url">疯狂iOS下册第二部分</a></h1>
+                <a class="post-title-link" href="/2016/03/25/CollectionView原理及应用案例/" itemprop="url">CollectionView原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -483,8 +489,8 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-06-27T00:00:00+08:00">
-                2014-06-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-25T00:00:00+08:00">
+                2016-03-25
               </time>
             
 
@@ -545,24 +551,21 @@ Raywenderlich 编码规范介绍我们制定Objective-C编码规范的原因是�
       
         
           
-          本篇主要接着《疯狂iOS讲义》下册第一部分的内容将下册第二部分的重点知识列举一下，包括:iOS网络应用编程、使用CoreLocation定位、使用MapKit开发地图服务、推送机制、iCloud服务与应用五大部分。
-iOS网络应用编程检测网络状态检测设备的网络状态，需要两个步骤：
+          日历 UICollectionViewUICollectionView的简单用法
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    _dayAry = [NSMutableArray array];
+    /*
+     代码初始化的时候，一定要用 initWithFrame ：collectionViewLayout 这个
+     UICollectionViewLayout 不能直接初始化这个布局对象（必须实现他的子类）
+     更复杂布局需要 自己写UICollectionViewLayout的子类（如瀑布流）
+     */
 
-下载、添加Reachability
-添加SystemConfiguration框架
-
-代码实现：
-Reachability *reach = [Reachability reachabilityWithHostName:site];
-switch([reach currentReachabilityWithHostName:site]) {
-    case NotReachable:
-        break;
-    case ReachableViaWWAN:
-        break;
-    ca
+    [_collectionView registerNib:[UINib nibWithNibName:@&quot;DateCell&quot; bundle:nil] forCellWith
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/06/27/疯狂iOS下册-第二部分/#more" rel="contents">
+            <a class="btn" href="/2016/03/25/CollectionView原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -613,7 +616,7 @@ switch([reach currentReachabilityWithHostName:site]) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/05/30/疯狂iOS下册-第一部分/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/02/26/TableView原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -632,7 +635,7 @@ switch([reach currentReachabilityWithHostName:site]) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/05/30/疯狂iOS下册-第一部分/" itemprop="url">疯狂iOS下册第一部分</a></h1>
+                <a class="post-title-link" href="/2016/02/26/TableView原理及应用案例/" itemprop="url">TableView原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -644,8 +647,8 @@ switch([reach currentReachabilityWithHostName:site]) {
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-05-30T00:00:00+08:00">
-                2014-05-30
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-02-26T00:00:00+08:00">
+                2016-02-26
               </time>
             
 
@@ -706,15 +709,23 @@ switch([reach currentReachabilityWithHostName:site]) {
       
         
           
-          本篇主要接着《疯狂iOS讲义》上册的内容将下册第一部分的重点知识列举一下，包括:多点触摸与手势检测、国际化、iOS的数据存储与IO、多媒体应用开发、管理手机、加速剂与陀螺仪、多线程七大部分。
-多点触摸与手势检测响应者链事件的传递顺序：First Responder-&gt;First Responder的视图控制器-&gt;父容器-&gt;父容器的视图控制器-&gt;UIWindow-&gt;UIApplication-&gt;应用程序的委托对象
-一般来说，如果已经经过完整的传播过程依然没有被处理，那么该事件就会被丢弃，上面响应者链的任何响应者处理该事件，该事件就会停止传播，如果某个响应者截获了某个事件，那么该响应者要根据条件决定是否处理该事件，如果处理不掉，则需要在处理方法中手动传递该事件到下一个响应者：
--(void)handleTapEvent:(UIEvent *)event {
+          TableView原理UITableView的简单用法
+@implementation SecondViewCtr
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    _cellAry = [NSMutableArray new];
+    UITableView *_tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    _tableView.delegate  = self;
+    _tableView.dataSource = self;
+    [self.view addSubview:_tableView];
+}
 
+#pragma mark - tableView delegate
+- (NSInteger)tableV
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/05/30/疯狂iOS下册-第一部分/#more" rel="contents">
+            <a class="btn" href="/2016/02/26/TableView原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -765,7 +776,7 @@ switch([reach currentReachabilityWithHostName:site]) {
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/04/25/疯狂iOS上册-第二部分/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2016/01/29/ScrollView原理及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -784,7 +795,7 @@ switch([reach currentReachabilityWithHostName:site]) {
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/04/25/疯狂iOS上册-第二部分/" itemprop="url">疯狂iOS上册第二部分</a></h1>
+                <a class="post-title-link" href="/2016/01/29/ScrollView原理及应用案例/" itemprop="url">ScrollView原理及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -796,8 +807,8 @@ switch([reach currentReachabilityWithHostName:site]) {
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-04-25T00:00:00+08:00">
-                2014-04-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-01-29T00:00:00+08:00">
+                2016-01-29
               </time>
             
 
@@ -858,19 +869,18 @@ switch([reach currentReachabilityWithHostName:site]) {
       
         
           
-          本篇主要接着《疯狂iOS讲义》上册的内容将第二部分的重点知识列举一下，包括:iOS应用的界面编程、管理iOS应用的运行、图形/图像和动画三大部分。
-iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三类
+          ScrollView原理解析UIScrollView(滚动视图)是一个在日常开发中使用频率极高的容器视图控件, 它允许用户通过滚动和缩放的方式查看超出屏幕区域大小的内容, 在应用程序开发中经常使用到的UITableView(列表视图)、UICollectionView(集合视图)和UITextView(文本视图)都是它的子类.
+下面将从用户界面和事件处理两个方面对UIScrollView做一次详细的使用介绍和简要的实现原理分析.
+该属性用于标识内容区域的起点相对于scrollView的起点的偏移量, 默认值为CGPointZero
+@property(nonatomic) CGPoint contentOffset;
 
-活动控件：大部分活动控件都继承了UIControl基类，活动控件可以与用户交互，触发事件，如UIButton
-静态控件：静态控件通常只继承了UIView类，并不继承UIControl，只显示应用状态，不执行任何操作，如UILabel
-被动控件：可以接受用户操作，但不会激发任何IBAction方法，如UITextField
+(void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated;
 
-活动控件：与通过Interface Builder关联IBAction方法本质相同的是，程序也可通过代码为UIControl的子类控件绑定事件处理方法
--(void)addTarget:(id)target action:(SEL)action forC
+该属性用于标识内容区域的尺寸
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/04/25/疯狂iOS上册-第二部分/#more" rel="contents">
+            <a class="btn" href="/2016/01/29/ScrollView原理及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -921,7 +931,7 @@ iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/03/28/疯狂iOS上册-第一部分/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -940,7 +950,7 @@ iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/03/28/疯狂iOS上册-第一部分/" itemprop="url">疯狂iOS上册第一部分</a></h1>
+                <a class="post-title-link" href="/2015/12/25/事件传递及应用案例/" itemprop="url">事件传递及应用案例</a></h1>
         
 
         <div class="post-meta">
@@ -952,8 +962,8 @@ iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三�
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-03-28T00:00:00+08:00">
-                2014-03-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-25T00:00:00+08:00">
+                2015-12-25
               </time>
             
 
@@ -1014,15 +1024,23 @@ iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三�
       
         
           
-          最近看了李刚的疯狂系列书籍之疯狂iOS，基本将整个iOS知识体系涵盖在内，本篇主要将《疯狂iOS讲义》上册的第一部分的重点知识列举一下，包括 iOS应用与开发环境、数据类型和运算符、流程控制与数组、C语言特性、面向对象（上）、面向对象（下）、Foundation框架详解、文件I/O、iOS应用开发入门 这几章知识点。
-iOS应用与开发环境OC与iOS简介搭建iOS开发环境第一个OC程序熟悉Xcode
-左边导航面板从左到右依次是：项目导航、符号导航、搜索导航、问题导航、测试导航、调试导航、断点导航、日志导航，快捷键是command+1/2
-右边检查器面板包括：文件检查器、快速帮助检查器、身份检查器、属性检查器、大小检查器、连接检查器,快捷键是command+option+1/2
-右下端库面板包括：文件模板库、代码片段库、对象库、媒体库，快捷键是control+option+command+1
+          事件层次分析iOS事件有哪些
+
+UIEventTypeTouches触摸事件
+UIEventTypeMotion “动作”事件(比如摇晃手机设备)
+UIEventTypeRemoteControl远程控制事件
+UIEventTypePresses事件(和触按物理按钮有关)
+
+
+响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIApplication、UIViewController、UIView、UIWindow。
+
+UITouch
+当用一根手指触摸屏幕时，会创建一个与手指相关联的UITouch对象。如果两根手指同时触摸屏幕，则会调用一次touchesBegan方法，创建两个UITouch对象（如果不是同时触摸，调用两次方法，每次的touches参数都只有一个UITouch对象）。
+判断是否多点触摸：NSSet有多少个U
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/03/28/疯狂iOS上册-第一部分/#more" rel="contents">
+            <a class="btn" href="/2015/12/25/事件传递及应用案例/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1073,7 +1091,7 @@ iOS应用与开发环境OC与iOS简介搭建iOS开发环境第一个OC程序熟�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/02/28/git的基本使用/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/11/27/控制器加载底层原理和UI初始化过程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1092,7 +1110,7 @@ iOS应用与开发环境OC与iOS简介搭建iOS开发环境第一个OC程序熟�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/02/28/git的基本使用/" itemprop="url">git的基本使用</a></h1>
+                <a class="post-title-link" href="/2015/11/27/控制器加载底层原理和UI初始化过程/" itemprop="url">控制器加载底层原理和UI初始化过程</a></h1>
         
 
         <div class="post-meta">
@@ -1104,8 +1122,8 @@ iOS应用与开发环境OC与iOS简介搭建iOS开发环境第一个OC程序熟�
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-02-28T00:00:00+08:00">
-                2014-02-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-11-27T00:00:00+08:00">
+                2015-11-27
               </time>
             
 
@@ -1127,8 +1145,8 @@ iOS应用与开发环境OC与iOS简介搭建iOS开发环境第一个OC程序熟�
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1166,25 +1184,34 @@ iOS应用与开发环境OC与iOS简介搭建iOS开发环境第一个OC程序熟�
       
         
           
-          本篇文章是建立在技术大牛“偶尔的网事”的一篇博客的基础上的,然后对其做了一些优化和扩展
-GIT入门
-Git是神马？
- 一个开源的分布式版本控制系统，可以有效的高速的控制管理各种从小到大的项目版本。他的作者就是大名鼎鼎的Linux系统创始人Linus。
+          控制器加载底层原理和UI初始化过程
+层次关系(VC,V,CALayer)
 
-分布式又是神马？
- 集中式就是把版本库集中放在某个中央服务器上（可以是局域网），然后每个人每次要使用时跟服务器进行通信
- 分布式和集中式最大的区别就是它没有中央服务器这么一说，每台电脑都是一个服务器，每台电脑都拥有一个完整的版本库
+VC管理V，V管理CALayer，V中的子V在上层，不一定其Layer也在上层。
 
-Git经典的开发流程
+控制器初始化过程
 
-其它版本控制系统
-Git的安装
-Git的使用
-设置用户名和Email git config –global user.name “Your Name” git config –global user.email “YourEmail@example.com“ 或：修改.git\confi
+控制器的View是和viewDidLoad有关的
+
+C弱化(VC的精简)
+
+MVCS 调度中心(通讯机制 KVO)
+
+UI初始化过程
+DrawRect(CALayer)分析
+
+绘制富文本(图片和文字)，对CALayer的绘制。
+系统中有一个全局栈stack专门存放CGContextRef，stack中正常是没有上下文的，drawRect会默认push一个上下文到全局的Context的栈stack里。
+
+IB_DESIGNABLE IBInspectable
+
+IB_DESIGNABLE 可以将drawrect函数中绘制的图形显示在xib可视文件中IBInspectable 可以将属性显示在xib中让动态设置
+
+x
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/02/28/git的基本使用/#more" rel="contents">
+            <a class="btn" href="/2015/11/27/控制器加载底层原理和UI初始化过程/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1235,7 +1262,7 @@ Git的使用
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/01/31/JavaScript的学习及总结/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/10/30/App启动原理/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1254,7 +1281,7 @@ Git的使用
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/01/31/JavaScript的学习及总结/" itemprop="url">JavaScript的学习及总结</a></h1>
+                <a class="post-title-link" href="/2015/10/30/App启动原理/" itemprop="url">iOS App启动原理</a></h1>
         
 
         <div class="post-meta">
@@ -1266,8 +1293,8 @@ Git的使用
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-01-31T00:00:00+08:00">
-                2014-01-31
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-10-30T00:00:00+08:00">
+                2015-10-30
               </time>
             
 
@@ -1289,8 +1316,8 @@ Git的使用
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1328,22 +1355,24 @@ Git的使用
       
         
           
-          JavaScript的介绍JavaScript是什么？
-
-javaScript是一种广泛用于客户端Web开发的脚本语言，常用来给HTML网页添加动态功能，比如响应用户的各种操作
-javascript最主要的设计目的就是让网页中的元素可以被编程,也就是让网页动起来，甚至你可以编写js版本的坦克大战游戏。
-javascript不能独立运行，它要嵌入到其它编程语言中才能运行(html,asp,asp.net,jsp,php…)
-javascript一般用于b(brower浏览器)/s(server服务器)开发,即我们常说的web开发(比如网站开发，web应用等.)，很少用于后台
-
-脚本语言是什么？
-
-脚本语言介于HTML和C,C++,Java,C#等编程语言之间
-脚本语言与编程语言有相似地方，其函数与编程语言类似,也有变量。与编程语言之间最大的区别是编程语言的语法和规则更为严格和复杂一些
-脚本语
+          开课典礼1、课程内容
+a、新增Swift、ARKit等内容b、每个课程有删减c、有些内容变成录播d、课程时间的改变
+2、学习效果
+a、听课 5%b、读 10%c、视听 20%d、案例 30%e、讨论 50%f、练习 75%g、实际应用 90%
+3、听直播
+a、预习相关知识点b、上课跟节奏、思考c、课后实践、总结、写博客
+不要用学习的勤奋，掩盖实践的懒惰！
+iOS启动原理+清晰化布局1、APP启动入口
+a、创建一个application对象b、设置application的代理(AppDelegate)c、创建一个事件循环（runloop）d、读info.plist文件（MainStoryboard）
+2、runloop
+while(mode) {
+    handleRunloopStatus();//runloop状态处理，是否stop
+    cofigPort();//配置port
+ 
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2014/01/31/JavaScript的学习及总结/#more" rel="contents">
+            <a class="btn" href="/2015/10/30/App启动原理/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1394,7 +1423,7 @@ javascript一般用于b(brower浏览器)/s(server服务器)开发,即我们常�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/12/27/CSS的学习及总结/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/09/25/Swift实战/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1413,7 +1442,7 @@ javascript一般用于b(brower浏览器)/s(server服务器)开发,即我们常�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/12/27/CSS的学习及总结/" itemprop="url">CSS的学习及总结</a></h1>
+                <a class="post-title-link" href="/2015/09/25/Swift实战/" itemprop="url">Swift实战</a></h1>
         
 
         <div class="post-meta">
@@ -1425,8 +1454,8 @@ javascript一般用于b(brower浏览器)/s(server服务器)开发,即我们常�
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-12-27T00:00:00+08:00">
-                2013-12-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-09-25T00:00:00+08:00">
+                2015-09-25
               </time>
             
 
@@ -1448,8 +1477,8 @@ javascript一般用于b(brower浏览器)/s(server服务器)开发,即我们常�
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1487,23 +1516,11 @@ javascript一般用于b(brower浏览器)/s(server服务器)开发,即我们常�
       
         
           
-          基本介绍div是用于存放html元素，文字，图片，视频的元素
-css 是层叠样式表，用于指定div中的内容的样式
-
-test.html：
-&lt;!DOCTYPE HTML PUBLIC &quot;-//w3c//DTD HTML 4.0 Transitional//EN&quot;&gt;
-&lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;快速入门&lt;/title&gt;
-        &lt;link href=&quot;my.css&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;/&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;div class=&quot;style1&quot;&gt;
-   
-          ...
+          
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/12/27/CSS的学习及总结/#more" rel="contents">
+            <a class="btn" href="/2015/09/25/Swift实战/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1554,7 +1571,7 @@ test.html：
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/11/29/Html的学习及总结/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1573,7 +1590,7 @@ test.html：
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/11/29/Html的学习及总结/" itemprop="url">Html的学习及总结</a></h1>
+                <a class="post-title-link" href="/2015/08/28/Swift重点基础语法/" itemprop="url">Swift的重点基础语法</a></h1>
         
 
         <div class="post-meta">
@@ -1585,8 +1602,8 @@ test.html：
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-11-29T00:00:00+08:00">
-                2013-11-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-08-28T00:00:00+08:00">
+                2015-08-28
               </time>
             
 
@@ -1608,8 +1625,8 @@ test.html：
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Web/" itemprop="url" rel="index">
-                    <span itemprop="name">Web</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1647,17 +1664,30 @@ test.html：
       
         
           
-          Html基础什么是HtmlHTML（HyperText Mark-up Language）即超文本标记语言或超文本链接标示语言，是目前网络上应用最为广泛的语言，也是构成网页文档的主要语言。HTML文本是由HTML命令组成的描述性文本，HTML命令可以说明文字、图形、动画、声音、表格、链接等。
-HTML的结构包括头部（Head）、主体（Body）两大部分，其中头部描述浏览器所需的信息，而主体则包含所要说明的具体内容。
+          
+Swift APP 中的入口函数main
+/*
+  编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果
+  如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错
+ */
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+}
 
-HTML可以编写静态网页.
-该静态网页可以包括文字、图形、动画、声音、表格、链接。从而构成一个个漂亮的网页。
+变量和常亮
+func 常量变量(){
+    // 1 let 声明常量 var声明变量
+    //  let 常量只能为他赋值一次
 
-W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3C理事会或万维网联盟。W3C于1994年10月在麻省理工学院计算机科学实验室成立。创建者是万维网的发明者Tim Berners-Lee。W3C组织是对网络标准制定的一
+    // 2.1 声明一个变量，编译器会自动推断类型，前提条件：提供的信息不足。
+    // 2.2 需要在变量后面声明类型，用冒号分割
+
+    /
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/11/29/Html的学习及总结/#more" rel="contents">
+            <a class="btn" href="/2015/08/28/Swift重点基础语法/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1708,7 +1738,7 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2013/10/25/springMvc的学习总结(未完成)/">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/07/31/Swift编码规范/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Frand Feng">
@@ -1727,7 +1757,7 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/10/25/springMvc的学习总结(未完成)/" itemprop="url">springMvc的学习和总结</a></h1>
+                <a class="post-title-link" href="/2015/07/31/Swift编码规范/" itemprop="url">Swift编码规范</a></h1>
         
 
         <div class="post-meta">
@@ -1739,8 +1769,8 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2013-10-25T00:00:00+08:00">
-                2013-10-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-31T00:00:00+08:00">
+                2015-07-31
               </time>
             
 
@@ -1762,8 +1792,8 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Server/" itemprop="url" rel="index">
-                    <span itemprop="name">Server</span>
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
                   </a>
                 </span>
 
@@ -1801,11 +1831,14 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
       
         
           
-          
-          
+          这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。
+我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide May 11, 2017 commit 版本 0f1f0848c4313201006e18cbf3b5c8b1365204ce
+正确性要尽量使你的代码编译时没有警告，甚至把警告当做错误处理。这条规则影响了很多语法的使用，如推荐使用#selector文而不是用字符串
+命名使用具有描述性的和一致的命名使你的代码更加易读和易懂，更多关于Swift的命名方式参见Swift API Design Guid
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2013/10/25/springMvc的学习总结(未完成)/#more" rel="contents">
+            <a class="btn" href="/2015/07/31/Swift编码规范/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1847,7 +1880,7 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1895,7 +1928,7 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1917,7 +1950,7 @@ W3C的介绍W3C是英文 World Wide Web Consortium 的缩写，中文意思是W3
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

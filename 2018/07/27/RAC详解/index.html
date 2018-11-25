@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,RAC,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="RAC 之原理各种编程思想汇总 /*  ReactiveCocoa函数响应式编程  理论基础  RAC使用  RAC源码  RAC应用   OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)  函数式编程：运算方式，函数（重在表达，更专注的是业务）  响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应   链式编程：">
+<meta name="keywords" content="OC,iOS,RAC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RAC详解">
+<meta property="og:url" content="https://frandfeng.github.io/2018/07/27/RAC详解/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="RAC 之原理各种编程思想汇总 /*  ReactiveCocoa函数响应式编程  理论基础  RAC使用  RAC源码  RAC应用   OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)  函数式编程：运算方式，函数（重在表达，更专注的是业务）  响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应   链式编程：">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T10:25:40.527Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RAC详解">
+<meta name="twitter:description" content="RAC 之原理各种编程思想汇总 /*  ReactiveCocoa函数响应式编程  理论基础  RAC使用  RAC源码  RAC应用   OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)  函数式编程：运算方式，函数（重在表达，更专注的是业务）  响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应   链式编程：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2018/07/27/RAC详解/">
+
+
+
+
+
+  <title>RAC详解 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/07/27/RAC详解/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RAC详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-27T00:00:00+08:00">
+                2018-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="RAC-之原理"><a href="#RAC-之原理" class="headerlink" title="RAC 之原理"></a>RAC 之原理</h1><p>各种编程思想汇总</p>
+<pre><code>/*
+ ReactiveCocoa函数响应式编程
+ 理论基础
+ RAC使用
+ RAC源码
+ RAC应用
+
+ OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)
+ 函数式编程：运算方式，函数（重在表达，更专注的是业务）
+ 响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应
+
+ 链式编程：
+ */
+
+//命令式编程举例，求阶乘
+int factorialMult(int x){
+    int result = 1;
+    for (int i = 1; i &lt;= x; i++) {
+        result *= i;
+    }
+    return result;
+}
+
+//函数式编程举例 n!=n*(n-1)!
+int factorialMultTwo(int x){
+    if(x == 1) return 1;
+    return  x * factorialMultTwo(x-1);
+}
+
+//响应式编程举例 c值随着a值的变化而变化，如autolayout
+void ecoTest(){
+    int a = 1;
+    int b = 2;
+    int c = a+b;
+    a = 5;
+    printf(&quot;%d&quot;, c);
+}
+</code></pre><p>函数式编程求最大最小值：</p>
+<pre><code>typedef int (^CompareBlock)(int aValue, int aNext);
+
+//函数式编程获取数组中的最大值或者最小值
+int maxOrMin(int *array, int count, CompareBlock block) {
+    if (count == 1) return array[0];
+    int num = maxOrMin(array, count-1, block);
+    return block(num, array[count-1]);
+}
+
+CompareBlock relative(CompareBlock block){
+    return ^int(int aValue, int aNext){
+        return (aValue == block(aValue, aNext) ? aNext:aValue);
+    };
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    int tests[7] = {5, 4, 1, 3, 6, 8, 7};
+    CompareBlock eocBlock = ^int(int aValue, int aNext) {
+        return aValue &gt; aNext ? aValue: aNext;
+    };
+    int max = maxOrMin(tests, 7, eocBlock);
+    NSLog(@&quot;max=%d&quot;, max);
+    int min = maxOrMin(tests, 7, relative(eocBlock));
+    NSLog(@&quot;min=%d&quot;, min);
+}
+</code></pre><p>函数式编程求view在window中的位置：</p>
+<pre><code>[_eocButtton originYToWindow:_eocButtton.superview positionY:_eocButtton.frame.origin.y];
+
+@interface UIView (PositionToWindow)
+- (CGFloat)originYToWindow:(UIView *)view positionY:(CGFloat)startY;
+@end
+
+@implementation UIView (PositionToWindow)
+- (CGFloat)originYToWindow:(UIView *)view positionY:(CGFloat)startY {
+    if ([view isKindOfClass:[UIWindow class]] || view == nil) {
+        return startY;
+    } else {
+        //自己处理有UIScrollView时的情况
+        if ([view.superview isKindOfClass:[UIScrollView class]]) {
+            return 0;
+        }
+    }
+    return [self originYToWindow:[view superview] positionY:startY+view.frame.origin.y];
+}
+@end
+</code></pre><h1 id="RAC-之使用"><a href="#RAC-之使用" class="headerlink" title="RAC 之使用"></a>RAC 之使用</h1><ol>
+<li>OC写的ReactiveCocoa框架</li>
+<li>Swift写的RXSwift框架</li>
+</ol>
+<p>信号的简单应用</p>
+<ol>
+<li><p>冷信号</p>
+<pre><code>// 单元信号  冷信号（订阅就能被触发信号） ／ 热信号
+- (void)signalUnit{
+    //1.创建信号
+    RACSignal *signalOne = [RACSignal return:@&quot;signalOne&quot;];
+    RACSignal *signalTwo = [RACSignal error:[NSError errorWithDomain:@&quot;11.1.11&quot; code:12 userInfo:nil]];
+    RACSignal *signalThree = [RACSignal empty];
+    RACSignal *signalFour = [RACSignal never];
+
+    //2.订阅
+    [signalOne subscribeNext:^(id x) {
+        NSLog(@&quot;id:%@&quot;, x);
+    }];
+
+    [signalTwo subscribeError:^(NSError *error) {
+        NSLog(@&quot;signalTwo::%@&quot;, error);
+    }];
+
+    [signalThree subscribeNext:^(id x) {
+        NSLog(@&quot;empty::%@&quot;, x);
+    }];
+}
+</code></pre></li>
+<li><p>block信号</p>
+<pre><code>// block信号
+- (void)racSignalBlock {
+    // 1 创建信号
+    RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) {
+        // 3 发送信号
+        [subscriber sendNext:@&quot;123456&quot;];
+        [subscriber sendNext:@&quot;654321&quot;];
+        return [RACDisposable disposableWithBlock:^{
+            NSLog(@&quot;释放&quot;);
+        }];
+    }];
+
+    // 2 订阅信号
+    [racSignal subscribeNext:^(id x) {
+        NSLog(@&quot;id:%@&quot;, x);
+    }];
+}
+</code></pre></li>
+<li><p>热信号（需要主动触发），可用作通知功能</p>
+<pre><code>// 热信号
+- (void)hotRacSignal {
+    // 1 创建信号
+    _hotSubject = [RACSubject subject];
+    // 2 订阅信号
+    [_hotSubject subscribeNext:^(id x) {
+        NSLog(@&quot;One 信号来了:%@&quot;, x);
+    }];
+    // 3 订阅
+    [_hotSubject subscribeNext:^(id x) {
+        NSLog(@&quot;Tow 信号来了:%@&quot;, x);
+    }];
+}
+
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event {
+    if(!_hotSubject) {
+        [self hotRacSignal];
+    }
+    // 3 发送信号
+    [_hotSubject sendNext:@&quot;八点钟学院&quot;];
+}
+</code></pre></li>
+<li><p>Button的点击信号触发</p>
+<pre><code>- (void)buttonRACHandle {
+    RACSignal *touchButtonSignal = [_eocButtton rac_signalForControlEvents:UIControlEventTouchUpInside];
+    [touchButtonSignal subscribeNext:^(id x) {
+        NSLog(@&quot;点击了&quot;);
+    } error:^(NSError *error) {
+        NSLog(@&quot;error:%@&quot;, error);;
+    } completed:^{
+        NSLog(@&quot;completed&quot;);
+    }];
+}
+</code></pre></li>
+<li><p>Button属性信号</p>
+<pre><code>- (void)buttonUsingSignal {
+    RACSignal *textColorSignal = [RACSignal return:[UIColor redColor]];
+    RACSignal *statusSignal = [RACSignal return:@(UIControlStateNormal)];
+    [_button rac_liftSelector:@selector(setTitleColor:forState:) withSignals:textColorSignal,statusSignal, nil];
+}
+</code></pre></li>
+<li><p>实例方法信号触发</p>
+<pre><code>@interface EOCObject : NSObject
+- (void)eocMethod:(NSString *)eocName;
+@end
+
+@implementation EOCObject
+- (void)eocMethod:(NSString *)eocName {
+    NSLog(@&quot;eocMethod excute %@&quot;, eocName);
+}
+@end
+
+- (void)eocObjectMethodRac {
+    _eocObject = [EOCObject new];
+    RACSignal *signal = [_eocObject rac_signalForSelector:@selector(eocMethod:)];
+    [signal subscribeNext:^(id x) {
+        NSLog(@&quot;方法触发了：%@&quot;, x);
+    }];
+}
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event {
+    if (!_eocObject) {
+        [self eocObjectMethodRac];
+    }
+    [_eocObject eocMethod:@&quot;123456&quot;];
+}
+</code></pre></li>
+<li><p>信号量变换</p>
+<pre><code>// 变换
+- (void)changeSignal{
+    RACSignal *signalOne = [RACSignal return:@&quot;12345678&quot;];
+    RACSignal *signalTwo = [signalOne map:^id(id value) {
+        NSLog(@&quot;做其他事情&quot;);
+        return [value substringFromIndex:2];
+    }];
+    [signalTwo subscribeNext:^(id x) {
+        NSLog(@&quot;signalTwo::%@&quot;, x);
+    }];
+}
+</code></pre></li>
+<li><p>数组序列化转化过滤</p>
+<pre><code>// 数组
+- (void)sequenceRAC {
+    RACSignal *signal = @[@&quot;111&quot;, @&quot;222&quot;, @&quot;3333333&quot;, @&quot;44&quot;, @&quot;55555&quot;].rac_sequence.signal;
+    RACSignal *newSignal = [signal filter:^BOOL(NSString *value) {
+        if (value.length&gt;3) {
+            return YES;
+        } else {
+            return NO;
+        }
+    }];
+    [newSignal subscribeNext:^(id x) {
+        NSLog(@&quot;%@&quot;, x);
+    }];
+}
+</code></pre></li>
+<li><p>信号合并</p>
+<pre><code>// 信号组合，多信号处理
+- (void)racMerge {
+    RACSignal *signalOne = [RACSignal return:@&quot;123&quot;];
+    RACSignal *signalTwo = [RACSignal return:@&quot;678&quot;];
+    RACSignal *mergeSignal = [signalOne merge:signalTwo];
+    [mergeSignal subscribeNext:^(id x) {
+        NSLog(@&quot;%@&quot;, x);
+    }];
+}
+</code></pre></li>
+<li><p>属性监听</p>
+<pre><code>- (void)racKVO{
+    [RACObserve(self, eocName) subscribeNext:^(id x) {
+        NSLog(@&quot;监听属性，触发了&quot;);
+    }];
+    self.eocName = @&quot;八点钟学院&quot;;
+}
+</code></pre></li>
+<li><p>线程执行</p>
+<pre><code>// 异步操作 （GCD -- ）
+- (void)racSchedule {
+    // 主线程的Scheduler
+    RACScheduler *mainScheduler = [RACScheduler mainThreadScheduler];
+    // 子线程上的
+    RACScheduler *schedulerOne = [RACScheduler scheduler];
+    RACScheduler *schedulerTwo = [RACScheduler scheduler];
+    // 当前线程的Scheduler， 如果自定义线程会返回一个nil
+    RACScheduler *schedulerCurrent = [RACScheduler currentScheduler];
+
+    RACSignal *signalOne = [RACSignal return:@&quot;123&quot;];
+    RACSignal *scheduleSignal = [signalOne subscribeOn:schedulerOne];
+    [scheduleSignal subscribeNext:^(id x) {
+        NSLog(@&quot;%@&quot;, [NSThread currentThread]);
+    }];
+}
+</code></pre></li>
+<li><p>延时执行</p>
+<pre><code>/// 延时
+- (void)delayRac {
+    RACScheduler *mainScheduler = [RACScheduler currentScheduler];
+    [mainScheduler afterDelay:2 schedule:^{
+        NSLog(@&quot;afterDelay&quot;);
+    }];
+}
+</code></pre></li>
+</ol>
+<h1 id="RAC-之源码分析"><a href="#RAC-之源码分析" class="headerlink" title="RAC 之源码分析"></a>RAC 之源码分析</h1><ol>
+<li><p>signal生成</p>
+<pre><code>//生成一个signal,信号变量中保存初始化时的信息
+//如果是return signal，保存value
+//如果是error signal，保存error
+//如果是block signal，保存block
+RACSignal *signalOne = [RACSignal return:@&quot;signalOne&quot;];
+RACSignal *signalTwo = [RACSignal error:[NSError errorWithDomain:@&quot;11.1.11&quot; code:12 userInfo:nil]];
+RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) {
+    NSLog(@&quot;subscriber block&quot;);
+    [subscriber sendNext:@&quot;123456&quot;];
+    return nil;
+}];
+
+//RACSignal
++ (RACSignal *)return:(id)value {
+    return [RACReturnSignal return:value];
+}
+
++ (RACSignal *)error:(NSError *)error {
+    return [RACErrorSignal error:error];
+}
+
++ (RACSignal *)createSignal:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe {
+    return [RACDynamicSignal createSignal:didSubscribe];
+}
+
+//RACReturnSignal
++ (RACSignal *)return:(id)value {
+#ifndef DEBUG
+    // In release builds, use singletons for two very common cases.
+    if (value == RACUnit.defaultUnit) {
+        static RACReturnSignal *unitSingleton;
+        static dispatch_once_t unitPred;
+
+        dispatch_once(&amp;unitPred, ^{
+            unitSingleton = [[self alloc] init];
+            unitSingleton-&gt;_value = RACUnit.defaultUnit;
+        });
+
+        return unitSingleton;
+    } else if (value == nil) {
+        static RACReturnSignal *nilSingleton;
+        static dispatch_once_t nilPred;
+
+        dispatch_once(&amp;nilPred, ^{
+            nilSingleton = [[self alloc] init];
+            nilSingleton-&gt;_value = nil;
+        });
+
+        return nilSingleton;
+    }
+#endif
+
+    RACReturnSignal *signal = [[self alloc] init];
+    signal-&gt;_value = value;
+
+#ifdef DEBUG
+    [signal setNameWithFormat:@&quot;+return: %@&quot;, value];
+#endif
+
+    return signal;
+}
+
+//RACErrorSignal
++ (RACSignal *)error:(NSError *)error {
+    RACErrorSignal *signal = [[self alloc] init];
+    signal-&gt;_error = error;
+
+#ifdef DEBUG
+    [signal setNameWithFormat:@&quot;+error: %@&quot;, error];
+#else
+    signal.name = @&quot;+error:&quot;;
+#endif
+
+    return signal;
+}
+
+//RACDynamicSignal
++ (RACSignal *)createSignal:(RACDisposable * (^)(id&lt;RACSubscriber&gt; subscriber))didSubscribe {
+    RACDynamicSignal *signal = [[self alloc] init];
+    signal-&gt;_didSubscribe = [didSubscribe copy];
+    return [signal setNameWithFormat:@&quot;+createSignal:&quot;];
+}
+</code></pre></li>
+<li><p>signal订阅</p>
+<pre><code>//订阅signal，通过源码可以看出，returnSignal和errorSignal在订阅时就会触发执行block，而通过块生成的RACDynamicSignal订阅时并不会执行block，需要通过块中的subscribe去手动send
+[racSignal subscribeNext/Error:^(id x) {
+    NSLog(@&quot;subscriber next id:%@&quot;, x);
+}];
+
+//RACSignal，根据nextBlock，errorBlock，completeBlock封装一个RACSubscriber对象
+- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock {
+    NSCParameterAssert(nextBlock != NULL);
+
+    RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:NULL completed:NULL];
+    return [self subscribe:o];
+}
+
+//RACRetnurSignal
+- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber {
+    NSCParameterAssert(subscriber != nil);
+
+    return [RACScheduler.subscriptionScheduler schedule:^{
+        [subscriber sendNext:self.value];
+        [subscriber sendCompleted];
+    }];
+}
+
+//RACErrorSignal
+- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber {
+    NSCParameterAssert(subscriber != nil);
+
+    return [RACScheduler.subscriptionScheduler schedule:^{
+        [subscriber sendError:self.error];
+    }];
+}
+
+//RACDynamicSignal
+- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber {
+    NSCParameterAssert(subscriber != nil);
+
+    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
+    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];
+
+    if (self.didSubscribe != NULL) {
+        RACDisposable *schedulingDisposable = [RACScheduler.subscriptionScheduler schedule:^{
+            // 发送
+            RACDisposable *innerDisposable = self.didSubscribe(subscriber);
+            [disposable addDisposable:innerDisposable];
+        }];
+
+        [disposable addDisposable:schedulingDisposable];
+    }
+
+    return disposable;
+}
+
+//RACSubscriber
+- (void)sendNext:(id)value {
+    @synchronized (self) {
+        void (^nextBlock)(id) = [self.next copy];
+        if (nextBlock == nil) return;
+
+        nextBlock(value);
+    }
+}
+
+- (void)sendError:(NSError *)e {
+    @synchronized (self) {
+        void (^errorBlock)(NSError *) = [self.error copy];
+        [self.disposable dispose];
+
+        if (errorBlock == nil) return;
+        errorBlock(e);
+    }
+}
+
+- (void)sendCompleted {
+    @synchronized (self) {
+        void (^completedBlock)(void) = [self.completed copy];
+        [self.disposable dispose];
+
+        if (completedBlock == nil) return;
+        completedBlock();
+    }
+}
+</code></pre></li>
+<li><p>热信号</p>
+<p> 通过源码可看出，热信号并没有在订阅的时候执行，而是要专门调用sendNext，而冷信号在订阅的时候就已经执行了，所以冷信号不需要sendNext也没有此功能，只需要订阅就好了</p>
+<pre><code>- (void)hotRacSignal {
+    // 1 创建信号
+    _hotSubject = [RACSubject subject];
+    // 2 订阅信号
+    [_hotSubject subscribeNext:^(id x) {
+        NSLog(@&quot;One 信号来了:%@&quot;, x);
+    }];
+    // 3 订阅
+    [_hotSubject subscribeNext:^(id x) {
+        NSLog(@&quot;Tow 信号来了:%@&quot;, x);
+    }];
+    [_hotSubject sendNext:@&quot;八点钟学院&quot;];
+}
+
+@interface RACSubject : RACSignal &lt;RACSubscriber&gt;
++ (instancetype)subject;
+@end
+
+@protocol RACSubscriber &lt;NSObject&gt;
+- (void)sendNext:(id)value;
+- (void)sendError:(NSError *)error;
+- (void)sendCompleted;
+- (void)didSubscribeWithDisposable:(RACCompoundDisposable *)disposable;
+@end
+
+//RACSubject
++ (instancetype)subject {
+    return [[self alloc] init];
+}
+
+- (id)init {
+    self = [super init];
+    if (self == nil) return nil;
+
+    _disposable = [RACCompoundDisposable compoundDisposable];
+    _subscribers = [[NSMutableArray alloc] initWithCapacity:1];
+
+    return self;
+}
+
+//RACSignal
+- (RACDisposable *)subscribeNext:(void (^)(id x))nextBlock {
+    NSCParameterAssert(nextBlock != NULL);
+
+    RACSubscriber *o = [RACSubscriber subscriberWithNext:nextBlock error:NULL completed:NULL];
+    return [self subscribe:o];
+}
+
+//RACSubject
+- (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber {
+    NSCParameterAssert(subscriber != nil);
+
+    RACCompoundDisposable *disposable = [RACCompoundDisposable compoundDisposable];
+    subscriber = [[RACPassthroughSubscriber alloc] initWithSubscriber:subscriber signal:self disposable:disposable];
+
+    NSMutableArray *subscribers = self.subscribers;
+    @synchronized (subscribers) {
+        [subscribers addObject:subscriber];
+    }
+
+    return [RACDisposable disposableWithBlock:^{
+        @synchronized (subscribers) {
+            // Since newer subscribers are generally shorter-lived, search
+            // starting from the end of the list.
+            NSUInteger index = [subscribers indexOfObjectWithOptions:NSEnumerationReverse passingTest:^ BOOL (id&lt;RACSubscriber&gt; obj, NSUInteger index, BOOL *stop) {
+                return obj == subscriber;
+            }];
+
+            if (index != NSNotFound) [subscribers removeObjectAtIndex:index];
+        }
+    }];
+}
+</code></pre></li>
+</ol>
+<p>举例：</p>
+<ol>
+<li><p>改变button字体颜色</p>
+<pre><code>- (void)buttonUsingSignal {
+    RACSignal *textColorSignal = [RACSignal return:[UIColor redColor]];
+    RACSignal *statusSignal = [RACSignal return:@(UIControlStateNormal)];
+    [_button rac_liftSelector:@selector(setTitleColor:forState:) withSignals:textColorSignal,statusSignal, nil];
+}
+
+//NSObject+RACLifting
+- (RACSignal *)rac_liftSelector:(SEL)selector withSignals:(RACSignal *)firstSignal, ... {
+    NSCParameterAssert(firstSignal != nil);
+
+    NSMutableArray *signals = [NSMutableArray array];
+
+    va_list args;
+    va_start(args, firstSignal);
+    for (id currentSignal = firstSignal; currentSignal != nil; currentSignal = va_arg(args, id)) {
+        NSCAssert([currentSignal isKindOfClass:RACSignal.class], @&quot;Argument %@ is not a RACSignal&quot;, currentSignal);
+
+        [signals addObject:currentSignal];
+    }
+    va_end(args);
+
+    return [[self
+        rac_liftSelector:selector withSignalsFromArray:signals]
+        setNameWithFormat:@&quot;%@ -rac_liftSelector: %s withSignals: %@&quot;, self.rac_description, sel_getName(selector), signals];
+}
+- (RACSignal *)rac_liftSelector:(SEL)selector withSignalsFromArray:(NSArray *)signals {
+    NSCParameterAssert(signals != nil);
+    NSCParameterAssert(signals.count &gt; 0);
+
+    NSMethodSignature *methodSignature = [self methodSignatureForSelector:selector];
+    NSCAssert(methodSignature != nil, @&quot;%@ does not respond to %@&quot;, self, NSStringFromSelector(selector));
+
+    NSUInteger numberOfArguments __attribute__((unused)) = methodSignature.numberOfArguments - 2;
+    NSCAssert(numberOfArguments == signals.count, @&quot;Wrong number of signals for %@ (expected %lu, got %lu)&quot;, NSStringFromSelector(selector), (unsigned long)numberOfArguments, (unsigned long)signals.count);
+
+    return [[self
+        rac_liftSelector:selector withSignalOfArguments:[RACSignal combineLatest:signals]]
+        setNameWithFormat:@&quot;%@ -rac_liftSelector: %s withSignalsFromArray: %@&quot;, self.rac_description, sel_getName(selector), signals];
+}
+
+- (RACSignal *)rac_liftSelector:(SEL)selector withSignalOfArguments:(RACSignal *)arguments {
+    NSCParameterAssert(selector != NULL);
+    NSCParameterAssert(arguments != nil);
+
+    @unsafeify(self);
+
+    NSMethodSignature *methodSignature = [self methodSignatureForSelector:selector];
+    NSCAssert(methodSignature != nil, @&quot;%@ does not respond to %@&quot;, self, NSStringFromSelector(selector));
+
+    return [[[[arguments
+        takeUntil:self.rac_willDeallocSignal]
+        map:^(RACTuple *arguments) {
+            @strongify(self);
+
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+            invocation.selector = selector;
+            invocation.rac_argumentsTuple = arguments;
+            [invocation invokeWithTarget:self];
+
+            return invocation.rac_returnValue;
+        }]
+        replayLast]
+        setNameWithFormat:@&quot;%@ -rac_liftSelector: %s withSignalsOfArguments: %@&quot;, self.rac_description, sel_getName(selector), arguments];
+}
+
+//NSInvocation+RACTypeParsing
+- (void)setRac_argumentsTuple:(RACTuple *)arguments {
+    NSCAssert(arguments.count == self.methodSignature.numberOfArguments - 2, @&quot;Number of supplied arguments (%lu), does not match the number expected by the signature (%lu)&quot;, (unsigned long)arguments.count, (unsigned long)self.methodSignature.numberOfArguments - 2);
+
+    NSUInteger index = 2;
+    for (id arg in arguments) {
+        [self rac_setArgument:(arg == RACTupleNil.tupleNil ? nil : arg) atIndex:index];
+        index++;
+    }
+}
+</code></pre></li>
+<li><p>监听button的点击信号</p>
+<pre><code>RACSignal *signalTwo =  [button rac_signalForControlEvents:UIControlEventTouchUpInside];
+[signalTwo subscribeNext:^(id x) {
+    // button响应了点击事件， 订阅者可以做事情了
+    NSLog(@&quot;signalTwo::%@&quot;, x);
+}];
+
+//UIControl+RACSignalSupport
+- (RACSignal *)rac_signalForControlEvents:(UIControlEvents)controlEvents {
+    @weakify(self);
+
+    return [[RACSignal
+        createSignal:^(id&lt;RACSubscriber&gt; subscriber) {
+            @strongify(self);
+
+            [self addTarget:subscriber action:@selector(sendNext:) forControlEvents:controlEvents];
+            [self.rac_deallocDisposable addDisposable:[RACDisposable disposableWithBlock:^{
+                [subscriber sendCompleted];
+            }]];
+
+            return [RACDisposable disposableWithBlock:^{
+                @strongify(self);
+                [self removeTarget:subscriber action:@selector(sendNext:) forControlEvents:controlEvents];
+            }];
+        }]
+        setNameWithFormat:@&quot;%@ -rac_signalForControlEvents: %lx&quot;, self.rac_description, (unsigned long)controlEvents];
+}
+</code></pre></li>
+<li><p>更改view的background</p>
+<pre><code>#define RAC_(TARGET, KEYPATH, NILVALUE) \ [[RACSubscriptingAssignmentTrampoline alloc] initWithTarget:(TARGET) nilValue:(NILVALUE)][@keypath(TARGET, KEYPATH)]
+
+RACSignal *viewColorSignal = [RACSignal return:[UIColor blueColor]];
+RAC(self.view, backgroundColor) = viewColorSignal;
+
+//上句可以翻译成下面这句
+RACSubscriptingAssignmentTrampoline *tmp =  [[RACSubscriptingAssignmentTrampoline alloc] initWithTarget:(self.view) nilValue:nil];
+tmp[@&quot;backgroundColor&quot;] = viewColorSignal;
+
+//因为RACSubscriptingAssignmentTrampoline类实现了以下方法，所以可以根据key直接赋值tmp[@&quot;backgroundColor&quot;] = viewColorSignal;
+- (void)setObject:(RACSignal *)signal forKeyedSubscript:(NSString *)keyPath;
+//如果需要也根据key取值，可以实现此方法
+- (id)objectForKeyedSubscript:(NSString*)key;
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/RAC/" rel="tag"># RAC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/29/视频直播系统开发/" rel="next" title="视频直播系统开发">
+                <i class="fa fa-chevron-left"></i> 视频直播系统开发
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/31/iOS中的数据结构和算法/" rel="prev" title="iOS中的数据结构和算法">
+                iOS中的数据结构和算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之原理"><span class="nav-number">1.</span> <span class="nav-text">RAC 之原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之使用"><span class="nav-number">2.</span> <span class="nav-text">RAC 之使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之源码分析"><span class="nav-number">3.</span> <span class="nav-text">RAC 之源码分析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

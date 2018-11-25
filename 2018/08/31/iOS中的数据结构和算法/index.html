@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,数据结构和算法,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="算法三原则：  有穷性：能在有限步骤，有限时间内完成 确定性：对相同的输入，产生唯一的输出，没有歧义 可行性：算法是可行的，在当前设备，经济水平等条件下是可用的   算法分析：  时间复杂度：大O：最坏情况下的时间复杂度（如快排：O(n^2)，期望nlogn）。忽略常数，用来描述随着问题规模的增长，所需时间增长的速率/数量级 空间复杂度：同时间复杂度  对数公式是数学中的一种常见公式，如果a^x">
+<meta name="keywords" content="iOS,数据结构和算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS中的数据结构和算法">
+<meta property="og:url" content="https://frandfeng.github.io/2018/08/31/iOS中的数据结构和算法/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="算法三原则：  有穷性：能在有限步骤，有限时间内完成 确定性：对相同的输入，产生唯一的输出，没有歧义 可行性：算法是可行的，在当前设备，经济水平等条件下是可用的   算法分析：  时间复杂度：大O：最坏情况下的时间复杂度（如快排：O(n^2)，期望nlogn）。忽略常数，用来描述随着问题规模的增长，所需时间增长的速率/数量级 空间复杂度：同时间复杂度  对数公式是数学中的一种常见公式，如果a^x">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T10:26:18.072Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS中的数据结构和算法">
+<meta name="twitter:description" content="算法三原则：  有穷性：能在有限步骤，有限时间内完成 确定性：对相同的输入，产生唯一的输出，没有歧义 可行性：算法是可行的，在当前设备，经济水平等条件下是可用的   算法分析：  时间复杂度：大O：最坏情况下的时间复杂度（如快排：O(n^2)，期望nlogn）。忽略常数，用来描述随着问题规模的增长，所需时间增长的速率/数量级 空间复杂度：同时间复杂度  对数公式是数学中的一种常见公式，如果a^x">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2018/08/31/iOS中的数据结构和算法/">
+
+
+
+
+
+  <title>iOS中的数据结构和算法 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/08/31/iOS中的数据结构和算法/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS中的数据结构和算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-31T00:00:00+08:00">
+                2018-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li><p>算法三原则：</p>
+<ul>
+<li>有穷性：能在有限步骤，有限时间内完成</li>
+<li>确定性：对相同的输入，产生唯一的输出，没有歧义</li>
+<li>可行性：算法是可行的，在当前设备，经济水平等条件下是可用的</li>
+</ul>
+</li>
+<li><p>算法分析：</p>
+<ul>
+<li>时间复杂度：大O：最坏情况下的时间复杂度（如快排：O(n^2)，期望nlogn）。忽略常数，用来描述随着问题规模的增长，所需时间增长的速率/数量级</li>
+<li><p>空间复杂度：同时间复杂度</p>
+<blockquote>
+<p>对数公式是数学中的一种常见公式，如果a^x=N(a&gt;0,且a≠1)，则x叫做以a为底N的对数,记做x=log(a)(N)，其中a要写于log右下。其中a叫做对数的底，N叫做真数。通常我们将以10为底的对数叫做常用对数，以e为底的对数称为自然对数。</p>
+</blockquote>
+<p>常见分析方法</p>
+</li>
+<li><p>输入输出，输入输出有时候也是算法的一部分，需要考虑到复杂度内，例如：输入N个元素，则时间复杂度必定大于等于O(n)</p>
+</li>
+<li>数循环次数</li>
+<li><p>均摊分析，注意是否需要均摊，整个算法为O(n)，均摊后每一步可能实际只有O(1)</p>
+<p>常见时间复杂度：</p>
+</li>
+<li><p>O(n)：线性查找</p>
+</li>
+<li>O(n^2)：冒泡、插入、选择排序等，每个元素都要与其他所有元素进行一次比较</li>
+<li>O(nlogn)：归并排序、快速排序的期望复杂度、基于比较排序的算法下界</li>
+</ul>
+</li>
+<li><p>冒泡排序：</p>
+<ul>
+<li><p>排序原理：</p>
+<ul>
+<li>假设有n个未排序元素a[n]</li>
+<li>从第一个元素i=0开始，a[i]与下一个元素a[i+1]比较，如果a[i+1]元素小于a[i]，则交换a[i]与a[i+1]，每一次比较后，i往后移动一位至i+1，直到i==n-1，一趟冒泡结束。</li>
+<li>每一趟比较都会将未排序元素中最大的一位浮动到未排序元素的最末尾，因此每走完一趟冒泡，未排序元素减一。</li>
+</ul>
+</li>
+<li><p>代码实现</p>
+<pre><code>+ (void)sortCArray:(int [])a length:(int)length {
+    int recusionCount = 0;
+    BOOL needSort = false;
+    int n = length;
+    //n 趟冒泡
+    for (int i = 0; i &lt; n; i++) {
+        //每趟排序 n 次比较
+        for (int j = 0; j &lt; n-1-i; j++) {
+            if (a[j] &gt; a[j+1]) {
+                [self swap:&amp;a[j] with:&amp;a[j+1]];
+                needSort = true;
+            }
+            recusionCount++;
+        }
+        //执行完一趟
+        if (needSort == false) {
+            break;
+        }
+    }
+    NSLog(@&quot;总共循环了%d次&quot;,recusionCount);
+}
+</code></pre></li>
+<li><p>优化方案</p>
+<ul>
+<li>已排序数组提前退出，不需要再继续。参见needSort变量作用</li>
+<li>每次排序后最后一个已最大，不需要再排。参见j &lt; n-1-i的作用</li>
+</ul>
+</li>
+<li><p>算法分析</p>
+<ul>
+<li>时间复杂度：O(n^2)</li>
+<li>空间复杂度：O(n)，附加空间复杂度为O(1)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>二分查找</p>
+<ul>
+<li><p>查找原理</p>
+<ul>
+<li>输入一个长度为N的<code>有序</code>数组a[N]，以及待查找数字b</li>
+<li>每次取数组长度N/2位置的元素与b比较，如果相等则返回位置N/2，如果大于，则查找范围缩小到0至(N/2 - 1)，如果小于，则查找范围缩小到(N/2 - 1)至N</li>
+<li>重复上述步骤，直到查找范围缩小为1或找到该元素</li>
+</ul>
+</li>
+<li><p>代码实现</p>
+<pre><code>+ (int)indexOf:(int)value atCArray:(int [])a start:(int)start end:(int)end {
+    static int recusionCount = 0;
+    recusionCount ++;
+    BOOL needReturn = false;
+    int ret = -1;
+    if (start &gt; end) {
+        ret = -1;
+        needReturn = true;
+    } else if (start == end) {
+        needReturn = true;
+        //数组只有一个元素
+        if (a[start] == value) {
+            ret = start;
+        }else {
+            ret = -1;
+        }
+    }
+    if (needReturn) {
+        NSLog(@&quot;递归了%d次&quot;,recusionCount);
+        recusionCount = 0;
+        return  ret;
+    }
+
+    int middle = start + (end - start)/2;
+    if (a[middle] == value) {
+        NSLog(@&quot;递归了%d次&quot;,recusionCount);
+        recusionCount = 0;
+        return middle;
+    } else if (a[middle] &gt; value) {
+        //从0 至 middle - 1的区间去找
+        return [self indexOf:value atCArray:a start:start end:middle-1];
+    } else {
+        //从middle 至 n-1 的区间查找
+        return [self indexOf:value atCArray:a start:middle+1 end:end];
+    }
+}
+</code></pre></li>
+<li><p>算法分析</p>
+<ul>
+<li>时间复杂度:O(logn)</li>
+<li>附加空间复杂度：O(1)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>递归</p>
+<ul>
+<li><p>递归原理（n的阶乘）</p>
+<ul>
+<li>每一个f(n-k)，都将向内存栈push一个变量n-k。</li>
+<li>当push到n==1时，开始pop，每pop一个k，计算sum=k*sum，直到k==n<br>递归的空间复杂度</li>
+<li><p>n个元素需要n个内存空间存储，所以空间复杂度为O(n)</p>
+<blockquote>
+<p>小心使用，或者不用(所有递归均可转为while循环)，所占内存与问题规模n成正比，容易造成内存不够</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常用数据结构</p>
+<ul>
+<li><p>栈和队列：</p>
+<ul>
+<li><p>栈：先进后出，push,pop时间复杂度O(1)</p>
+<ul>
+<li>问题：设计一个栈有push，pop，最大值操作，且时间复杂度均为O(1)？解决方案：以空间换时间，新开一个栈，栈中保存对应最大值</li>
+<li>问题：出入栈合法性判断？解决方案：遵循先进后出原则</li>
+<li>问题：用两个队列实现一个栈？解决方案：每次入队之前，出队存入另外一个队列，放入之后，将另外一个队列全部出队，放入现在队列</li>
+</ul>
+</li>
+<li><p>队列：先进先出，in，out时间复杂度O(1)</p>
+<ul>
+<li>问题：用两个栈实现一个队列？解决方案：每次入栈之前，出栈存入另外一个栈，放入之后，将另外一个栈全部出栈，放入现在的栈</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>数组与链表</p>
+<ul>
+<li><p>数组</p>
+<ul>
+<li>通过下标随机存取</li>
+<li>一片连续的空间，通过下标查取复杂度O(1)，插入，删除O(n)</li>
+<li>查找O(1)，修改时间复杂度O(1)，新增/删除时间复杂度O(n)</li>
+</ul>
+</li>
+<li><p>链表</p>
+<ul>
+<li>使用链表数据结构，分为单向链表，双向链表，环链表等</li>
+<li>查找时间复杂度O(n)，新增/删除时间复杂度O(1)</li>
+<li>问题：判断链表中是否有环？解决方案：两个指针，一个移动速度是另一个的两倍，如果在结束之前没有相遇，则说明链表中没有环</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>快速排序</p>
+<ul>
+<li><p>排序原理</p>
+<ul>
+<li>创建两个数组下标变量low = 0，high = N-1</li>
+<li>创建关键字a[keyIndex]下标keyIndex = 0，以第一个元素做为关键字（实际上可以指定为0-N-1的任意位置）</li>
+<li>high向前搜索，找到第一个小于a[keyIndex]的元素，交换a[hight],a[keyIndex]</li>
+<li>low向后搜索，找到第一个大于a[keyIndex]的元素，交换a[low],a[keyIndex]</li>
+<li>重复3，4步，直到low==high(==keyIndex)，此时keyIndex将数组分成了两部分0至keyIndex以及keyIndex+1至N-1，分别对两个部分继续使用快速排序</li>
+</ul>
+</li>
+<li><p>代码实现</p>
+<pre><code>//期望时间复杂度O(n*logn，底是2)
++ (int)sortCArray:(int [])a start:(int)start end:(int)end {
+    if (start &gt;= end) {
+        return 0;
+    }
+    int low = start;
+    int high = end;
+    int keyIndex = start;
+
+    int recusionCout = 0;
+    while (low &lt; high) {
+        //交换 。。。
+        //从右往左找比keyindex的值小/相等的元素的index，并赋值给high，同时，high必须大于keyIndex
+        while (a[high] &gt;= a[keyIndex] &amp;&amp; high &gt; keyIndex) {
+            high --;
+            recusionCout ++;
+        }
+        //如果从右边往左边找到了比key小的元素，则交换key与该元素
+        if (a[high] &lt; a[keyIndex]) {
+            [self swap:&amp;a[high] with:&amp;a[keyIndex]];
+            keyIndex = high;
+            recusionCout ++;
+        }
+        //从左往又找比keyindex的值大/相等的元素的index，并赋值给low，同时，low必须小于/等于keyIndex
+        while (a[low] &lt;= a[keyIndex] &amp;&amp; low &lt; keyIndex) {
+            low++;
+            recusionCout ++;
+        }
+        if (a[low] &gt; a[keyIndex]) {
+            [self swap:&amp;a[low] with:&amp;a[keyIndex]];
+            keyIndex = low;
+            recusionCout ++;
+        }
+    }
+    //如果low == high == keyindex，说明key的位置被确定了，key分治递归了
+    if (low == high) {
+        //分治，递归
+        //以keyIndex为分界线
+        //递归左边部分
+        recusionCout += [self sortCArray:a start:start end:keyIndex-1];
+        //递归右边部分
+        recusionCout += [self sortCArray:a start:keyIndex+1 end:end];
+    }
+    return recusionCout;
+}
+</code></pre></li>
+</ul>
+</li>
+<li><p>插入排序</p>
+<ul>
+<li>将数组分成前后两部分，前部分有序，后部分无序，等待排序</li>
+<li>每次取后部分的第一个元素，插入前部分数组，并保持前部分数组依然有序</li>
+<li><p>如此循环，直到后部分数组全部插入前部分，整个数组有序</p>
+<p>折半插入排序</p>
+</li>
+<li><p>在插入排序的基础上</p>
+</li>
+<li>插入前部分有序数组的时候，插入位置的选择采用二分查找</li>
+</ul>
+</li>
+<li><p>选择排序</p>
+<ul>
+<li>每次选取待排序中最小元素与第一个元素交换，交换后</li>
+<li>待排序数组的起始位置加1，因此长度相应减1，直到待排序数组长度为0，排序结束</li>
+</ul>
+</li>
+<li><p>完全二叉树</p>
+<ul>
+<li><p>概念：完全二叉树是由满二叉树而引出来的。对于深度为K的，有n个结点的二叉树，当且仅当其每一个结点都与深度为K的满二叉树中编号从1至n的结点一一对应时称之为完全二叉树</p>
+</li>
+<li><p>排序：二叉排序树或者是一棵空树，或者是具有下列性质的二叉树</p>
+<ul>
+<li>若左子树不空，则左子树上所有结点的值均小于或等于它的根结点的值；</li>
+<li>若右子树不空，则右子树上所有结点的值均大于或等于它的根结点的值；</li>
+<li>左、右子树也分别为二叉排序树；</li>
+</ul>
+</li>
+<li><p>存储：</p>
+<ul>
+<li>链表：链表中每一个节点，包含两个指针leftchild，rightchild，分别指向左右子树</li>
+<li>数组：利用平衡二叉树平衡的特性，使用数组来存储完全二叉树，a[n]的左右子节点分别为a[2n+1]，a[2n+2]</li>
+</ul>
+</li>
+<li><p>建堆步骤</p>
+<ol>
+<li>一个有n个节点的完全二叉树，有n/2 - 1个父节点。</li>
+<li><p>从最后一个父节点a[n/2-1]开始，依次将每一个以该父节点为顶点的树调整为小根堆。</p>
+<blockquote>
+<p>注：如果有交换，则会出现递归情况，因为从root调整下来的值，作为新的root，有可能比下边的节点的值还要大，所以相当于有两个for循环，第一个用来遍历根节点，第二个遍历根节点的子节点</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><p>堆排序实现：（大顶堆/小顶堆的概念：根值最大或最小）</p>
+<ol>
+<li>建堆后，将当前大顶堆，最大元素根节点与最后一个元素交换</li>
+<li>交换后，最大的元素在数组的最后，同时调整前面的n-1个元素为大根堆</li>
+<li><p>重复步骤1-2，直到最后一个元素，此时，数组为升序数组。</p>
+<blockquote>
+<p>总结:</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>建堆的时候，从最后一个父节点向上调整到根节点，而且每次调整要递归</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>排序调整的时候，从根节点向下调整到最后一个需要调整的根节点</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>排序调整过程，因为被调整树除了根节点外，其余父节点均大于子节点，所以可以采取向下调整一次即可。</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><p>代码实现</p>
+<pre><code>//向下调整
++ (int)ajustHeapWith:(int *)a head:(int)head length:(uint)length {
+    int recursionCount = 0;
+    int nextChild = 2 * head + 1;
+    if (nextChild &gt;= length) {
+        return 1;
+    }
+    if (nextChild + 1 &lt; length) {
+        //如果右孩子存在，且大于左孩子
+        if (a[nextChild + 1] &gt; a[nextChild]) {
+            nextChild = nextChild + 1;
+            recursionCount ++;
+        }
+    }
+    //判断是否要交换
+    if (a[nextChild] &gt; a[head]) {
+        recursionCount ++;
+        //交换
+        [self swap:&amp;a[nextChild] with:&amp;a[head]];
+        //调整一下被交换过的子树
+        return [self ajustHeapWith:a head:nextChild length:length];
+    }
+    return recursionCount;
+}
+
+//建堆
++ (int)buidHeapWith:(int *)a length:(uint)length {
+    int recursionCount = 0;
+    for (int i = length/2-1; i &gt;= 0; i--) {
+        recursionCount += [self ajustHeapWith:a head:i length:length];
+    }
+    return recursionCount;
+}
+
+//建堆排序
++ (int)sortCArray:(int *)a length:(uint)length {
+    //1. 建堆
+    int recursionCount = [self buidHeapWith:a length:length];
+    //2. 排序
+    for (int i = length-1; i&gt;0; i--) {
+        //1. 交换a[0]与a[i]
+        [self swap:&amp;a[0] with:&amp;a[i]];
+        recursionCount ++;
+        //2. 调整堆
+        recursionCount += [self ajustHeapWith:a head:0 length:i];
+    }
+    return recursionCount;
+}
+
++ (void)testHeapSort {
+    int maxCount = 1000;
+    int *a = [self unsortedCArrayWithLenght:maxCount];
+    [self logArray:a length:maxCount];
+    int recursionCount = [self sortCArray:a length:maxCount];
+    [self checkAsendingSortArray:a length:maxCount];
+    [self logArray:a length:maxCount];
+    //冒泡未优化100万，优化后冒泡50万，快速排序14000，堆排序：2331
+    NSLog(@&quot;循环次数%d&quot;,recursionCount);
+    free(a);
+}
+</code></pre></li>
+<li><p>二叉树遍历（以根节点位置）</p>
+<ul>
+<li>中序遍历：中根遍历，左中右</li>
+<li>前序遍历/先序遍历：根在最前面，根左右</li>
+<li>后序遍历：根在最后面，坐右根</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>归并排序：</p>
+<ul>
+<li><p>分治思想：二分法、归并排序等应用</p>
+<ul>
+<li>分解问题，将大问题分解为无数个小问题</li>
+<li>解决问题，例如对每个小问题排序</li>
+<li>合并小问题，如归并直到整体有序</li>
+</ul>
+</li>
+<li><p>归并排序：</p>
+<ul>
+<li>将数组a[N]分成两个数组a[0 ,middle],a[middle+1, N]</li>
+<li>如果分拆的数组长度大于1，继续分拆，直到分拆的数组长度为1</li>
+<li>开始两两合并相邻数组，并使其有序，直至整个数组有序</li>
+</ul>
+</li>
+<li><p>代码实现：</p>
+<pre><code>#pragma mark --  递归的方式
++ (int)recursionSort:(int *)a to:(int *)b start:(int)startIndex end:(int)endIndex {
+    if (startIndex &gt;= endIndex) {
+        //数组长度为1，也是一种有序状态，不需排序，直接返回
+        return 1;
+    }
+    int recursionCount = 0;
+    //划分/分治
+    //取中间位置
+    int middle = startIndex + (endIndex - startIndex)/2;
+    //前一半
+    recursionCount += [self recursionSort:a to:b start:startIndex end:middle];
+    //后一半
+    recursionCount += [self recursionSort:a to:b start:middle + 1 end:endIndex];
+
+    //合并/归并
+    //假设前面两个归并全部执行完成，则得到了两个a[0, middle]与a[middel+1, endindex]的有序数组
+    //合并这两个有序数组
+    int i = startIndex; // 结果集合的游标
+    int preIndex = startIndex; // 前半部分的游标
+    int nextIndex = middle + 1; // 后半部分的游标
+    while (preIndex != middle + 1 &amp;&amp;
+           nextIndex != endIndex + 1) {
+        if (a[preIndex] &lt; a[nextIndex]) {
+            b[i++] = a[preIndex++];
+        } else {
+            b[i++] = a[nextIndex++];
+        }
+        recursionCount++;
+    }
+    while (preIndex != middle + 1) {
+        b[i++] = a[preIndex++];
+        recursionCount++;
+    }
+    while (nextIndex != endIndex + 1) {
+        b[i++] = a[nextIndex++];
+        recursionCount++;
+    }
+    //此时b 数组为有序数组，a数组还是原来的值，需要将b数组拷贝到a数组中
+    int j = startIndex;
+    while (j &lt; endIndex + 1) {
+        a[j] = b[j];
+        j++;
+        recursionCount++;
+    }
+    return recursionCount;
+}
+
+#pragma mark -- for循环的方式
++ (void)sortCArray:(int *)a to:(int *)b length:(int)length groupLength:(int)groupLength {
+    int startIndex = 0;
+
+    while (startIndex &lt; length) {
+        int preIndex = startIndex;
+        int nextIndex = startIndex + groupLength;
+        int i = startIndex;
+        while (preIndex != startIndex + groupLength &amp;&amp;
+               nextIndex != startIndex + groupLength*2 &amp;&amp;
+               nextIndex &lt; length) {
+            if (a[preIndex] &lt;= a[nextIndex]) {
+                b[i++] = a[preIndex++];
+            } else {
+                b[i++] = a[nextIndex++];
+            }
+        }
+        while (preIndex != startIndex + groupLength &amp;&amp;
+               i &lt; length) {
+            b[i++] = a[preIndex++];
+        }
+        while (nextIndex != startIndex + groupLength*2 &amp;&amp;
+               i &lt; length) {
+            b[i++] = a[nextIndex++];
+        }
+        startIndex += groupLength*2;
+    }
+}
+
++ (void)sortCArray:(int *)a to:(int *)b length:(int)length {
+    int i = 0;
+    int groupLength = powf(2, i);
+    while (groupLength &lt; length) {
+        if (i++ % 2 == 0) {
+            [self sortCArray:a to:b length:length groupLength:groupLength];
+        } else {
+            [self sortCArray:b to:a length:length groupLength:groupLength];
+        }
+        groupLength = pow(2, i);
+    }
+    if ((i-1)%2 == 0) {
+        for (int i = 0; i &lt; length; i++) {
+            a[i] = b[i];
+        }
+    }
+}
+
++ (void)testMergerSort {
+    int maxCount = 1000;
+    int *a = [self unsortedCArrayWithLenght:maxCount];
+    int *b = malloc(sizeof(int) * maxCount);
+    memset(b, 0, sizeof(int) * maxCount);
+    int recursionCount = [self recursionSort:a to:b start:0 end:maxCount - 1];
+    //    [self sortCArray:a to:b length:maxCount];
+    [self checkAsendingSortArray:a length:maxCount];
+
+    //循环次数
+    //冒泡100万，50万，快速：14000，堆排序：2331，归并排序：20952
+    NSLog(@&quot;%d&quot;,recursionCount);
+    free(a);
+    free(b);
+}
+</code></pre></li>
+<li><p>归并拓展</p>
+<ul>
+<li>当待排序文件非常大，以至于无法全部存储到内存时，先将其分割成指定大小，如1G/500M至内存，排序后存储到一个临时文件中</li>
+<li>将上述文件，两两归并，归并结果分段输出到新的临时文件，直到所有文件全部归并到同一个文件，排序结束</li>
+</ul>
+</li>
+<li><p>排序稳定性：如果排序后，相等的两个元素的相对位置发生改变，则为不稳定，否则稳定。</p>
+<ul>
+<li>稳定排序：冒泡，归并排序，插入</li>
+<li>不稳定排序：快速排序，堆排序，选择</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/数据结构和算法/" rel="tag"># 数据结构和算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/27/RAC详解/" rel="next" title="RAC详解">
+                <i class="fa fa-chevron-left"></i> RAC详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/28/支付宝框架解析/" rel="prev" title="支付宝框架解析">
+                支付宝框架解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
