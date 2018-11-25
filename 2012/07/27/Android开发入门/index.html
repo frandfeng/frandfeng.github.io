@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="做Android开发已有月余，今天将此前学到的东西整理一下，包括Android开发环境的简介、Android系统架构的详解、Android开发环境的搭建 Android开发环境Android开发环境从底层到上层分别有硬件层、操作体统、JAVA运行环境、开发工具和模拟器的安装 硬件首先，最底层到应该是硬件到部分，CPU，内存，主板，硬盘等。 cat /proc/cpuinfo :CPU用到的是Pen">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android开发入门">
+<meta property="og:url" content="https://frandfeng.github.io/2012/07/27/Android开发入门/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="做Android开发已有月余，今天将此前学到的东西整理一下，包括Android开发环境的简介、Android系统架构的详解、Android开发环境的搭建 Android开发环境Android开发环境从底层到上层分别有硬件层、操作体统、JAVA运行环境、开发工具和模拟器的安装 硬件首先，最底层到应该是硬件到部分，CPU，内存，主板，硬盘等。 cat /proc/cpuinfo :CPU用到的是Pen">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/android_structure.jpg">
+<meta property="og:updated_time" content="2018-11-23T09:47:40.462Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android开发入门">
+<meta name="twitter:description" content="做Android开发已有月余，今天将此前学到的东西整理一下，包括Android开发环境的简介、Android系统架构的详解、Android开发环境的搭建 Android开发环境Android开发环境从底层到上层分别有硬件层、操作体统、JAVA运行环境、开发工具和模拟器的安装 硬件首先，最底层到应该是硬件到部分，CPU，内存，主板，硬盘等。 cat /proc/cpuinfo :CPU用到的是Pen">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/blog/android_structure.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2012/07/27/Android开发入门/">
+
+
+
+
+
+  <title>Android开发入门 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/07/27/Android开发入门/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android开发入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-07-27T00:00:00+08:00">
+                2012-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>做Android开发已有月余，今天将此前学到的东西整理一下，包括Android开发环境的简介、Android系统架构的详解、Android开发环境的搭建</p>
+<h2 id="Android开发环境"><a href="#Android开发环境" class="headerlink" title="Android开发环境"></a>Android开发环境</h2><p>Android开发环境从底层到上层分别有硬件层、操作体统、JAVA运行环境、开发工具和模拟器的安装</p>
+<h3 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h3><p>首先，最底层到应该是硬件到部分，CPU，内存，主板，硬盘等。</p>
+<p>cat /proc/cpuinfo :CPU用到的是Pentium(R) Dual-Core  CPU      E5200  @ 2.50GHz</p>
+<p>cat /proc/meminfo :内存到总大小MemTotal:        2041792 kB</p>
+<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p>然后往上层走就是操作系统了，操作系统用的是ubuntu操作系统，linux的一种</p>
+<p>cat /proc/version:Linux version 3.2.0-26-generic (buildd@batsu) (gcc version 4.6.3 (Ubuntu/Linaro 4.6.3-1ubuntu5) ) #41-Ubuntu SMP Thu Jun 14 17:49:24 UTC 2012    Ubuntu 3.2.0-26.41-generic 3.2.19</p>
+<p>cat /etc/issue :frandfeng@frandfeng-Founder-PC:~$ cat /etc/issue    Ubuntu 12.04 LTS \n \l</p>
+<p>从这里可以看出用到的ubuntu版本是12.04LTS。Ubuntu诞生于2012年4月26日，是第四个ubuntu长期支持版本，可以运用到2017年，LTS是指Long-Term Support，即长期支持版本。</p>
+<p>linux系列中ubuntu操作系统只是其中一种，Ubuntu是一个以桌面应用为主的linux操作系统。Ubuntu基于Debian发行版和GNOME桌面环境，与Debian的不同在于它每6个月会发布一个新版本。Ubuntu的目标在于为一般用户提供一个最新的、同时又相当稳定的主要由自由软件构建而成的操作系统。GNOME即GNU网络对象模型环境 (The GNU Network Object Model Environment)，GNU计划的一部分，开放源码运动的一个重要组成部分。是一种让使用者容易操作和设定电脑环境的工具。</p>
+<p>当然，linux系列中到操作系统不仅Ubuntu，还有Debian、RedHat、Slackware等。</p>
+<h3 id="JAVA运行环境"><a href="#JAVA运行环境" class="headerlink" title="JAVA运行环境"></a>JAVA运行环境</h3><p>操作系统装好了之后就应该装JAVA运行环境了，即JDK的安装，JDK(Java Development Kit)是Sun Microsystems针对Java开发员的产品。自从Java推出以来，JDK已经成为使用最广泛的Java SDK。JDK 是整个Java的核心，包括了Java运行环境，Java工具和Java基础的类库，我们装到JDK是Java SE1.6，即Java standard edition，标准版，还有Java EE，enterprise edition，企业版和Java ME，micro edition，主要用于移动设备、嵌入式设备上的java应用程序。</p>
+<h3 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h3><p>JAVA运行环境下来就应该再装基于JAVA的IDE了，即Eclipse，IDE(Integrated Development Environment,集成开发环境)。IDE集成开发环境（简称IDE）软件是用于程序开发环境的应用程序，一般包括代码编辑器、编译器、调试器和图形工具界面工具。该程序可以独立运行，也可以和其它程序并用Eclipse 是一个开放源代码的、基于Java的可扩展开发平台。就其本身而言，它只是一个框架和一组服务，用于通过插件组件构建开发环境。幸运的是，Eclipse 附带了一个标准的插件集，包括Java开发工具（Java Development Kit，JDK）。</p>
+<p>虽然大多数用户很乐于将 Eclipse 当作 Java 集成开发环境（IDE）来使用，但 Eclipse 的目标却不仅限于此。Eclipse 还包括插件开发环境（Plug-in Development Environment，PDE），这个组件主要针对希望扩展 Eclipse 的软件开发人员，因为它允许他们构建与 Eclipse 环境无缝集成的工具。</p>
+<p>Eclipse的设计思想是：一切皆插件。Eclipse核心很小，其它所有功能都以插件的形式附加于Eclipse核心之上。Eclipse基本内核包括：图形API (SWT/Jface)， Java开发环境插件(JDT )，插件开发环境(PDE)等。</p>
+<p>我们装到Eclipse版本是Version: Juno Release版的，除过这个版本，还有Eclipse Indigo -&gt;3.7/Eclipse Helios -&gt;3.6/Eclipse Galileo -&gt;3.5/Eclipse Ganymede -&gt;3.4/Eclipse Europa -&gt;3.3。</p>
+<p>IDE装好了JAVA的库和运行环境到此结束，开始装有关Android的开发工具和Android运行环境了。</p>
+<h3 id="Android模拟器"><a href="#Android模拟器" class="headerlink" title="Android模拟器"></a>Android模拟器</h3><p>首先装Android运行环境，为了开发android应用，还必须添加一个android操作系统，用于模拟器模拟你的应用程序。当然还有一些其他部件需要安装。其实就是通过SDK 工具包中的Android SDK and AVD Manager来完成。Android SDK 指的既是Android专属的软件开发工具包。AVD的全称为：Android Virtual Device，就是Android运行的虚拟设备，他是Android的模拟器识别。建立的Android要运行，必须创建AVD，每个AVD上可以配置很多的运行项目。我们常用到的AVD版本有1.6/2.2/4.0/4.1.</p>
+<p>然后就是Android的开发工具安装了。这个开发工具主要靠Eclipse中到ADT（Android Development Tools）来管理，下载ADT Plugin，Eclipse会自动进行配置和更新。</p>
+<p>到此为止，所有到框架都搭建完成。然后就可以进行基于Android平台的开发了。</p>
+<h2 id="Android系统架构"><a href="#Android系统架构" class="headerlink" title="Android系统架构"></a>Android系统架构</h2><p>Android系统架构从底层到上层共分为四层，每一层都是将底层实现封装，留一些接口供上层调用。架构如图所示：</p>
+<p><img src="/assets/blog/android_structure.jpg" alt=""></p>
+<h3 id="Linux-Kernel"><a href="#Linux-Kernel" class="headerlink" title="Linux Kernel"></a>Linux Kernel</h3><p>由上图中可以看出，Android系统最底层是LINUX KERNEL,即linux内核，他是硬件与软件之间的抽象层，包括显示驱动，相机驱动，内存驱动，进程通讯驱动，键盘驱动，wifi启动，多媒体驱动和电源驱动等。</p>
+<h3 id="Libraries-And-Android-Runtime"><a href="#Libraries-And-Android-Runtime" class="headerlink" title="Libraries And Android Runtime"></a>Libraries And Android Runtime</h3><p>中间件包括两部分：函数库和运行时(libraries &amp; Android runtime)</p>
+<p>函数库包括</p>
+<ul>
+<li>SurfaceManager 显示系统管理库，负责把2D或3D内容显示到屏幕的库；</li>
+<li>Media Framework 媒体库，负责支持图像，支持多种视频和音频的录制和回放；</li>
+<li>SQlite 数据库，一个功能强大的轻量级嵌入式关系数据库；</li>
+<li>OpenGL ES(open graphic libaray for embed system),针对嵌入式系统的开放式图形库，主要负责三维图形的显示</li>
+<li>FreeType库,一个完全免费(开源)的、高质量的且可移植的字体引擎，它提供统一的接口来访问多种字体格式文件</li>
+<li>WebKit 浏览器引擎</li>
+<li>SGL，SSL，“Secure Sockets Layer”安全套阶层，还有一些基本的C库等。</li>
+</ul>
+<p>Android 运行时由两部分组成:Android核心库和Dalvik虚拟机.其中核心库提供了Java语言核心库所能使用的绝大部分功能,而虚拟机则负责运行Android运行程序.</p>
+<blockquote>
+<blockquote>
+<p>此处的ARE和JRE有点类似.JRE包括JVM和其他功能函数库,而此处的Android运行时则包括Dalvik虚拟机和核心库集.</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>由于Android应用程序的编程语言是Java,因此有些人会把Dalvik虚拟机和JVM搞混,但实际上Dalvik并未遵守JVM规范,两者也不兼容.实际上,JVM虚拟机运行的是Java字节码(通常就是.class文件),但Dalvik运行的是其专有的dex(Dalvik Executable)文件.JVM直接从.class文件或JAR包中加载字节码然后运行;而Dalvik则无法直接从.class文件或jar包中加载字节码,它需要通过DX工具将应用程序的所有.class文件编译成.dex文件,Dalvik运行该.dex文件.还有一点,Dalvik虚拟机中,每一个Android 应用程序都在它自己的进程中运行，都有一个属于自己的Dalvik 虚拟机，这一点可以让系统在运行时可以达到优化，程序间的影响大大降低。</p>
+</blockquote>
+</blockquote>
+<p>Dalvik虚拟机非常适合在移动端上使用,相对于在PC或服务器上运行的虚拟机而言,Dalvik虚拟机不需要很快的CPU计算速度和大量的内存空间,它主要有两个特点</p>
+<ol>
+<li>运行专有的.dex文件.专有的.dex文件减少了.class文件中的冗余信息,而且会把所有的.class文件整合到一个文件中,从而提高运行性能;而且DX工具还会对.dex文件进行一些性能的优化.</li>
+<li>基于寄存器实现.大多数虚拟机包括JVM都是基于栈的,而Dalvik虚拟机则是基于寄存器的.一般来说,基于寄存器的虚拟机具有更好的性能表现,但在硬件通用性上略差.</li>
+</ol>
+<h3 id="应用程序框架-Application-Framework"><a href="#应用程序框架-Application-Framework" class="headerlink" title="应用程序框架(Application Framework)"></a>应用程序框架(Application Framework)</h3><ul>
+<li>丰富而又可扩展性的视图（Views），可以用来构建应用程序， 它包括列表（lists），网格（grids）， 文本框（text boxes），按钮（ buttons）， 可嵌入的web 浏览器。</li>
+<li>内容提供者（Content Providers）使得应用程序可以访问另一个应用程序的数据（如联系人数据库）， 或者共享它们自己的数据。</li>
+<li>资源管理器（Resource Manager）提供非代码资源的访问，如本地字符串，图形，和布局文件（ layoutfiles ）。</li>
+<li>通知管理器（Notification Manager） 使得应用程序可以在状态栏中显示自定义的提示信息。</li>
+<li>活动管理器（ Activity Manager） 用来管理应用程序生命周期并提供常用的导航回退功能。</li>
+</ul>
+<h3 id="应用程序-Applications"><a href="#应用程序-Applications" class="headerlink" title="应用程序 (Applications)"></a>应用程序 (Applications)</h3><p>Android 系统会内置一些应用程序包包括email 客户端，SMS 短消息程序，日历，地图，浏览器，联系人管理程序等。所有的应用程序都是使用JAVA 语言编写的。，还可以使用自己的程序或者在网上下载到的程序。</p>
+<h2 id="Android开发环境的搭建"><a href="#Android开发环境的搭建" class="headerlink" title="Android开发环境的搭建"></a>Android开发环境的搭建</h2><p>Android开发环境的搭建包括安装JDK、安装eclipse、下载安装Android SDK Starter Package、安装ADT（Android Development Tools）插件、配置ADT插件(将ADT用来管理Android SDK Starter Package)、添加Android操作系统和部件，最后写一个Hello World。</p>
+<h3 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h3><p>JDK(Java Development Kit)是Sun Microsystems针对Java开发员的产品。自从Java推出以来，JDK已经成为使用最广泛的Java SDK。JDK 是整个Java的核心，包括了Java运行环境，Java工具和Java基础的类库。JDK是学好Java的第一步。</p>
+<p>首先到oracle的官网上下载linux版本的JDK。</p>
+<p>下载回来之后，当然是直接运行安装即可.先把这个文件cp到你的安装目录下，然后在你的安装目录直接执行：./jdk-6u33-linux-i586.bin(当然如果执行失败是因为没有执行权限，那么还需要加上执行权限：chmod +x ./jdk-6u26-linux-i586.bin)</p>
+<p>安装程序会自动给你安装到当前目录的jdk1.6.0_26目录下。</p>
+<p>程序安装好了，接着需要设置环境变量。</p>
+<p>执行：</p>
+<pre><code>sudo gedit /etc/profile
+</code></pre><p>在配置文件中加入如下部分：</p>
+<pre><code>export JAVA_HOME=/home/jackwong/jdk1.6.0_26
+export JRE_HOME=/home/jackwong/jdk1.6.0_26/jre
+export PATH=/home/jackwong/jdk1.6.0_26/bin:$PATH  
+export CLASSPATH=.:/home/jackwong/jdk1.6.0_26/lib:/home/jackwong/jdk1.6.0_26/jre/lib
+</code></pre><p>保存，然后注销当前用户，重新登录，环境变量就生效了。</p>
+<p>验证是否安装成功：</p>
+<p>执行：</p>
+<pre><code>java -version
+</code></pre><p>如果出现:</p>
+<p>java version “1.6.0_26”<br>Java(TM) SE Runtime Environment (build 1.6.0_26-b06)<br>Java HotSpot(TM) Server VM (build 20.0-b11, mixed mode)</p>
+<p>这样的信息，就说明OK了。</p>
+<p>注意，ubuntu默认已经安装了openjdk，所以你就算不安装jdk，执行java -version也不会报错，但是报告的信息和安装了jdk是不一样的，请注意区分。</p>
+<h3 id="安装eclipse"><a href="#安装eclipse" class="headerlink" title="安装eclipse"></a>安装eclipse</h3><p>Eclipse 是一个开放源代码的、基于Java的可扩展开发平台。就其本身而言，它只是一个框架和一组服务，用于通过插件组件构建开发环境。幸运的是，Eclipse 附带了一个标准的插件集，包括Java开发工具（Java Development Kit，JDK）。</p>
+<p>Eclipse的设计思想是：一切皆插件。Eclipse核心很小，其它所有功能都以插件的形式附加于Eclipse核心之上。Eclipse基本内核包括：图形API (SWT/Jface)， Java开发环境插件(JDT )，插件开发环境(PDE)等。</p>
+<p>Eclipse IDE for Java Developers下载，解压：tar zvxf eclipse-java-helios-SR1-linux-gtk.tar.gz</p>
+<h3 id="下载安装Android-SDK-Starter-Package"><a href="#下载安装Android-SDK-Starter-Package" class="headerlink" title="下载安装Android SDK Starter Package"></a>下载安装Android SDK Starter Package</h3><p>针对Android平台到软件开发包，里边有各种类，各种插件，还有Android到模拟器。   </p>
+<p>Android SDK Starter Package这个只是SDK的核心基本工具，有了它，再利用它的管理工具下载其他你需要到部分。看到这个目录中有个android脚本文件了吗？执行它，就会启动Android SDK and AVD Manager,这个工具可以帮你下载其他你需要的部分，还可以创建模拟机。</p>
+<p>下载地址是：<a href="http://developer.android.com/sdk/index.html" target="_blank" rel="noopener">http://developer.android.com/sdk/index.html</a></p>
+<p>下载下来到文件是：android-sdk_r11-linux_x86.tgz，大约26M。</p>
+<p>接下来当然是解包了：tar zvxf android-sdk_r11-linux_x86.tgz</p>
+<p>解包完毕，就会在当前目录下出现android-sdk-linux_x86目录了。这个目录下就是sdk的基本工具了。记住这个目录，因为以后你运行工具或者设置ADT的时候，会需要这个目录的！</p>
+<h3 id="安装ADT（AndroidDevelopment-Tools）插件"><a href="#安装ADT（AndroidDevelopment-Tools）插件" class="headerlink" title="安装ADT（AndroidDevelopment Tools）插件"></a>安装ADT（AndroidDevelopment Tools）插件</h3><p>目前Android开发所用的开发工具是Eclipse，在Eclipse编译IDE环境中，安装ADT，为Android开发提供开发工具的升级或者变更，简单理解为在Eclipse下开发工具的升级下载工具。</p>
+<p>启动 Eclipse, 然后选择 Help&gt; Install NewSoftware….</p>
+<p>单击右上角的Add按钮</p>
+<p>在弹出的 Add Repository 对话框中，Name一栏目填写 “ADT Plugin”,在Location一栏就有两个选择，一个是填入下载网址：<a href="https://dl-ssl.google.com/android/eclipse/，这样就可以网上下载安装。第二个选择是如果我已经下载了ADT" target="_blank" rel="noopener">https://dl-ssl.google.com/android/eclipse/，这样就可以网上下载安装。第二个选择是如果我已经下载了ADT</a> Plugin，那么就单击旁边的Archive按钮，直接找到插件所在到包即可，比如我用的就是第二种，我已经下载下来了，文件名是ADT-11.0.0.zip,5.3M。不管那一种，最后选择OK，即可。</p>
+<p>然后在下面的软件列表中，把Developer SDK Tools前面的checkbox选上，然后单击下面的next按钮，然后就等着安装进度条完成吧，其中会出现安装软件的列表，你单击Next即可，然后会出现license,你必须选择agree才行，然后单击finish就完成了（当然其中有个下载过程，可能需要花费一点时间)。安装完成之后，重启eclipse即可</p>
+<h3 id="配置ADT-插件"><a href="#配置ADT-插件" class="headerlink" title="配置ADT 插件"></a>配置ADT 插件</h3><p>配置的内容就是要修改在eclipse中到ADT插件的引用指向，需要指向前面安装好的Android SDK目录，还记得这个目录吗？</p>
+<p>启动eclipse,选择Window&gt; Preferences..</p>
+<p>在弹出的Preferences对话框中左边选择Android标签，右边SDK location选择你当初Android SDK的目录即可。比如我到目录是：/home/jackwong/android-sdk-linux_x86，然后单击apply,再单击ok即可。</p>
+<p>在这个过程中会弹出一个对话框问你是否要参加google的满意度调查报告。你可以选择参加还是不参加。单击process按钮即可。</p>
+<p>安装好之后，你可以常用Help&gt; Check for Updates选项来保持ADT保持最新。</p>
+<h3 id="添加Android操作系统和部件"><a href="#添加Android操作系统和部件" class="headerlink" title="添加Android操作系统和部件"></a>添加Android操作系统和部件</h3><p>到目前为止，基本配置都差不多了，但是为了开发android应用，还必须添加一个android操作系统，用于模拟器模拟你的应用程序。当然还有一些其他部件需要安装。其实就是通过SDK 工具包中的Android SDK and AVD Manager来完成。当然在eclipse中可以直接启动这个程序：Window &gt; Android SDK and AVD Manager.</p>
+<p>当然也可以直接运行sdk目录下的tools目录下的android脚本来启动。</p>
+<p>推荐的部件一般是：</p>
+<p>SDK Tools，这个你安装了sdk starter package实际上已经装好了。</p>
+<p>SDK Platform-tools，这个要装。</p>
+<p>SDK platform，这个至少需要一个。也就是操作系统，你可以下载多个，比如2.2，3.1你可以都下载，但是至少必须一个，因为模拟器运行的时候是必须要的。所以，如果你想各种平台都模拟测试一下，那么你就需要各种版本的android都下载一个。</p>
+<p>我下载了SDK Platform-tools  5和Android 3.1，Android Compatibility Package三个包。</p>
+<p>下载完成之后，Android的开发环境就搭建好了。</p>
+<h3 id="写一个hello-android测试程序试试"><a href="#写一个hello-android测试程序试试" class="headerlink" title="写一个hello,android测试程序试试"></a>写一个hello,android测试程序试试</h3><p>验证成果的时候到了，启动eclipse,选择File-&gt;New-&gt;Project…</p>
+<p>然后选择Android下的Android project,  然后填写下面的信息：</p>
+<p>project name:HelloAndroid  这是项目名称,也就是包含文件的目录名称</p>
+<p>Application name:Hello,Android 这是应用程序名字,也是程序运行的时候显示在屏幕上方的文字</p>
+<p>Package Name：my.android  这个不用解释，学过java的都应该知道，这是类的包名</p>
+<p>Create Activity：helloandroidactivity  这是activity的名字，android程序要显示都是以activity来启动的，也就是一个activity子类的名字</p>
+<p>其他可以不用改动，就用默认值，然后单击Finish就完成了项目的创建。</p>
+<p>进入项目，打开helloandroidactivity.java文件，</p>
+<p>把里面的onCreate方法的代码更新如下：</p>
+<pre><code>import android.widget.TextView;
+
+public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    TextView tv = new TextView(this);
+    tv.setText(&quot;Hello, Android!=你好,安卓！&quot;);
+    setContentView(tv);
+}
+</code></pre><p>保存，准备运行。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/06/22/大四毕业有感/" rel="next" title="大四毕业有感">
+                <i class="fa fa-chevron-left"></i> 大四毕业有感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/08/30/疯狂Android第一部分/" rel="prev" title="疯狂Android第一部分">
+                疯狂Android第一部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android开发环境"><span class="nav-number">1.</span> <span class="nav-text">Android开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#硬件"><span class="nav-number">1.1.</span> <span class="nav-text">硬件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统"><span class="nav-number">1.2.</span> <span class="nav-text">操作系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAVA运行环境"><span class="nav-number">1.3.</span> <span class="nav-text">JAVA运行环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发工具"><span class="nav-number">1.4.</span> <span class="nav-text">开发工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android模拟器"><span class="nav-number">1.5.</span> <span class="nav-text">Android模拟器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android系统架构"><span class="nav-number">2.</span> <span class="nav-text">Android系统架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-Kernel"><span class="nav-number">2.1.</span> <span class="nav-text">Linux Kernel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Libraries-And-Android-Runtime"><span class="nav-number">2.2.</span> <span class="nav-text">Libraries And Android Runtime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序框架-Application-Framework"><span class="nav-number">2.3.</span> <span class="nav-text">应用程序框架(Application Framework)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序-Applications"><span class="nav-number">2.4.</span> <span class="nav-text">应用程序 (Applications)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android开发环境的搭建"><span class="nav-number">3.</span> <span class="nav-text">Android开发环境的搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装JDK"><span class="nav-number">3.1.</span> <span class="nav-text">安装JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装eclipse"><span class="nav-number">3.2.</span> <span class="nav-text">安装eclipse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载安装Android-SDK-Starter-Package"><span class="nav-number">3.3.</span> <span class="nav-text">下载安装Android SDK Starter Package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装ADT（AndroidDevelopment-Tools）插件"><span class="nav-number">3.4.</span> <span class="nav-text">安装ADT（AndroidDevelopment Tools）插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置ADT-插件"><span class="nav-number">3.5.</span> <span class="nav-text">配置ADT 插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加Android操作系统和部件"><span class="nav-number">3.6.</span> <span class="nav-text">添加Android操作系统和部件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写一个hello-android测试程序试试"><span class="nav-number">3.7.</span> <span class="nav-text">写一个hello,android测试程序试试</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

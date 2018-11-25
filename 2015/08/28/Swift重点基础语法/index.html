@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Swift,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Swift APP 中的入口函数main /*   编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果   如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错  */ @UIApplicationMain class AppDelegate: UIResponder,">
+<meta name="keywords" content="iOS,Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift的重点基础语法">
+<meta property="og:url" content="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="Swift APP 中的入口函数main /*   编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果   如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错  */ @UIApplicationMain class AppDelegate: UIResponder,">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:09:04.040Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift的重点基础语法">
+<meta name="twitter:description" content="Swift APP 中的入口函数main /*   编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果   如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错  */ @UIApplicationMain class AppDelegate: UIResponder,">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/">
+
+
+
+
+
+  <title>Swift的重点基础语法 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/08/28/Swift重点基础语法/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Swift的重点基础语法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-08-28T00:00:00+08:00">
+                2015-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li><p>Swift APP 中的入口函数main</p>
+<pre><code>/*
+  编译的时候，找@UIApplicationMain 标记类，并插入main函数的模块代码，从而实现和OC类似的效果
+  如果有需要，也可以自己定义main函数，但main和UIApplicationMain标记不能同时存在，会编译出错
+ */
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    var window: UIWindow?
+}
+</code></pre></li>
+<li><p>变量和常亮</p>
+<pre><code>func 常量变量(){
+    // 1 let 声明常量 var声明变量
+    //  let 常量只能为他赋值一次
+
+    // 2.1 声明一个变量，编译器会自动推断类型，前提条件：提供的信息不足。
+    // 2.2 需要在变量后面声明类型，用冒号分割
+
+    // 注意：不像OC，Swift中值永远不会被隐式转换为其他类型，如果你需要把一个值的转换成其他类型，只能显式转换
+    let testOne = 20
+    var testTwo:Double = 30
+
+    // 不同的类型不能作相应的加减操作
+    // Int(testTwo) 用testTwo当作参数，初始化生成了一个Int变量，此步骤不是强制转换
+    let testThree = testOne + Int(testTwo)
+    let testFour = Double(testOne) + testTwo
+
+    let stringOne: String = &quot;123456&quot;
+    let stringTwo = &quot;9876&quot;
+    print(testOne, testTwo, testThree, testFour, stringOne, stringTwo)
+}
+</code></pre></li>
+<li><p>类型转换as</p>
+<pre><code>// ？（option 可选的 可以为空）用 ！ 来拆包
+func 类型转换() {
+    let testOne: Int = 20
+    // 强制转换 as
+    let testTwo = testOne as? Double
+
+    let testThree = testOne as? Array&lt;Any&gt;
+    print(testTwo, testThree)
+
+    var shoppingArr = [&quot;1234&quot;, &quot;4567&quot;]
+    var shoppingArrTwo = shoppingArr as? Array&lt;Any&gt;
+    shoppingArrTwo![1] = 123
+    print(shoppingArrTwo)
+}
+</code></pre></li>
+<li><p>数组和字典</p>
+<pre><code>func 数组和字典() {
+
+    //数组
+    // 1. 自动推断类型
+    let testOneArr = [&quot;1234&quot;, &quot;4567&quot;]
+    var testTwoArr = [&quot;11&quot;, &quot;22&quot;]
+    var testAnyArr = [11, &quot;11&quot;] as [Any]
+    testTwoArr.append(&quot;123&quot;)
+
+    // 2. 定义时设置类型
+    var testThreeArr = Array&lt;String&gt;()
+    var testFourArr  = Array&lt;Int&gt;()
+    var testFiveArr  = Array&lt;Any&gt;()
+    testThreeArr.append(&quot;12345&quot;)
+    //testThreeArr.append(1234)
+    testFourArr.append(1234)
+    //testFourArr.append(&quot;123456&quot;)
+    testFiveArr.append(123456)
+    testFiveArr.append(&quot;98766&quot;)
+    print(testThreeArr, testFourArr, testFiveArr)
+    testFiveArr[0] = 2
+    testFiveArr[1] = &quot;345&quot;
+
+    // NSMutableArray;
+    // NSArray;
+    // 3. 另一种定义方式
+    var stringArray = [String]() // Array&lt;String&gt;()
+    if(stringArray.isEmpty){
+        print(&quot;空的数组stringArray&quot;)
+    }
+    stringArray.append(&quot;string&quot;)
+    stringArray.append(&quot;stringTwo&quot;)
+
+    // 字典
+    // 1. 自动推断类型
+    var dictOne = [
+        &quot;keyOne&quot;:&quot;valueOne&quot;,
+        &quot;keyTwo&quot;:&quot;valueTwo&quot;,
+    ]
+    print(dictOne)
+
+    // 2. 定义时设置类型
+    var dictThree = Dictionary&lt;String, String&gt;()
+    dictThree[&quot;key1&quot;] = &quot;keyValue1&quot;
+    print(dictThree)
+    print(dictThree[&quot;key1&quot;])
+
+    // 3. 另一种定义方式
+    var dictTwo = [String: String]()
+    if(dictTwo.isEmpty){
+        print(&quot;空的字典dictTwo&quot;)
+    }
+    dictTwo[&quot;keyOne&quot;] = &quot;keyValueOne&quot;
+    print(dictTwo)
+}
+</code></pre></li>
+<li><p>循环</p>
+<pre><code>//for循环
+// 1. 循环  1...5 闭区间的操作符 表示从1到5数字 进行遍历
+for index in 1...5 {
+    print(index)
+}
+// 已经不支持了
+//for var index = 0; index &lt; names.count; index++ {
+//
+//}
+
+// 2. 循环开区间
+for index in 1..&lt;5 {
+    print(&quot;::&quot;, index)
+}
+
+// 3. 注意 indexTest在存在于循环的生命周期里
+var indexTest:Int = 0
+for indexTest in 1...3 {
+    print(&quot;::&quot;, indexTest)
+}
+print(indexTest)
+
+// 4. 如果你不需要知道区间内每一项的值， 可以是使用下划线（_） 替代变量名，来忽略对值的访问
+var multiCount = 1;
+let power = 3;
+for _ in 1...5 {
+    multiCount *= power
+}
+print(multiCount)
+
+// 5. 数组遍历 for in 遍历一个数组的所有元素
+let names = [&quot;张三&quot;, &quot;李四&quot;, &quot;王五&quot;, &quot;六六&quot;]
+for name in names {
+    print(name)
+}
+
+// (索引, 值)
+for (index, name) in names.enumerated() {
+   // print(index, name)
+}
+
+// 字典
+// 注意 字典元素的遍历顺序和插入顺序可能不同，因为字典内容在内部是无序的， 所有遍历元素事不能保证顺序
+let numberOfTag = [&quot;鸡蛋&quot;:1, &quot;白菜&quot;:6, &quot;黄瓜&quot;:3]
+for (key, value) in numberOfTag {
+    print(key, value)
+}
+
+// 字符串中的字符也是通过for in来遍历的
+for charac in &quot;hello&quot; {
+    print(charac)
+}
+
+// 数组 倒序
+for name in names.reversed() {
+    print(name);
+}
+
+//  while()  do-while()  repeat-while()
+/*
+  do while 不支持了，使用 repeat while
+ */
+var countScan = 1
+repeat {
+    countScan = countScan + 1
+    print(&quot;浏览次数：&quot;, countScan)
+} while countScan &lt; 5
+
+while countScan &lt; 10 {
+    countScan = countScan + 1
+    print(&quot;浏览次数：&quot;, countScan)
+}
+
+//举例：
+// 求一个容器里最大的值
+var largetest = 0
+let eocNumbers = [
+        &quot;红波&quot;: [1, 5, 13, 18, 22, 40],
+        &quot;蓝波&quot;: [2, 4, 26, 36, 22, 41],
+        &quot;绿波&quot;: [3, 5, 45, 22, 17, 33],
+    ]
+
+for (_, numbers) in eocNumbers {
+    for number in numbers{
+        if number &gt; largetest {
+            largetest = number
+        }
+    }
+}
+print(&quot;largetest:&quot;, largetest)
+
+// 获取最大值 和 位置
+largetest = 0
+var kindKey = &quot;&quot;
+var indexValue = 0
+for (key, numbers) in eocNumbers {
+    for (index, number) in numbers.enumerated() {
+        if number &gt; largetest {
+            largetest = number
+            indexValue = index
+            kindKey = key
+        }
+    }
+}
+
+let strTeest =  &quot;\(largetest), \(kindKey)&quot;
+print(&quot;最大值:\(largetest), 位置:\(kindKey),\(indexValue)&quot;)
+print(strTeest)
+</code></pre></li>
+<li><p>元组</p>
+<pre><code>// 元组 是多个值组合而成的复合值。 元组中的值可以是任意类型，每一个元素的类型可以是不同的
+let http404Error = (404, &quot;Error Net&quot;)
+print(http404Error)
+print(http404Error.0, http404Error.1)
+
+let (statusCode, statusDes) = http404Error
+print(statusCode, statusDes)
+
+//  忽略其中的某个值 _
+let (statusCodeTwo, _) = http404Error
+print(statusCodeTwo)
+
+// 是可以给元组定义元素名字
+let http200Status = (status: 200, desc: &quot;success&quot;)
+print(http200Status.status, http200Status.desc)
+print(http200Status.0, http200Status.1)
+</code></pre></li>
+<li><p>条件语句</p>
+<pre><code>// if 条件语句
+/*
+  在if 语句中， 条件必须是一个布尔表达式，不会隐式与0做对比
+ 这样的代码会报错
+ var testCondition = &quot;1&quot;
+ if testCondition {
+ }
+ */
+ var testCondition:String? = &quot;1&quot;
+//if testCondition {
+//}
+
+let testConditionTwo = 5
+if testConditionTwo &gt; 1 {
+    print(&quot;true&quot;)
+}
+
+// 可以使用if 和 let 来处理值缺失情况， 如果变量的值为nil， 条件会判断为false
+if let condtion = testCondition {
+    print(&quot;ture&quot;)
+} else {
+    print(&quot;false&quot;)
+}
+
+if testCondition != nil {
+    print(&quot;testCondition 有值&quot;)
+}
+
+//switch 条件语句
+/* switch  break
+  当匹配的case分支中代码执行完，就会终止swich语句， 而不会执行下一个case分支。
+  不需要在case分支中显示的使用break语句， 避免忘记写break而产生的错误， 从一个case 分支贯穿到下一个，
+  如果需要贯穿下一个 使用fallthrough 关键字
+ 注意 每一个case 分支都必须包含一条语句。
+ */
+let characterTest: Character = &quot;壹&quot;
+switch characterTest {
+    case &quot;1&quot;, &quot;壹&quot;: // 可以包含多个模式，用逗号把他们分开
+        print(&quot;一&quot;)
+       // fallthrough //
+    case &quot;2&quot;:
+        print(&quot;二&quot;)
+    case &quot;3&quot;:
+        print(&quot;三&quot;)
+    default:
+    print(&quot;Not&quot;)
+}
+
+// 2 区间匹配
+let eocCount = 3000
+var countType:String
+switch eocCount {
+    case 0...9:
+        countType = &quot;个&quot;
+    case 10...99:
+        countType = &quot;十&quot;
+    case 100...999:
+        countType = &quot;百&quot;
+    case 1000...9999:
+        countType = &quot;千&quot;
+    default:
+        countType = &quot;万&quot;
+}
+print(countType)
+
+// 3 元组 switch
+let eocPoint = (1, 1)
+switch eocPoint {
+    case (0, 0):
+        print(&quot;在原点&quot;)
+    case (0, _):
+        print(&quot;在Y抽上&quot;)
+    case (_, 0):
+        print(&quot;在X抽上&quot;)
+    case (-2...2, -2...2):
+        print(&quot;在我们要求范围内&quot;)
+    default:
+        print(&quot;不在要求范围内&quot;)
+}
+
+/* 4 值绑定
+  允许将匹配的值绑定到一个临时变量
+ */
+let anotherPoint = (6, 1)
+switch anotherPoint {
+    case (let x, 0):
+        print(&quot;在x抽上的位置：\(x)&quot;)
+    case (0, let y):
+        print(&quot;在y抽上的位置：\(y)&quot;)
+    case let(x, y):
+        print(&quot;Point:&quot;, x, y)
+}
+
+//  where
+// case可以使用 where语句来判断额外的条件
+let eocAnotherPoint = (2, 2)
+switch eocAnotherPoint {
+    case let(x, y) where x == y:
+        print(&quot;位置对称轴上&quot;)
+    case let(x, y) where x == -y:
+        print(&quot;反对称轴上&quot;)
+    case let(x, y):
+        print(&quot;Point:&quot;, x, y)
+}
+</code></pre></li>
+<li><p>函数</p>
+<pre><code>// 1无返回值的函数
+func firstMethod(){
+    print(&quot;secondMethod&quot;)
+}
+firstMethod()
+
+// 2 有参数，有返回值
+func secondMethod(number: Int, number2: Int) -&gt; Int {
+    print(number, number2)
+    return number + number2
+}
+// 关键字（func） + 方法名（参数）-&gt; 返回值
+secondMethod(number: 1, number2: 2)
+
+// 3 多个返回值 元组的方式
+func calculateMethod(numberArr: Array&lt;Int&gt;) -&gt; (max:Int, min:Int, sum:Int) {
+    var max = Int.min
+    var min = Int.max
+    var sum = 0
+    for number in numberArr {
+        if max &lt; number{
+            max = number
+        }
+        if min &gt; number {
+            min = number
+        }
+        sum += number
+    }
+    return (max, min, sum)
+}
+let numbers = [1, 2, 3, 4, 5]
+let (max, min, sum) =  calculateMethod(numberArr: numbers)
+print(max, min, sum)
+
+// 4 定义外部参数名  写在局部参数名之前，用空格分隔
+func joinString(first str1: String, second str2: String) -&gt; String {
+    return str1 + str2
+}
+joinString(first: &quot;1&quot;, second: &quot;2&quot;)
+// 注意：如果你提供了外部参数名，那么函数在掉用时，必须使用外部参数名
+// 主要是增加可读性， 如果函数参数名的意图很明显了， 那就不需要定义外部参数名
+
+// 5 忽略参数名  使用 _
+func joinStringTwo(_ str1: String, _ str2: String) -&gt; String {
+    return str1 + str2
+}
+joinStringTwo(&quot;1&quot;, &quot;3&quot;)
+
+// 6 给参数设置默认值
+func joinStringThree(_ str1: String, _ str2: String = &quot;0000&quot;) -&gt; String {
+    return str1 + str2
+}
+print(joinStringThree(&quot;111&quot;))
+print(joinStringThree(&quot;111&quot;, &quot;2222&quot;))
+//注意 ⚠️ 将带有默认值的参数放在函数参数列表的最后
+func joinStingFour(_ str1: String, _ str2: String = &quot;0000&quot;, _ str3: String = &quot;1111&quot;) -&gt; String {
+    return str1 + str2 + str3
+}
+print(joinStingFour(&quot;111&quot;))
+print(joinStingFour(&quot;111&quot;, &quot;222&quot;))
+
+// 7 可变参数： 不确定数量的输入参数， 通过在变量类型名后面加入...的方式来定义可变参数
+func sumCount(argNumbers: Int...) -&gt; Int {
+    var sum = 0
+    for number in argNumbers {
+        sum += number
+    }
+    return sum
+}
+sumCount(argNumbers: 1)
+sumCount(argNumbers: 1, 2)
+sumCount(argNumbers: 1, 2, 3)
+// 注意⚠️ 一个函数最多能有一个可变参数， 而且他必须在参数表中的最后一个
+
+// 8 输入输出参数(inout)： 如果想要一个函数的参数 和 外部传过来的是同一个参数，即函数内部对参数修改，就是对外部参数的进行的修改，使用 inout 关键字
+func swapTwo(num1: inout Int, num2: inout Int) {
+    let tempA = num1;
+    num1 = num2
+    num2 = tempA
+}
+var numberOne = 1
+var numberTwo = 2
+swapTwo(num1: &amp;numberOne, num2: &amp;numberTwo)
+print(numberOne, numberTwo)
+// 注意⚠️ 输入输出参数不能有默认值
+//  只能以变量作为输入输出参数
+
+//  9 函数类型
+//  每个函数都有特定的函数类型， 函数的参数类型和返回类型组成
+func addTwoInt(a:Int, b: Int) -&gt; Int {
+    return a + b
+}
+//addTwoInt 的函数类型 (Int, Int) -&gt; Int
+let methodVar: (Int, Int) -&gt; Int = addTwoInt
+print(methodVar(1, 2))
+//举例
+func printHelloW() {
+    print(&quot;test&quot;)
+}
+//printHellow  函数类型 () -&gt; ()
+
+// 10  在swift中，使用函数类型就像使用其他类型一样。 可以定一个变量或者常量，将函数赋值给他
+// 函数嵌套  对外界是不可见的，当然，函数stepForwordTwo和函数stepBackwardTwo也可以放在函数chooseStepFunctionTwo外部
+func chooseStepFunctionTwo(_ condition:Bool) -&gt; (Int) -&gt; Int {
+    print(&quot;chooseStepFunctionTwo&quot;)
+    var testVar = 8 // 捕获变量
+    // 向前走一步
+    func stepForwordTwo(_ input: Int) -&gt; Int{
+        testVar =  testVar + 1
+        print(&quot;testVar:&quot;, testVar)
+        return input + 1
+    }
+    // 向后走一步
+    func stepBackwardTwo(_ input: Int) -&gt; Int  {
+        testVar =  testVar - 1
+        print(&quot;testVar:&quot;, testVar)
+        return input - 1
+    }
+    return condition ? stepBackwardTwo: stepForwordTwo
+}
+var currentValue = 5
+let moveToZero = chooseStepFunctionTwo(currentValue &gt; 0)
+while currentValue != 0 {
+    currentValue = moveToZero(currentValue)
+    print(currentValue)
+}
+print(&quot;走到起始点了&quot;)
+let moveToFont = chooseStepFunctionTwo(currentValue &lt; 0)
+while currentValue &lt; 10 {
+    currentValue =  moveToFont(currentValue)
+    print(currentValue)
+}
+print(&quot;走到终点了&quot;)        
+</code></pre></li>
+<li><p>闭包</p>
+<pre><code>/*
+ 闭包: OC中的block块比较类似
+ 方法：（参数） -&gt; 返回值 {函数体}
+ 闭包:  {(参数) -&gt; 返回值  in 函数体 }
+ { (参数) -&gt; 返回值 in   // 参数 inout，可变参数  元组
+ ..... (函数体)
+ }
+ */
+ func 闭包() {
+    let names = [5, 6, 1, 9, 8]
+    let namesSortOne = names.sorted() { (num1, num2) -&gt; Bool in
+        return num1 &gt; num2
+    }
+    let namesSortTwo = names.sorted { (num1, num2) -&gt; Bool in
+        return num1 &lt; num2
+    }
+    print(namesSortOne)
+    print(namesSortTwo)
+
+    func sortMethod(num1:Int, num2:Int) -&gt; Bool {
+        return num1 &gt; num2
+    }
+    let namesSortThree = names.sorted(by: sortMethod)
+    print(namesSortThree)
+
+    //  1.2  可以隐式的返回
+    // 单行表达式闭包 可以通过隐藏return关键字来隐式返回单行表达式结果
+    let nameSortFour = names.sorted { num1, num2  in
+        num1 &gt; num2
+    }
+    print(nameSortFour)
+
+    // 1.3 参数名可以缩写
+    /*
+      Swifr自动为提供了参数名称缩写功能， 可以直接通过$0， $1， $2来顺序掉用闭包的参数
+      in关键字也同样可以被省略，此时闭包表达式完全有闭包函数体构成
+     */
+    let nameSortFive = names.sorted() {
+        return $0 &lt; $1
+    }
+    print(nameSortFive)
+
+    let nameSortSix = names.sorted{ $0 &lt; $1 }
+    print(&quot;nameSortSix:&quot;, nameSortSix)
+
+    // 总结： Swift可以推断起参数和返回值的类型， 因此String，Bool类型并不需要作为闭包表达式定义中的一部分，因为所有的类型都可以被争取推断， 返回箭头的 -&gt; 和参数也可以被省略。
+
+    // 2 尾随闭包  增强函数的可读性
+    _ = names.sorted() { (num1, num2) -&gt; Bool in
+        return num1 &lt; num2
+    }
+
+    func eocTaskMethod(styleMethod: ()-&gt;()) {
+        print(&quot;ecoTaskMethod&quot;)
+        styleMethod();
+    }
+
+    //正规写法
+    eocTaskMethod(styleMethod:{
+        print(&quot;styleMethod 闭包&quot;)
+    })
+
+    // 使用的尾随闭包 进行函数调用
+    eocTaskMethod() {
+        print(&quot;styleMethod 闭包2&quot;)
+    }
+
+    // 注意： 如果函数只需要闭包表达式一个参数，当使用尾随方式的时候， 可以把()省略掉
+    eocTaskMethod {
+        print(&quot;styleMethod 闭包2&quot;)
+    }
+
+    // ()-&gt;() 函数类型 无参数无返回值的函数类型
+    func eocTaskMethodTwo(_ styleMethodTwo: ()-&gt;()){
+        print(&quot;eocTaskMethodTwo&quot;)
+        styleMethodTwo();
+    }
+
+    func eocTaskMethedThree(){
+        print(&quot;eocTaskMethedThree&quot;)
+    }
+
+    //eocTaskMethodTwo(eocTaskMethedThree)
+    // 省略参数名的，一板一眼的写法
+    eocTaskMethodTwo ({
+        print(&quot;styleMethodTwo&quot;)
+    })
+}
+</code></pre><blockquote>
+<p>和OC的block同原理，闭包也会有引入环的问题，所以使用时要特别注意</p>
+</blockquote>
+</li>
+<li><p>枚举</p>
+<pre><code>func 枚举()  {
+    // OC 枚举成员会默认赋予一个默认的整数值
+    // Swift 不会默认赋值， North South East West 不是隐式的等于 0 1 2 3
+    enum CompassPoint {
+        case North //,N
+        case South
+        case East
+        case West
+    }
+    print(CompassPoint.North)
+   // print(CompassPoint.N)
+
+    var direction = CompassPoint.North
+    direction = .South
+    // 注意⚠️ direction的类型已知时， 设值的时候， 可以不再写类型名
+
+    let directionTwo: CompassPoint = .East
+    print(direction, directionTwo)
+    switch directionTwo {
+        case .North:
+            print(&quot;北&quot;)
+        case .South:
+            print(&quot;南&quot;)
+        case .East:
+            print(&quot;东&quot;)
+        case .West:
+            print(&quot;西&quot;)
+        //default:
+
+    }
+
+    // 相关值绑定
+    enum Barcode {
+        case NumberCode(Int, Int) // 系统，唯一标识
+        case StringCode(String)
+    }
+    var productBarcode = Barcode.NumberCode(12, 3232423412412)
+    var pruductTwoBarcode = Barcode.StringCode(&quot;qweqweqfsdfefefe&quot;)
+
+    // 值提取 使用swicht case
+    switch productBarcode {
+        case .NumberCode(let system, let identifi):
+            print(&quot;数字条形码：系统编号：\(system)  物品标示:\(identifi)&quot;)
+        case .StringCode(let code):
+            print(&quot;字符串条形码,物品码:\(code)&quot;)
+    }
+
+    //简洁一点
+    switch pruductTwoBarcode {
+        case let .NumberCode(system, identifi):
+            print(&quot;数字条形码：系统编号：\(system)  物品标示:\(identifi)&quot;)
+        case let .StringCode(code ):
+            print(&quot;字符串条形码,物品码:\(code)&quot;)
+    }
+
+    // 原始值 rawValue（默认值） 如果是整形Int Float,Double 如果枚举成员没有值时， 他们会自动递增 ，如下 meat 等于2
+    // 原始值（默认值） 预先填充， 而且原始值具有相同的类型
+
+    // String  不会自动递增
+    enum GoodsType: Int {
+        case veg = 1
+        case meat
+        case wine
+    }
+    let goodsOne = GoodsType.veg
+    let goodsTwo = GoodsType.meat
+    print(&quot;GoodsType:&quot;, goodsOne.rawValue, goodsTwo.rawValue)
+
+    enum GoodsTypeTwo: String {
+        case veg = &quot;蔬菜&quot;
+        case meat
+        case wine
+    }
+    let goodsTypeOne = GoodsTypeTwo.veg
+    let goodsTypeTwo = GoodsTypeTwo.meat
+    print(&quot;GoodsTypeTwo:&quot;, goodsTypeOne.rawValue, goodsTypeTwo.rawValue)// &quot;蔬菜&quot;，meat
+
+    // 通过rawValue参数来创建指定的枚举
+    let goodsFour = GoodsType(rawValue: 5) //返回的是一个可选类型 （）
+    print(&quot;goodsFour:&quot;, goodsFour ?? GoodsTypeTwo.veg)
+    // 注意⚠️  并非所有可能的Int值都可以找到一个匹配的食物，所以 GoodsType(rawValue: )返回是一个可选的类型
+}
+</code></pre></li>
+<li><p>结构体和类</p>
+<pre><code>func 结构体和类() {
+    //1. 使用时注意：结构体总是通过被复制的方式在代码中传递，是属于值类型，枚举也是属于值类型
+    //类是引用类型
+    struct EOCStruct {
+        var firstName = &quot;EOC&quot;
+        var age = 1
+    }
+    class EOCClass {
+        var firstName = &quot;EOC&quot;
+        var age = 2
+    }
+    var eocStructOne = EOCStruct()
+    let eocStructTwo = eocStructOne
+    eocStructOne.age = 2
+    print(&quot;eocStructTwo.age::&quot;, eocStructTwo.age)
+
+    let eocClassOne = EOCClass()
+    let eocClassTwo = eocClassOne
+    eocClassOne.age = 3
+    print(&quot;eocClassTwo.age::&quot;, eocClassTwo.age)
+
+    enum CompassPoint: Int {
+        case North, South, East, West
+    }
+    var direction = CompassPoint.West
+    let directionTwo = direction
+    direction = .East
+    print(directionTwo)
+
+    // 2 结构体 都有一个自动生成的成员逐一构造函数，用于初始化结构体实例中的成员属性
+    // 而类是没有的
+    let eocStructThree = EOCStruct(firstName: &quot;八点钟&quot;, age: 2)
+    //会报错
+    //let eocClassThree = EOCClass(firstName: &quot;八点钟&quot;, age: 2)
+    print(eocStructThree.firstName, eocStructThree.age)
+
+    //恒等于运算符 === 表示两个类的常量或者变量引用同一个类的实例
+    // 不等于 !==
+    // == 等于表示两个值类型的变量相等
+    let eocClassFive = EOCClass()
+    let eocClassSix = eocClassFive
+    if (eocClassFive === eocClassSix) {
+        print(&quot;引用同一个类的实例&quot;)
+    } else {
+        print(&quot;引用不同的类的实例&quot;)
+    }
+
+    //swift所有的基础类型Int、Float、Bool、String、Array、Dictionary(值方式传递) 拷贝行为
+    let stringOne: String = &quot;one&quot;
+    let stringTwo: String = &quot;one&quot;
+    if stringOne == stringTwo {
+        print(&quot;stringOne == stringTwo&quot;)
+    }
+}
+</code></pre></li>
+<li><p>属性</p>
+<pre><code>func 属性() {
+    //存储属性
+    //注意，延迟加载存储属性声明变量(var)，如果去掉lazy，会在初始化的时候打印init
+    //如果是常量，常量属性在构造过程中，必须有初始值
+    class FileOperation {
+        var fileName = &quot;data.text&quot;
+        init() {
+            print(&quot;FileOperation init&quot;)
+        }
+    }
+    class FileEOCManager {
+        lazy var fileOperation = FileOperation()
+        var desc = &quot;FileEOCManager&quot;
+    }
+    let fileManager = FileEOCManager()
+    print(fileManager.fileOperation)
+
+    //计算属性
+    struct Point {
+        var x = 0.0, y = 0.0
+    }
+    struct Size {
+        var width = 0.0, height = 0.0
+    }
+    struct Rect {
+        var origin = Point()
+        var size = Size()
+        //property方法 _变量 //Swift如果要实现 _center
+        var center: Point {
+            get {
+                //center //会死循环
+                let centerX = origin.x + (size.width/2)
+                let centerY = origin.y + (size.height/2)
+                return Point(x: centerX, y: centerY)
+            }
+</code></pre><p>//                set(newCenter) {<br>//                    //center = //会死循环<br>//                    origin.x = newCenter.x - (size.width/2)<br>//                    origin.y = newCenter.y - (size.height/2)<br>//                }</p>
+<pre><code>            set {//注意：如果没有定义表示新值的参数名，可以使用默认名称newValue
+                //center = //会死循环
+                origin.x = newValue.x - (size.width/2)
+                origin.y = newValue.y - (size.height/2)
+            }
+        }
+    }
+    var rectOne = Rect()
+    rectOne.center = Point(x: 10, y: 10)
+
+    // 3. 只读计算属性
+    //注意：get可以单独使用（只有get的叫只读计算属性）
+    //使用了set必须使用get
+    struct Cube {
+        var width = 0.0, height = 0.0, depth = 0.0
+        var volume: Double {
+            return width * height * depth
+        }
+        //外部参数名，来增强可读性
+        init(width w: Double, height h: Double, depth d: Double) {
+            width = w
+            height = h
+            depth = d
+        }
+    }
+    let cubeOne = Cube(width: 1, height: 2, depth: 3)
+    print(cubeOne.volume)
+
+    // 4. 属性观察期 willSet didSet
+    class StepCounter {
+        var totalSteps: Int = 0 {
+            willSet {//在设置新的值之前调用，默认值newValue
+                print(&quot;willSet&quot;, totalSteps, newValue)
+            }
+            didSet {//在新的值被设置之后立即调用
+                print(&quot;didSet&quot;, totalSteps, oldValue)
+                //self.totalSteps = 3 不会死循环
+                if (totalSteps &gt; 1000) {
+                    totalSteps = 1000
+                }
+            }
+        }
+    }
+    let stepCounter = StepCounter()
+    stepCounter.totalSteps = 1
+    print(&quot;totalSteps&quot;, stepCounter.totalSteps)
+    //willSet/didSet 和 get/set 两套只能二选一
+
+    //类的属性 使用关键字 static
+    struct GoodsStruct {
+        static var type = &quot;GoodsStruct&quot; // 值类型的类型属性
+        var name = &quot;meat&quot;
+        static func structName() {
+            print(&quot;GoodsStruct&quot;)
+        }
+        //值类型的属性不能在它的实例方法中被修改，如果要修改使用mutating
+        mutating func changeName(n: String) {
+            name = n
+        }
+    }
+    print(GoodsStruct.type)
+    print(GoodsStruct.structName())
+
+    class GoodsClass {
+        static var type = &quot;GoodsClass&quot;//类的类型属性
+        var name = &quot;meat&quot;
+        class func className() {
+            print(&quot;GoodsClass&quot;)
+        }
+    }
+    print(GoodsClass.type)
+    print(GoodsClass.className())
+    //类方法 值类型 static 类 static/class
+
+    struct EOCPoint {
+        var x = 0.0
+        var y = 0.0
+        mutating func changeNewPoint(newPoint: EOCPoint) {
+            self = newPoint
+        }
+    }
+    var testPoint = EOCPoint()
+    let testPointTwo = EOCPoint(x: 1, y: 1)
+    testPoint.changeNewPoint(newPoint: testPointTwo)
+    print(&quot;point:&quot;, testPoint.x, testPoint.y)
+}
+</code></pre></li>
+<li><p>最后一课</p>
+<pre><code>//1. 下标 subscript
+struct TestTable {
+    subscript(index: Int) -&gt; String {
+        return &quot;eocTable&quot;
+    }
+    subscript(key: String) -&gt; String {
+        return &quot;eocTable&quot;
+    }
+}
+
+//2. 继承 override重写 防止重写  final var, final func, final class func,
+//final class 类 A(这样的类是不可以被继承的)
+class OneClass {
+    func className() {
+        print(&quot;OneClass&quot;)
+    }
+}
+class OneSubClass: OneClass {
+    override func className() {
+        print(&quot;OneSubClass&quot;)
+    }
+}
+
+//3. 构造
+var oneTest = OneClass()
+var oneTestTwo = OneClass.init()
+class TwoClass {
+    var name: String //存储类型属性不能处于一个未知状态
+    var type: String?
+    init(name: String) {
+        self.name = name
+    }
+}
+//注意：常量属性只能在定义它的类的构造过程中修改，不能在子类中修改
+//3.1 重写属性，只能重写 set get(let 不能声明计算属性)
+class TwoSubClass: TwoClass {
+    var classname: String
+    override init(name: String) {
+        classname = &quot;TwoSubClass&quot;
+        super.init(name: name)
+    }
+    //便利构造器convenience调用同类的构造器
+    convenience init(classname: String) {
+        self.init(name: &quot;eoc&quot;)
+        self.classname = classname
+    }
+}
+//便利构造器必须横向代理，指定构造器向上代理
+//当制定了一个构造器，默认构造器无法访问了(结构体)
+var twoTest = TwoClass(name: &quot;1111&quot;)
+//TwoSubClass(classname: &quot;12333&quot;)
+
+//可失败构造器 注意：不要在表明可失败构造器成功的情况下，使用关键字return
+class ThreeClass {
+    var name: String = &quot;eoc&quot;
+    init() {
+    }
+    init?(name: String) {
+        if name.isEmpty {
+            return nil
+        }
+        self.name = name
+    }
+}
+
+class ThreeSubClass: ThreeClass {
+    override init(name: String) {//覆盖一个可失败构造器
+        super.init()
+        if name.isEmpty {
+            self.name = &quot;&quot;
+        } else {
+            self.name = name;
+        }
+    }
+}
+
+//4. 析构
+class FourClass {
+    var name = &quot;1&quot;
+    required init() {//子类都必须的实现该构造器
+        //如果子类继承的构造器能够满足必要构造器要求，无需显式的在子类中提供必要构造器的实现
+    }
+}
+
+class FourSubClass: FourClass {
+    var type: String
+    required init() {
+        type = &quot;&quot;
+        super.init()
+    }
+    init(type: String) {
+        self.type = type
+    }
+    deinit {//析构函数
+        print(&quot;deinit&quot;)
+    }
+}
+
+//5. 扩展
+//不能添加存储属性，可以添加计算属性和静态计算属性
+//可以添加新的便利构造器，不能添加新的指定构造器或者析构函数
+//不能覆盖方法
+extension FourClass {
+    convenience init(testOne: Int) {
+        self.init()
+        print(&quot;FourClass extension convenience init&quot;)
+    }
+}
+extension Double {
+    var km: Double {
+        return self*1000
+    }
+    var m: Double {
+        return self
+    }
+    var cm: Double {
+        return self/100
+    }
+}
+
+//6. 协议
+protocol OneProtocol {
+    func classname()
+    var fullName: String {get set}//属性，在声明后加上{get set}表示可读可写
+    static func classMethod() //static
+    mutating func changeProperty()//突变方法
+}
+//先写父类，再写协议
+class FiveClass: FourClass, OneProtocol {
+    var fullName: String = &quot;EOC&quot;
+    func classname() {
+        print(&quot;FiveClass&quot;)
+    }
+    static func classMethod() {
+        print(&quot;classMethod&quot;)
+    }
+    func changeProperty() {    }
+}
+
+//委托协议
+protocol TwoProtocol {
+
+}
+class SixClass {
+    var delegate: OneProtocol?
+    var delegateTwo: (OneProtocol &amp; TwoProtocol)?
+}
+
+//可选
+@objc protocol ThreeProtocol {
+    @objc optional func className()
+}
+class SevenClass: ThreeProtocol {
+    //如果是继承OneProtocol会报错，因为OneProtocol里的方法是必须继承的，而ThreeProtocol里的方法是可选的，因为有@objc
+    //let sevenClass: SevenClass = SevenClass()
+    //(sevenClass as ThreeProtocol).className?()
+}
+
+//7. 泛型 方法中通常用一个字母T来命名类型参数
+func swapTwoInts(num1: inout Int, num2: inout Int) {
+    let tempA = num1
+    num1 = num2
+    num2 = tempA
+}
+func swapTwo&lt;T&gt;(num1: inout T, num2: inout T) {
+    let tempA = num1
+    num1 = num2
+    num2 = tempA
+}
+struct Stack&lt;T&gt; {
+    var items = [T]()
+    mutating func push(item: T) {
+        items.append(item)
+    }
+    mutating func pop() -&gt; T {
+        return items.removeLast()
+    }
+}
+
+// 8. 运算符重载
+struct Vector2D {
+    var x = 1.0
+    var y = 1.0
+    //不是成员方法 参数被命名为left，right，代表 + 左右两个Vector2D对象
+    static func + (left: Vector2D, right: Vector2D) -&gt; Vector2D {
+        return Vector2D(x: left.x+right.x, y: left.y+right.y)
+    }
+    static prefix func ++ (left: inout Vector2D) {
+        left.x = left.x + 1
+        left.y = left.y + 1
+    }
+}
+</code></pre></li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/31/Swift编码规范/" rel="next" title="Swift编码规范">
+                <i class="fa fa-chevron-left"></i> Swift编码规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/09/25/Swift实战/" rel="prev" title="Swift实战">
+                Swift实战 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

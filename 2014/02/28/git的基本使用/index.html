@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇文章是建立在技术大牛“偶尔的网事”的一篇博客的基础上的,然后对其做了一些优化和扩展 GIT入门 Git是神马？  一个开源的分布式版本控制系统，可以有效的高速的控制管理各种从小到大的项目版本。他的作者就是大名鼎鼎的Linux系统创始人Linus。  分布式又是神马？  集中式就是把版本库集中放在某个中央服务器上（可以是局域网），然后每个人每次要使用时跟服务器进行通信  分布式和集中式最大的区别">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git的基本使用">
+<meta property="og:url" content="https://frandfeng.github.io/2014/02/28/git的基本使用/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="本篇文章是建立在技术大牛“偶尔的网事”的一篇博客的基础上的,然后对其做了一些优化和扩展 GIT入门 Git是神马？  一个开源的分布式版本控制系统，可以有效的高速的控制管理各种从小到大的项目版本。他的作者就是大名鼎鼎的Linux系统创始人Linus。  分布式又是神马？  集中式就是把版本库集中放在某个中央服务器上（可以是局域网），然后每个人每次要使用时跟服务器进行通信  分布式和集中式最大的区别">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T07:50:43.961Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git的基本使用">
+<meta name="twitter:description" content="本篇文章是建立在技术大牛“偶尔的网事”的一篇博客的基础上的,然后对其做了一些优化和扩展 GIT入门 Git是神马？  一个开源的分布式版本控制系统，可以有效的高速的控制管理各种从小到大的项目版本。他的作者就是大名鼎鼎的Linux系统创始人Linus。  分布式又是神马？  集中式就是把版本库集中放在某个中央服务器上（可以是局域网），然后每个人每次要使用时跟服务器进行通信  分布式和集中式最大的区别">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2014/02/28/git的基本使用/">
+
+
+
+
+
+  <title>git的基本使用 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/02/28/git的基本使用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">git的基本使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-02-28T00:00:00+08:00">
+                2014-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/git/" itemprop="url" rel="index">
+                    <span itemprop="name">git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇文章是建立在技术大牛“偶尔的网事”的一篇<a href="http://blog.csdn.net/jackystudio/article/details/12271811" target="_blank" rel="noopener">博客</a>的基础上的,然后对其做了一些优化和扩展</p>
+<h2 id="GIT入门"><a href="#GIT入门" class="headerlink" title="GIT入门"></a>GIT入门</h2><ol>
+<li><p>Git是神马？</p>
+<p> 一个开源的分布式版本控制系统，可以有效的高速的控制管理各种从小到大的项目版本。他的作者就是大名鼎鼎的Linux系统创始人Linus。</p>
+</li>
+<li><p>分布式又是神马？</p>
+<p> 集中式就是把版本库集中放在某个中央服务器上（可以是局域网），然后每个人每次要使用时跟服务器进行通信</p>
+<p> 分布式和集中式最大的区别就是它没有中央服务器这么一说，每台电脑都是一个服务器，每台电脑都拥有一个完整的版本库</p>
+</li>
+<li><p>Git经典的开发流程</p>
+</li>
+<li>其它版本控制系统</li>
+<li>Git的安装</li>
+<li>Git的使用</li>
+<li>设置用户名和Email<br> git config –global user.name “Your Name”<br> git config –global user.email “<a href="mailto:YourEmail@example.com" target="_blank" rel="noopener">YourEmail@example.com</a>“<br> 或：修改.git\config<br> [user]<br> name = YourName<br> emai= <a href="mailto:YourEmail@example.com" target="_blank" rel="noopener">YourEmail@example.com</a></li>
+</ol>
+<h2 id="GIT概念"><a href="#GIT概念" class="headerlink" title="GIT概念"></a>GIT概念</h2><ol>
+<li><p>分支（Braches）</p>
+<p> 一个分支意味着它是一个独立拥有自己历史版本信息的代码线。你可以从已有的代码中生成一个新的分支，这个分支与其余的分支完全独立。默认的分支叫做master。用户可以选择一个分支，选择一个分支叫做Checkout.</p>
+</li>
+<li><p>提交（Commit）</p>
+<p> 当你提交你的更改到Git库中，它将创建一个新的提交对象。这个提交对象会有一个新版本的唯一标识。本次修订后，可以检索，例如，如果你想看到一个旧版本的源代码。每个提交对象中都会包含修改者和提交者，从而有可以确定是谁做了改变。修改者和提交者，可以是不同的人。</p>
+</li>
+<li><p>头（HEAD）</p>
+<p> 头是一个象征性的参考，最常用以指向当前选择的分支。</p>
+</li>
+<li><p>仓库（Repository）</p>
+<p> 仓库包含了随着时间的推移和各种不同的分支和标签不同版本历史。在Git仓库的每个副本是一个完整的信息库。你可以从仓库中获取你的工作副本.</p>
+</li>
+<li><p>修订（Revision）</p>
+<p> 表示代码的一个版本状态。Git通过用SHA1 hash算法表示的ID来标识不同的版本。每一个 SHA1 ID都是160位长，16进制标识的字符串。</p>
+</li>
+<li><p>标记（Tags）</p>
+<p> 标记指的是某个分支某个特定时间点的状态。通过标记，可以很方便的切换到标记时的状态。</p>
+</li>
+<li><p>URL</p>
+<p> URL决定了仓库所在的位置。</p>
+</li>
+<li><p>工作树/区（Working tree）</p>
+<p> 工作区中包含了仓库的工作文件。您可以修改的内容和提交更改作为新的提交到仓库。</p>
+</li>
+<li><p>暂存区（Staging area）</p>
+<p> 暂存区是工作区用来提交更改（commit）前可以暂存工作区的变化。暂存区包含了工作区的一系列更改快照，这些快照可以用来创建新的提交。</p>
+</li>
+<li><p>索引（Index）</p>
+<p>索引是暂存区的另一种术语。</p>
+</li>
+<li><p>工作区，暂存区和版本库的关系</p>
+<p>工作区(添加选择的改变/git add)-&gt;暂存区(提交改变/git commit)-&gt;版本库</p>
+</li>
+<li><p>一些常用的git指令</p>
+<pre><code>add        Add file contents to the index  
+bisect     Find by binary search the change that introduced a bug  
+branch     List, create, or delete branches  
+checkout   Checkout a branch or paths to the working tree  
+clone      Clone a repository into a new directory  
+commit     Record changes to the repository  
+diff       Show changes between commits, commit and working tree, etc  
+fetch      Download objects and refs from another repository  
+   grep       Print lines matching a pattern  
+   init       Create an empty Git repository or reinitialize an existing one  
+   log        Show commit logs  
+   merge      Join two or more development histories together  
+   mv         Move or rename a file, a directory, or a symlink  
+   pull       Fetch from and integrate with another repository or a local branch  
+push       Update remote refs along with associated objects  
+rebase     Forward-port local commits to the updated upstream head  
+reset      Reset current HEAD to the specified state  
+rm         Remove files from the working tree and from the index  
+show       Show various types of objects  
+status     Show the working tree status  
+tag        Create, list, delete or verify a tag object signed with GPG
+</code></pre></li>
+</ol>
+<h2 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h2><ol>
+<li><p>创建一个空目录</p>
+<p> 《git init》用于初始化版本仓库</p>
+<p> 进入d盘目录<br> $ cd /d</p>
+<p> 创建JackyGit文件夹<br> $ mkdir JackyGit</p>
+<p> 进入JackyGit文件夹<br> $ cd JackyGit    </p>
+<p> #显示当前所在路径<br> $ pwd</p>
+</li>
+<li><p>创建Git仓库</p>
+<p> 初始化当前目录作为Git仓库  </p>
+<p> $ git init<br> Initialized empty Git repository in d:/JackyGit/.git/</p>
+</li>
+<li><p>添加文件到仓库中</p>
+<p> 创建JackyDir目录<br> $ mkdir JackyDir    </p>
+<p> 添加JackyData.txt<br> $ touch JackyDir/JackyData01.txt    </p>
+<p> 添加JackyData01，并把当前目录信息输入<br> $ ls&gt;Jackydata01    </p>
+<p> 添加JackyData02，并输入HelloJacky<br> $ echo “HellloJacky” &gt;JackyData02    </p>
+<p> 添加JackyData02，并输入HiJacky<br> $ echo “HiJacky” &gt; JackyData03</p>
+</li>
+<li><p>看一下当前Git仓库的状态吧</p>
+<p> 《git status》用于显示当前版本库状态</p>
+<p> 确认当前git仓库状态，可以看到untracked文件和目录为红色（高亮）  </p>
+<pre><code>$ git status    
+# On branch master    
+#    
+# Initial commit    
+#    
+# Untracked files:    
+#   (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)    
+#    
+#       JackyData02    
+#       JackyData03    
+#       JackyDir/    
+#       Jackydata01    
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)
+</code></pre></li>
+<li><p>增加文件到暂存区</p>
+<p> 《git add 文件》用于添加文件到暂存区</p>
+<p> 增加所有文件到暂存区<br> $ git add .</p>
+</li>
+<li><p>再看一下当前Git仓库的状态</p>
+<p> 确认当前git仓库状态，可以看到变成了待提交的更改，文件和目录也变为绿色（高亮）  </p>
+<pre><code>$ git status    
+# On branch master    
+#    
+# Initial commit    
+#    
+# Changes to be committed:    
+#   (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)    
+#    
+#       new file:   JackyData02    
+#       new file:   JackyData03    
+#       new file:   JackyDir/JackyData.txt    
+#       new file:   Jackydata01    
+</code></pre></li>
+<li><p>提交更改</p>
+<p> 《git commit -m “提交信息”》用于提交更改</p>
+<p> “init AddFiles”是本次提交的注释，4个文件被改变，4个新插入    </p>
+<pre><code>$ git commit -m &quot;init AddFiles&quot;    
+[master (root-commit) aea0365] init AddFiles    
+ 4 files changed, 4 insertions(+)    
+ create mode 100644 JackyData02    
+ create mode 100644 JackyData03    
+ create mode 100644 JackyDir/JackyData.txt    
+ create mode 100644 Jackydata01
+</code></pre></li>
+<li><p>再看一下状态没意见吧</p>
+<p> 在主分支上没东西可以提交了，工作目录是干净的    </p>
+<pre><code>$ git status    
+# On branch master    
+nothing to commit, working directory clean
+</code></pre></li>
+<li><p>注意</p>
+<p> 回车(CR, ASCII 13, \r) ，换行(LF, ASCII 10, \n)。这两个ACSII字符不会在屏幕有任何输出，但在Windows中广泛使用来CRLF（回车换行）标识一行的结束。而在Linux/UNIX系统中只有LF（换行符）。</p>
+</li>
+</ol>
+<h2 id="操作项目"><a href="#操作项目" class="headerlink" title="操作项目"></a>操作项目</h2><ol>
+<li><p>查看操作日记</p>
+<p> 《git log》用于查看操作日记详情。因为Git是分布式的，采用SHA1这样的版本号可有效的防止版本冲突</p>
+<p> 查看操作日记，底下那串长长的数据就是SHA1 ID，表示当前版本号  </p>
+<pre><code>$ git log  
+commit aea0365712908805bc28540b4db9fd2f15360a8b  
+Author: Jacky &lt;fusijie@vip.qq.com&gt;  
+Date:   Fri Sep 27 15:15:48 2013 +0800  
+init AddFiles 
+</code></pre></li>
+<li><p>修改项目内容</p>
+<p> 修改JackyData01内容  </p>
+<pre><code>$ echo &quot;HelloGit&quot; &gt; JackyData01
+</code></pre></li>
+<li><p>查看当前状态</p>
+<p> 查看版本库状态，可以看到红色的JackyData01被修改过 </p>
+<pre><code>$ git status  
+# On branch master  
+# Changes not staged for commit:  
+#   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)  
+#   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)  
+#  
+#       modified:   Jackydata01  
+#  
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre></li>
+<li><p>提交修改</p>
+<p> 这里使用《git commit -a -m “提交信息”》可以省掉先放到暂存区的操作，直接提交。<br> 直接提交修改  </p>
+<pre><code>$ git commit -a -m &quot;modify JackyData01&quot;  
+[master cba8800] modify JackyData01  
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+</code></pre></li>
+<li><p>查看操作日记</p>
+<p> 还用《git log》，不过这次我们给它添加一个参数，这样浏览起来会方便很多。</p>
+<p> 单行显示，只显示版本号和备注  </p>
+<pre><code>$ git log --pretty=oneline  
+cba8800f2daaf4075a506b6d763798ea15ba11cc modify JackyData01  
+aea0365712908805bc28540b4db9fd2f15360a8b init AddFiles
+</code></pre></li>
+<li><p>查看不同</p>
+<p> 《git diff》用于比较上一次提交和当前版本的差异。</p>
+<p> 修改JackyData02的内容为HelloGit<br> $ echo “HelloGit” &gt; JackyData02  </p>
+<p> 使用Git diff查看差异，可以看到HelloJacky被删除了，而HelloGit被添加了  </p>
+<pre><code>$ git diff  
+diff --git a/JackyData02 b/JackyData02  
+index 85d5336..1da19b8 100644  
+--- a/JackyData02  
++++ b/JackyData02  
+@@ -1 +1 @@  
+-HellloJacky  
++HelloGit
+</code></pre></li>
+<li><p>提交修改并打开Git GUI界面</p>
+<p> 《gitk –all》用于打开Git的GUI界面</p>
+<p> 提交修改  </p>
+<pre><code>$ git add . &amp;&amp; git commit -m &quot;modify JackyData02&quot;  
+[master a5f6601] modify JackyData02  
+1 file changed, 1 insertion(+), 1 deletion(-)  
+</code></pre><p> 打开GUI界面  </p>
+<pre><code>$ gitk --all
+</code></pre></li>
+<li><p>修改提交信息</p>
+<p> 使用《git commit –amend》可以修改上次提交的信息。</p>
+<p> 重新修改上次提交信息  </p>
+<pre><code>$ git commit --amend -m &quot;amend modify JackyData02&quot;  
+[master a25c588] amend modify JackyData02  
+1 file changed, 1 insertion(+), 1 deletion(-)  
+</code></pre><p> 最后一次的提交信息被修改  </p>
+<pre><code>$ git log --pretty=oneline  
+a25c58804cb3f4045564fc0ec6a4e6eb4dae7072 amend modify JackyData02  
+cba8800f2daaf4075a506b6d763798ea15ba11cc modify JackyData01  
+aea0365712908805bc28540b4db9fd2f15360a8b init AddFiles 
+</code></pre></li>
+<li><p>删除项目内容</p>
+<p> 删除了某一项版本控制下的内容，使用《git add .》无法在索引中删除该文件。需使用《git commit -a -m “提交信息”》或者《git add -A . git commit -m “提交信息”》才能达到删除的目的。</p>
+<p> 移除JackyData03文件<br> $ rm JackyData03  </p>
+<p> 使用git add . 提示警告，同时调用git status，发现并没有正常提交</p>
+<pre><code>$ git add . &amp;&amp; git commit -m &quot;remove JackyData03&quot;  
+warning: You ran &apos;git add&apos; with neither &apos;-A (--all)&apos; or &apos;--ignore-removal&apos;,  
+whose behaviour will change in Git 2.0 with respect to paths you removed.  
+Paths like &apos;JackyData03&apos; that are  
+removed from your working tree are ignored with this version of Git.  
+
+* &apos;git add --ignore-removal &lt;pathspec&gt;&apos;, which is the current default,  
+  ignores paths you removed from your working tree.  
+
+* &apos;git add --all &lt;pathspec&gt;&apos; will let you also record the removals.  
+
+    Run &apos;git status&apos; to check the paths you removed from your working tree.  
+
+    # On branch master  
+    # Changes not staged for commit:  
+    #   (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)  
+    #   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)  
+    #  
+    #       deleted:    JackyData03  
+    #  
+    no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre><p> 使用git commit -a -m 提交删除  </p>
+<pre><code>$ git commit -a -m &quot;remove JackyData03&quot;  
+[master c5c83cf] remove JackyData03  
+ 1 file changed, 1 deletion(-)  
+ delete mode 100644 JackyData03
+</code></pre></li>
+</ol>
+<h2 id="版本管理"><a href="#版本管理" class="headerlink" title="版本管理"></a>版本管理</h2><ol>
+<li><p>版本回退</p>
+<p> git reset用于版本回退，首先我们必须先知道当前版本是哪个，git用HEAD来表示当前版本。HEAD^表示上一个版本，HEAD^^表示上上个版本，HEAD~100表示往前100个版本</p>
+<p> 回退到上一个版本  </p>
+<pre><code>$ git reset --hard HEAD^  
+HEAD is now at a25c588 amend modify JackyData02
+</code></pre><p> 注意：</p>
+<ul>
+<li>–hard参数会把源码也给回退到指定版本，如果不用–hard，源码不会修改，只会回退，这时候如果想回退源码，需要再用git checkout<file>命令恢复。</file></li>
+<li><p>reset只对本地仓库有效，而对远程仓库无效。如果要reset远程版本，可以这么做：</p>
+<ul>
+<li>先不要在本地reset，而是先创建一个分支old_master，并切换到old_master分支。</li>
+<li>push old_master分支到远程仓库。</li>
+<li>在old_master分支上reset版本，并删除本地的master分支和远程的master分支。</li>
+<li>创建本地分支master，推送到远程分支master，此时远程分支会新建master。</li>
+<li>删除本地old_master分支和远程old_master分支。</li>
+</ul>
+<p>以上操作都是属于比较危险的操作，需谨慎处理。</p>
+</li>
+</ul>
+</li>
+<li><p>版本选择</p>
+<pre><code>$ git reflog  
+c5c83cf HEAD@{0}: reset: moving to c5c83c  
+a25c588 HEAD@{1}: reset: moving to HEAD^  
+c5c83cf HEAD@{2}: commit: remove JackyData03  
+a25c588 HEAD@{3}: commit (amend): amend modify JackyData02  
+a5f6601 HEAD@{4}: commit: modify JackyData02  
+cba8800 HEAD@{5}: commit: modify JackyData01  
+aea0365 HEAD@{6}: commit (initial): init AddFiles 
+</code></pre><p> 还是使用reset，直接选择要切换的版本号  </p>
+<pre><code>$ git reset --hard c5c83c  
+HEAD is now at c5c83cf remove JackyData03
+</code></pre></li>
+<li><p>撤销修改</p>
+<ul>
+<li><p>工作区</p>
+<p>git checkout –file可以撤销工作区的修改</p>
+<p>撤销JAckydata01的改动<br>$ git checkout – Jackydata01  </p>
+<p>看一下当前Git仓库的状态，干净的  </p>
+<p>  $ git status  </p>
+<h1 id="On-branch-master"><a href="#On-branch-master" class="headerlink" title="On branch master"></a>On branch master</h1><p>  nothing to commit, working directory clean  </p>
+</li>
+<li><p>暂存区</p>
+<p>撤回到工作区的修改  </p>
+<p>  $ git reset HEAD Jackydata01<br>  Unstaged changes after reset:<br>  M       Jackydata01  </p>
+</li>
+<li><p>已提交到版本库</p>
+<p>如果已经提交到版本库，那么使用1.版本回退功能吧</p>
+</li>
+<li><p>其他撤销指令</p>
+<p>其他撤销指令诸如git clean和git revert请自行尝试。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><ol>
+<li><p>创建一个本地远程仓库</p>
+<p> 使用git clone –bare来创建一个本地远程仓库。<br> 1个点表示当前目录，2个点表示父目录  </p>
+<pre><code>$ git clone --bare . ../remote-jackygit.git  
+Cloning into bare repository &apos;../remote-jackygit.git&apos;...  
+done.
+</code></pre></li>
+<li><p>推送更改到远程仓库</p>
+<p> 使用git push推送到远程仓库</p>
+<p> 修改Jackydata01  </p>
+<pre><code>$ echo &quot;HelloRemoteJackyRepo&quot; &gt; JackyData01  
+</code></pre><p> 提交更改  </p>
+<pre><code>$ git commit -a -m &quot;modify to remotejackyrepo&quot;  
+[master e14f4a3] modify to remotejackyrepo  
+ 1 file changed, 1 insertion(+), 1 deletion(-)  
+</code></pre><p> 推送到远程仓库  </p>
+<pre><code>$ git push ../remote-jackygit.git  
+Counting objects: 5, done.  
+Delta compression using up to 2 threads.  
+Compressing objects: 100% (2/2), done.  
+Writing objects: 100% (3/3), 282 bytes | 0 bytes/s, done.  
+Total 3 (delta 1), reused 0 (delta 0)  
+To ../remote-jackygit.git  
+  03150c9..e14f4a3  master -&gt; master  
+</code></pre></li>
+<li><p>添加远程仓库</p>
+<p> 添加一个远程仓库，取名为testremote  </p>
+<pre><code>$ git remote add testremote ../remote-jackygit.git
+</code></pre></li>
+<li><p>查看远程仓库信息</p>
+<p> 这里使用git remote，git remote -v和git remote show即可。</p>
+<p> 查看远程仓库  </p>
+<pre><code>$ git remote  
+testremote  
+</code></pre><p> 查看远程仓库详细信息  </p>
+<pre><code>$ git remote -v  
+testremote      ../remote-jackygit.git (fetch)  
+testremote      ../remote-jackygit.git (push)  
+</code></pre><p> 查看远程仓库详细信息  </p>
+<pre><code>$ git remote show testremote  
+* remote testremote  
+  Fetch URL: ../remote-jackygit.git  
+  Push  URL: ../remote-jackygit.git  
+  HEAD branch: master  
+  Remote branch:  
+    master tracked  
+  Local ref configured for &apos;git push&apos;:  
+    master pushes to master (up to date) 
+</code></pre></li>
+<li><p>克隆仓库</p>
+<p> 把一个远程仓库克隆到本地,，还是一样使用git clone命令。</p>
+<p> 返回上级目录<br> $ cd ..  </p>
+<p> 新建jackygit2目录<br> $ mkdir jackygit2  </p>
+<p> 进入jackygit2目录<br> $ cd jackygit2  </p>
+<p> 将远程仓库克隆到当前目录（jackygit2）  </p>
+<pre><code>$ git clone ../remote-jackygit.git .  
+Cloning into &apos;.&apos;...  
+done.  
+</code></pre></li>
+<li><p>Push和Pull</p>
+<p> （1）Push：jackygit先将修改内容推送给远程仓库。</p>
+<p> 修改JackyData01内容<br> $ echo “Hi Jackygit2” &gt;jackydata01  </p>
+<p> 提交更改  </p>
+<pre><code>$ git commit -a -m &quot;hi jackygit2&quot;  
+[master 6937dbd] hi jackygit2  
+ 1 file changed, 1 insertion(+), 1 deletion(-)  
+</code></pre><p> 推送到远程仓库，这里就可以直接使用testremote  </p>
+<pre><code>$ git push testremote  
+Counting objects: 5, done.  
+Delta compression using up to 2 threads.  
+Compressing objects: 100% (2/2), done.  
+Writing objects: 100% (3/3), 267 bytes | 0 bytes/s, done.  
+Total 3 (delta 1), reused 0 (delta 0)  
+To ../remote-jackygit.git  
+   8ad0c22..6937dbd  master -&gt; master  
+</code></pre><p> （2）Pull：jackygit2从远程仓库中拉取最新版本。</p>
+<p> 进入jackygit2目录<br> $ cd ../jackygit2  </p>
+<p> 拉取远程仓库最新版本  </p>
+<pre><code>$ git pull origin  
+remote: Counting objects: 5, done.  
+remote: Compressing objects: 100% (2/2), done.  
+remote: Total 3 (delta 1), reused 0 (delta 0)  
+Unpacking objects: 100% (3/3), done.  
+From d:/jackygit2/../remote-jackygit  
+   8ad0c22..6937dbd  master     -&gt; origin/master  
+Updating 8ad0c22..6937dbd  
+Fast-forward  
+ Jackydata01 | 2 +-  
+ 1 file changed, 1 insertion(+), 1 deletion(-)  
+</code></pre><p> 查看版本库状态，干净的  </p>
+<pre><code>$ git status  
+# On branch master  
+nothing to commit, working directory clean  
+</code></pre></li>
+<li><p>移除远程仓库</p>
+<p> 移除远程仓库使用git remote rm即可</p>
+<p> 移除testremote<br> $git remote rm testremote</p>
+</li>
+<li><p>注意</p>
+<p> 如果在使用git push的时候，出现如下警告：</p>
+<pre><code>warning: push.default is unset; its implicit value is changing in Git 2.0 from &apos;matching&apos; to &apos;simple&apos;......
+git config --global push.default simple
+</code></pre></li>
+</ol>
+<h3 id="GIT和GITHUB"><a href="#GIT和GITHUB" class="headerlink" title="GIT和GITHUB"></a>GIT和GITHUB</h3><ol>
+<li>github是神马？</li>
+<li>注册帐号</li>
+<li>设置SSH</li>
+<li><p>添加github仓库</p>
+<pre><code>$ git remote add git_github git@github.com:fusijie/JackyGit.git
+$ git remote add http_github https://github.com/fusijie/JackyGit.git
+</code></pre></li>
+<li><p>本地库推送到github</p>
+<pre><code>$ git push -u git_github master
+</code></pre></li>
+<li><p>从github克隆到本地</p>
+<p> 返回上级目录<br> $ cd ..  </p>
+<p> 新建jackygit3目录<br> $ mkdir jackygit3  </p>
+<p> 进入jackygit3目录<br> $ cd jackygit3  </p>
+<p> 从github克隆到本地库  </p>
+<pre><code>$ git clone git@github.com:fusijie/JackyGit.git  
+Cloning into &apos;JackyGit&apos;...  
+remote: Counting objects: 38, done.  
+remote: Compressing objects: 100% (15/15), done.  
+remote: Total 38 (delta 9), reused 38 (delta 9)  
+Receiving objects: 100% (38/38), done.  
+Resolving deltas: 100% (9/9), done.  
+Checking connectivity... done
+</code></pre></li>
+</ol>
+<h2 id="分支管理"><a href="#分支管理" class="headerlink" title="分支管理"></a>分支管理</h2><ol>
+<li><p>分支又是神马？</p>
+<p> 分支就是一个我们能通过它创建出独立代码副本的东东</p>
+</li>
+<li><p>显示分支</p>
+<p> 通过《git branch》可以显示分支，前面带*号的表示当前所在的分支</p>
+<p> 显示分支  </p>
+<pre><code>$ git branch  
+* master  
+</code></pre></li>
+<li><p>创建分支</p>
+<p> 通过《git branch 分支名》可以创建一个新的分支</p>
+<pre><code>创建分支br  
+$ git branch br
+</code></pre></li>
+<li><p>切换分支</p>
+<pre><code>切换到br分支  
+$ git checkout br  
+Switched to branch &apos;br&apos;
+</code></pre></li>
+<li><p>修改分支内容并提交</p>
+<pre><code>修改br分支中的Jackydata01  
+$ echo &quot;Im in br now&quot; &gt; Jackydata01  
+
+提交br分支中的修改  
+$ git commit -a -m &quot;modify in br&quot;  
+[br 9ad62b7] modify in br  
+ 1 file changed, 1 insertion(+), 1 deletion(-)  
+
+显示br中Jackydata01内容，成功修改  
+$ cat jackydata01  
+Im in br now
+</code></pre></li>
+<li><p>返回主分支，确认修改</p>
+<p> 发现主分支master的内容并无修改，在分支中修改提交内容并不会影响其他分支</p>
+<pre><code>#切换到master  
+$ git checkout master  
+Switched to branch &apos;master&apos;  
+
+#显示br中Jackydata01内容，无修改  
+$ cat jackydata01  
+Hi Jackygit2
+</code></pre></li>
+<li><p>推送分支到远程仓库</p>
+<p> 默认情况下，git只会推送已匹配的分支，所以如果新建分支，需要手动推送到远程仓库</p>
+<pre><code>#推送br到github的br上，如果不存在则新建，存在则更新  
+$ git push git_github br:br  
+Counting objects: 5, done.  
+Delta compression using up to 2 threads.  
+Compressing objects: 100% (2/2), done.  
+Writing objects: 100% (3/3), 265 bytes | 0 bytes/s, done.  
+Total 3 (delta 1), reused 0 (delta 0)  
+To git@github.com:fusijie/JackyGit.git  
+ * [new branch]      br -&gt; br 
+</code></pre></li>
+</ol>
+<ol start="8">
+<li><p>本地合并分支</p>
+<p> 使用git merge 分支名来合并分支，不过前提是要先切换到master上，如果在br上合并是没用的</p>
+<pre><code>#合并br到主分支上  
+$ git merge br  
+Updating 6937dbd..9ad62b7  
+Fast-forward  
+ Jackydata01 | 2 +-  
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+</code></pre></li>
+<li><p>合并本地分支到远程分支</p>
+<pre><code>#把本地的br分支合并到远程仓库的master中  
+$ git push git_github br:master  
+Total 0 (delta 0), reused 0 (delta 0)  
+To git@github.com:fusijie/JackyGit.git  
+   61a92ec..be39e3f  br -&gt; master
+</code></pre></li>
+<li><p>删除分支</p>
+<p>删除分支使用《git branch -d 分支名》来删除，如果分支被修改提交过但是没有被合并，那需要使用《git branch -D 分支名》来删除</p>
+<pre><code>#删除br分支  
+$ git branch -d br  
+Deleted branch br (was 9ad62b7).  
+
+#确认当前分支  
+$ git branch  
+* master
+</code></pre></li>
+<li><p>删除远程分支</p>
+<pre><code>#删除远程br分支  
+$ git push git_github :br  
+To git@github.com:fusijie/JackyGit.git  
+ - [deleted]         br 
+</code></pre></li>
+<li><p>显示远程分支</p>
+<pre><code>可以使用-a显示所有分支或-r参数来显示远程分支
+#显示远程分支  
+$ git branch -a  
+* master  
+  remotes/git_github/master  
+  testremote/maste
+</code></pre></li>
+<li><p>克隆远程分支到本地</p>
+<p>《git checkout -b 分支名》表示本地创建分支并切换到该分支</p>
+</li>
+<li><p>清理远程分支</p>
+<p>git remote prune origin 把本地不存在的远程分支删除</p>
+</li>
+</ol>
+<h2 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h2><ol>
+<li><p>多人协作冲突</p>
+<p> （1）修改jackygit2</p>
+<p> 在jackygit2中修改jackydata01，提交修改并推送到远程仓库（这里使用本地远程仓库）。正常，没问题</p>
+<pre><code>#切换到jackygit2本地库，这是远程仓库那节建立的，从本地远程仓库克隆而来  
+$ cd ../jackygit2  
+
+#修改jackygit2/Jackydata01  
+$ echo &quot;It&apos;s modified in jackygit2&quot; &gt; jackydata01  
+
+#提交jackygit2的修改  
+$ git commit -a -m &quot;jackygit2 modify&quot;  
+[master 15a6406] jackygit2 modify  
+ 1 file changed, 1 insertion(+), 1 deletion(-)  
+
+#推送到远程仓库origin  
+$ git push origin  
+Counting objects: 5, done.  
+Delta compression using up to 2 threads.  
+Compressing objects: 100% (2/2), done.  
+Writing objects: 100% (3/3), 283 bytes | 0 bytes/s, done.  
+Total 3 (delta 1), reused 0 (delta 0)  
+To d:/jackygit2/../remote-jackygit.git  
+   c0449de..15a6406  master -&gt; master
+</code></pre><p> （2）修改jackygit</p>
+<p> 切换到jackygit仓库，同样修改jackydata01，提交修改并推送到远程仓库。这时候就出错了，提示有人改过这个文件了。推送不成功。</p>
+<pre><code>#切换到jackygit  
+$ cd ../jackygit  
+
+#修改jackygit/Jackydata01  
+$ echo &quot;It&apos;s modified in jackygit&quot; &gt;jackydata01  
+
+#提交jackygit的修改  
+$ git commit -a -m &quot;jackygit modify&quot;  
+[master 9ab7206] jackygit modify  
+ 1 file changed, 1 insertion(+), 1 deletion(-)  
+</code></pre><p> 推送到远程仓库testremote，这个仓库和上面的origin是同一个远程仓库 </p>
+<pre><code>$ git push testremote  
+To ../remote-jackygit.git  
+ ! [rejected]        master -&gt; master (fetch first)  
+error: failed to push some refs to &apos;../remote-jackygit.git&apos;  
+hint: Updates were rejected because the remote contains work that you do  
+hint: not have locally. This is usually caused by another repository pushing  
+hint: to the same ref. You may want to first integrate the remote changes  
+hint: (e.g., &apos;git pull ...&apos;) before pushing again.  
+hint: See the &apos;Note about fast-forwards&apos; in &apos;git push --help&apos; for details.
+</code></pre><p> （3）抓取远程仓库内容</p>
+<pre><code>#抓取远程仓库中的文件，需要指定分支  
+$ git pull testremote master  
+From ../remote-jackygit  
+ * branch            master     -&gt; FETCH_HEAD  
+Auto-merging Jackydata01  
+CONFLICT (content): Merge conflict in Jackydata01  
+Automatic merge failed; fix conflicts and then commit the result.
+</code></pre><p> （4）查看冲突文件内容</p>
+<pre><code>冲突用&lt;&lt;&lt;&lt;&lt;&lt; ====== &gt;&gt;&gt;&gt;&gt;&gt;隔开冲突代码，上面的是当前修改内容，下面的则是别人修改的内容。
+#输出当前jackydata01内容  
+$ cat jackydata01  
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD  
+It&apos;s modified in jackygit  
+=======  
+It&apos;s modified in jackygit2  
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 15a6406ed7f889bab7e812f9e6bedb6e78431232
+</code></pre><p> （5）解决冲突</p>
+<pre><code>#修改Jackydata01产生的冲突  
+$ echo &quot;there is no conflict now&quot; &gt; jackydata01  
+
+#提交修改冲突后文件  
+$ git commit -a -m &quot;there is no confilct now&quot;  
+[master ac2846f] there is no confilct now  
+
+#推送到远程仓库testremote  
+$ git push testremote  
+Counting objects: 10, done.  
+Delta compression using up to 2 threads.  
+Compressing objects: 100% (4/4), done.  
+Writing objects: 100% (6/6), 567 bytes | 0 bytes/s, done.  
+Total 6 (delta 2), reused 0 (delta 0)  
+To ../remote-jackygit.git  
+   15a6406..ac2846f  master -&gt; master
+</code></pre></li>
+<li><p>分支合并冲突</p>
+<p> 这种情况和多人协作冲突处理办法是相似的。在这里也模拟一下</p>
+<p> （1）创建分支并修改内容</p>
+<pre><code>#创建并跳转到分支br  
+$ git checkout -b br  
+Switched to a new branch &apos;br&apos;  
+
+#修改br分支中的Jackydata01  
+$ echo &quot;It&apos;s modified in br&quot; &gt; jackydata01  
+
+#提交br分支中的修改  
+$ git commit -a -m &quot;br modify&quot;  
+[br 32c8755] br modify  
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+</code></pre><p> （2）跳转到主分支，同样进行内容修改</p>
+<pre><code>#跳转到master分支  
+$ git checkout master  
+Switched to branch &apos;master&apos;  
+
+#修改master分支中的jackydata01  
+$ echo &quot;It&apos;s modified in master&quot; &gt; jackydata01  
+
+#提交master分支中的修改  
+$ git commit -a -m &quot;master modify&quot;  
+[master ed84e67] master modify  
+ 1 file changed, 1 insertion(+), 1 deletion(-) 
+</code></pre><p> （3）合并分支</p>
+<pre><code>#合并br到主分支上  
+$ git merge br  
+Auto-merging Jackydata01  
+CONFLICT (content): Merge conflict in Jackydata01  
+Automatic merge failed; fix conflicts and then commit the result.
+</code></pre><p> （4）显示冲突文件内容，冲突隔开方式如上所述</p>
+<pre><code>#显示br中Jackydata01内容  
+$ cat jackydata01  
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD  
+It&apos;s modified in master  
+=======  
+It&apos;s modified in br  
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; br
+</code></pre><p> （5）解决冲突，重新提交</p>
+<pre><code>修改Jackydata01产生的冲突  
+$ echo &quot;It&apos;s no conflict now&quot; &gt; jackydata01  
+
+#提交修改冲突后文件  
+$ git commit -a -m &quot;It&apos;s no conflict now&quot;  
+[master eb073a6] It&apos;s no conflict now
+</code></pre><p> （6）删除无效分支</p>
+<pre><code>#删除br分支  
+$ git branch -d br  
+Deleted branch br (was 32c8755).
+</code></pre></li>
+</ol>
+<h2 id="Rebase"><a href="#Rebase" class="headerlink" title="Rebase"></a>Rebase</h2><ol>
+<li><p>Rebase提交</p>
+<p> rebase命令允许你编辑你的提交历史，比如你可以把多个提交（commit）联合成一个，可以对它重新排序，跳掉某个提交或者编辑提交信息。这是非常有用的，当你要再推送到远程仓库之前要想重新编辑提交信息。以下举个例子把多个提交联合成一个。</p>
+<pre><code>#重复做一些无聊的修改和提交
+$ echo &quot;test_rebase1&quot; &gt; jackydata01  
+$ git commit -a -m &quot;test_rebase1&quot;  
+[master 128a2f5] test_rebase1  
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+#看一下log
+$ git log --pretty=oneline  
+897fa79def2cf256b7f14d0ec0fcb67e8f61a814 test_rebase5  
+7dff3e4ad7416f0370b4579393a0c8a8fc02efbd test_rebase4  
+37be873b514afd9d8f6536cd893eadc3e32b4966 test_rebase3  
+5ae88f5a0454066d820f6c1687b6d01f59f39dbd test_rebase2  
+128a2f5cdb325bcbdb26b35741fad2a2fba49832 test_rebase1  
+...还有很多
+#利用《git rebase》把最后5个（如上）提交联合为1个
+git rebase -i HEAD~5
+</code></pre></li>
+<li><p>Rebase分支</p>
+<p> 对多个分支进行rebase操作，rebase命令为一个分支的更改生成一个补丁，然后把这个补丁应用到另外一个分支上，那么最后的源代码和merge是一样的，使用这种方式进行分支的合并更为合理。</p>
+<pre><code>#创建并跳转到分支br  
+$ git branch br  
+
+$ git checkout br  
+Switched to branch &apos;br&apos;  
+
+#修改br分支中的Jackydata01  
+$ echo &quot;this wiil be rebase to master&quot; &gt;jackydata01  
+
+#提交br分支中的修改  
+$ git  commit -a -m &quot;rebase to master&quot;  
+[br 5c2a431] rebase to master  
+ 1 file changed, 1 insertion(+), 1 deletion(-)  
+
+#跳转到master分支  
+$ git checkout master  
+Switched to branch &apos;master&apos;  
+Your branch is ahead of &apos;origin/master&apos; by 1 commit.  
+  (use &quot;git push&quot; to publish your local commits)  
+
+#使用rebase把br的改变应用到master  
+$ git rebase br  
+First, rewinding head to replay your work on top of it...  
+Fast-forwarded master to br.  
+
+#显示master中jackydata01的内容  
+$ cat jackydata01  
+this wiil be rebase to master
+</code></pre></li>
+</ol>
+<h2 id="标签管理"><a href="#标签管理" class="headerlink" title="标签管理"></a>标签管理</h2><p>标签是啥？标签就是给某个版本的一个标记。</p>
+<ol>
+<li><p>为当前版本创建标签</p>
+<p> 使用《git tag 标签名》来给当前标签命名</p>
+<p> 切换到master  </p>
+<pre><code>$ git checkout master  
+Switched to branch &apos;master&apos;  
+</code></pre><p> 给master当前版本添加一个标签v1.0.0.0  </p>
+<pre><code>$ git tag v1.0.0.0
+</code></pre></li>
+<li><p>给指定版本创建标签</p>
+<p> 使用《git tag 标签名 版本号》来给指定版本创建标签</p>
+<p> 显示提交日记  </p>
+<pre><code>$ git log --pretty=oneline  
+eb073a62baf60ef7bf9952da5254aaf1d5736f45 It&apos;s no conflict now  
+ed84e67e7f509e127a8379be18ddbfc16c7c0359 master modify  
+32c87551dca76216a24bb93e5cdbc05cefc07e63 br modify  
+ac2846f459eb9acee95d78c7954e0f58758b6d52 there is no confilct now  
+9ab72067ba2ff1efca3999a40cc3ed1d981b01ad jackygit modify  
+15a6406ed7f889bab7e812f9e6bedb6e78431232 jackygit2 modify  
+...  
+</code></pre><p> 给eb073a创建标签v0.9.0.0</p>
+<pre><code>$ git tag v0.9.0.0 eb073a
+</code></pre></li>
+<li><p>查看标签</p>
+<p> 使用《git tag》查看标签</p>
+<p> 显示所有标签  </p>
+<pre><code>$ git tag  
+v0.9.0.0  
+v1.0.0.0
+</code></pre></li>
+<li><p>创建带有说明的标签</p>
+<p> 使用《git tag -a 标签名 -m “标签说明”  版本号》来创建带有说明的标签。</p>
+<p> 创建带有说明的标签 </p>
+<pre><code>$ git tag -a v0.8.0.0 -m &quot;beta version&quot; ed84e6
+</code></pre></li>
+<li><p>显示标签详情</p>
+<p> 使用《git show 标签》来显示标签详情<br> 显示标签说明  </p>
+<pre><code>$ git show v0.8.0.0  
+tag v0.8.0.0  
+Tagger: Jacky &lt;fusijie@vip.qq.com&gt;  
+Date:   Mon Sep 30 08:40:25 2013 +0800  
+
+beta version  
+
+commit ed84e67e7f509e127a8379be18ddbfc16c7c0359  
+Author: Jacky &lt;fusijie@vip.qq.com&gt;  
+Date:   Sun Sep 29 15:43:08 2013 +0800  
+
+master modify  
+
+diff --git a/Jackydata01 b/Jackydata01  
+index 276eae7..79e383b 100644  
+--- a/Jackydata01  
++++ b/Jackydata01  
+@@ -1 +1 @@  
+-there is no conflict now  
++It&apos;s modified in master
+</code></pre></li>
+<li><p>删除标签</p>
+<p> 使用《git tag -d 标签名》来删除某个标签。</p>
+<p> 删除某个标签  </p>
+<pre><code>$ git tag -d v0.9.0.0  
+Deleted tag &apos;v0.9.0.0&apos; (was eb073a6)  
+</code></pre><p> 显示标签  </p>
+<pre><code>$ git tag  
+v0.8.0.0  
+v1.0.0.0
+</code></pre></li>
+<li><p>推送某个标签到远程仓库</p>
+<p> 标签默认是存储在本地的，所以如果要推送到远程仓库，必须使用《git push 远程仓库名 标签名》</p>
+<p> 推送某个标签到远程仓库 </p>
+<pre><code>$ git push git_github v0.8.0.0  
+Counting objects: 35, done.  
+Delta compression using up to 2 threads.  
+Compressing objects: 100% (21/21), done.  
+Writing objects: 100% (31/31), 2.58 KiB | 0 bytes/s, done.  
+Total 31 (delta 11), reused 0 (delta 0)  
+To git@github.com:fusijie/JackyGit.git  
+ * [new tag]         v0.8.0.0 -&gt; v0.8.0.0
+</code></pre></li>
+<li><p>推送所有标签到远程仓库</p>
+<p> 推送所有标签到远程仓库  </p>
+<pre><code>$ git push git_github --tags  
+Counting objects: 10, done.  
+Delta compression using up to 2 threads.  
+Compressing objects: 100% (4/4), done.  
+Writing objects: 100% (6/6), 551 bytes | 0 bytes/s, done.  
+Total 6 (delta 2), reused 0 (delta 0)  
+To git@github.com:fusijie/JackyGit.git  
+ * [new tag]         v1.0.0.0 -&gt; v1.0.0.0
+</code></pre></li>
+<li><p>从远程仓库删除标签</p>
+<p> 从远程仓库删除标签，先从本地删除标签，然后再删除远程仓库标签，其实就是同步的意思。</p>
+<p> 从本地删除标签  </p>
+<pre><code>$ git tag -d v0.8.0.0  
+Deleted tag &apos;v0.8.0.0&apos; (was e11559e)  
+</code></pre><p> 删除远程标签  </p>
+<pre><code>$ git push git_github :refs/tags/v0.8.0.0  
+To git@github.com:fusijie/JackyGit.git  
+ - [deleted]         v0.8.0.0 
+</code></pre></li>
+</ol>
+<h2 id="DIY-Git"><a href="#DIY-Git" class="headerlink" title="DIY Git"></a>DIY Git</h2><p>Git的配置是很有学问的，如果弄懂它，将对你帮助很大</p>
+<ol>
+<li><p>用户配置</p>
+<p> 设置用户名<br> $ git config –global user.name “Jacky”  </p>
+<p> 设置邮箱<br> $ git config –global user.email <a href="mailto:fusijie@vip.qq.com" target="_blank" rel="noopener">fusijie@vip.qq.com</a></p>
+</li>
+<li><p>设置默认编辑器</p>
+<p> 在需要输入文本信息时调用，比如之前的rebase commit，系统自动调用了Vim<br> $ git config –global core.editor xxx</p>
+</li>
+<li><p>设置提交模版</p>
+<p> 你可以设置一个提交的模版，然后再每次提交时填充此模版即可。<br> git config –global commit.template xxx</p>
+</li>
+<li><p>设置分页器</p>
+<p> 你可以设置一个诸如log，diff等使用的分页器。<br> $ git config –global core.pager xxx  </p>
+</li>
+<li><p>设置自动纠错</p>
+<p> 设置为1的时候，如果只有1个命令被模糊匹配到，将自动纠错。<br> $ git config –global help.autocorrect 1 </p>
+</li>
+<li><p>设置高亮</p>
+<p> 设置bash输出高亮。<br> $ git config –global color.ui auto </p>
+</li>
+<li><p>设置换行转换</p>
+<p> windows下换行占2个字符，而mac和linux下换行只有一个字符，如果要进行自动的换行转化的话，设置autocrlf吧。如果只在windows开发，那设置为false吧。<br> git config –global core.autocrlf true</p>
+</li>
+<li><p>设置差异分析工具</p>
+<p> 在解决冲突的时候如果用到差异分析工具，可用在这里设置。<br> $ git config –global merge.tool xxx</p>
+</li>
+<li><p>设置别名</p>
+<p> 如果一条命令很长或者很难记，那么我们可以为他设置一个别名。</p>
+<p> $ git config –global alias.st status </p>
+<p> 好了，现在就可以用git st代替git status了。</p>
+</li>
+<li><p>设置忽略文件</p>
+<p>一个项目中并不是所有的文件都要加入版本控制的，比如中间文件，生成的最终文件。那么处女座的肯定受不了那一堆的untrack。。。通过设置一个.ignore文件，git将忽略里面的文件而不进行提醒。</p>
+</li>
+<li><p>查看所有配置</p>
+<p>$ git config –list  </p>
+</li>
+<li><p>查看单个配置</p>
+<p>$ git config user.name</p>
+</li>
+<li><p>查看配置使用帮助</p>
+<p>git的配置属性太多了，这里不可能一一列举，用help吧！<br>$ git config  –help  </p>
+</li>
+</ol>
+<h2 id="Ubuntu和git"><a href="#Ubuntu和git" class="headerlink" title="Ubuntu和git"></a>Ubuntu和git</h2><ol>
+<li><p>Ubuntu下使用git</p>
+<p> 打开终端（Ctrl+Alt+T）。Ubuntu下就没有git bash了，都是使用terminal。</p>
+<p> 1.1.安装SSH<br> sudo apt-get install SSH </p>
+<p> 1.2.安装git<br> sudo apt-get install git </p>
+<p> 1.3.设置用户名和邮箱</p>
+<pre><code>$ git config --global user.name &quot;Jacky&quot;
+$ git config --global user.email fusijie@vip.qq.com
+</code></pre></li>
+<li><p>利用Ubuntu搭建服务器</p>
+<p> 2.1.搭建服务器远程仓库<br> 2.2.推送本地修改到服务器仓库</p>
+</li>
+</ol>
+<h2 id="Git-GUI"><a href="#Git-GUI" class="headerlink" title="Git GUI"></a>Git GUI</h2><ol>
+<li>Git GUI有什么？</li>
+<li>初始化仓库</li>
+<li>修改内容</li>
+<li>进入提交界面</li>
+<li>提交修改</li>
+<li>Git History和Git Blame</li>
+<li>推送到远程服务器上</li>
+<li>其他操作</li>
+</ol>
+<h2 id="Github操作指南"><a href="#Github操作指南" class="headerlink" title="Github操作指南"></a>Github操作指南</h2><ol>
+<li>如何创建一个仓库？</li>
+<li>如何Fork一个仓库</li>
+<li>社交化功能</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/01/31/JavaScript的学习及总结/" rel="next" title="JavaScript的学习及总结">
+                <i class="fa fa-chevron-left"></i> JavaScript的学习及总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/03/28/疯狂iOS上册-第一部分/" rel="prev" title="疯狂iOS上册第一部分">
+                疯狂iOS上册第一部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GIT入门"><span class="nav-number">1.</span> <span class="nav-text">GIT入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GIT概念"><span class="nav-number">2.</span> <span class="nav-text">GIT概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建仓库"><span class="nav-number">3.</span> <span class="nav-text">创建仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作项目"><span class="nav-number">4.</span> <span class="nav-text">操作项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本管理"><span class="nav-number">5.</span> <span class="nav-text">版本管理</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#On-branch-master"><span class="nav-number"></span> <span class="nav-text">On branch master</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#远程仓库"><span class="nav-number">1.</span> <span class="nav-text">远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GIT和GITHUB"><span class="nav-number">1.1.</span> <span class="nav-text">GIT和GITHUB</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支管理"><span class="nav-number">2.</span> <span class="nav-text">分支管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决冲突"><span class="nav-number">3.</span> <span class="nav-text">解决冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rebase"><span class="nav-number">4.</span> <span class="nav-text">Rebase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签管理"><span class="nav-number">5.</span> <span class="nav-text">标签管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DIY-Git"><span class="nav-number">6.</span> <span class="nav-text">DIY Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu和git"><span class="nav-number">7.</span> <span class="nav-text">Ubuntu和git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-GUI"><span class="nav-number">8.</span> <span class="nav-text">Git GUI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Github操作指南"><span class="nav-number">9.</span> <span class="nav-text">Github操作指南</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

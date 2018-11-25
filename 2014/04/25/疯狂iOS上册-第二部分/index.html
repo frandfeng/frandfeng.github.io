@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇主要接着《疯狂iOS讲义》上册的内容将第二部分的重点知识列举一下，包括:iOS应用的界面编程、管理iOS应用的运行、图形/图像和动画三大部分。 iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三类  活动控件：大部分活动控件都继承了UIControl基类，活动控件可以与用户交互，触发事件，如UIButton 静态控件：静态控件通常只继承了UIView类，并不继承UIContro">
+<meta name="keywords" content="OC,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="疯狂iOS上册第二部分">
+<meta property="og:url" content="https://frandfeng.github.io/2014/04/25/疯狂iOS上册-第二部分/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="本篇主要接着《疯狂iOS讲义》上册的内容将第二部分的重点知识列举一下，包括:iOS应用的界面编程、管理iOS应用的运行、图形/图像和动画三大部分。 iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三类  活动控件：大部分活动控件都继承了UIControl基类，活动控件可以与用户交互，触发事件，如UIButton 静态控件：静态控件通常只继承了UIView类，并不继承UIContro">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T07:51:34.405Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="疯狂iOS上册第二部分">
+<meta name="twitter:description" content="本篇主要接着《疯狂iOS讲义》上册的内容将第二部分的重点知识列举一下，包括:iOS应用的界面编程、管理iOS应用的运行、图形/图像和动画三大部分。 iOS应用的界面编程UI控件概述iOS的UI控件可以大致分为如下三类  活动控件：大部分活动控件都继承了UIControl基类，活动控件可以与用户交互，触发事件，如UIButton 静态控件：静态控件通常只继承了UIView类，并不继承UIContro">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2014/04/25/疯狂iOS上册-第二部分/">
+
+
+
+
+
+  <title>疯狂iOS上册第二部分 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/04/25/疯狂iOS上册-第二部分/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">疯狂iOS上册第二部分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-04-25T00:00:00+08:00">
+                2014-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇主要接着《疯狂iOS讲义》上册的内容将第二部分的重点知识列举一下，包括:iOS应用的界面编程、管理iOS应用的运行、图形/图像和动画三大部分。</p>
+<h2 id="iOS应用的界面编程"><a href="#iOS应用的界面编程" class="headerlink" title="iOS应用的界面编程"></a>iOS应用的界面编程</h2><h3 id="UI控件概述"><a href="#UI控件概述" class="headerlink" title="UI控件概述"></a>UI控件概述</h3><p>iOS的UI控件可以大致分为如下三类</p>
+<ol>
+<li>活动控件：大部分活动控件都继承了UIControl基类，活动控件可以与用户交互，触发事件，如UIButton</li>
+<li>静态控件：静态控件通常只继承了UIView类，并不继承UIControl，只显示应用状态，不执行任何操作，如UILabel</li>
+<li>被动控件：可以接受用户操作，但不会激发任何IBAction方法，如UITextField</li>
+</ol>
+<p>活动控件：与通过Interface Builder关联IBAction方法本质相同的是，程序也可通过代码为UIControl的子类控件绑定事件处理方法</p>
+<pre><code>-(void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)events;
+</code></pre><p>活动控件有且仅有4种不同的状态</p>
+<ol>
+<li>普通状态(UIControlStateNormal)，所有控件的默认状态</li>
+<li>高亮(highlighted)，当控件需要突出显示时，处于高亮状态</li>
+<li>禁用(disabled)，当UI控件被关闭时，处于禁用状态</li>
+<li>选中状态(selected)，标示该控件已启用或被选中</li>
+</ol>
+<p>触碰UIControl时如果需要定制其外观，可以通过重写UIControl控件的如下方法实现:</p>
+<pre><code>- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(nullable UIEvent *)event
+</code></pre><p>UIView包括的属性有</p>
+<ul>
+<li>Mode:控制该UI控件内图片的对齐方式，常用的值有<code>Centre/ScaleToFit/AspectFit/AspectFill</code></li>
+<li>Tag</li>
+<li>Interaction:<code>User Interface Enable/MultiTouch</code></li>
+<li>Alpha</li>
+<li>Background/Drawing:</li>
+<li>Opaque 如果选择，则当alpha为1时，后边的控件不会再绘制</li>
+<li>Hidden</li>
+<li>Clears Graphics Context 用于控制清除该控件所覆盖的区域</li>
+<li>Clip Subviews 当子控件超出范围时是否裁剪子控件</li>
+<li>Autoresize Subviews 该选项控制是否自动调整子控件大小</li>
+<li>Stretching</li>
+</ul>
+<p>UILabel支持的属性</p>
+<ul>
+<li>Text</li>
+<li>Color</li>
+<li>Font</li>
+<li>Alignment</li>
+<li>Lines</li>
+<li>Behaviour <code>Enabled</code>,<code>Highlighted</code></li>
+<li>LineBreak 文字超出控件时，对前边/中间/尾部截断用…表示</li>
+<li>Auto-shrink FixFontSize不改变字体大小/MinimumFontScale/MinimumFontSize</li>
+<li>Highlighted</li>
+<li>Shadow</li>
+<li>ShadowOffset</li>
+</ul>
+<h3 id="按钮-UIButton-UIControl-UIView"><a href="#按钮-UIButton-UIControl-UIView" class="headerlink" title="按钮(UIButton:UIControl:UIView)"></a>按钮(UIButton:UIControl:UIView)</h3><p>除可以设置UIControl和UIView的属性外，还可设置</p>
+<ul>
+<li>Type <code>Custom</code>,<code>System</code>,<code>Detail Disclosure</code>(“i”图标),<code>InfoLight/Dark</code>(也是“i”图标))</li>
+<li>State <code>Default/Highlighted/Selected/Disabled</code></li>
+<li>Title</li>
+<li>Font</li>
+<li>Text color</li>
+<li>Shadow color</li>
+<li>Image 设置此属性时，标题会不起作用，默认自适应大小</li>
+<li>Background 不影响标题，默认拉伸</li>
+<li>Shadow Offset</li>
+<li>Line break</li>
+<li>Edge 以<code>Content/Image/Title</code>作为边界</li>
+<li>Inset</li>
+</ul>
+<h3 id="文本框-UITextField-UIControl-UIView"><a href="#文本框-UITextField-UIControl-UIView" class="headerlink" title="文本框(UITextField:UIControl:UIView)"></a>文本框(UITextField:UIControl:UIView)</h3><p>除可以设置UIControl和UIView的属性外，还可设置</p>
+<ul>
+<li>placeholder</li>
+<li>Border style</li>
+<li>clear button</li>
+<li>Min font size</li>
+<li>Adjust to fit 改变字号适应大小</li>
+<li>Capitalisation</li>
+<li>correction 自动更正功能</li>
+<li>spell checking</li>
+<li>keyboard type</li>
+<li>return key</li>
+<li>Auto-enable Return Key 勾选后默认禁用，当输入文字时才显示Return键</li>
+<li>Secure Text Entry 密码框，将以黑点代替输入</li>
+</ul>
+<h3 id="多行文本框-UITextView-UIScrollView-UIView"><a href="#多行文本框-UITextView-UIScrollView-UIView" class="headerlink" title="多行文本框(UITextView:UIScrollView:UIView)"></a>多行文本框(UITextView:UIScrollView:UIView)</h3><p>UITextView和UITextField的不同</p>
+<ul>
+<li>UITextView 是一个多行文本框</li>
+<li>UITextView 没有继承UIControl控件，因此不能绑定IBAction事件</li>
+<li>UITextView 继承了UIScrollView，具有scrollView的功能和行为</li>
+</ul>
+<p>UIScrollView支持如下三个控制显示区域的属性</p>
+<ul>
+<li>contentSize，CGSize类型的值，表示该ScrollView内容的完整宽度和高度</li>
+<li>contentInset，UIEdgeInsets类型的值，表示需要显示的内容在上下左右四个方向的留白</li>
+<li>contentOffset，CGPoint类型的值，表示可视区域相对于内容区域的滚动距离</li>
+</ul>
+<p>UIScrollView还可以设置如下属性：</p>
+<ul>
+<li>Show Horizontal/Vertical Indicator</li>
+<li>Scrolling Enabled</li>
+<li>Paging Enabled 会自动分页，每次只能停留在固定页上</li>
+<li>Direction Lock Enabled 锁定滑动方向，只能在第一次滑动的方向上水平或垂直滑动</li>
+<li>Bounce Horizontal/Vertical 如果勾选时，手动拖动到边界会有弹性效果</li>
+<li>Zoom 设置该UIScrollView的最小可缩放比例和最大可缩放比例</li>
+<li>Touch</li>
+<li>Bounce zoom 对UIScrollView内容缩放超过最大最小时，会短暂超过限制而迅速回弹</li>
+<li>Delays Content Touches 真正确定滚动意图的时候才会回调滚动处理方法</li>
+<li>Cancellable content Touches 确定滚动意图后如果意图变化，则会调用cancelled方法</li>
+</ul>
+<p>UITextViewDelegate回调方法：</p>
+<pre><code>- (BOOL)textViewShouldBeginEditing:(UITextView *)textView;  
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView;  
+- (void)textViewDidBeginEditing:(UITextView *)textView;  
+- (void)textViewDidEndEditing:(UITextView *)textView;  
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;  
+- (void)textViewDidChange:(UITextView *)textView;  
+- (void)textViewDidChangeSelection:(UITextView *)textView;  
+</code></pre><blockquote>
+<p>还可以自定义选择UITextView内容后的菜单，方法是用UIMenuItem初始化菜单，然后将菜单列表添加到<code>[UIMenuController sharedMenuController]</code>中去,然后重写UIResponser类的<code>canPerformAction:withSender</code>方法调用</p>
+</blockquote>
+<h3 id="开关按钮-UISwitch-UIControl-UIView"><a href="#开关按钮-UISwitch-UIControl-UIView" class="headerlink" title="开关按钮(UISwitch:UIControl:UIView)"></a>开关按钮(UISwitch:UIControl:UIView)</h3><p>UISwitch代表一个开关按钮，应用程序可以通过监控该控件的<code>Value Changed</code>事件来检测开关按钮的状态切换或属性isOn来获取当前值</p>
+<h3 id="分段控件-UISegmentedControl-UIControl-UIView"><a href="#分段控件-UISegmentedControl-UIControl-UIView" class="headerlink" title="分段控件(UISegmentedControl:UIControl:UIView)"></a>分段控件(UISegmentedControl:UIControl:UIView)</h3><p>除可以设置UIControl和UIView的属性外，还可以设置</p>
+<ul>
+<li>Style</li>
+<li>State Momentary 如果为true，selected状态时不会高亮显示</li>
+<li>segments数量</li>
+<li>Title</li>
+<li>Image</li>
+<li>Behaviour Enabled/Selected</li>
+</ul>
+<h3 id="图像控件-UIImageView-UIView"><a href="#图像控件-UIImageView-UIView" class="headerlink" title="图像控件(UIImageView:UIView)"></a>图像控件(UIImageView:UIView)</h3><p>UIImageView的主要属性：</p>
+<ul>
+<li>image</li>
+<li>highlightedImage</li>
+<li>animationImages</li>
+<li>highlightedAnimationImages</li>
+<li>animationDuration</li>
+<li>animationRepeatCount</li>
+<li>startAnimating</li>
+<li>stopAnimating</li>
+<li>isAnimating</li>
+</ul>
+<p>UIImageView的mode属性即为缩放模式，支持以下列表项</p>
+<ol>
+<li>Scale To Fill,不保持纵横比例缩放，使图片完全适应该UIImageView控件</li>
+<li>Aspect fit，保持纵横比例缩放，使图片的长边能完全显示出来</li>
+<li>Aspect fill，保持纵横比例缩放，只保证图片的短边能完全显示出来</li>
+<li>Centre/Top/Bottom/Left/Right/TopLeft/TopRight/BottomLeft/BottomRight，不缩放，以规则对齐</li>
+</ol>
+<p>如果控件未继承UIControl，则没有IBAction方法，也没有addTarget方法，但是可以通过添加手势检测处理器的方式来处理事件</p>
+<pre><code>[imageView addGestureRecogniser:[[UITapGestureRecogniser alloc]
+    initWithTarget:self action:@selector(tapped:)];  
+- (void)tapped:(UIGestureRecogniser *)recogniser;  
+- (IBAction)remove:(id)sender;  
+</code></pre><blockquote>
+<p>UIImageView可以以动画方式显示多张图片，只需要为该UIImageView的animationImages属性赋值一个UIImage对象的NSArray集合，再设置与动画相关的一些属性，如<code>animationDuration</code>,<code>animationRepeatCount</code>，最后调用<code>startAnimating</code>方法即可</p>
+</blockquote>
+<h3 id="进度条-UIProgressView-UIView-UIActivityIndicatorView-UIView"><a href="#进度条-UIProgressView-UIView-UIActivityIndicatorView-UIView" class="headerlink" title="进度条(UIProgressView:UIView/UIActivityIndicatorView:UIView)"></a>进度条(UIProgressView:UIView/UIActivityIndicatorView:UIView)</h3><p>UIProgressView控件支持的属性：</p>
+<ul>
+<li>Style(默认和bar类型)</li>
+<li>Progress</li>
+<li>progress tint 已完成进度的颜色</li>
+<li>track tint 轨道颜色</li>
+<li>progress image 已完成进度的背景图片</li>
+<li>track image 轨道背景图片</li>
+</ul>
+<blockquote>
+<p>很多时候，iOS应用需要让某个控件显示图片，但是图片大小不符合要求，这时为了精准地控制只对指定区域进行缩放，可通过UIImage来创建可拉伸图片，当通过一个UIEdgeInsets结构体定义图片拉伸区域后，程序可把拉伸图片放到UI控件上，iOS系统只对图片的指定区域进行缩放</p>
+</blockquote>
+<p>UIActivityIndicatorView控件支持的属性</p>
+<ul>
+<li>Style LargeWhite/White/Grey</li>
+<li>Color</li>
+<li>Behaviour Animation显示时立即开始转动</li>
+<li>Hides when stopped 停止转动时立即隐藏</li>
+</ul>
+<h3 id="拖动条-UISlider-UIControl-UIView"><a href="#拖动条-UISlider-UIControl-UIView" class="headerlink" title="拖动条(UISlider:UIControl:UIView)"></a>拖动条(UISlider:UIControl:UIView)</h3><p>UISlider和UIProgressView非常相似，仅比UIProgressView多一个Thumb滑动块属性</p>
+<ul>
+<li><code>setMinimum/MaximumTrackImage:forState</code> 设置进度条已完成/未完成进度的轨道图片</li>
+<li><code>setThumbImage:forState</code> 设置拖动条上滑块的图片</li>
+</ul>
+<h3 id="UIAlertView与UIActionSheet-UIAlertController"><a href="#UIAlertView与UIActionSheet-UIAlertController" class="headerlink" title="UIAlertView与UIActionSheet(UIAlertController)"></a>UIAlertView与UIActionSheet(UIAlertController)</h3><pre><code>UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@&quot;更多操作&quot;
+    message:@&quot;&quot; preferredStyle:UIAlertControllerStyleActionSheet/UIAlertControllerStyleAlert];
+UIAlertAction *helpAlert = [UIAlertAction actionWithTitle:@&quot;求助好友&quot;
+    style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+[alertController addAction:helpAlert];
+[self presentViewController:alertController animated:YES completion:nil];
+UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@“提示”
+    message:@“” delegate:self cancelButtonTitle:@“取消” otherButtonTitle:nil];
+[alert show];
+</code></pre><p>当点击对话框按钮时，可以触发回调</p>
+<pre><code>- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+</code></pre><p>和UIAlertView类似，只是UIActionSheet显示在屏幕底部</p>
+<h3 id="日期选择器-UIDatePicker-UIControl-UIView"><a href="#日期选择器-UIDatePicker-UIControl-UIView" class="headerlink" title="日期选择器(UIDatePicker:UIControl:UIView)"></a>日期选择器(UIDatePicker:UIControl:UIView)</h3><p>用来选择日期和时间，还可以作为倒计时控件，可以设置的属性有：</p>
+<ul>
+<li>Mode 模式，如Date,Time,Date and Time,Count Down Timer</li>
+<li>Locale</li>
+<li>Interval 时间点的间隔</li>
+<li>Constrains 设置最大时间与最小时间</li>
+<li>Timer 控制器剩下的秒数</li>
+</ul>
+<h3 id="选择器-UIPickerView-UIView"><a href="#选择器-UIPickerView-UIView" class="headerlink" title="选择器(UIPickerView:UIView)"></a>选择器(UIPickerView:UIView)</h3><p>UIPickerView常用的属性和方法如下:</p>
+<ul>
+<li><code>numberOfComponents</code></li>
+<li><code>showsSelectionIndicator</code> 被选中时是否显示高亮背景</li>
+<li><code>numberOfRowsInComponent:</code></li>
+<li><code>rowSizeForComponent:</code></li>
+<li><code>selectRow:inComponent:animated</code></li>
+<li><code>selectedRowInComponent</code></li>
+<li><code>viewForRow:forComponent</code></li>
+</ul>
+<p>UIPickerView控件只是负责该控件的通用行为，而控件包含多少列，各列包含多少项则由UIPickerViewDataSource对象负责</p>
+<ul>
+<li><code>- (NSInteger)numberOfComponentsInPickerView:(UIPickerView \*)pickerView</code>;决定应该包括多少列</li>
+<li><code>- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component:</code>决定每列应该包括多少项</li>
+</ul>
+<p>如果程序需要控制UIPickerView中各列的宽度、各列表项的大小外观或为UIPickerView的选中事件提供响应，则需要为其设置UIPickerViewDelegate委托对象，并根据需要实现委托对象中的如下方法：</p>
+<pre><code>- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(nullable UIView *)view
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+</code></pre><h3 id="iOS8新增的-UIVisualEffectView-UIView"><a href="#iOS8新增的-UIVisualEffectView-UIView" class="headerlink" title="iOS8新增的(UIVisualEffectView:UIView)"></a>iOS8新增的(UIVisualEffectView:UIView)</h3><p>此控件用于为原有控件增加模糊效果，用只读属性effect控制模糊效果，该属性的类型是UIVisualEffect类型，其有两个子类：UIBlurEffect(较常用)和UIVibrancyEffect</p>
+<p>可设置此控件的如下属性：BlurStyle(UIBlurEffectStyleLight/ExtraLight/Dark)、Vibrancy</p>
+<p>这个控件的目的是iOS应用可以通过模糊效果，把用户实现转移到指定的控件上</p>
+<pre><code>UIBlurEffect *light = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+UIVisualEffectView *lightView = [[UIVisualEffectView alloc] initWithEffect:light];
+[_imageView addSubview:lightView];
+</code></pre><h3 id="微调器-UIStepper-UIControl-UIView"><a href="#微调器-UIStepper-UIControl-UIView" class="headerlink" title="微调器(UIStepper:UIControl:UIView)"></a>微调器(UIStepper:UIControl:UIView)</h3><p>支持的属性</p>
+<ul>
+<li>Value Minimum,Maximum,Current,Step</li>
+<li>Behaviour Autorepeat不松手一直变化,Continuous交互时一直调用ValueChanged方法,Wrap当到最小值或最大值时会转头</li>
+</ul>
+<blockquote>
+<p><code>setDecrement/IncrementImage:forState</code> 为该控件的特定状态设置图片</p>
+</blockquote>
+<h3 id="网页控件-UIWebView-UIView"><a href="#网页控件-UIWebView-UIView" class="headerlink" title="网页控件(UIWebView:UIView)"></a>网页控件(UIWebView:UIView)</h3><p>可配置的常用属性有：</p>
+<ul>
+<li>scalesPagesToFit: 控制是否缩放网页以适应控件</li>
+<li>dataDetectorTypes:自动检测内容，可以连接电话邮箱等，如UIDataDetectorTypeAddress/PhoneNumber/Link/CalendarEvent</li>
+</ul>
+<p>常用方法有：</p>
+<ul>
+<li><code>- (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL</code>;</li>
+<li><code>- (void)loadRequest:(NSURLRequest *)request</code>;</li>
+<li><code>- (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script</code>;执行JavaScript字串并返回执行结果</li>
+</ul>
+<p>还可以进行一些导航操作,如<code>goBack</code>,<code>goForward</code>,<code>reload</code>,<code>stopLoading</code></p>
+<p>当程序加载网页时，程序可为UIWebView设置一个UIWebViewDelegate委托，回调以下方法</p>
+<pre><code>- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request 
+    navigationType:(UIWebViewNavigationType)navigationType;
+- (void)webViewDidStartLoad:(UIWebView *)webView;
+- (void)webViewDidFinishLoad:(UIWebView *)webView;
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error;
+</code></pre><h3 id="工具条-UIToolbar-UIView"><a href="#工具条-UIToolbar-UIView" class="headerlink" title="工具条(UIToolbar:UIView)"></a>工具条(UIToolbar:UIView)</h3><p>工具条通常仅作为多个UIBarButtonItem的容器，每个UIBarButtonItem代表工具条上的一个控件，有两个常用属性</p>
+<ul>
+<li>barStyle UIBarStyleDefault/Black/BlackOpaque/BlackTranslucent</li>
+<li>items</li>
+</ul>
+<p>只需要将控件封装成UIBarButtonItem，即可添加到UIToolbar中去，封装的方法如下</p>
+<ul>
+<li><code>—initWithTitle:style:target:action</code></li>
+<li><code>-initWithImage:style:target:action</code></li>
+<li><code>-initWithBarButtonSystemItem:target:action</code></li>
+<li><code>-initWithCustomView</code></li>
+</ul>
+<h3 id="表格-UITableView-UIScrollView-与表格控制器-UITableViewController"><a href="#表格-UITableView-UIScrollView-与表格控制器-UITableViewController" class="headerlink" title="表格(UITableView:UIScrollView)与表格控制器(UITableViewController)"></a>表格(UITableView:UIScrollView)与表格控制器(UITableViewController)</h3><p>本节只简单介绍UITableView的属性和常用的方法，更加详细的教程请参考<a href="!--￼0--&gt;/ios/2014/08/29/UITableViewAPI文档汉化.html">UITableView API 详解</a></p>
+<p>可以设置UITableView的属性：</p>
+<ul>
+<li>Content 动态表格还是静态表格</li>
+<li>Prototype Cells 表格cell的种类数目</li>
+<li>Style Plain/Grouped</li>
+<li>Separator 分割线样式颜色</li>
+<li>Selection 支持多选/单选/不选</li>
+<li>Editing 编辑状态时是否支持选中</li>
+<li>rowHeight</li>
+<li>backgroundView</li>
+<li>tableHeaderView</li>
+<li>tableFooterView</li>
+<li>numberOfRowsInSection</li>
+<li>numberOfSections</li>
+</ul>
+<p>必须为UITableView设置UITableViewDataSource来控制数据源</p>
+<ul>
+<li><code>- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView</code>;</li>
+<li><code>- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</code>;</li>
+<li><code>- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</code>;</li>
+</ul>
+<p>默认的UITableViewCell中包含三个可配置的属性:textLabel,detailTextLabel,image</p>
+<p>根据这三个属性的位置，有几种不同的布局风格:</p>
+<ul>
+<li>UITableViewCellStyleSubtitle</li>
+<li>UITableViewCellStyleDefault</li>
+<li>UITableViewCellStyleValue1/2</li>
+</ul>
+<p>还可以设置UITableViewCell的accessoryType，如<code>UITableViewCellAccessoryDetailDisclosureButton/Checkmark/DisclosureIndicator</code></p>
+<p>获取UITableView控件后，可通过如下方法访问表格控件的表格行和分区</p>
+<ul>
+<li><code>- cellForRowAtIndexPath:</code></li>
+<li><code>- indexPathForCell:</code></li>
+<li><code>- indexPathForRowAtPoint:</code> 该表格中指定点所对应的indexPath</li>
+<li><code>- (NSArray)indexPathsForRowsInRect:</code> 该表格中指定区域内的所有indexPath组成的数组</li>
+<li><code>- visibleCells:</code></li>
+<li><code>- (NSArray)indexPathsForVisibleRows:</code></li>
+</ul>
+<p>也可以通过如下方法来控制表格控件的滚动</p>
+<ul>
+<li><code>- scrollToRowAtIndexPath:atScrollPosition:animated</code></li>
+<li><code>- scrollToNearestSelectedRowAtScrollPosition:animated</code> 控制表格滚动到选中表格行的顶端、中间或下方</li>
+</ul>
+<p>可以运用如下方法来处理单元格的选中</p>
+<ul>
+<li><code>- indexPathForSelectedRow</code></li>
+<li><code>- indexPathsForSelectedRows</code></li>
+<li><code>- selectRowAtIndexPath:animated:scrollPosition:</code></li>
+<li><code>- deselectRowAtIndexPath:animated:</code></li>
+</ul>
+<p>可以运用如下方法来响应表格行的选中事件</p>
+<ul>
+<li><code>- tableView:willSelectRowAtIndexPath:</code></li>
+<li><code>- tableView:didSelectRowAtIndexPath:</code></li>
+<li><code>- tableView:willDeselectRowAtIndexPath:</code></li>
+<li><code>- tableViewDidDeselectRowAtIndexPath:</code></li>
+</ul>
+<p>如果需要自定义UITableView的表格行</p>
+<ol>
+<li>继承UITableViewCell定制表格行 <code>- (UITableViewCell *)initWithStyle:reuseIdentifier:</code></li>
+<li>使用动态单元格原型定制表格行 <code>- tableview:dequeueReusableCellWithIdentifier:</code></li>
+</ol>
+<blockquote>
+<p>dequeueReusableCellWithIdentifier:与dequeueReusableCellWithIdentifier:forIndexPath:的区别：</p>
+<ul>
+<li>前者不必向tableView注册cell的Identifier，但需要判断获取的cell是否为nil</li>
+<li>后者则必须向tableView注册cell，可省略判断获取的cell是否为空，因为无可复用cell时runtime将使用注册时提供的资源去新建一个cell</li>
+</ul>
+<p>如何注册？</p>
+<ul>
+<li>如果是storyboard方式，系统默认注册</li>
+<li>如果是xib方式且自定义UITableViewCell，需要registerNib:，初始化时会调用<code>- (void)awakeFromNib</code></li>
+<li>如果是代码方式，使用registerClass:注册，初始化时会调用<code>-  (id)initWithStyle:withReusableCellIdentifier:</code></li>
+</ul>
+</blockquote>
+<p>如果用户需要编辑表格：setEditing属性设置表格是否属于编辑状态，除此之外，UITableView提供了如下方法来插入、删除、移动表格行</p>
+<ul>
+<li><code>- beginUpdate:</code> 对表格控件执行增删改之前，会先调用该方法</li>
+<li><code>- endUpdate:</code></li>
+<li><code>- insertRowsAtIndexPaths:withRowAnimation</code></li>
+<li><code>- moveRowAtIndexPath:toIndexPath:</code></li>
+<li><code>- insertSections:withRowAnimation</code></li>
+<li><code>- deleteSections:withRowAnimation</code></li>
+<li><code>- moveSection:toSection:</code></li>
+</ul>
+<p>如果需要用户动态编辑表格，必须实现UITableView对应的dataSource对象中的如下方法</p>
+<ul>
+<li><code>- tableView:canEditRowAtIndexPath:</code></li>
+<li><code>- tableView:commitEditingStyle:forRowAtIndexPath:</code></li>
+<li><code>- tableView:canMoveRowAtIndexPath:</code></li>
+<li><code>- tableView:moveRowAtIndexPath:toIndexPath:</code></li>
+</ul>
+<p>除此之外，UITableViewDelegate也为编辑表格定义了一些方法</p>
+<ul>
+<li><code>- tableView:willBeginEditingRowAtIndexPath:</code></li>
+<li><code>- tableView:didEndEditingRowAtIndexPath:</code></li>
+<li><code>- tableView:editingStyleForRowAtIndexPath:</code>决定对该表格行的可操作,如UITableViewCellEditingStyleDelete</li>
+<li><code>- tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:</code></li>
+<li><code>- tableView:shouldIndentWhileEditingRowAtIndexPath:</code> 当处于编辑状态时表格行是否应该缩进</li>
+</ul>
+<p>如果希望UITableView建立多分区表格和多分区索引，则需要回调以下方法</p>
+<ul>
+<li><code>- numberOfSectionInTableView:</code></li>
+<li><code>- (NSArray&lt;NSString*&gt;*)sectionIndexTitlesForTableView:</code> 该方法可以在表格右边建立一列浮动的索引</li>
+<li><code>- tableView:titleForHeaderInSection:</code></li>
+<li><code>- tableView:titleForFooterInSection:</code></li>
+</ul>
+<p>如果应用界面中只需要显示一个表格，那么让用户控制器直接继承UITableViewController即可，它已经实现了UITableViewDataSource和UITableViewDelegate协议，因此使用起来更加方便</p>
+<p>如果程序只想固定显示几行数据，则推荐使用更加方便的静态单元格，虽然不需要UITableViewDataSource，但可响应UITableViewDelegate</p>
+<p>当程序使用UITableViewController创建表格时，该控制器类可指定一个refreshControl属性，该属性值应该是一个UIRefreshControl控件，其可用于刷新表格数据，UIRefreshControl可设置如下属性</p>
+<ul>
+<li>tintColor</li>
+<li>attributedTitle</li>
+<li><p>endRefreshing</p>
+<pre><code>_refreshControl = [[UIRefreshControl alloc] init];
+_refreshControl.attributedTitle = @“下拉刷新”;
+[_refreshControl addTarget:self action:@selector(refreshData) forControlEvents:UIControlEventValueChanged];
+_refreshControl.attributedTitle = @“正在刷新”;
+[_refreshControl endRefreshing];
+_tableView reloadData];
+</code></pre></li>
+</ul>
+<h3 id="搜索条-UISearchBar-和搜索控制器-UISearchDisplayController"><a href="#搜索条-UISearchBar-和搜索控制器-UISearchDisplayController" class="headerlink" title="搜索条(UISearchBar)和搜索控制器(UISearchDisplayController)"></a>搜索条(UISearchBar)和搜索控制器(UISearchDisplayController)</h3><p>搜索条由一个文本框和几个按钮组成，当用户在文本框内输入部分内容之后，程序即可按指定的规则执行搜索，包括的属性有</p>
+<ul>
+<li>Show Search Results Button 勾选后在右侧会有向下箭头，单机箭头可激发特定的事件</li>
+<li>Shows Bookmarks Button 勾选后在右侧会有图书的书签按钮，可单机该按钮激发特定的事件</li>
+<li>Shows Cancel Button 同理</li>
+<li>Show Scope Bar 勾选后会在搜索框下方显示一个分段条，接下来的Scope Titles将用于设置各分段的标题</li>
+</ul>
+<p>UISearchBarDelegate:</p>
+<ul>
+<li><code>- searchBar:textDidChanged</code></li>
+<li><code>- searchBarBookmarkButtonClicked:</code></li>
+<li><code>- searchBarCancelButtonClicked:</code></li>
+<li><code>- searchBarSearchButtonClicked:</code> 点击键盘上的search按钮时触发</li>
+<li><code>- searchBarResultsListButtonClicked:</code> 点击搜索条上的查询结果按钮时触发</li>
+<li><code>- searchBar:selectedScopeButtonIndexDidChange:</code> 当用户单击分段条上的分段按钮时触发</li>
+</ul>
+<p>使用UISearchDisplayController</p>
+<ul>
+<li>searchBar 绑定到界面的UISearchBar控件</li>
+<li>searchContentsController 该属性用于绑定控件的控制器</li>
+<li>searchResultDataSource UITableViewDataSource</li>
+<li>searchResultDelegate UITableViewDelegate</li>
+</ul>
+<p>UISearchDisplayDelegate</p>
+<pre><code>- searchDisplayControllerWillBegin/DidBegin/WillEnd/DidEndSearch:(UISearchDisplayController *)controller`
+
+- searchDisplayController:(UISearchDisplayController *)controller
+    willShow/didShow/willHide/didHideSearchResultsTableView:(UITableView *)tableView`
+</code></pre><p>UISearchDisplayController已经在iOS8中被UISearchController替换</p>
+<pre><code>_searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+_searchController.searchResultsUpdater = self;
+_searchController.delegate = self;
+_searchController.searchBar.delegate = self;
+</code></pre><p>UISearchControllerDelegate:</p>
+<pre><code>- willPresent/didPresent/willDismiss/didDismissSearchController:(UISearchController *)searchController;
+- presentSearchController:(UISearchController *)searchController;
+</code></pre><p>UISearchResultsUpdating:</p>
+<pre><code>- updateSearchResultsForSearchController:(UISearchController *)searchController(刷新searchResultsController)
+</code></pre><h3 id="导航条-UINavigationBar-UIView-与导航控制器-UINavigationController"><a href="#导航条-UINavigationBar-UIView-与导航控制器-UINavigationController" class="headerlink" title="导航条(UINavigationBar:UIView)与导航控制器(UINavigationController)"></a>导航条(UINavigationBar:UIView)与导航控制器(UINavigationController)</h3><p>UINavigationBar通常位于屏幕的顶端，以stack的形式管理多个UINavigationItem，提供的方法有：</p>
+<ul>
+<li><code>- pushNavigationItem:animated:</code></li>
+<li><code>- popNavigationItem:animated:</code></li>
+<li><code>- setItems:animated:</code></li>
+<li><code>- items:</code></li>
+<li><code>- topItem:</code></li>
+<li><code>- backItem</code></li>
+</ul>
+<p>UINavigationItem也可以作为一个容器，它由标题、左边N个按钮，右边N个按钮组成，每个按钮都是UIBarButtonItem控件</p>
+<p>UINavigationItem的属性和方法：</p>
+<ul>
+<li>title</li>
+<li>hidesBackButton</li>
+<li>titleView</li>
+<li>leftBarButtonItems</li>
+<li>leftBarButtonItem</li>
+<li>rightBarButtonItems</li>
+<li>rightBarButtonItem</li>
+</ul>
+<p>UINavigationController使用栈的形式来管理多个ViewController，它提供了如下属性和方法来操作其内部的UIViewController</p>
+<ul>
+<li>topViewController:</li>
+<li>visibleViewController:</li>
+<li>viewControllers:</li>
+<li>setViewControllers:animated:</li>
+<li>pushViewController:animated:</li>
+<li>popViewController:animated:</li>
+<li>popToRootViewController:animated:</li>
+<li>popToViewController:animated:</li>
+</ul>
+<p>UINavigationController提供了如下属性和方法来设置导航条</p>
+<ul>
+<li>navigationBar</li>
+<li>navigationBarHidden</li>
+<li>toolbar</li>
+</ul>
+<p>导航过程不仅可以根据UINavigationController，而且可以根据Segue来导航，导航类型包括</p>
+<ul>
+<li>show:相当于调用UIViewController的showViewController:sender:方法切换到新的视图控制器，使用UINavigationController视图控制器过渡时通常使用这种类型的segue</li>
+<li>show detail:相当于调用UIViewController的showDetailViewController:sender:方法切换到新的视图控制器</li>
+<li>present modally:以完全覆盖的方式切换到新的视图控制器</li>
+<li>popover presentation:以浮动窗口呈现新的视图控制器，通常只在iPad这种屏幕应用中使用这种类型的segue</li>
+<li>custom:只有当开发者打算使用自定义segue时才选择这种类型</li>
+</ul>
+<p>下边提供的方法已过时</p>
+<ul>
+<li>push:相当于将VC推入NavigationController中，调用<code>[self.navigationController pushViewController: animated:]</code></li>
+<li>modal:相当于以完全覆盖的方式切换到新的视图控制器<code>[self presentViewController: animated:]</code></li>
+<li>popover:以浮动窗口呈现新的视图控制器，通常在iPad下使用</li>
+<li>replace:替换当前的场景，一般在iPad下使用，如SplitViewController</li>
+</ul>
+<p>不仅可以通过storyboard中的segue链接各VC，也可以用代码控制segue的跳转链接 <code>[performSegueWithIdentifier: sender:]</code> <code>[prepareForSegue:(UIStoryboardSegue *)segue sender]</code>，segue对象的source/destinationViewController/identifier</p>
+<blockquote>
+<p>iOS7开始更改了导航条的界面坐标计算方式，并添加了translucent属性，默认为true，表示从顶部开始计算屏幕高度，如果translucent属性为false的时候，VC中的布局就会回到iOS 6以前那样，y==0的位置是navigationbar底部。相比iOS 7以后从屏幕顶部开始计算刚好相差64像素</p>
+</blockquote>
+<h3 id="网格-UICollectionView-UIScrollView-UIView-与网格控制器-UICollectViewController"><a href="#网格-UICollectionView-UIScrollView-UIView-与网格控制器-UICollectViewController" class="headerlink" title="网格(UICollectionView:UIScrollView:UIView)与网格控制器(UICollectViewController)"></a>网格(UICollectionView:UIScrollView:UIView)与网格控制器(UICollectViewController)</h3><p>UICollectView支持的属性有：</p>
+<ul>
+<li>Items:单元格原型数量</li>
+<li>Layout:Flow/Custom,可设置layout的cellSize,headerSize,FooterSize,MinSpacing,sectionInset,scrollDirection,header/footerReferenceSize</li>
+<li>ScrollDirection</li>
+<li>Accessories:是否显示页眉和页脚</li>
+</ul>
+<p>跟UITableView类似，UICollectionView可以继承UICollectViewDataSource和UICollectionViewDelegate，UICollectionView的显示需要回调自定义UICollectionViewCell，并且定义UICollectionViewFlowLayout确定各cell的排版</p>
+<p>UICollectionViewFlowLayout排版出来的单元格大小间距都是相同的，如果要有更好的效果需借助UICollectionViewDelegateFlowLayout，UICollectionViewDelegateFlowLayout继承了UICollectionViewDelegate协议，其中包括的回调函数有：</p>
+<ul>
+<li><code>- collectionView:layout:sizeForItemAtIndexPath:</code></li>
+<li><code>- collectionView:layout:insetForSectionAtIndexPath:</code></li>
+<li><code>- collectionView:layout:minimumLine/interitemSpacingForSectionAtIndex:</code>控制行/列间距</li>
+<li><code>- collectionView:layout:referenceSizeForHeader/FooterInSection:</code>控制指定分区页眉页脚的大小</li>
+</ul>
+<p>一般可以设置UICollectionView的collectionViewLayout属性为UICollectionViewFlowLayout，但也可以继承UICollectionViewLayout自定义布局风格，通常需要重写如下方法：</p>
+<ul>
+<li><code>- prepareLayout</code> 开始布局时调用该方法执行准备工作</li>
+<li><code>- layoutAttributesForElementsInRect:</code> 该方法的返回值控制指定NSRect区域内所有单元格的大小和位置等布局信息</li>
+<li><code>- layoutAttributesForItemAtIndexPath:</code> 该方法返回值控制指定NSIndexPath对应的单元格大小和位置等布局信息</li>
+<li><code>- layoutAttributesForSupplementaryViewOfKind:atIndexPath:</code> 返回值控制指定分区的页眉页脚控件的大小和位置信息</li>
+<li><code>- layoutAttributesForDecorationViewOfKind:atIndexPath:</code> 指定分区的装饰控件的大小和位置信息</li>
+<li><code>- initialLayoutAttributesForAppearingItemAtIndexPath:</code> 每当单元格动态增加时，自动调用该方法</li>
+<li><code>- initialLayoutAttributesForAppearingSupplementaryElementOfKind:atIndexPath:</code> 页眉页脚动态增加时调用的方法</li>
+<li><code>- initialLayoutAttributesForAppearingDecorationElementOfKind:atIndexPath:</code> 分区的装饰控件动态增加时调用的方法</li>
+<li><code>-finalLayoutAttributesForDisappearingItem/DisappearingSupplementaryElementOfKind:</code></li>
+<li><code>-finalLayoutAttributesForDisappearingDecorationElementOfKind:AtIndexPath:</code> 动态消失时调用</li>
+</ul>
+<h3 id="标签条-UITabBar-与标签页控制器-UITabBarController"><a href="#标签条-UITabBar-与标签页控制器-UITabBarController" class="headerlink" title="标签条(UITabBar)与标签页控制器(UITabBarController)"></a>标签条(UITabBar)与标签页控制器(UITabBarController)</h3><p>UITabBar代表一个标签条，它是UITabBarItem的容器，用于组合多个UITabBarItem对象，它包含的标签项有：</p>
+<ul>
+<li>Tint</li>
+<li>ImageTint</li>
+<li>items</li>
+<li>selectedItem</li>
+<li>setItems:animated:</li>
+</ul>
+<p>创建UITabBarItem：<code>[initWithTabBarSystemItem:tag:]</code>,<code>[initWithTitle:image:tag:]</code>，可在右上角显示徽标badgeValue</p>
+<p>可以监听<code>UITabBarDelegate的tabBar:didSelectItem:</code>方法监听用户的点击事件</p>
+<h3 id="页控件-UIPageControl-UIControl-UIView-与页控制器-UIPageViewController"><a href="#页控件-UIPageControl-UIControl-UIView-与页控制器-UIPageViewController" class="headerlink" title="页控件(UIPageControl:UIControl:UIView)与页控制器(UIPageViewController)"></a>页控件(UIPageControl:UIControl:UIView)与页控制器(UIPageViewController)</h3><p>UIPageControl是一个比较简单的控件，由N个小圆点组成，每个圆点代表一个页面，当前页面以高亮圆点显示,包括的属性有：</p>
+<ul>
+<li>pages</li>
+<li>current</li>
+<li>Hides for single page 只有一页时隐藏</li>
+<li>Defers page display 延迟显示当前页，当用户单击该控件，使该控件跳转到某个新页面时，控件必须等到updatePageIndicator方法执行完成后，控件界面才会执行更新</li>
+<li>tint color</li>
+<li>current page color</li>
+</ul>
+<p>UIPageControl经常和UIScrollView结合使用，此时他的功能有：显示ScrollView在第几页，点击时控制ScrollView滚动</p>
+<p>运用UIScrollView的<code>- scrollViewDidEndDecelerating:(UIScrollView*)scrollView</code>和UIPageControl的<code>valueChanged</code>方法完成效果</p>
+<p>程序要使用UIPageController控件，必须实现UIPageViewControllerDataSource协议的方法：</p>
+<ul>
+<li><code>- pageViewController:viewControllerBefore/AfterViewController</code></li>
+<li><code>- setViewControllers:direction:animated:completion</code></li>
+</ul>
+<h3 id="iPad应用开发"><a href="#iPad应用开发" class="headerlink" title="iPad应用开发"></a>iPad应用开发</h3><p>UISplitViewController,当iPad处于横向模式时，UISplitViewController的左侧将会显示320点宽的侧栏，该栏通常用于显示页面的导航栏，右侧通常用于显示导航栏对应的详情；当切换回纵向时，原来位于左侧的导航栏不再固定显示在左边，而是需要单击某个按钮来激活，此时将会使用一个浮动窗口来显示导航栏。当界面切换发生变化时，UISplitViewController会分别激发其Delegate方法</p>
+<ul>
+<li><code>- splitViewController:willHideViewController:withBarButtonItem:forPopoverController:</code></li>
+<li><code>- splitViewController:willShowViewController:invalidatingBarButtonItem:</code></li>
+</ul>
+<p>UIPopoverController代表浮动导航栏，实际上UIPopoverController的作用就是包装一个UIViewController，使之成为浮动窗口</p>
+<ul>
+<li><code>[[UIPopoverController alloc] initWithContentViewController:]</code></li>
+<li><code>[popoverController presentPopoverFromBarButtonItem:permittedArrowDirections:animated]</code></li>
+<li><code>[popoverController presentPopoverFromRect:inView:permittedArrowDirections:animated:property]</code></li>
+</ul>
+<h2 id="管理iOS应用的运行"><a href="#管理iOS应用的运行" class="headerlink" title="管理iOS应用的运行"></a>管理iOS应用的运行</h2><h3 id="自动旋转机制"><a href="#自动旋转机制" class="headerlink" title="自动旋转机制"></a>自动旋转机制</h3><ul>
+<li>可以通过项目Target-&gt;General-&gt;Device Orientation设置，或info.plist中的supported interface orientations</li>
+<li>也可根据视图控制器viewController中的shouldAutorotate方法来重新控制</li>
+<li>初始化时重写preferredInterfaceOrientationForPresentation指定该视图控制器的初始默认屏幕方向</li>
+<li>当发生旋转时，如果希望支持某一个显示方式，则重写supportedInterfaceOrientations来重新设置</li>
+</ul>
+<p>一般比较常用到的回调函数有：</p>
+<ul>
+<li><code>- willRotateToInterfaceOrientation:duration</code></li>
+<li><code>- willAnimateRotationToInterfaceOrientation:duration</code></li>
+<li><code>- didRotateFromInterfaceOrientation</code></li>
+</ul>
+<p>当旋转时，一般在<code>willAnimateRotationToInterfaceOrientation:duration</code>方法中对应用界面进行调整，调整方式有两种：旋转时重构用户界面和为不同的显示方式提供不同的界面设计文件</p>
+<p>还有一种运用sizeClass自动调整界面的方式，通过设置xib或storyboard的横屏和竖屏分别对应的相对布局规则，即可完成要求</p>
+<h3 id="应用程序状态"><a href="#应用程序状态" class="headerlink" title="应用程序状态"></a>应用程序状态</h3><ul>
+<li>Not running(未运行):未启动或者被终止状态</li>
+<li>Inactive(不活动):前台运行，但不能接收事件处理，当切换状态时，中途过渡会短暂停留在此状态</li>
+<li>Active(活动):程序在前台运行且能接收到事件</li>
+<li>Background(后台):应用处在后台运行，并且还在执行代码，当切换到Suspended状态时会短暂停留在此状态</li>
+<li>Suspended(挂起):应用处在后台，并且没有执行任何代码</li>
+</ul>
+<p>在这几个状态之间转换时，会回调的函数有：</p>
+<ul>
+<li>application:willFinishLaunchingWithOptions: 应用程序将要启动时自动调用该方法</li>
+<li>application:didFinishLaunchingWithOptions: 应用程序启动完成后自动调用该方法</li>
+<li>applicationWillEnterForeground:应用程序从后台转入前台运行状态，但还未达到Active时</li>
+<li>applicationDidBecomeActive:应用程序在转入前台，并进入活动状态时回调该方法</li>
+<li>applicationWillResignActive:应用程序正要从前台运行状态离开时调用该方法</li>
+<li>applicationDidEnterBackground:应用程序处于Background状态，且随时可能进入Suspended状态时</li>
+<li>applicationWillTerminate:应用程序即将被终止时调用该方法</li>
+</ul>
+<h3 id="中断处理"><a href="#中断处理" class="headerlink" title="中断处理"></a>中断处理</h3><p>中断会导致用户暂时失去对应用的控制，虽然应用依然在前台运行，但是不再接收任何触碰事件，所以在applicationWillResignActive:方法中应该中断一些任务，如</p>
+<ul>
+<li>停止timers并终止其他周期性的任务</li>
+<li>停止任何正在运行的元数据查询</li>
+<li>不要初始化任何新的任务</li>
+<li>暂停电影播放</li>
+<li>游戏进入暂停状态</li>
+<li>减少OpenGL ES帧率</li>
+<li>暂停所有执行非关键代码的调度队列和操作队列</li>
+</ul>
+<p>当应用恢复Active状态时，需要在<code>applicationDidBecomeActive</code>方法中恢复刚刚取消的操作，除游戏手动恢复外</p>
+<p><code>applicationDidEnterBackground</code>方法中完成转入后台前要做的工作</p>
+<ul>
+<li>保存用户数据或状态信息</li>
+<li>释放所有可以释放的内存</li>
+</ul>
+<p><code>applicationWillEnterForeground</code>方法应该恢复<code>applicationDidEnterBackground</code>方法中所做的工作</p>
+<h3 id="Main-Run-Loop"><a href="#Main-Run-Loop" class="headerlink" title="Main Run Loop"></a>Main Run Loop</h3><p>Main Run Loop负责处理所有与用户相关的事件，UIApplication对象在程序启动时启动Main Run Loop，并用它来处理事件和处理更新基于视图等操作。事件通过Main Run Loop提交给应用程序处理，各种事件会交给UIResponser对象处理，如UIApplication、UIWindow、UIViewController以及UIView</p>
+<h3 id="ViewController介绍"><a href="#ViewController介绍" class="headerlink" title="ViewController介绍"></a>ViewController介绍</h3><p>1，ViewController分为两类，展示内容的controller和控制其他controller的controller<br>2，ViewController的生命周期，init-&gt;loadView-&gt;viewDidLoad-&gt;viewWillAppear-&gt;viewDidAppear-&gt; viewWillLayoutSubviews-&gt; viewDidLayoutSubviews-&gt;viewWillDisappear-&gt;viewDidDisappear-&gt;viewDidUnload-&gt;receiveMemoryWarning-&gt;dealloc</p>
+<h3 id="iOS8增强的自动布局功能"><a href="#iOS8增强的自动布局功能" class="headerlink" title="iOS8增强的自动布局功能"></a>iOS8增强的自动布局功能</h3><p>自动布局是从iOS6开始引进的新功能，而iOS8在原有自动布局的基础上增加了Size Class的概念，从而增强了自动布局功能，它的精髓是相对布局</p>
+<p>为UI控件添加自动布局的约束可通过如下三种方式</p>
+<ul>
+<li>通过Xcode中Editor菜单的Align、Resolve Auto Layout Issue或pin子菜单添加</li>
+<li>通过Interface Builder右下角的按钮来添加</li>
+<li>在Interface Builder中通过control+快捷键添加</li>
+</ul>
+<p>iOS8使用SizeClass对iOS设备的屏幕尺寸进行了抽象，它将屏幕的宽度和高度分别分成三种情况：compact(紧凑)、Regular(普通)、Any(任意)</p>
+<h2 id="图形、图像和动画"><a href="#图形、图像和动画" class="headerlink" title="图形、图像和动画"></a>图形、图像和动画</h2><h3 id="使用UIImage和CGImage处理位图"><a href="#使用UIImage和CGImage处理位图" class="headerlink" title="使用UIImage和CGImage处理位图"></a>使用UIImage和CGImage处理位图</h3><p><code>[UIImage imageNamed:@“”]</code>加载指定名称的图片，该方法有缓存机制，如果该方法试图加载的文件不存在，它才会去加载图片文件并缓存它，如果系统已经缓存过，则直接使用已缓存的图片，故而当程序需要频繁的加载或卸载图片文件时，不应该使用此方法。所以遇到大图，或者频繁进出内存时，应该用<code>[UIImage imageWithContentsOfFile]</code></p>
+<p>UIImage提供了以下方法</p>
+<ul>
+<li><code>+ imagedNamed:</code></li>
+<li><code>+ imageWithContentsOfFile:</code></li>
+<li><code>+ imageWithData:</code></li>
+<li><code>+ imageWithData:scale:</code></li>
+<li><code>+ imageWithCGImage:</code></li>
+<li><code>+ imageWithCGImage:scale:orientation:</code> 对图片旋转、镜像变换</li>
+<li><code>+ animatedImageNamed:duration:</code> 根据指定的图片名来加载一系列图片</li>
+<li><code>+ animatedImageWithImages:duration</code>:</li>
+</ul>
+<p>UIImage不能对图片进行缩放、旋转、挖取操作，这些功能可借助于CGImageRef指针来实现；</p>
+<pre><code>CGImageRef ciRef = [image CGImage];
+UIImage *image = [UIImage imageWithCGImage:ciRef];
+</code></pre><h3 id="Quartz-2D绘图"><a href="#Quartz-2D绘图" class="headerlink" title="Quartz 2D绘图"></a>Quartz 2D绘图</h3><p>使用Quartz 2D绘图的关键步骤有两步：获取CGContextRef，调用CGContextRef的方法进行绘图；</p>
+<p>如果开发自定义UIView，则在重写drawRect:方法时可用<code>CGContextRef context = UIGraphicsGetCurrentContext();</code></p>
+<p>如果需要在创建位图时获取，则调用</p>
+<ul>
+<li><code>UIGraphicsBeginImageContext(CGSizeMake(320,480))</code></li>
+<li><code>CGContextFillRect(CGContextRef, CGRect)</code></li>
+<li><code>CGContextDrawImage(CGContextRef, CGRect, CGImageRef)</code></li>
+<li><code>CGContextSetFontSize(CGContextRef,CGFloat)</code></li>
+<li><code>CGContextShowTextAtPoint(CGContextRef,CGFloat,CGFloat)</code></li>
+<li><code>CGContextSetShadow(CGContextRef,CGSize,CGFloat(,CGColorRef))</code></li>
+</ul>
+<h3 id="图形变换"><a href="#图形变换" class="headerlink" title="图形变换"></a>图形变换</h3><p>在绘图前可以对其进行绘图变换的操作，CGContextTranslate/Scale/RotateCTM(CGContextRef,CGFloat x,CGFloat y)将坐标系统进行平移、缩放、旋转操作</p>
+<h3 id="控制叠加模式"><a href="#控制叠加模式" class="headerlink" title="控制叠加模式"></a>控制叠加模式</h3><p>默认情况下，后面绘制的图形将会完全覆盖前面绘制的图形，但有些情况下需要设置叠加效果<code>CGContextSetBlendMode(CGContextRef, CGBlendMode)</code></p>
+<h3 id="处理填充"><a href="#处理填充" class="headerlink" title="处理填充"></a>处理填充</h3><p>Quartz 2D允许使用颜色渐变填充和模式填充两种方式填充指定区域，渐变填充包括线性渐变和圆形渐变</p>
+<ol>
+<li><p>获取填充的gradient</p>
+<pre><code>CGGradientCreateWithColorComponents(CGColourSpaceRef space,
+    const CGFloat components[],const CGFloat locations[],size_t count):
+</code></pre><blockquote>
+<p>space指定该渐变所使用的颜色空间(如RGB、CMYK、Grey等颜色空间)、components用于根据不同的渐变空间设置多种颜色，locations指定各颜色点的分布位置，为null时表示均匀分布，count指定该渐变色包含几种颜色</p>
+</blockquote>
+<pre><code>CGColorSpaceRef colorSpace = CGColourSpaceCreateDeviceRGB();
+CGFloat colours[] = {1,0,0,1, 0,1,0,1, 0,0,1,1};
+_gradient = CGGradientCreateWithColourComponents(colorSpace,
+    colours, NULL, sizeOf(colours)/sizeOf(colours[0])*4))
+</code></pre></li>
+<li><p>填充gradient到指定内容</p>
+<pre><code>CGContextDrawLinearGradient(CGContextRef context,CGGradientRef gradient,
+    CGPoint startPoint,CGPoint endPoint,CGGradientDrawingOptions options);
+
+CGContextDrawRadialGradient(CGContextRef context,CGGradientRef gradient,
+    CGPoint startCentre,CGFloat startRadius,CGPoint endCentre,
+    CGFloat endRadius,CGGradientDrawingOptions options);
+</code></pre></li>
+</ol>
+<p>模式填充可以采用类似于“铺瓷砖”的方式进行填充或绘制边框，包括两种方式</p>
+<ul>
+<li>CGColourCreateWithPattern()函数创建代表模式填充的CGColourRef后，用该颜色填充指定区域或绘制边框</li>
+<li>创建CGPatternRef，在绘制时调用CGContextSetFillPattern或CGContextSetStrokePattern函数设置填充模式</li>
+</ul>
+<h3 id="使用Core-Image滤镜"><a href="#使用Core-Image滤镜" class="headerlink" title="使用Core Image滤镜"></a>使用Core Image滤镜</h3><p>Core Image可以非常容易地对图片进行各种特效处理，包括色彩调节、降噪、扭曲等。步骤如下：</p>
+<ol>
+<li>创建CIContext对象，基于CPU，基于GPU，基于OPENGL</li>
+<li>创建过滤器[CIFilter filterWithName:@“CGPixellate”]并赋值，如inputImage，inputRadius属性</li>
+<li>[CIContext createCGImage:[filter outputImage] fromRect:[filter outputImage].extent]获取CIImage</li>
+<li>[UIImage imageWithCGImage:ciImage]即可获取UIImage完成滤镜效果</li>
+</ol>
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>Quartz Core中的CoreAnimation动画使用CALayer来创建和动画用户界面。优点：</p>
+<ul>
+<li>CoreAnimation在单独的线程中完成，不会阻塞主线程</li>
+<li>CoreAnimation只会重绘界面上变化的部分（局部刷新）</li>
+</ul>
+<p>CAAnimation是所有动画的基类，它实现了CAMediaTiming协议，提供了动画的持续时间，速度和重复计数等，它还实现了CAAction协议，该协议为CALayer动画触发的动作提供标准化响应  </p>
+<h4 id="CATransition是CAAnimation的子类"><a href="#CATransition是CAAnimation的子类" class="headerlink" title="CATransition是CAAnimation的子类"></a>CATransition是CAAnimation的子类</h4><p>CATransition可以通过预置的过渡效果来控制CALayer层的过渡动画</p>
+<pre><code>CATransition *transition = [CATransition animation];
+transition.duration/type/subtype = kCATransitionMoveIn/FromLeft;
+[_view.layer addAnimation:transition forKey:@“animation”];
+</code></pre><h4 id="CAPropertyAnimation是CAAnimation的子类"><a href="#CAPropertyAnimation是CAAnimation的子类" class="headerlink" title="CAPropertyAnimation是CAAnimation的子类"></a>CAPropertyAnimation是CAAnimation的子类</h4><p>CAPropertyAnimation代表一个属性动画，可通过<code>animationWithKeyPath:</code>类方法来创建属性动画实例，该方法需要指定一个CALayer支持动画的属性，然后通过它的子类(CABasicAnimation、CAKeyframeAnimation)控制CALayer的动画属性慢慢改变，即可实现CALayer动画  </p>
+<h4 id="CABasicAnimation是CAPropertyAnimation的子类"><a href="#CABasicAnimation是CAPropertyAnimation的子类" class="headerlink" title="CABasicAnimation是CAPropertyAnimation的子类"></a>CABasicAnimation是CAPropertyAnimation的子类</h4><p>CABasicAnimation简单控制CALayer层的属性慢慢改变，从而实现动画效果，很多CALayer层的属性值的修改默认会执行这个动画类，比如大小、透明度、颜色等</p>
+<pre><code>CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@“position”];
+animation.fromValue = [NSValue valueWithCGPoint:fromPoint];
+animation.toValue = [NSValue valueWithCGPoint:toPoint];
+animation.duration = 0.5;
+[_imageLayer addAnimation:animation forKey:nil];
+</code></pre><h4 id="CAKeyframeAnimation是CAPropertyAnimation的子类"><a href="#CAKeyframeAnimation是CAPropertyAnimation的子类" class="headerlink" title="CAKeyframeAnimation是CAPropertyAnimation的子类"></a>CAKeyframeAnimation是CAPropertyAnimation的子类</h4><p>CAKeyframeAnimation除过可以通过values属性指定动画过程中多个值之外，还可以通过path属性指定CALayer的移动路径，该属性就是CGPathRef，通过这种方式即可控制CALayer按照指定的轨迹移动</p>
+<pre><code>CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@“position”];
+CGMutablePathRef movePath = CGPathCreateMutable();
+animation.path = movePath;
+[_imageLayer addAnimation:animation];
+CAAnimationGroup是CAAnimation的子类，用于将多个动画组合在一起执行
+CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
+animationGroup.animations = @[animation1,animation2];
+[_imageLayer addAnimation:animationGroup];
+</code></pre><blockquote>
+<p>变换：要在一个层中添加一个3D或仿射变换，可以分别设置层的transform或affineTransform属性；<br>变形：Quartz Core的渲染能力，使二维图像可以被自由操纵，就好像是三维的<br>显式动画和隐式动画<br>隐式动画：我们并没有指定任何动画的类型。我们仅仅改变了一个属性，然后Core Animation来决定如何并且何时去做动画<br>显式动画：它能够对一些属性做指定的自定义动画，或者创建非线性动画，比如沿着任意一条曲线移动  </p>
+</blockquote>
+<p>UIView和CALayer的联系与区别：</p>
+<blockquote>
+<ul>
+<li>UIView有个layer属性，可以返回它的主CALayer实例，一般情况下是 UIView 拥有 CALayer，CALayer 的 Delegate 是 UIView<br>通过<code>（(void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context）</code>请求绘图<br>通过<code>- (nullable id&lt;CAAction&gt;)actionForLayer:(CALayer *)layer forKey:(NSString *)event</code>请求动画；</li>
+<li>UIView的CALayer类似UIView的子View树形结构，也可以向它的layer上添加子layer，来完成某些特殊的表示；</li>
+<li>UIView可以响应事件（如 – touchesBegan:withEvent:），Layer不可以，因为UIView直接或间接地继承自UIResponder类，而 CALayer直接继承NSObject类；</li>
+<li>UIView的layer树形在系统内部，被维护着三份copy。分别是逻辑树，这里是代码可以操纵的；动画树，是一个中间层，系统就在这一层上更改属性，进行各种渲染操作；显示树，其内容就是当前正被显示在屏幕上得内容；</li>
+<li>动画的运作：对UIView的subLayer（非主Layer）属性进行更改，系统将自动进行动画生成；</li>
+<li>坐标系统：CALayer的坐标系统比UIView多了一个anchorPoint属性，使用CGPoint结构表示，值域是0~1，是个比例值；</li>
+<li>渲染：当更新层，改变不能立即显示在屏幕上。当所有的层都准备好时，可以调用setNeedsDisplay方法来重绘显示；</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/03/28/疯狂iOS上册-第一部分/" rel="next" title="疯狂iOS上册第一部分">
+                <i class="fa fa-chevron-left"></i> 疯狂iOS上册第一部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/05/30/疯狂iOS下册-第一部分/" rel="prev" title="疯狂iOS下册第一部分">
+                疯狂iOS下册第一部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS应用的界面编程"><span class="nav-number">1.</span> <span class="nav-text">iOS应用的界面编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#UI控件概述"><span class="nav-number">1.1.</span> <span class="nav-text">UI控件概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按钮-UIButton-UIControl-UIView"><span class="nav-number">1.2.</span> <span class="nav-text">按钮(UIButton:UIControl:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本框-UITextField-UIControl-UIView"><span class="nav-number">1.3.</span> <span class="nav-text">文本框(UITextField:UIControl:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多行文本框-UITextView-UIScrollView-UIView"><span class="nav-number">1.4.</span> <span class="nav-text">多行文本框(UITextView:UIScrollView:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开关按钮-UISwitch-UIControl-UIView"><span class="nav-number">1.5.</span> <span class="nav-text">开关按钮(UISwitch:UIControl:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分段控件-UISegmentedControl-UIControl-UIView"><span class="nav-number">1.6.</span> <span class="nav-text">分段控件(UISegmentedControl:UIControl:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像控件-UIImageView-UIView"><span class="nav-number">1.7.</span> <span class="nav-text">图像控件(UIImageView:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进度条-UIProgressView-UIView-UIActivityIndicatorView-UIView"><span class="nav-number">1.8.</span> <span class="nav-text">进度条(UIProgressView:UIView/UIActivityIndicatorView:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拖动条-UISlider-UIControl-UIView"><span class="nav-number">1.9.</span> <span class="nav-text">拖动条(UISlider:UIControl:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIAlertView与UIActionSheet-UIAlertController"><span class="nav-number">1.10.</span> <span class="nav-text">UIAlertView与UIActionSheet(UIAlertController)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日期选择器-UIDatePicker-UIControl-UIView"><span class="nav-number">1.11.</span> <span class="nav-text">日期选择器(UIDatePicker:UIControl:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择器-UIPickerView-UIView"><span class="nav-number">1.12.</span> <span class="nav-text">选择器(UIPickerView:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS8新增的-UIVisualEffectView-UIView"><span class="nav-number">1.13.</span> <span class="nav-text">iOS8新增的(UIVisualEffectView:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微调器-UIStepper-UIControl-UIView"><span class="nav-number">1.14.</span> <span class="nav-text">微调器(UIStepper:UIControl:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网页控件-UIWebView-UIView"><span class="nav-number">1.15.</span> <span class="nav-text">网页控件(UIWebView:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工具条-UIToolbar-UIView"><span class="nav-number">1.16.</span> <span class="nav-text">工具条(UIToolbar:UIView)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格-UITableView-UIScrollView-与表格控制器-UITableViewController"><span class="nav-number">1.17.</span> <span class="nav-text">表格(UITableView:UIScrollView)与表格控制器(UITableViewController)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索条-UISearchBar-和搜索控制器-UISearchDisplayController"><span class="nav-number">1.18.</span> <span class="nav-text">搜索条(UISearchBar)和搜索控制器(UISearchDisplayController)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导航条-UINavigationBar-UIView-与导航控制器-UINavigationController"><span class="nav-number">1.19.</span> <span class="nav-text">导航条(UINavigationBar:UIView)与导航控制器(UINavigationController)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网格-UICollectionView-UIScrollView-UIView-与网格控制器-UICollectViewController"><span class="nav-number">1.20.</span> <span class="nav-text">网格(UICollectionView:UIScrollView:UIView)与网格控制器(UICollectViewController)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标签条-UITabBar-与标签页控制器-UITabBarController"><span class="nav-number">1.21.</span> <span class="nav-text">标签条(UITabBar)与标签页控制器(UITabBarController)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#页控件-UIPageControl-UIControl-UIView-与页控制器-UIPageViewController"><span class="nav-number">1.22.</span> <span class="nav-text">页控件(UIPageControl:UIControl:UIView)与页控制器(UIPageViewController)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iPad应用开发"><span class="nav-number">1.23.</span> <span class="nav-text">iPad应用开发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理iOS应用的运行"><span class="nav-number">2.</span> <span class="nav-text">管理iOS应用的运行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动旋转机制"><span class="nav-number">2.1.</span> <span class="nav-text">自动旋转机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序状态"><span class="nav-number">2.2.</span> <span class="nav-text">应用程序状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中断处理"><span class="nav-number">2.3.</span> <span class="nav-text">中断处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Main-Run-Loop"><span class="nav-number">2.4.</span> <span class="nav-text">Main Run Loop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewController介绍"><span class="nav-number">2.5.</span> <span class="nav-text">ViewController介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS8增强的自动布局功能"><span class="nav-number">2.6.</span> <span class="nav-text">iOS8增强的自动布局功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图形、图像和动画"><span class="nav-number">3.</span> <span class="nav-text">图形、图像和动画</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用UIImage和CGImage处理位图"><span class="nav-number">3.1.</span> <span class="nav-text">使用UIImage和CGImage处理位图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Quartz-2D绘图"><span class="nav-number">3.2.</span> <span class="nav-text">Quartz 2D绘图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图形变换"><span class="nav-number">3.3.</span> <span class="nav-text">图形变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#控制叠加模式"><span class="nav-number">3.4.</span> <span class="nav-text">控制叠加模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理填充"><span class="nav-number">3.5.</span> <span class="nav-text">处理填充</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Core-Image滤镜"><span class="nav-number">3.6.</span> <span class="nav-text">使用Core Image滤镜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动画"><span class="nav-number">3.7.</span> <span class="nav-text">动画</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CATransition是CAAnimation的子类"><span class="nav-number">3.7.1.</span> <span class="nav-text">CATransition是CAAnimation的子类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CAPropertyAnimation是CAAnimation的子类"><span class="nav-number">3.7.2.</span> <span class="nav-text">CAPropertyAnimation是CAAnimation的子类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CABasicAnimation是CAPropertyAnimation的子类"><span class="nav-number">3.7.3.</span> <span class="nav-text">CABasicAnimation是CAPropertyAnimation的子类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CAKeyframeAnimation是CAPropertyAnimation的子类"><span class="nav-number">3.7.4.</span> <span class="nav-text">CAKeyframeAnimation是CAPropertyAnimation的子类</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近将《Effective Objective-C 2.0》这本书浏览了一遍，感觉这本书是ios进阶必看的一本书。如果书中的涉及的主题能够都掌握，那么绝对可以宣称自己是一个高级oc使用者。 熟悉OC了解OC语言的起源OC为C语言添加了面向对象特性，是其超集。OC使用动态绑定的消息结构，也就是说，在运行时才会检查对象类型。接收一条消息之后，究竟应执行何种代码，由运行期环境而非编译器来决定。 理解C语">
+<meta name="keywords" content="OC,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective-OC2.0第一部分">
+<meta property="og:url" content="https://frandfeng.github.io/2014/11/28/Effective-OC2.0第一部分/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="最近将《Effective Objective-C 2.0》这本书浏览了一遍，感觉这本书是ios进阶必看的一本书。如果书中的涉及的主题能够都掌握，那么绝对可以宣称自己是一个高级oc使用者。 熟悉OC了解OC语言的起源OC为C语言添加了面向对象特性，是其超集。OC使用动态绑定的消息结构，也就是说，在运行时才会检查对象类型。接收一条消息之后，究竟应执行何种代码，由运行期环境而非编译器来决定。 理解C语">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T07:58:53.827Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Effective-OC2.0第一部分">
+<meta name="twitter:description" content="最近将《Effective Objective-C 2.0》这本书浏览了一遍，感觉这本书是ios进阶必看的一本书。如果书中的涉及的主题能够都掌握，那么绝对可以宣称自己是一个高级oc使用者。 熟悉OC了解OC语言的起源OC为C语言添加了面向对象特性，是其超集。OC使用动态绑定的消息结构，也就是说，在运行时才会检查对象类型。接收一条消息之后，究竟应执行何种代码，由运行期环境而非编译器来决定。 理解C语">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2014/11/28/Effective-OC2.0第一部分/">
+
+
+
+
+
+  <title>Effective-OC2.0第一部分 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/11/28/Effective-OC2.0第一部分/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Effective-OC2.0第一部分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-11-28T00:00:00+08:00">
+                2014-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近将《Effective Objective-C 2.0》这本书浏览了一遍，感觉这本书是ios进阶必看的一本书。如果书中的涉及的主题能够都掌握，那么绝对可以宣称自己是一个高级oc使用者。</p>
+<h2 id="熟悉OC"><a href="#熟悉OC" class="headerlink" title="熟悉OC"></a>熟悉OC</h2><h3 id="了解OC语言的起源"><a href="#了解OC语言的起源" class="headerlink" title="了解OC语言的起源"></a>了解OC语言的起源</h3><p>OC为C语言添加了面向对象特性，是其超集。OC使用动态绑定的消息结构，也就是说，在运行时才会检查对象类型。接收一条消息之后，究竟应执行何种代码，由运行期环境而非编译器来决定。</p>
+<p>理解C语言的核心概念有助于写好OC程序。尤其要掌握内存模型与指针。</p>
+<h3 id="在类的头文件中尽量少引入其他头文件"><a href="#在类的头文件中尽量少引入其他头文件" class="headerlink" title="在类的头文件中尽量少引入其他头文件"></a>在类的头文件中尽量少引入其他头文件</h3><p>除非确有必要，否则不要引入头文件。一般来说，应在某个类的头文件中使用向前声明来提及别的类，并在实现文件中引入那些类的头文件。这样做可以尽量降低类之间的耦合。</p>
+<p>有时无法使用向前声明，比如要声明某个类遵循一项协议。这种情况下，尽量把该类遵循某协议的这条声明移至”class-continuation分类”中，如果不行的话，就把协议单独放在一个头文件中，然后将其引入。</p>
+<h3 id="多用字面量语法、少用与之等价的方法"><a href="#多用字面量语法、少用与之等价的方法" class="headerlink" title="多用字面量语法、少用与之等价的方法"></a>多用字面量语法、少用与之等价的方法</h3><p>应该使用字面量语法来创建字符串、数值、数组、字典。与创建此类对象的常规方法相比，这么做更加简明扼要。</p>
+<p>应该通过取下标操作来访问数组下标或字典中的键所对应的元素。</p>
+<p>用字面量语法创建数组或字典时，若值中有nil，则会抛出异常。因此，务必确保值里不含nil。</p>
+<h3 id="多用类型常量，少用-define预处理指令"><a href="#多用类型常量，少用-define预处理指令" class="headerlink" title="多用类型常量，少用#define预处理指令"></a>多用类型常量，少用#define预处理指令</h3><p>不要用预处理指令定义常量。这样定义出来的常量不含类型信息，编译器只是会在编译前据此执行查找与替换操作。即使有人重新定义了常量值，编译器也不会产生警告信息，这将导致应用程序中的常量不一致。</p>
+<p>在实现文件中使用static const来定义“只在编译单元内可见的常量”，由于此类常量不在全局符号表中，所以无须为其名称加前缀。</p>
+<p>在头文件中使用extern来声明全局变量，并在相关实现文件中定义其值。这种常量要出现在全局符号表中，所以其名称应加以区隔，通常用与之相关的类名做前缀。</p>
+<pre><code>//In the header file
+extern NSString *const EOCStringConstant;
+
+//In the implementation file
+NSString *const EOCStringConstant = @“VALUE”;
+</code></pre><h3 id="用枚举表示状态、选项、状态码"><a href="#用枚举表示状态、选项、状态码" class="headerlink" title="用枚举表示状态、选项、状态码"></a>用枚举表示状态、选项、状态码</h3><p>应该用枚举来表示状态机的状态、传递给方法的选项以及状态码等值，给这些值起个易懂的名字。</p>
+<p>如果把传递给某个方法的选项表示为枚举类型，而多个选项又可同时使用，那么就将各选项的值定义为2的幂，以便通过按位或操作将其组合起来。</p>
+<p>用NS_ENUM与NS_OPTIONS宏来定义枚举类型，并指明其底层数据类型。这样做可以确保枚举是用开发者所选的底层数据类型实现出来的，而不会采用编译器所选的类型。</p>
+<pre><code>//For example
+typedef NS_ENUM(NSUInteger, EOCConnectionState) {
+    EOCConnectionStateConnected,
+    EOCConnectionStateConnecting,
+    EOCConnectionStateDisconnected,
+};
+
+typedef NS_OPTIONS(NSUInteger, EOCPermittedDirection) {
+    EOCPermittedDirectionUp=1&lt;&lt;0,
+    EOCPermittedDirectionDown=1&lt;&lt;1,
+    EOCPermittedDirectionLeft=1&lt;&lt;2,
+    EOCPermittedDirectionRight=1&lt;&lt;3,
+};
+</code></pre><blockquote>
+<p>在处理枚举类型的switch语句中不要实现default分支。这样的话，加入新枚举之后，编译器就会提示开发者：switch语句并未处理所有枚举。</p>
+</blockquote>
+<h2 id="对象、消息、运行期"><a href="#对象、消息、运行期" class="headerlink" title="对象、消息、运行期"></a>对象、消息、运行期</h2><h3 id="理解属性这一概念"><a href="#理解属性这一概念" class="headerlink" title="理解属性这一概念"></a>理解属性这一概念</h3><pre><code>@interface EOCPerson:NSObject
+@property NSString *firstName;
+@property NSString *lastName;
+@end
+
+//same as
+@interface EOCPerson:NSObject
+- (NSString*)firstName;
+- (void)setFirstName:(NSString*)firstName;
+- (NSString*)lastName;
+- (void)setLastName:(NSString*)lastName;
+@end
+@implementation EOCPerson
+@synthesize firstName=_firstName;
+@synthesize lastName=_lastName;
+@end
+</code></pre><p>若不想令编译器自动合成存取方法，就使用@dynamic关键字，它会告诉编译器，不要自动创建实现属性所用的实例变量，也不要为其创建存取方法。</p>
+<p>属性的特质分为四类：原子性、读写权限、内存管理语义、方法名</p>
+<ul>
+<li>原子性：默认情况下，由编译器所合成的方法会通过锁定机制确保其原子性(atomicity)，如果属性具备nonatomic特质，则不适用同步锁</li>
+<li>读写权限：具备readwrite特质的属性拥有获取方法getter和设置方法setter，readonly特质的属性仅拥有获取方法</li>
+<li>内存管理语义：<ol>
+<li>assign 设置方法只针对纯量类型</li>
+<li>strong 特质表明该属性定义了一种拥有关系，为这种属性设置新值时，设置方法会先保留新值，并释放旧值，然后再将新值设置上去</li>
+<li>weak 特质表明该属性定义了一种非拥有关系，为这种属性设置新值时，设置方法既不保留新值，也不释放旧值，此特质同assign类似，然而在该属性所指的对象遭到摧毁时，属性值也会清空</li>
+<li>unsafe_unretained特质的语义和assign相同，表示一种非拥有关系，当目标对象遭到破坏时，属性值不会自动清空，不安全</li>
+<li>copy特质与strong类似，然而并不保留新值，而是将其拷贝，新值与其拷贝的值之间不公用内存空间</li>
+</ol>
+</li>
+<li>方法名：getter=<name>/setter=<name>指定获取和设置方法的方法名</name></name></li>
+</ul>
+<p>可以使用@property语法来定义对象中所封装的数据</p>
+<p>通过“特质”来指定存储数据所需的正确语义</p>
+<p>在设置属性所对应的实例变量时，一定要遵从该属性所声明的语义</p>
+<p>开发iOS程序时应该使用nonatomic属性，因为atomic属性会严重影响性能</p>
+<p>如何给已经存在的对象添加属性：</p>
+<ul>
+<li>通过运行时中的方法动态添加</li>
+<li>通过valueForUndefinedKey动态添加</li>
+<li>通过类别拓展属性，结合objc_getAssociatedObject();</li>
+</ul>
+<h3 id="在对象内部尽量直接访问实例变量"><a href="#在对象内部尽量直接访问实例变量" class="headerlink" title="在对象内部尽量直接访问实例变量"></a>在对象内部尽量直接访问实例变量</h3><p>直接访问实例变量和通过属性访问有如下区别：</p>
+<ul>
+<li>由于不经过OC的方法派发步骤，所以直接访问实例变量的速度当然比较快，这种情况下，编译器所生成的代码会直接访问保存对象实例变量的那块内存</li>
+<li>直接访问实例变量时，不会调用其设置方法，这就绕过了为相关属性所定义的内存管理语句</li>
+<li>如果直接访问实例变量，那么不会触发键值监听(KVO)通知，有可能会对app有影响</li>
+<li>通过属性来访问有助于排查与之相关的错误，因为可以给获取方法和设置方法中新增断点，监控该属性的调用者及其访问时机</li>
+</ul>
+<p>至于哪一种更优胜些，有一种折中方案，那就是，在写入实例变量时，通过其设置方法来做，而在读取实例变量时，则直接访问</p>
+<p>由于子类可能覆写父类方法，所以在初始化方法及dealloc方法中，总是应该直接通过实例变量来读写数据</p>
+<p>有时会使用惰性初始化技术配置某份数据，这种情况下，需要通过属性来读取数据</p>
+<h3 id="理解对象等同性这一概念"><a href="#理解对象等同性这一概念" class="headerlink" title="理解对象等同性这一概念"></a>理解对象等同性这一概念</h3><p>若想检测对象的等同性，请提供isEqual:与hash方法</p>
+<p>相同的对象必须具有相同的哈希码，但是两个哈希码相同的对象却未必相同，isEqual相同，则hash必相同，所以isEqual相同，则表明两者是相同对象</p>
+<p>不要盲目地逐个检测每条属性，而是应该依照具体需求来制定检测方案</p>
+<p>编写hash方法时，应该使用计算速度快而且哈希码碰撞率低的算法</p>
+<h3 id="以类簇模式隐藏实现细节"><a href="#以类簇模式隐藏实现细节" class="headerlink" title="以类簇模式隐藏实现细节"></a>以类簇模式隐藏实现细节</h3><p>如何向类簇中新增子类：</p>
+<ul>
+<li>子类应该继承自类簇中的抽象基类</li>
+<li>子类应该定义自己的数据存储方式</li>
+<li>子类应该覆写超类文档中指明需要覆写的方法</li>
+</ul>
+<p>类簇模式可以把实现细节隐藏在一套简单的公共接口后面</p>
+<p>系统框架中经常使用类簇</p>
+<p>从类簇的公共抽象基类中继承子类时要当心，若有开发文档，则应先阅读</p>
+<h3 id="在既有类中使用关联对象存放自定义数据"><a href="#在既有类中使用关联对象存放自定义数据" class="headerlink" title="在既有类中使用关联对象存放自定义数据"></a>在既有类中使用关联对象存放自定义数据</h3><p>关联对象，将value值关联到object对象中去，属性名为key</p>
+<pre><code>void objc_setAssociatedObject(id object, void *key, id value, objc_AssociationPolicy policy)
+</code></pre><p>关联类型objc_AssociationPolicy包括</p>
+<pre><code>OBJC_ASSOCIATION_ASSIGN                 assign
+OBJC_ASSOCIATION_RETAIN_NONATOMIC        nonatomic,retain
+OBJC_ASSOCIATION_COPY_NONATOMIC        nonatomic,copy
+OBJC_ASSOCIATION_RETAIN                    retain
+OBJC_ASSOCIATION_COPY                    copy
+</code></pre><p>根据给定的键从某对象中获取相应的关联对象值</p>
+<pre><code>id objc_getAssociatedObject(id object, void *key)
+</code></pre><p>移除指定对象的全部关联对象</p>
+<pre><code>void objc_removeAssociatedObjects(id object)
+</code></pre><p>可以通过关联对象机制把两个对象连起来</p>
+<p>定义关联对象时可指定内存管理语句，用以模仿定义属性时所采用的拥有关系与非拥有关系</p>
+<p>只有在其他做法不可行时才应选用关联对象，因为这种做法通常会引入难于查找的bug</p>
+<h3 id="理解objc-msgSend的作用"><a href="#理解objc-msgSend的作用" class="headerlink" title="理解objc_msgSend的作用"></a>理解objc_msgSend的作用</h3><p>在OC中，如果向某对象传递消息，那就会使用动态绑定机制来决定需要调用的方法。在底层，所有方法都是普通的C语音函数，然而对象收到消息之后，究竟该调用哪个方法则完全于运行期决定，甚至可以在运行时改变，这使得OC成为一门真正的动态语言。</p>
+<p>给对象发送消息可以这样来写：<code>id returnValue = [someObject messageName:parameter];</code>其中someObject叫做接收者，messageName叫做选择子(selector)，选择子与参数和起来成为消息(message)，编译器看到此消息后，将其转换为一条标准的C语言函数调用，所调用的函数乃是消息传递机制中的核心函数，叫做objc_msgSend，其原型如下：<code>void objc_msgSend(id self, SEL cmd, …)</code>，这是个参数个数可变的函数，能接受两个或两个以上的参数，第一个参数代表接收者，第二个参数代表选择子，也就是方法名称，后续参数就是消息中的那些参数，其顺序不变。</p>
+<p>编译器会把刚才的函数转换为<code>id returnValue = objc_msgSend(someObject, @selector(messageName:), parameter);</code></p>
+<p>objc_msgSend函数会依据接收者与选择子的类型来调用适当的方法，为了完成此操作，该方法需要在接收者所属的类中搜寻其方法列表，如果能找到与选择子名称相符合的方法，就跳至实现代码，顺便将匹配结果缓存在快速映射表里(每个类都有这样一块内存)，若是找不到，那就沿着继承体系继续向上查找，等找到再跳，若还是找不到，就会执行消息转发操作</p>
+<pre><code>objc_msgSend_stret 待发送的消息返回结构体，可交由此函数处理
+objc_msgSend_fpret 待发送的消息返回浮点数，可交由此函数处理
+objc_msgSendSuper 如果要给超类发消息，例如[super message:parameter]，可交由此函数处理
+</code></pre><p>刚才曾提到，objc_msgSend等函数一旦找到应该调用的方法实现之后，就会跳转过去，之所以能这样做，是因为OC对象的每个方法都可以视为简单的C函数，其原型如下：<code>&lt;return_type&gt; Class_selector(id self, SEL _cmd, …)</code>，真正的函数名和上面写的可能不太一样，每个类里都有一张表格，其中的指针都会指向这种函数，而选择子的名称则是查表时所用的键，objc_msgSend等函数正是通过这张表格来寻找应该执行的方法并跳至其实现的</p>
+<p>消息由接收者、选择子及参数构成，给某对象发送消息就相当于在该对象上调用方法</p>
+<p>发给某对象的全部消息都要由动态消息派发系统来处理，该系统会查出对应的方法，并执行其代码</p>
+<h3 id="理解消息转发机制"><a href="#理解消息转发机制" class="headerlink" title="理解消息转发机制"></a>理解消息转发机制</h3><p>消息转发分为两个大阶段，第一阶段先征询接收者所属的类，看能否动态添加方法，以处理当前这个未知的选择子，这叫做动态方法解析，第二阶段涉及完整的消息转发机制，此又分为两小步，首先，请接收者看看有没有其他对象能处理这条消息，如果没有，则启动完整的消息转发机制，运行期系统会把与消息有关的全部细节都封装到NSInvocation对象中，再给接收者最后一次机会，令其设法解决当前还未处理的这条消息。</p>
+<p>动态方法解析：对象在收到无法解读的消息后，首先将调用其所属类的下列类方法：</p>
+<pre><code>+(BOOL)resolveInstanceMethod:(SEL)selector;
++(BOOL)resolveClassMethod:(SEL)selector {
+    NSString *selectorString = NSStringFormSelector(selector);
+    if(/*selector is a @dynamic property*/) {
+        if([selectorString hasPrefix:@“set”]) {
+            class_addMethod(self, selector, (IMP)autoDictionarySetter, “v@:@”);
+        } else {
+            class_addMethod(self, selector, (IMP)autoDictionaryGetter, “@@:”);
+        }
+    }
+}
+</code></pre><p>备援接收者：当前接收者还有第二次机会能处理未知的选择子，在这一步中，运行期系统会问它，能不能把这条消息转给其他接收者来处理，与之对应的处理方法如下：<code>-(id)forwardingTargetForSelector:(SEL)selector;</code>该对象可经由此方法将能够处理某选择子的相关内部对象返回，这样的话，在外界看来好像是该对象亲自处理了这些消息似的。</p>
+<p>完整的消息转发：将消息等内容修改后重新封装于NSInvocation对象中，然后由消息派发系统重新派发给目标对象，此步骤会调用下列方法：<code>-(void)forwardInvocation:(NSInvocation*)invocation;</code>实现此方法时，若发现某调用操作不应由本类处理，则需要调用超类的同名方法，这样的话，继承体系中的每个类都有机会处理此调用的请求，直至NSObject，如果最后还是没有处理，则会调用<code>doesNotRecognizerSelector:</code>抛出异常，此异常表明选择子最终未能得到处理。</p>
+<blockquote>
+<p>在一个函数找不到时，Objective-C提供了三种方式去补救：</p>
+<ol>
+<li>调用resolveInstanceMethod给个机会让类添加这个实现这个函数</li>
+<li>调用forwardingTargetForSelector让别的对象去执行这个函数</li>
+<li>调用methodSignatureForSelector（函数符号制造器）和forwardInvocation（函数执行器）灵活的将目标函数以其他形式执行<br>如果都不中，调用doesNotRecogniseSelector抛出异常</li>
+</ol>
+</blockquote>
+<h3 id="用方法调配技术调试黑盒方法"><a href="#用方法调配技术调试黑盒方法" class="headerlink" title="用方法调配技术调试黑盒方法"></a>用方法调配技术调试黑盒方法</h3><p>以下方法可以实现两个方法的互换</p>
+<pre><code>Method originalMethod = class_getInstanceMethod([NSString class], @selector(lowercaseString));
+method_exchangeImplementations(originalMethod, swappedMethod);
+</code></pre><p>以下操作再加上上述的方法互换操作可以为那些完全不知道其具体实现的黑盒方法增加日志记录功能，非常有助于调试</p>
+<pre><code>@interface NSString (EOCMyAdditions)
+- (NSString*)eoc_myLowercaseString;
+@end
+
+@implementation NSString (EOCMyAdditions)
+- (NSString*)eoc_myLowercaseString {
+    NSString *lowercase = [self eoc_myLowercaseString];
+    NSLog(@“%@=&gt;%@”, self, lowercase);
+    return lowercase;
+}
+@end
+</code></pre><p>在运行期，可以向类中新增或替换选择子所对应的方法实现</p>
+<p>使用另一份实现来替换原有的方法实现，这道工序叫方法调配，开发者常用此功能向原有实现中添加新功能</p>
+<p>一般来说，只有调试程序的时候才需要在运行期修改实现方法，这种做法不宜滥用</p>
+<h3 id="理解类对象的用意"><a href="#理解类对象的用意" class="headerlink" title="理解类对象的用意"></a>理解类对象的用意</h3><p>每个实例都有一个指向Class对象的指针，用以表明其类型，而这些Class对象则构成了类的继承体系</p>
+<p>如果对象类型在编译期无法确定，那么就应该使用类型信息查询方法来探知</p>
+<p>尽量使用类型信息查询方法来确定对象的类型，而不要直接比较类对象，因为某些对象可能实现了消息转发功能</p>
+<h2 id="接口与API设计"><a href="#接口与API设计" class="headerlink" title="接口与API设计"></a>接口与API设计</h2><h3 id="用前缀避免命名空间冲突"><a href="#用前缀避免命名空间冲突" class="headerlink" title="用前缀避免命名空间冲突"></a>用前缀避免命名空间冲突</h3><p>选择与你公司、应用程序或二者皆有关联的名称作为类名的前缀，并在所有代码中均使用这一前缀</p>
+<p>若自己开发的程序库中用到了第三方库，其应为其中的名称加上前缀</p>
+<h3 id="提供全能初始化方法"><a href="#提供全能初始化方法" class="headerlink" title="提供全能初始化方法"></a>提供全能初始化方法</h3><p>在类中提供一个全能初始化方法，并于文档里指明。其他初始化方法均应调用此方法</p>
+<p>若全能初始化方法与超类不同，则需覆写超类中的对应方法</p>
+<p>如果超类的初始化方法不适用于子类，那么应该覆写这个超类方法，并在其中抛出异常</p>
+<h3 id="实现description方法"><a href="#实现description方法" class="headerlink" title="实现description方法"></a>实现description方法</h3><p>实现description方法返回一个有意义的字符串，用以描述该实例</p>
+<p>若想在调试时打印出更详尽的对象描述信息，则应实现debugDescription</p>
+<h3 id="尽量创建不可变对象"><a href="#尽量创建不可变对象" class="headerlink" title="尽量创建不可变对象"></a>尽量创建不可变对象</h3><p>尽量创建不可变对象</p>
+<p>若某属性仅可于对象内部修改，则在class-continuation分类中将其由readonly属性扩展为readwrite属性</p>
+<p>不要把可变的collection作为属性公开，而应提供相关方法，以此修改对象中的可变collection</p>
+<h3 id="使用清晰而协调的命名方式"><a href="#使用清晰而协调的命名方式" class="headerlink" title="使用清晰而协调的命名方式"></a>使用清晰而协调的命名方式</h3><p>起名时应遵从标准的OC命名规范，这样创建出来的接口更容易为开发者所理解</p>
+<p>方法名要言简意赅，从左至右读起来要像个日常用语中的句子才好</p>
+<p>方法名里不要使用缩略后的类型名称</p>
+<p>给方法起名时的第一要务就是确保其风格与你自己的代码或所要集成的框架相符</p>
+<h3 id="为私有方法起名加前缀"><a href="#为私有方法起名加前缀" class="headerlink" title="为私有方法起名加前缀"></a>为私有方法起名加前缀</h3><p>给私有方法的名称加上前缀，这样可以很容易地将其同公共方法区别开</p>
+<p>不要单用一个下划线做私有方法的前缀，因为这种做法是预留给苹果公司使用的</p>
+<h3 id="理解OC错误模型"><a href="#理解OC错误模型" class="headerlink" title="理解OC错误模型"></a>理解OC错误模型</h3><pre><code>@throw [NSException exceptionWithName:@“NAME” reason:@“REASON” userInfo:UserInfo];
+NSError *error = [NSError errorWithDomain:@“domain” code:code userInfo:userInfo];
+</code></pre><p>domain错误发生的范围，其类型为字符串，也就是产生错误的根源，通常用一个特有的全局变量来定义</p>
+<p>errorCode错误码，其类型为整数，独有的错误代码，用以指明发生何种错误，一般用枚举</p>
+<p>userInfo用户信息，为字典类型，包括有关此错误的额外信息</p>
+<pre><code>-(BOOL)doSomething:(NSError**)error {
+    if(/*there is an error*/) {
+        *error = [NSError errorWithDomain:domain code:code userInfo:userInfo];
+        return NO;
+    } else {
+        return YES;
+    }
+}
+</code></pre><p>只有发生了可使整个应用程序奔溃的严重错误时，才应使用异常</p>
+<p>在错误不那么严重的情况下，可以指派委托方法来处理，也可以把错误信息放在NSError对象里，经由输出参数返回给调用者</p>
+<h3 id="理解NSCopying协议"><a href="#理解NSCopying协议" class="headerlink" title="理解NSCopying协议"></a>理解NSCopying协议</h3><p>若想令自己所写的对象具有拷贝功能，则需实现NSCopying协议</p>
+<p>如果自定义的对象分为可变版本与不可变版本，那么就要同时实现NSCopying与NSMutableCopying协议</p>
+<p>复制对象时需决定采用浅拷贝还是深拷贝，一般情况下应该尽量执行浅拷贝</p>
+<p>如果你所写的对象需要深拷贝，那么可以考虑新增一个专门执行深拷贝的方法</p>
+<h2 id="协议与分类"><a href="#协议与分类" class="headerlink" title="协议与分类"></a>协议与分类</h2><h3 id="通过委托与数据源协议进行对象间通信"><a href="#通过委托与数据源协议进行对象间通信" class="headerlink" title="通过委托与数据源协议进行对象间通信"></a>通过委托与数据源协议进行对象间通信</h3><p>委托模式为对象提供了一套接口，使其可由此将相关事件告知其他对象</p>
+<p>将委托对象应该支持的接口定义成协议，在协议中把可能需要处理的事件定义成方法</p>
+<p>当某对象需要从另外一个对象中获取数据时，可以使用委托模式，这种情况下，该模式亦称数据源协议</p>
+<p>若有必要，可实现含有位段的结构体，将委托对象能否响应相关协议方法这一信息缓存至其中</p>
+<h3 id="将类的实现代码分散到便于管理的数个分类之中"><a href="#将类的实现代码分散到便于管理的数个分类之中" class="headerlink" title="将类的实现代码分散到便于管理的数个分类之中"></a>将类的实现代码分散到便于管理的数个分类之中</h3><p>使用分类机制把类的实现代码划分成易于管理的小块</p>
+<p>将应该视为私有的方法归入名叫private的分类中，以隐藏实现细节</p>
+<h3 id="总是为第三方类的分类名称加前缀"><a href="#总是为第三方类的分类名称加前缀" class="headerlink" title="总是为第三方类的分类名称加前缀"></a>总是为第三方类的分类名称加前缀</h3><p>向第三方类中添加分类时，总应给其名称加上你专用的前缀</p>
+<p>向第三方类中添加分类时，总应给其中的方法名加上你专用的前缀</p>
+<h3 id="勿在分类中声明属性"><a href="#勿在分类中声明属性" class="headerlink" title="勿在分类中声明属性"></a>勿在分类中声明属性</h3><p>把封装数据所用的全部属性都定义在主接口里</p>
+<p>在class-continuation分类之外的其他分类中，可以定义存取方法，但尽量不要定义属性，因为它不会自动生成存取方法，此时可以把存取方法声明为@dynamic，也就是说，这些方法等到运行期再提供，编译器是看不见的。所以必须在运行期才会提供方法，此时只能使用消息转发机制来实现</p>
+<p>如果在分类中定义属性，则在实现中不能生成存取方法，会报warning(property requires method, use @dynamic or provide a method implementation in this category)，此时根据提示用dynamic，或者手动提供一个存取方法完成功能，内部用对象关联来实现功能</p>
+<pre><code>#import &quot;NSAttributedString+CHEmoj.h&quot;
+#import &lt;objc/runtime.h&gt;
+static const char *kKey = &quot;kKey&quot;;
+
+@implementation NSAttributedString (CHEmoj)
+- (void)setHaha:(NSString *)haha {
+        objc_setAssociatedObject(self, kKey, haha, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (NSString *)haha {
+        return objc_getAssociatedObject(self, kKey);
+}
+@end
+</code></pre><h3 id="使用class-continuation分类隐藏实现细节"><a href="#使用class-continuation分类隐藏实现细节" class="headerlink" title="使用class-continuation分类隐藏实现细节"></a>使用class-continuation分类隐藏实现细节</h3><p>通过class-continuation分类向类中新增实例变量</p>
+<p>如果某属性在主接口中声明为只读，而类的内部又要用设置方法修改此属性，那么可以在class-continuation分类中将其扩展为可读写</p>
+<p>把私有方法的原型声明在class-continuation分类里面</p>
+<p>若想使类所遵循的协议不为人所知，则可于class-continuation分类中声明</p>
+<h3 id="通过协议提供匿名对象"><a href="#通过协议提供匿名对象" class="headerlink" title="通过协议提供匿名对象"></a>通过协议提供匿名对象</h3><p>协议可在某种程度上提供匿名类型，具体的对象类型可以淡化成遵循某协议的id类型，协议里规定了对象所应实现的方法</p>
+<p>使用匿名对象来隐藏类型名称或类名</p>
+<p>如果具体类型不重要，重要的是对象能够响应定义在协议里的特定方法，那么可使用匿名对象来表示</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/10/31/UIScrollView的API及用法/" rel="next" title="UIScrollView的API及用法">
+                <i class="fa fa-chevron-left"></i> UIScrollView的API及用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/12/26/Effective-OC2.0第二部分/" rel="prev" title="Effective-OC2.0第二部分">
+                Effective-OC2.0第二部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#熟悉OC"><span class="nav-number">1.</span> <span class="nav-text">熟悉OC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#了解OC语言的起源"><span class="nav-number">1.1.</span> <span class="nav-text">了解OC语言的起源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在类的头文件中尽量少引入其他头文件"><span class="nav-number">1.2.</span> <span class="nav-text">在类的头文件中尽量少引入其他头文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多用字面量语法、少用与之等价的方法"><span class="nav-number">1.3.</span> <span class="nav-text">多用字面量语法、少用与之等价的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多用类型常量，少用-define预处理指令"><span class="nav-number">1.4.</span> <span class="nav-text">多用类型常量，少用#define预处理指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用枚举表示状态、选项、状态码"><span class="nav-number">1.5.</span> <span class="nav-text">用枚举表示状态、选项、状态码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象、消息、运行期"><span class="nav-number">2.</span> <span class="nav-text">对象、消息、运行期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#理解属性这一概念"><span class="nav-number">2.1.</span> <span class="nav-text">理解属性这一概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在对象内部尽量直接访问实例变量"><span class="nav-number">2.2.</span> <span class="nav-text">在对象内部尽量直接访问实例变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解对象等同性这一概念"><span class="nav-number">2.3.</span> <span class="nav-text">理解对象等同性这一概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以类簇模式隐藏实现细节"><span class="nav-number">2.4.</span> <span class="nav-text">以类簇模式隐藏实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在既有类中使用关联对象存放自定义数据"><span class="nav-number">2.5.</span> <span class="nav-text">在既有类中使用关联对象存放自定义数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解objc-msgSend的作用"><span class="nav-number">2.6.</span> <span class="nav-text">理解objc_msgSend的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解消息转发机制"><span class="nav-number">2.7.</span> <span class="nav-text">理解消息转发机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用方法调配技术调试黑盒方法"><span class="nav-number">2.8.</span> <span class="nav-text">用方法调配技术调试黑盒方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解类对象的用意"><span class="nav-number">2.9.</span> <span class="nav-text">理解类对象的用意</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口与API设计"><span class="nav-number">3.</span> <span class="nav-text">接口与API设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用前缀避免命名空间冲突"><span class="nav-number">3.1.</span> <span class="nav-text">用前缀避免命名空间冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提供全能初始化方法"><span class="nav-number">3.2.</span> <span class="nav-text">提供全能初始化方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现description方法"><span class="nav-number">3.3.</span> <span class="nav-text">实现description方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尽量创建不可变对象"><span class="nav-number">3.4.</span> <span class="nav-text">尽量创建不可变对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用清晰而协调的命名方式"><span class="nav-number">3.5.</span> <span class="nav-text">使用清晰而协调的命名方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为私有方法起名加前缀"><span class="nav-number">3.6.</span> <span class="nav-text">为私有方法起名加前缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解OC错误模型"><span class="nav-number">3.7.</span> <span class="nav-text">理解OC错误模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#理解NSCopying协议"><span class="nav-number">3.8.</span> <span class="nav-text">理解NSCopying协议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协议与分类"><span class="nav-number">4.</span> <span class="nav-text">协议与分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过委托与数据源协议进行对象间通信"><span class="nav-number">4.1.</span> <span class="nav-text">通过委托与数据源协议进行对象间通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将类的实现代码分散到便于管理的数个分类之中"><span class="nav-number">4.2.</span> <span class="nav-text">将类的实现代码分散到便于管理的数个分类之中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总是为第三方类的分类名称加前缀"><span class="nav-number">4.3.</span> <span class="nav-text">总是为第三方类的分类名称加前缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#勿在分类中声明属性"><span class="nav-number">4.4.</span> <span class="nav-text">勿在分类中声明属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用class-continuation分类隐藏实现细节"><span class="nav-number">4.5.</span> <span class="nav-text">使用class-continuation分类隐藏实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过协议提供匿名对象"><span class="nav-number">4.6.</span> <span class="nav-text">通过协议提供匿名对象</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

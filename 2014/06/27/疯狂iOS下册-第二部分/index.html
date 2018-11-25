@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇主要接着《疯狂iOS讲义》下册第一部分的内容将下册第二部分的重点知识列举一下，包括:iOS网络应用编程、使用CoreLocation定位、使用MapKit开发地图服务、推送机制、iCloud服务与应用五大部分。 iOS网络应用编程检测网络状态检测设备的网络状态，需要两个步骤：  下载、添加Reachability 添加SystemConfiguration框架  代码实现： Reachabil">
+<meta name="keywords" content="OC,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="疯狂iOS下册第二部分">
+<meta property="og:url" content="https://frandfeng.github.io/2014/06/27/疯狂iOS下册-第二部分/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="本篇主要接着《疯狂iOS讲义》下册第一部分的内容将下册第二部分的重点知识列举一下，包括:iOS网络应用编程、使用CoreLocation定位、使用MapKit开发地图服务、推送机制、iCloud服务与应用五大部分。 iOS网络应用编程检测网络状态检测设备的网络状态，需要两个步骤：  下载、添加Reachability 添加SystemConfiguration框架  代码实现： Reachabil">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T07:52:57.654Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="疯狂iOS下册第二部分">
+<meta name="twitter:description" content="本篇主要接着《疯狂iOS讲义》下册第一部分的内容将下册第二部分的重点知识列举一下，包括:iOS网络应用编程、使用CoreLocation定位、使用MapKit开发地图服务、推送机制、iCloud服务与应用五大部分。 iOS网络应用编程检测网络状态检测设备的网络状态，需要两个步骤：  下载、添加Reachability 添加SystemConfiguration框架  代码实现： Reachabil">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2014/06/27/疯狂iOS下册-第二部分/">
+
+
+
+
+
+  <title>疯狂iOS下册第二部分 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/06/27/疯狂iOS下册-第二部分/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">疯狂iOS下册第二部分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-06-27T00:00:00+08:00">
+                2014-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇主要接着《疯狂iOS讲义》下册第一部分的内容将下册第二部分的重点知识列举一下，包括:iOS网络应用编程、使用CoreLocation定位、使用MapKit开发地图服务、推送机制、iCloud服务与应用五大部分。</p>
+<h2 id="iOS网络应用编程"><a href="#iOS网络应用编程" class="headerlink" title="iOS网络应用编程"></a>iOS网络应用编程</h2><h3 id="检测网络状态"><a href="#检测网络状态" class="headerlink" title="检测网络状态"></a>检测网络状态</h3><p>检测设备的网络状态，需要两个步骤：</p>
+<ol>
+<li>下载、添加Reachability</li>
+<li>添加SystemConfiguration框架</li>
+</ol>
+<p>代码实现：</p>
+<pre><code>Reachability *reach = [Reachability reachabilityWithHostName:site];
+switch([reach currentReachabilityWithHostName:site]) {
+    case NotReachable:
+        break;
+    case ReachableViaWWAN:
+        break;
+    case ReachableViaWiFi:
+        break;
+}
+
+if([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus]!=NotReachable)
+
+if([[Reachability reachabilityForInternetConnection] currentReachabilityStatus]!=NotReachable)
+</code></pre><p>监听网络状态的改变,在[application:didFinishLaunchingWithOptions:]中增加</p>
+<pre><code>[[NSNotificationCentre defaultCentre] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityNotification object:nil];
+
+Reachability *reach = [Reachability reachabilityWithHostName:@“www.crazyit.org”];
+[reach startNotifier];
+
+-(void)reachabilityChanged:(NSNotification *)note {
+    Reachability *curReach = [note object];
+    NetWorkStatus status = [curReach currentReachabilityStatus];
+}
+</code></pre><h3 id="使用CFNetwork实现TCP协议的通信"><a href="#使用CFNetwork实现TCP协议的通信" class="headerlink" title="使用CFNetwork实现TCP协议的通信"></a>使用CFNetwork实现TCP协议的通信</h3><p>TCP/IP通信协议是一种可靠的网络协议，它在通信的两端各建立一个通信接口，从而在通信的两端之间形成网络虚拟链路。一旦建立的虚拟的网络链路，两端的程序就可以通过虚拟链路进行通信。CFNetwork对基于TCP协议的网络通信提供了良好的封装，CFNetwork使用CFSocket来代表两端的通信接口，还可通过CFStream读/写数据。</p>
+<p>IP地址用于唯一地标识网络中的一个通信实体，这个通信实体既可以是一台主机，也可以是一台打印机，或者是路由器的某个端口，在基于IP协议的网络传输的数据包，都必须使用IP地址来进行标识</p>
+<p>IP协议是Internet上使用的一个关键协议，它的全称是Internet Protocol，即网络协议，通过使用IP协议，使Internet成为一个允许连接不同类型的计算机和不同操作系统的网络，IP协议是用于将多个包交换网络连接起来的，它在源地址和目的地址之间传送一种称之为数据包的东西，它还提供对数据大小的重新组装功能，以适应不同网络对包大小的要求，它的责任就是把数据从源传送到目的地。它不负责保证传送可靠性，流控制，包顺序和其它对于主机到主机协议来说很普通的服务</p>
+<p>TCP协议负责收集这些信息包，并将其按适当的次序放好传送，在接收端收到后再将其正确的还原，TCP协议保证了数据包在传输中准确无误，而且TCP协议会使用重发机制，保证数据包不会漏掉</p>
+<p>使用CFSocket实现TCP服务器端</p>
+<ol>
+<li><p>创建一个监听SocketAccept(Socket链接)的CFSocket，并为kCFSocketCallBack事件绑定回调函数</p>
+<pre><code>CFSocketRef _socket = CFSocketCreate(kCFAllocatorDefault,
+    PF_INET,//指定协议族，如果该参数为0或者负数，则默认为PF_INET，也可以是AF_INET6或AF_UNSPEC
+    SOCK_STREAM,//指定socket类型，默认为SOCK_STREAM，如果使用UDP协议，则使用SOCK_GGRAM
+    IPPRTO_TCP,//指定通信协议，如果前一个参数为SOCK_STREAM，则用TCP协议，如果SOCK_GGRAM则用UDP
+    kCFSocketAcceptCallBack,//指定下一个回调函数所监听的事件类型
+    TCPServerAcceptCallBack);//连接成功或失败时的回调函数,NULL
+
+void TCPServerAcceptCallBack(CFSocketRef socket,CFSocketCallBackType type//kCFSocketAcceptCallBack,CFDataRef address,const void *data//传入的数据, void *info)
+</code></pre></li>
+<li><p>调用CFSocketSetAddress函数，将服务端的CFSocket绑定到本地IP地址和端口</p>
+<pre><code>CFSocketSetAddress(_socket,address)==kCFSocketSuccess)
+</code></pre></li>
+<li><p>CFSocket作为source添加到指定线程的CFRunLoop上，并运行该线程的CFRunLoop，从而保证该CFSocket能持续不断地接收来自客户端的链接</p>
+<pre><code>CFRunLoopSourceRef source = CFSocketCreateRunLoopSource(kCFAllocator, _socket, 0);
+CFRunLoopAddSource(CFRunLoopGetCurrent(), source, kCFRunLoopCommonModes);CFRunLoopRun();
+</code></pre></li>
+</ol>
+<p>以上步骤，相当于Java中的：</p>
+<pre><code>ServerSocket ss = new ServerSocket(3000);
+while(true) {
+    final Socket s = ss.accept();
+    new Thread() {
+        @Override
+        public void run() {
+            InputStream is = s.getInputStream;
+        }
+    };
+    OutputStream os = s.getOutputStream();
+}
+</code></pre><p>使用CFSocket实现TCP客户端</p>
+<ol>
+<li><p>创建一个不监听任何事件或监听connection的CFSocket，如果要监听connection，则需要为kCFSocketCallBack事件绑定回调函数</p>
+<pre><code>CFSocketRef _socket = CFSocketCreate(kCFAllocatorDefault,
+    PF_INET,//指定协议族，如果该参数为0或者负数，则默认为PF_INET
+    SOCK_STREAM,//指定socket类型，默认为SOCK_STREAM，如果使用UDP协议，则使用SOCK_GGRAM
+    IPPRTO_TCP,//指定通信协议，如果前一个参数为SOCK_STREAM，则用TCP协议，如果SOCK_GGRAM则用UDP
+    kCFSocketNoCallBack,//指定下一个回调函数所监听的时间类型
+    nil);//回调函数,NULL
+</code></pre></li>
+<li><p>调用CFSocketConnectToAddress()函数，将客户端的CFSocket链接到指定IP的地址和端口的服务器上</p>
+<pre><code>CFSocketError result = CFSocketConnectToAddress(_socket,address//指定远程服务器的IP地址和端口,5//指定链接超时时长，如果为负，则把链接操作放在后台进行);//当socket消息类型为kCFSocketConnectCallBack时，将会在连接成功或失败时在后台触发回调函数);
+</code></pre></li>
+<li><p>得到客户端CFSocket后，既可以直接使用CFSocket对应的CFSocketNativeHandler进行读/写，也可以通过CFSocket获取CFReadStreamRef、CFWriteStreamRef后进行读/写</p>
+<pre><code>while(hasRead=recv(CFSocketGetNative(_socket), buffer, sizeOf(buffer), 0)){
+    //buffer;
+}
+
+send(CFSocketGetNative(_socket), data, strlen(data)+1, 1);
+</code></pre></li>
+</ol>
+<p>直接使用CFSocket虽然可以实现基于TCP协议的网络通信，但采取这种方式进行编程十分繁琐，为了降低直接使用CFSocket编程的复杂度，另外有开发者提供了一套开源的CocoaAsyncSocket库，CocoaAsyncSocket库封装了CFNetwork底层的CFSocket和CFStream，并提供了异步操作，从而可简化Socket网络编程，CocoaAsyncSocket不仅支持TCP协议的网络编程，也支持UDP协议的网络编程，其git地址为<a href="https://github.com/robbiehanson/CocoaAsyncSocket，CocoaAsyncSocket主要有以下特性：" target="_blank" rel="noopener">https://github.com/robbiehanson/CocoaAsyncSocket，CocoaAsyncSocket主要有以下特性：</a></p>
+<ol>
+<li>非阻塞方式的读和写，而且可设置超时时长</li>
+<li>自动的Socket接收，如果调用它接受连接，它将为每个连接启动新的实例，当然也可以立即关闭这些连接</li>
+<li>委托支持，错误、连接、接收、完整的读取、完整的写入、进度以及断开连接等，都可以通过委托模式调用</li>
+<li>所有的操作都封装在一个类中，开发者无须操作Socket或流，该类封装了所有操作</li>
+</ol>
+<p>从git地址中的目录可以看出，该目录下的source为封装的源码文件夹，此文件夹下包括RunLoop、GCD和Vendor文件夹</p>
+<p>RunLoop目录下包括了AsyncSocket、AsynUdpSocket两个类文件，GCD和RunLoop类似，只是类名变成了GCDAsyncSocket和GCDAysncUdpSocket，不同点在于此两类是用GCD实现的，Vendor目录中是保存的其他相关的类</p>
+<pre><code>AsyncSocket *socket = [[AsyncSocket alloc] initWithDelegate:self];
+[socket connectToHost:host onPort:port withTimeout:2 error:&amp;error];
+
+-(void)onSocket:(AsyncSocket*)socket didConnectToHost:(NSString*)host port:(UInt16)port {
+    [socket readDataWithTimeout:-1 tag:0];
+}
+
+-(void)onSocket:(AsyncSocket*)socket didReadData:(NSData*)data withTag:(long)tag {
+    [socket writeData:data withTimeout:-1 tag:0];
+}
+</code></pre><h3 id="使用NSURLConnection"><a href="#使用NSURLConnection" class="headerlink" title="使用NSURLConnection"></a>使用NSURLConnection</h3><p>如果只是为了读取HTTP等服务器数据，或向服务器提交数据，iOS还提供了NSURLConnection类，NSURLConnection使用NSURLRequest向远程服务器发送同步或异步请求，并获取服务器响应的数据，除NSURLRequest外，还可用NSMutableURLRequest，他们包含的方法有：</p>
+<pre><code>-(NSURLRequest*)originalRequest;/-(NSURLRequest*)currentRequest;
++sendSynchronousRequest:returningResponse:error:
++connectionWithRequest:delegate:
+-initWithRequest:delegate:
+-initWithRequest:delegate:startImmediately:/-start:
++sendAsynchronousRequest:queue:completionHandler:需要额外指定NSOperationQueue，表明交给其处理
+</code></pre><p>调用方法：</p>
+<pre><code>NSULRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:5];
+NSURLConnection *conn = [NSURLConnection connectionWithRequest:request delegate:self];
+</code></pre><p>Delegate回调：</p>
+<pre><code>-(void)connection:(NSURLConnection*)connection didReceiveResponse:(NSURLResponse*)response;
+-(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)data;
+-(void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error;
+-(void)connectionDidFinishLoading:(NSURLConnection*)connection;
+</code></pre><p>如果需要请求服务器时添加请求头和请求参数，则需要使用NSMutableURLRequest来请求</p>
+<ul>
+<li>-addValue:forHTTPHeaderField:</li>
+<li>-setAllHTTPHeaderFields:</li>
+<li>-setHTTPBody:</li>
+<li>-setHTTPBodyStream:</li>
+<li>-setHTTPMethod:</li>
+<li>-setHTTPShouldHandleCookies:</li>
+<li>-setValue:forHTTPHeaderField:</li>
+</ul>
+<h3 id="XML解析"><a href="#XML解析" class="headerlink" title="XML解析"></a>XML解析</h3><p>XML文件是一种平台无关的数据交换格式，当iOS应用需要与其他应用或应用服务器进行通信时，如果数据量较小，使用简单的文本数据，但当数据量较大且数据之间有严格的结构关系时，可以选择XML文档作为数据交换格式，也可选择JSON作为数据交换格式</p>
+<p>为了利用XML文档的结构化特征进行解析，现有两套比较流行的规范：</p>
+<ol>
+<li>DOM：Document Object Model，即文档对象模型，是由W3C推荐的处理XML文档的规范，它会一次性地读取整个XML文档，而且程序运行期间常驻内存，可随意修改，但系统开销过大</li>
+<li>SAX：Simple API for XML，并不是W3C推荐的标准，但是却是整个XML行业的事实规范，它采用事件机制的方式来解析</li>
+</ol>
+<p>基于这两种规范，iOS解析XML文件有很多原生的或者开源的类库可选：如</p>
+<ol>
+<li><p>NSXMLParser:iOS自带，基于SAX解析，纯OC实现</p>
+<ul>
+<li>-parserDidStartDocument:(开始解析)</li>
+<li>-parserDidEndDocument:(解析结束)</li>
+<li>-parser:didStartElement:namespaceURI:qualifiedName:attributes:(开始处理XML元素)</li>
+<li>-parser:didEndElement:namespaceURI:qualifiedName:(结束处理XML元素)</li>
+<li>-parser:resolveExternalEntityName:systemID:(开始处理外部实体)</li>
+<li>-parser:parseErrorOccurred:(解析出现错误)</li>
+<li>-parser:validationErrorOccurred:(验证遇到错误)</li>
+<li>-parser:foundCharacters:(遇到字符串时)</li>
+<li>-parser:foundIgnorableWhiteSpace:(解析遇到空白时)</li>
+<li>-parser:foundProcessingInstructionWithTarget:data:(解析文档的处理指令时)</li>
+<li>-parser:foundComment:(处理注释时)</li>
+<li><p>-parser:foundCDATA:(处理CDATA时)</p>
+<pre><code>NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:fileURL];
+parser.delegate = self;
+[parser parse];
+</code></pre></li>
+</ul>
+</li>
+<li><p>libxml2:iOS自带，开源解析器，可同时支持DOM和SAX，性能好，C实现，用起来不大方便，步骤如下：</p>
+<ol>
+<li>添加libxml2.dylib库</li>
+<li>添加头文件的搜索路径/usr/include/libxml2</li>
+<li>创建对象</li>
+<li><p>获取信息</p>
+<pre><code>xmlTextReaderPtr reader = xmlNewTextReaderFilename(xmlPath);//通过文档创建对象
+xmlTextReaderPtr reader = xmlReaderForMemory(memory, size, NULL, “UTF-8”, 0);//通过内存创建对象
+if(xmlTextReaderNodeType(reader)==XML_READER_TYPE_ELEMENT) {
+    xmlTextReaderConstName(reader)//获取元素名
+    xmlTextReaderGetAttribute(reader,(xmlChar*)”id”)//获取元素属性名
+    xmlTextReaderReadString(reader)//获取元素中的文本内容
+};
+</code></pre></li>
+</ol>
+</li>
+<li><p>GDataXML:第三方开源，基于DOM和SAX，性能快，非常流行，对libxml2的封装，将XML文档解析成对象</p>
+<pre><code>GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithData:data option:0 error:nil];
+GDataXMLElement *rootElement = [doc rootElement];
+NSArray *bookElements = [rootElement elementsForName:@“book”];
+for(GDataXMLElement *book in bookElements) {
+    [bookElement attributeForName:@“id”];
+    [bookElement elementsForName:@“title”];
+}
+</code></pre></li>
+</ol>
+<p>将对象保存成XML文档</p>
+<pre><code>GDataXMLElement *rootElement = [GDataXMLNode elementWithName:@“books”];
+GDataXMLElement  *otherElement = [CDataXMLNode elementWithName:@“title” stringValue:book];
+[rootlet addChild:otherElement];
+GDataXMLDocument *doc = [[GDataXMLDocument alloc] initWithRootElement:rootElement];
+[doc.XMLData writeToFile:self.xmlPath atomically:YES];
+</code></pre><ol start="4">
+<li>TBXML:轻量级的，基于DOM，性能好，内存占用少，只能读不能改，不支持XPath方式查询</li>
+<li>TouchXML:扩展TBXML，可以支持XPath方式查询</li>
+<li>KissXML:基于TouchXML，可支持修改</li>
+</ol>
+<h3 id="JSON解析"><a href="#JSON解析" class="headerlink" title="JSON解析"></a>JSON解析</h3><p>JSON的全称JavaScript Object Notation，即JS对象符号，也是一种广泛使用的轻量级数据交换格式，同样具有跨平台、跨语言的优势，而且JSON的数据传输量更小</p>
+<ol>
+<li><p>使用iOS自带的NSJSONSerialisation处理JSON数据</p>
+<ul>
+<li>+JSONObjectWithData:options:error:</li>
+<li>+JSONObjectWithStream:options:error:</li>
+<li>+dataWithJSONObject:options:error:</li>
+<li>+writeJSONObject:toStream:options:error:</li>
+<li>+isValidJSONObject:</li>
+</ul>
+</li>
+<li><p>使用SBJson处理JSON数据，此框架属于第三方框架，主要有两个类：SBJsonParser和SBJsonWriter</p>
+<ul>
+<li>-objectWithData:</li>
+<li>-objectWithString:</li>
+<li>-objectWithString:error:</li>
+<li>-stringWithObject:</li>
+<li>-dataWithObject:</li>
+<li>-stringWithObject:error:</li>
+</ul>
+</li>
+<li><p>使用JSONKit处理JSON数据</p>
+<ul>
+<li>-(id)objectFormJSONXxxWithParseOptions:/error:将该JSON解析为OC对象，Xxx代表String或Data</li>
+<li>-(id)mutableObjectFromJSONXxx/WithParseOptions:/error:将该JSON解析为可变的OC对象</li>
+<li>-(NSData<em>)JSONData;-(NSString</em>)JSONString;</li>
+</ul>
+</li>
+<li><p>还有其他一些方式，如JSONModel，MJExtension等</p>
+</li>
+</ol>
+<h3 id="使用AFNetworking实现网络通信"><a href="#使用AFNetworking实现网络通信" class="headerlink" title="使用AFNetworking实现网络通信"></a>使用AFNetworking实现网络通信</h3><p>AFNetworking默认支持JSON和Plist数据类型的响应，即服务端支持application/json,text/json,application/x-plist类型的返回，所以无须指定服务器响应解析器，如果其他类型，则需要指定</p>
+<pre><code>AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+manager.responseSerializer = [[AFHTTPResponseSerializer alloc] init];
+[manager GET:url parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+    NSXMLParser *parser=responseObject;
+    parser.delegate=self;
+    [parser parse];//如果返回的是xml数据
+} failure:^(NSURLSessionDataTask *task, NSError *error) {
+    //NSLog(error);
+}];
+</code></pre><p>AFNetworking上传文件</p>
+<pre><code>-appendPartWithFileURL:name:(fileName:mimeType)error:
+-appendPartWithInputStream:name:fileName:length:mineType:
+-appendPartWithFileData:name:fileName:mimeType:
+[manager POST:url parameters:params constructingBodyWithBlock:^(id&lt;AFMultipartFormData&gt; data) {
+    [data appendPartWithFileURL:filePath name:@“file” mimeType:@“image/png” error:nil
+} success:^(NSURLSessionDataTask *task, id responseObject) {
+} failure:^(NSURLSessionDataTask *task, NSError *error) {
+}];
+</code></pre><h3 id="使用ASIHTTPRequest框架实现网络编程"><a href="#使用ASIHTTPRequest框架实现网络编程" class="headerlink" title="使用ASIHTTPRequest框架实现网络编程"></a>使用ASIHTTPRequest框架实现网络编程</h3><p>ASIHTTPRequest对iOS SDK的CFNetwork API进行了封装，它和AFNetworking是竞争关系，作用相同，ASIHTTPRequest是NSOperation的子类，所以此处同样可以使用NSOperationQueue来管理多个ASIHTTPRequest，使用步骤：</p>
+<ol>
+<li>设置delegate处理返回数据</li>
+<li>添加代码块处理返回数据</li>
+</ol>
+<p>示例代码：</p>
+<pre><code>ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+
+-addRequestHeader:value(添加请求头)
+[ASIFormDataRequest setPostValue:forKey:]//添加post参数
+-setFile:withFileName:andContentType:forKey:
+-setData:withFileName:andContentType:forKey:
+
+
+-(void)requestFinished:(ASIHTTPRequest*)request;/[request setCompletionBlock:^{}];
+-(void)requestFailed:(ASIHTTPRequest*)request;/[request setFailedBlock:^{}];
+</code></pre><p>用responseStatusCode/responseStatusMessage/responseHeaders可以获取服务器返回的其他信息，如果程序需要取消某个异步请求，则可调用方法：-cancel:/-clearDelegatesAndCancel:</p>
+<h2 id="使用CoreLocation定位"><a href="#使用CoreLocation定位" class="headerlink" title="使用CoreLocation定位"></a>使用CoreLocation定位</h2><h3 id="iOS的定位支持"><a href="#iOS的定位支持" class="headerlink" title="iOS的定位支持"></a>iOS的定位支持</h3><p>CoreLocation框架(CoreLocation.framework)可用于定位设备当前经纬度，通过该框架，应用程序可通过附近的蜂窝基站，WiFi信号或者GPS等信息计算用户位置，iOS SDK提供了CLLocationManager/CLLocationManagerDelegate来处理设备的定位信息(CLLocation)，获取设备的方向(CLHeading)以及进行区域检测(CLRegion)等</p>
+<ul>
+<li>GPS定位需要能收到卫星信号才行，与基站定位、WiFi定位相比，GPS定位耗电量最大，速度最慢，但精度最高</li>
+<li>基站定位可以采用无网络定位(有网络精度更高)，将基站信息在本地或发送到苹果云端服务器查询，特点是速度快，耗电量少，但是误差较大</li>
+<li>WiFi定位和基站定位的原理大致相似，其速度、耗电量和精度都介于GPS和基站定位之间</li>
+</ul>
+<h3 id="获取定位信息"><a href="#获取定位信息" class="headerlink" title="获取定位信息"></a>获取定位信息</h3><p>CLLocationManager:定位管理器类</p>
+<ul>
+<li>+locationServicesEnabled:</li>
+<li>+deferredLocationUpdatesAvailable:返回延迟定位更新是否可用</li>
+<li>+significantLocationChangeMonitoringAvailable:返回重大位置改变是否可用</li>
+<li>+headingAvailable:返回是否支持磁力计算方向</li>
+<li>+isRangingAvailable:返回蓝牙信号范围服务是否可用</li>
+</ul>
+<p>在开始定位之前，可用设置如下属性：</p>
+<ul>
+<li>-pausesLocationUpdatesAutomatically:是否自动暂停定位更新来节省电池电量</li>
+<li>-distanceFilter:设置其自动过滤的距离，只有当设备在水平方向位置改变超过时，才会生成一次位置改变</li>
+<li>-desiredAccuracy:设置定位服务的精度，支持kCLLocationAccuracyBestForNavigator/Best/NearestTenMeters/HundredMeters/kilometer/ThreeKilometers</li>
+<li>-activityType:定位数据的用途，CLActivityTypeOther/AutomotiveNavigation/Fitness/</li>
+</ul>
+<p>在调用-startUpdatingLocation:定位完成之后，可以用如下属性取出值：</p>
+<ul>
+<li>-altitude:(海拔)</li>
+<li>-coordinate:(CLLocationCoordinate2D结构变量，包含经纬度信息)</li>
+<li>course:(表示设备前进方向，0表示向北，90表示向东)</li>
+<li>-horizontalAccuracy:(水平准确度)</li>
+<li>-verticalAccuracy:(垂直精度)</li>
+<li>-timeStamp:(定位信息的返回时间)</li>
+<li>-speed:(设备的移动速度)</li>
+</ul>
+<p>CLLocationManagerDelegate:管理器的delegate协议</p>
+<ul>
+<li><code>-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations</code>:</li>
+<li><code>-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error</code>;</li>
+</ul>
+<ol>
+<li>CLLocation:包含经度、纬度、高度、速度、路线等信息</li>
+<li>CLHeading:设备的移动方向</li>
+<li>CLRegion代表一个区域，一般用CLCircularRegion(圆形区域)、CLBeaconRegion(蓝牙信号区)</li>
+</ol>
+<h3 id="方向监听"><a href="#方向监听" class="headerlink" title="方向监听"></a>方向监听</h3><pre><code>-(void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading;
+</code></pre><p>在监听开始前，可以设置如下属性：</p>
+<pre><code>-(CLLocationDegrees)headingFilter:设置只有当方向属性改变超过此值时，才调用delegate方法
+-(CLDeviceOrientation)headingOrientation:设置设备当前方向
+</code></pre><p>当调用-startUpdatingHeader方法后，可以调用以下属性获取值</p>
+<ul>
+<li>—magneticHeading:该设备与慈悲方向的相对方向</li>
+<li>-trueHeading:该方向与磁北方向的相对方向</li>
+<li>-headingAccuracy:方向值的精确度</li>
+<li>-timeStamp:值的生成时间</li>
+<li>x、y、z:在各个方向上的磁力值</li>
+</ul>
+<h3 id="区域监测"><a href="#区域监测" class="headerlink" title="区域监测"></a>区域监测</h3><pre><code>CLRegion *region = [[CLCircularRegion alloc] initWithCentre:CLLocationCoordinate radius:500 identifier:@“fit”];
+[_locationManager startMonitoringForRegion:region];
+
+-(void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region;
+-(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region;
+</code></pre><h2 id="使用MapKit开发地图服务"><a href="#使用MapKit开发地图服务" class="headerlink" title="使用MapKit开发地图服务"></a>使用MapKit开发地图服务</h2><h3 id="使用MapKit框架"><a href="#使用MapKit框架" class="headerlink" title="使用MapKit框架"></a>使用MapKit框架</h3><p>MapKit.framework使用MKMapView类代表地图控件，开发者只要在应用界面上添加并显示该控件，就可增加地图功能，如果希望控制该地图的行为，则可通过设置属性进行定制，如果需要响应MKMapView事件，则可通过为MKMapView指定delegate来实现：MKMapView类常用的属性如下:</p>
+<ul>
+<li>-mapType:设置或返回地图的类型，MKMapTypeStandard/Satellite/Hybrid(混合地图)</li>
+<li>-zoomEnabled</li>
+<li>-scrollEnabled</li>
+<li>-rotateEnabled</li>
+<li>-region显示区域</li>
+<li>-centreCoordinate中心位置</li>
+<li>-visibleMapRect显示区域</li>
+<li>-annotations地图上的所有标注</li>
+<li>-showUserLocation是否显示用户位置</li>
+<li>-userLocationVisible用户位置是否可见</li>
+<li>-userLocation用户位置，属性为MKUserLocation对象</li>
+<li>userTrackingMode用户轨迹的跟踪模式 MKUserTrackingModeNone，MKUserTrackingModeFollow，MKUserTrackingModeFollowWithHeading</li>
+<li>-delegate</li>
+</ul>
+<p>MKMapView delegate常用的回调函数如下：</p>
+<pre><code>-(void)mapView:(MKMapView*)mapView regionWill/didChangeAnimated:(BOOL)animated;
+-(void)mapViewWillStart/DidFinish/DidFailLoadingMap:(MKMapView *)mapView;
+-(void)mapViewWillStart/DidFinishRenderingMap:(MKMapView *)mapView;
+</code></pre><p>iOS7新增MKMapCamera作为地图视点，用于模拟从指定位置、指定高度看向地图的某个点，从而增加3D体验</p>
+<pre><code>MKMapCamera *camera = [MKMapCamera cameraLookingAtCentreCoordinate:to fromEyeCoordinate:from eyeAltitude:70]
+_mapView.camera = camera;
+</code></pre><h3 id="根据地址定位"><a href="#根据地址定位" class="headerlink" title="根据地址定位"></a>根据地址定位</h3><p>地址解析：把普通的地址信息转换为经、纬度<br>反向地址解析：把经纬度转换成普通的地址信息</p>
+<p>iOS为地址解析提供了CLGeocoder工具类，该工具提供三个方法来进行地址解析和反向地址解析</p>
+<pre><code>-geocodeAddressString:completionHandler:^(NSArray *placemarks,NSError *error){}
+-geocodeAddressString:inRegion:completionHandler:
+-reverseGeocodeLocation:completionHandler:
+</code></pre><p>place marks里边装的对象为CLPlacemark，该对象代表一个定位点，它包含如下属性</p>
+<ul>
+<li>-location:CLLocation类型的值，代表了经纬度</li>
+<li>-name:地址名称</li>
+<li>-addressDictionary:地址详情</li>
+<li>-ISOCountryCoe:国家编码</li>
+<li>-postalCode:邮编</li>
+<li>-administrativeArea:行政区域</li>
+<li>-subAdministrativeArea:次级行政区域</li>
+<li>-locality:城市名</li>
+<li>-subLocality:下一级城市名</li>
+<li>-thoroughfare:地址的道路名</li>
+<li>-subThoroughfare:下一级地址的道路名</li>
+</ul>
+<h3 id="在地图上添加锚点"><a href="#在地图上添加锚点" class="headerlink" title="在地图上添加锚点"></a>在地图上添加锚点</h3><p>很多时候，希望在地图上添加锚点，当用户点击该锚点时显示该地址的详细信息，这时需用到MKAnnotation</p>
+<p>MKAnnotation是一个协议，该协议中定义了3个属性，coordinate，title，subtitle</p>
+<p>iOS为MKAnnotation协议提供了一个类实现：MKPointAnnotation，该类实现了该协议的所有方法</p>
+<pre><code>MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+annotation.title/.subtitle/.coordinate = CLLocationCoordinate2D;
+[_mapView addAnnotation:annotation];
+</code></pre><p>可根据手势在地图上的触摸位置，算出手势在实际地图中的坐标：</p>
+<pre><code>CGPoint pos = [gesture locationInView:_mapView];
+CLLocationCoordinate2D coord = [_mapView convertPoint:pos toCoordinateFromView:_mapView];
+</code></pre><p>地图上默认的锚点的样式是MKPINAnnotation，如果需要自定义地图上锚点的样式，则需要重写delegate的方法</p>
+<pre><code>-(MKAnnotationView *)mapView:(MKMapView*)mapView viewForAnnotation:(id)annotation {
+    MKAnnotationView *annoView = [[MKAnnotationView alloc] initWithAnnotation:annotation reusedIdentifier:identifier];
+    annoView.image/.canShowCallout/.rightCalloutAccessoryView;
+    return annoView;
+}
+</code></pre><h3 id="在地图上添加覆盖层"><a href="#在地图上添加覆盖层" class="headerlink" title="在地图上添加覆盖层"></a>在地图上添加覆盖层</h3><p>除了添加锚点之外，有时候需要添加更丰富的信息，这些信息可通过覆盖层(MKOverlay)来实现：覆盖层与地图锚点有相同的设计，每个覆盖层实际是由两部分组成</p>
+<ol>
+<li>覆盖物的位置，集合，形状等信息</li>
+<li><p>覆盖物控件，MKOverlay只是一个协议，因此iOS还为该协议提供了如下实现类：</p>
+<ul>
+<li>MKCircle:圆形覆盖层，对应控件为MKCircleView，推荐使用MKCircleRenderer</li>
+<li>MKPolygon:多边形覆盖层，对应控件为MKPolygonView，推荐使用MKPolygonRenderer</li>
+<li>MKPolyline:多线段覆盖层，对应控件为MKPolylineView，推荐使用MKPolylineRenderer</li>
+<li>MKTileOverlay:位图平铺覆盖层，没有覆盖层控件，推荐使用MKTileOverlayRenderer</li>
+</ul>
+</li>
+</ol>
+<p>创建了覆盖层以后，接下来可以将覆盖层添加到MKMapView中去</p>
+<pre><code>* -addOverlay(s):level:将单个、多个覆盖层添加到指定的层级
+* -addOverlay(s):将单个、多个覆盖层加到到默认层级
+</code></pre><blockquote>
+<p>MKOverlayLevel类型是一个枚举类型，该枚举类型支持MKOverlayLevelAboveRoads/Labels;</p>
+</blockquote>
+<p>添加后回调MKMapViewDelegate协议中的方法，返回MKOverlayRenderer负责绘制覆盖层控件</p>
+<pre><code>-(MKOverlayRenderer*)mapView:(MKMapView*)mapView rendererForOverlay:(id)overlay;
+</code></pre><p>完整代码示例：</p>
+<pre><code>MKCircle *circle = [MKCircle circleWithCentreCoordinate:coord radius:100];
+//MKTileOverlay *overlay = [[MKTileOverlay alloc] initWithURLTemplate:url];
+[_mapView addOverlay:circle level:MKOverlayLevelAboveLabels];
+
+-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id)overlay {
+    MKCircle *c = (MKCircle*)overlay;
+    MKCircleRenderer *render = [[MKCircleRenderer alloc] initWithCircle:c];
+    render.alpha/render.fillColour/render.strokeColor return render;
+}
+</code></pre><h3 id="使用iOS7新增的MKDirections获取导航路线"><a href="#使用iOS7新增的MKDirections获取导航路线" class="headerlink" title="使用iOS7新增的MKDirections获取导航路线"></a>使用iOS7新增的MKDirections获取导航路线</h3><p>可以通过MKDirections类导航路线，该类通过MKDirectionsRequest向Apple服务器发送导航请求，服务器会返回多条导航路线，然后通过覆盖层把其中一条或多条导航路线绘制在地图上</p>
+<ol>
+<li>创建MKDirectionsRequest对象，并为该对象设置导航起始点、结束点等必要信息，还可为其设置transportType属性，该属性支持MKDirectionsTransportTypeAutomobile/Walking/Any</li>
+<li>以MKDirectionsRequest为参数，创建MKDirections对象</li>
+<li>调用MKDirections的-calculateDirectionsWithCompletionHandler:调用时需要传入代码块，当获取路线成功之后会激发该代码块，在该代码块中可处理返回的路线并将路线显示在地图上</li>
+</ol>
+<p>示例代码如下：</p>
+<pre><code>MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+request.source = [MKMapItem mapItemForCurrentLocation];
+request.destination = [[MKItem alloc] initWithPlacemark:placemark];
+MKDirections *directions = [[MKDirection alloc] initWithRequest:request];
+[directions calculateDirectionsWithCompletionHandler:^void(MKDirectionsResponse *response, NSError *error) {
+    MKRoute *route = response.routes[0];
+    MKPolyline *polyline = route.polyline;
+    [_mapView addOverlay:polyline level:MKOverlayLevelAboveLabels];
+}
+</code></pre><h2 id="推送机制"><a href="#推送机制" class="headerlink" title="推送机制"></a>推送机制</h2><p>本地通知和远程推送通知都可以向不在前台运行的应用发送消息，它们在程序界面上的显示效果相同，都可能显示为一段警告信息或应用程序图标上的徽标向用户提醒，提醒用户即将要做的事情，也可将服务器数据发送给iOS客户端</p>
+<h3 id="使用NSNotificationCenter通信"><a href="#使用NSNotificationCenter通信" class="headerlink" title="使用NSNotificationCenter通信"></a>使用NSNotificationCenter通信</h3><p>NSNotificationCenter实现了观察者模式，允许应用的不同对象之间以松耦合的方式进行通信，NSNotificationCenter相当于一个“消息中心”，首先由Observer组件向NSNotificationCenter进行注册，当Poster向NSNotificationCenter发送NSNotification之后，所有在NSNotificationCenter上注册过的NSNotification都会被激发，NSNotification不能跨进程通信，它包括如下属性：</p>
+<ul>
+<li>-observer:监听者对象</li>
+<li>-name:通知名称</li>
+<li>-object:该通知的poster</li>
+<li><p>userInfo:NSDictionary对象，包含附加信息</p>
+<pre><code>NSNotification *noti = [NSNotification notificationWithName:PROGRESS object:nil userInfo:nil];
+</code></pre></li>
+</ul>
+<p>NSNotificationCenter提供了defaultCenter类方法获取系统默认的通知中心对象，然后通过如下方法注册监听者</p>
+<ul>
+<li>-addObserver:selector:name:object:</li>
+<li>-removeObserver:</li>
+<li>-removeObserver:name:object:</li>
+</ul>
+<p>通过如下方法发送通知</p>
+<ul>
+<li>-postNotification:</li>
+<li>-postNotificationName:object:</li>
+<li>-postNotificationName:object:userInfo:</li>
+</ul>
+<h3 id="iOS本地通知"><a href="#iOS本地通知" class="headerlink" title="iOS本地通知"></a>iOS本地通知</h3><p>本地推送和远程推送不同于前面介绍的NSNotification，这种通知属于应用界面编程的内容，他们都可以向不在前台运行的应用发送消息，然后显示一段警告信息或应用程序上的徽标，当应用点击通知时，可以启动相应的应用程序查看详情</p>
+<p>本地和远程的区别在于：本地通知由本应用负责调用，从当前设备发出，远程通知由服务器发送到Apple Push Notification Service(APNs)，再由APNs把消息推送至设备上的对应程序</p>
+<p>本地通知是一个UILocalNotification对象，它有如下常用属性：</p>
+<ul>
+<li>-fireDate:触发时间</li>
+<li>-repeatInterval:重复发送的时间间隔</li>
+<li>-alertBody:本地通知的消息体</li>
+<li>-alertAction:当设备处于锁屏状态，显示通知的警告框下方的title</li>
+<li>-hasAction:是否显示Action</li>
+<li>-alertLaunchImage:当用户通过该通知启动对应的应用时，该属性设置为加载图片</li>
+<li>-applicationIconBadgeNumber:应用程序的图标的徽标中的数字</li>
+<li>-soundName:通知的声音</li>
+<li>-userInfo:通知携带的附加信息</li>
+</ul>
+<p>创建了UILocalNotification对象之后，接下来就可以通过UIApplication的如下两个方法发送通知：</p>
+<ul>
+<li>-scheduleLocalNotification:指定调度通知，通知将会于fireDate指定的时间触发，而且会按repeatInterval指定的时间间隔重复触发</li>
+<li>-presentLocalNotification:now:指定调度立即触发，该方法会忽略UILocalNotification的fireDate属性</li>
+</ul>
+<p>如果系统发出通知时，应用程序处于前台运行，系统将会触发应用程序委托类的<code>application:didReceiveLocalNotification</code>方法</p>
+<h3 id="iOS远程推送通知"><a href="#iOS远程推送通知" class="headerlink" title="iOS远程推送通知"></a>iOS远程推送通知</h3><p>Provider-&gt;notification-&gt;APNs-&gt;notification-&gt;iPhone-&gt;notification-&gt;Client App</p>
+<p>对于开发iOS Push服务而言，完整的过程如下：</p>
+<ol>
+<li>应用程序注册远程推送通知</li>
+<li>当注册成功或者失败时，回调应用程序委托类的对应方法，可获取注册成功后的deviceToken</li>
+<li>应用程序将deviceToken发送给Push服务端程序</li>
+<li>服务端程序向APNs发送通知</li>
+<li>APNs发送通知给iOS设备，iOS设备将推送转发给对应的程序</li>
+</ol>
+<p>Push客户端应用需要3个组件 1，App ID 2，Provisioning Profile 3，device token</p>
+<p>Push服务端程序需要两个组件 1，SSL Certificate 2，Private Key</p>
+<p>注册远程推送通知的过程</p>
+<pre><code>-registerForRemoteNotificationTypes:/-unregisterForRemoteNotifications:
+-application:didReceiveRemoteNotification:
+-application:didRegisterForRemoteNotificationsWithDeviceToken:
+-application:didFailToRegisterForRemoteNotificationsWithError:
+</code></pre><h2 id="iCloud服务与应用"><a href="#iCloud服务与应用" class="headerlink" title="iCloud服务与应用"></a>iCloud服务与应用</h2><h3 id="iCloud入门"><a href="#iCloud入门" class="headerlink" title="iCloud入门"></a>iCloud入门</h3><p>iCloud是Apple公司提供的云端服务，用户可以将个人数据(如通讯录、备忘录、邮件、照片、音乐、视频等)备份到云端服务器，打开应用的iCloud项目配置开关，即可在该项目增加一个CloudTest.entitlements文件，里边可以配置各种目录，iCloud支持的核心API是UIDocument，需要保存在云端的对象应该继承UIDocument类，它包含如下常用方法：</p>
+<ul>
+<li>-closeWithCompletionHandler:关闭UIDocument，如果有未保存的修改，则关闭前会自动保存</li>
+<li>-saveToURL:forSaveOperation:completionHandler:将该UIDocument保存到指定URL</li>
+<li>-openWithCompletionHandler:打开并读取UIDocument在云端的数据</li>
+<li>-readFromURL:error:从指定的url读取数据</li>
+<li>-(id)contentsForType:error:需重写，该方法负责把UIDocument内的数据转换为NSData或NSFileWrapper</li>
+<li>-loadFromContents:ofType:error: 该方法需要被重写，该方法负责吧云端下载到的NSData或NSFileWrapper转换为UIDocument数据</li>
+</ul>
+<p>查询文档：</p>
+<pre><code>_query =  [[NSMetadataQuery alloc] init];
+_query.predicate = [NSPredicate predicateWithFormat:@“%K like ‘*.diary’”, NSMetadataItemFSNameKey];
+_query.searchScopes = [NSArray arrayWithObject:NSMetadataQueryUbiquitousDocumentsScope];
+[[NSNotificationCentre defaultCentre] addObserver:self selector:@selector(updateUbiquitousDocuments:) name:NSMetaDataQueryDidFinishGatheringNotification/NSMetadataQueryDidUpdateNotification object:nil];
+[_query startQuery];-&gt;NSMetadataItem *item = _query.result[0];
+NSURL *url = [item valueForAttribute:NSMetadataItemURLKey];
+</code></pre><p>将文档添加到iCloud</p>
+<pre><code>NSFileManager *fileManager = [NSFileManager defaultManager];
+NSURL *url=[[fileManager URLForUbiquityContainerIdentifier:nil] urlByAppendingPathComponent:@“name”];
+[_chosenDiary saveToURL:url forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {}
+</code></pre><p>删除文档</p>
+<pre><code>[[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+</code></pre><h3 id="使用iCloud保存云端首选项"><a href="#使用iCloud保存云端首选项" class="headerlink" title="使用iCloud保存云端首选项"></a>使用iCloud保存云端首选项</h3><p>iCloud保存首选项和NSUserDefault类似，但是它可以将其保存到云端，需开启iCloud云端支持并勾选User key-value store，然后用NSUbiquitousKeyValueStore来保存</p>
+<pre><code>NSUbiquitousKeyValueStore *defaults = [NSUbiquitousKeyValueStore defaultStore];
+[defaults setString:_password forKey:@“password”];
+[defaults synchronise];
+[defaults stringForKey:@“password”];
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/05/30/疯狂iOS下册-第一部分/" rel="next" title="疯狂iOS下册第一部分">
+                <i class="fa fa-chevron-left"></i> 疯狂iOS下册第一部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/07/25/OC编码规范/" rel="prev" title="OC 编码规范">
+                OC 编码规范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS网络应用编程"><span class="nav-number">1.</span> <span class="nav-text">iOS网络应用编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检测网络状态"><span class="nav-number">1.1.</span> <span class="nav-text">检测网络状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用CFNetwork实现TCP协议的通信"><span class="nav-number">1.2.</span> <span class="nav-text">使用CFNetwork实现TCP协议的通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用NSURLConnection"><span class="nav-number">1.3.</span> <span class="nav-text">使用NSURLConnection</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XML解析"><span class="nav-number">1.4.</span> <span class="nav-text">XML解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON解析"><span class="nav-number">1.5.</span> <span class="nav-text">JSON解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AFNetworking实现网络通信"><span class="nav-number">1.6.</span> <span class="nav-text">使用AFNetworking实现网络通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用ASIHTTPRequest框架实现网络编程"><span class="nav-number">1.7.</span> <span class="nav-text">使用ASIHTTPRequest框架实现网络编程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用CoreLocation定位"><span class="nav-number">2.</span> <span class="nav-text">使用CoreLocation定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS的定位支持"><span class="nav-number">2.1.</span> <span class="nav-text">iOS的定位支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取定位信息"><span class="nav-number">2.2.</span> <span class="nav-text">获取定位信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方向监听"><span class="nav-number">2.3.</span> <span class="nav-text">方向监听</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区域监测"><span class="nav-number">2.4.</span> <span class="nav-text">区域监测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用MapKit开发地图服务"><span class="nav-number">3.</span> <span class="nav-text">使用MapKit开发地图服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用MapKit框架"><span class="nav-number">3.1.</span> <span class="nav-text">使用MapKit框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据地址定位"><span class="nav-number">3.2.</span> <span class="nav-text">根据地址定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在地图上添加锚点"><span class="nav-number">3.3.</span> <span class="nav-text">在地图上添加锚点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在地图上添加覆盖层"><span class="nav-number">3.4.</span> <span class="nav-text">在地图上添加覆盖层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用iOS7新增的MKDirections获取导航路线"><span class="nav-number">3.5.</span> <span class="nav-text">使用iOS7新增的MKDirections获取导航路线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推送机制"><span class="nav-number">4.</span> <span class="nav-text">推送机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用NSNotificationCenter通信"><span class="nav-number">4.1.</span> <span class="nav-text">使用NSNotificationCenter通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS本地通知"><span class="nav-number">4.2.</span> <span class="nav-text">iOS本地通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS远程推送通知"><span class="nav-number">4.3.</span> <span class="nav-text">iOS远程推送通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iCloud服务与应用"><span class="nav-number">5.</span> <span class="nav-text">iCloud服务与应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iCloud入门"><span class="nav-number">5.1.</span> <span class="nav-text">iCloud入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用iCloud保存云端首选项"><span class="nav-number">5.2.</span> <span class="nav-text">使用iCloud保存云端首选项</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

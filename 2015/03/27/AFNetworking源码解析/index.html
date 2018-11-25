@@ -1,0 +1,2696 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,AFNetworking,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="移动互联网技术中，最常用的一个技术点就是客户端和服务端之间的交互了，在这些技术和协议中，有个应用最广泛的的技术点就是超文本传输协议（HTTP，HyperText Transfer Protocol)。以前做Android的时候了解过此协议，它是一个客户端和服务器端请求和应答的标准（TCP），用于对数据进行格式化，让客户端和服务端两边都能懂得起。客户端向服务器发送一个请求，请求头包含请求的方法、UR">
+<meta name="keywords" content="OC,iOS,AFNetworking">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AFNetworking源码解析">
+<meta property="og:url" content="https://frandfeng.github.io/2015/03/27/AFNetworking源码解析/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="移动互联网技术中，最常用的一个技术点就是客户端和服务端之间的交互了，在这些技术和协议中，有个应用最广泛的的技术点就是超文本传输协议（HTTP，HyperText Transfer Protocol)。以前做Android的时候了解过此协议，它是一个客户端和服务器端请求和应答的标准（TCP），用于对数据进行格式化，让客户端和服务端两边都能懂得起。客户端向服务器发送一个请求，请求头包含请求的方法、UR">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:05:10.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AFNetworking源码解析">
+<meta name="twitter:description" content="移动互联网技术中，最常用的一个技术点就是客户端和服务端之间的交互了，在这些技术和协议中，有个应用最广泛的的技术点就是超文本传输协议（HTTP，HyperText Transfer Protocol)。以前做Android的时候了解过此协议，它是一个客户端和服务器端请求和应答的标准（TCP），用于对数据进行格式化，让客户端和服务端两边都能懂得起。客户端向服务器发送一个请求，请求头包含请求的方法、UR">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2015/03/27/AFNetworking源码解析/">
+
+
+
+
+
+  <title>AFNetworking源码解析 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/03/27/AFNetworking源码解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AFNetworking源码解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-03-27T00:00:00+08:00">
+                2015-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>移动互联网技术中，最常用的一个技术点就是客户端和服务端之间的交互了，在这些技术和协议中，有个应用最广泛的的技术点就是超文本传输协议（HTTP，HyperText Transfer Protocol)。以前做Android的时候了解过此协议，它是一个客户端和服务器端请求和应答的标准（TCP），用于对数据进行格式化，让客户端和服务端两边都能懂得起。客户端向服务器发送一个请求，请求头包含请求的方法、URL、协议版本、以及包含请求修饰符、客户信息和内容的类似于MIME的消息结构。服务器以一个状态行作为响应，响应的内容包括消息协议的版本，成功或者错误编码加上包含服务器信息、实体元信息以及可能的实体内容。</p>
+<h2 id="HTTP简介"><a href="#HTTP简介" class="headerlink" title="HTTP简介"></a>HTTP简介</h2><p>通常HTTP消息包括客户机向服务器的请求消息和服务器向客户机的响应消息。这两种类型的消息由一个起始行，一个或者多个头域，一个指示头域结束的空行和可选的消息体组成。HTTP的头域包括通用头，请求头，响应头和实体头四个部分。每个头域由一个域名，冒号（:）和域值三部分组成。域名是大小写无关的，域值前可以添加任何数量的空格符，头域可以被扩展为多行，在每行开始处，使用至少一个空格或制表符。</p>
+<p>HTTP报文由从客户机到服务器的请求和从服务器到客户机的响应构成。请求报文格式如下：</p>
+<p>请求行 － 通用信息头 － 请求头 － 实体头 － 报文主体</p>
+<p>请求行以方法字段开始，后面分别是 URL 字段和 HTTP 协议版本字段，并以 CRLF 结尾。SP 是分隔符。除了在最后的 CRLF 序列中 CF 和 LF 是必需的之外，其他都可以不要。有关通用信息头，请求头和实体头方面的具体内容可以参照相关文件。</p>
+<p>应答报文格式如下：</p>
+<p>状态行 － 通用信息头 － 响应头 － 实体头 － 报文主体</p>
+<p>状态码元由3位数字组成，表示请求是否被理解或被满足。原因分析是对原文的状态码作简短的描述，状态码用来支持自动操作，而原因分析用来供用户使用。客户机无需用来检查或显示语法。有关通用信息头，响应头和实体头方面的具体内容可以参照相关文件。</p>
+<h2 id="iOS-SDK中的HTTP框架"><a href="#iOS-SDK中的HTTP框架" class="headerlink" title="iOS SDK中的HTTP框架"></a>iOS SDK中的HTTP框架</h2><blockquote>
+<p>有的程序员老了,还没听过NSURLSession</p>
+<p>有的程序员还嫩,没用过NSURLConnection</p>
+<p>有的程序员很单纯,他只知道AFN.</p>
+</blockquote>
+<p>引用别人的一首诗来介绍一下，NSURLConnection在iOS9被宣布弃用,NSURLSession从13年发展到现在,终于迎来了它独步江湖的时代.NSURLSession是苹果在iOS7后为HTTP数据传输提供的一系列接口,比NSURLConnection强大,坑少,好用.今天引用这位诗人的一篇文章来介绍一下iOS7中新出的类NSURLSession的用法，原文请参见<a href="http://www.jianshu.com/p/fafc67475c73" target="_blank" rel="noopener">此处</a></p>
+<p>除了NSURLSession,文中还会频繁地出现NSURLSessionConfiguration和NSURLSessionTask两个类.先认识一下,混个脸熟吧.</p>
+<p>使用NSURLSession,拢共分两步:</p>
+<ol>
+<li>第一步 通过NSURLSession的实例创建task</li>
+<li>第二步 执行task</li>
+</ol>
+<p>NSURLSessionTask可以简单理解为任务:如数据请求任务,下载任务,上传任务and so on.我们使用的是他的子类们:</p>
+<p>NSURLSessionTask(抽象类)</p>
+<ul>
+<li>NSURLSessionDataTask</li>
+<li>NSURLSessionUploadTask</li>
+<li>NSURLSessionDownloadTask</li>
+</ul>
+<p>从这几个子类的名字就可以大概猜出他们的作用了.接下来我们就从不同类型的任务出发,来使用session</p>
+<h3 id="NSURLSessionDataTask"><a href="#NSURLSessionDataTask" class="headerlink" title="NSURLSessionDataTask"></a>NSURLSessionDataTask</h3><p>字面上看是和数据相关的任务,但其实dataTask完全可以胜任downloadTask和uploadTask的工作.这可能也是我们使用最多的task种类.</p>
+<h4 id="简单GET请求"><a href="#简单GET请求" class="headerlink" title="简单GET请求"></a>简单GET请求</h4><p>如果请求的数据比较简单,也不需要对返回的数据做一些复杂的操作.那么我们可以使用带block</p>
+<pre><code>// 快捷方式获得session对象
+NSURLSession *session = [NSURLSession sharedSession];
+NSURL *url = [NSURL URLWithString:@&quot;http://www.daka.com/login?username=daka&amp;pwd=123&quot;];
+// 通过URL初始化task,在block内部可以直接对返回的数据进行处理
+NSURLSessionTask *task = [session dataTaskWithURL:url
+                           completionHandler:^(NSData *data, NSURLResponse *response, NSError error) {
+NSLog(@&quot;%@&quot;, [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil]);
+}];
+
+// 启动任务
+[task resume];
+</code></pre><blockquote>
+<p>注意:</p>
+<p>所有类型的task都要调用resume方法才会开始进行请求.</p>
+</blockquote>
+<h4 id="简单POST请求"><a href="#简单POST请求" class="headerlink" title="简单POST请求"></a>简单POST请求</h4><p>POST和GET的区别就在于request,所以使用session的POST请求和GET过程是一样的,区别就在于对request的处理.</p>
+<pre><code>NSURL *url = [NSURL URLWithString:@&quot;http://www.daka.com/login&quot;];
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+request.HTTPMethod = @&quot;POST&quot;;
+request.HTTPBody = [@&quot;username=daka&amp;pwd=123&quot; dataUsingEncoding:NSUTF8StringEncoding];
+
+NSURLSession *session = [NSURLSession sharedSession];
+// 由于要先对request先行处理,我们通过request初始化task
+NSURLSessionTask *task = [session dataTaskWithRequest:request
+                                   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) { NSLog(@&quot;%@&quot;, [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil]); }];
+[task resume];
+</code></pre><h4 id="NSURLSessionDataDelegate代理方法"><a href="#NSURLSessionDataDelegate代理方法" class="headerlink" title="NSURLSessionDataDelegate代理方法"></a>NSURLSessionDataDelegate代理方法</h4><p>NSURLSession提供了block方式处理返回数据的简便方式,但如果想要在接收数据过程中做进一步的处理,仍然可以调用相关的协议方法.NSURLSession的代理方法和NSURLConnection有些类似,都是分为接收响应、接收数据、请求完成几个阶段.</p>
+<pre><code>// 使用代理方法需要设置代理,但是session的delegate属性是只读的,要想设置代理只能通过这种方式创建session
+// configuration参数(文章开始提到的)需要传递一个配置,我们暂且使用默认的配置[NSURLSessionConfiguration defaultSessionConfiguration]就好,后面会说下这个配置是干嘛用的
+// delegateQueue参数表示协议方法将会在哪个队列(NSOperationQueue)里面执行
+NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
+                                                      delegate:self
+                                                 delegateQueue:[[NSOperationQueue alloc] init]];
+
+// 创建任务(因为要使用代理方法,就不需要block方式的初始化了)
+NSURLSessionDataTask *task = [session dataTaskWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;http://www.daka.com/login?userName=daka&amp;pwd=123&quot;]]];
+
+// 启动任务
+[task resume];
+
+//对应的代理方法如下:
+
+// 1.接收到服务器的响应
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
+    // 允许处理服务器的响应，才会继续接收服务器返回的数据
+    // 如果在接收响应的时候需要对返回的参数进行处理(如获取响应头信息等),那么这些处理应该放在前面允许操作的前面
+    completionHandler(NSURLSessionResponseAllow);
+}
+
+// 2.接收到服务器的数据（可能调用多次）
+- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
+    // 处理每次接收的数据
+}
+
+// 3.请求成功或者失败（如果失败，error有值）
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    // 请求完成,成功或者失败的处理
+}
+</code></pre><h3 id="NSURLSessionDownloadTask"><a href="#NSURLSessionDownloadTask" class="headerlink" title="NSURLSessionDownloadTask"></a>NSURLSessionDownloadTask</h3><p>文件下载可以使用NSURLSessionDownloadTask这个子类</p>
+<h4 id="简单下载"><a href="#简单下载" class="headerlink" title="简单下载"></a>简单下载</h4><p>NSURLSessionDownloadTask同样提供了通过NSURL和NSURLRequest两种方式来初始化并通过block进行回调的方法.下面以NSURL初始化为例</p>
+<pre><code>NSURLSession *session = [NSURLSession sharedSession];
+NSURL *url = [NSURL URLWithString:@&quot;http://www.daka.com/resources/image/icon.png&quot;] ;
+NSURLSessionDownloadTask *task = [session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+    // location是沙盒中tmp文件夹下的一个临时url,文件下载后会存到这个位置,由于tmp中的文件随时可能被删除,所以我们需要自己需要把下载的文件挪到需要的地方
+    // response.suggestedFilename是从相应中取出文件在服务器上存储路径的最后部分,如数据在服务器的url为http://www.daka.com/resources/image/icon.png, 那么其suggestedFilename就是icon.png
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:response.suggestedFilename];
+    // 剪切文件
+    [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:path] error:nil];
+}];
+// 启动任务
+[task resume];
+</code></pre><h4 id="NSURLSessionDownloadDelegate代理方法"><a href="#NSURLSessionDownloadDelegate代理方法" class="headerlink" title="NSURLSessionDownloadDelegate代理方法"></a>NSURLSessionDownloadDelegate代理方法</h4><p>同样的,downloadTask也提供了配套的代理方法</p>
+<pre><code>// 每次写入调用(会调用多次)
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
+// 可在这里通过已写入的长度和总长度算出下载进度
+CGFloat progress = 1.0 * totalBytesWritten / totalBytesExpectedToWrite; NSLog(@&quot;%f&quot;,progress);
+}
+
+// 下载完成调用
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+      didFinishDownloadingToURL:(NSURL *)location {
+    // location还是一个临时路径,需要自己挪到需要的路径(caches下面)
+    NSString *filePath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:downloadTask.response.suggestedFilename];
+    [[NSFileManager defaultManager] moveItemAtURL:location toURL:[NSURL fileURLWithPath:filePath] error:nil];
+}
+
+// 任务完成调用
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+
+}
+</code></pre><h3 id="NSURLSessionUploadTask"><a href="#NSURLSessionUploadTask" class="headerlink" title="NSURLSessionUploadTask"></a>NSURLSessionUploadTask</h3><p>在NSURLSession中,文件上传方式主要有以下两种:</p>
+<pre><code>NSURLSessionUploadTask *task =
+[[NSURLSession sharedSession] uploadTaskWithRequest:request
+                                           fromFile:fileName
+                                  completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+}];
+</code></pre><p>和</p>
+<pre><code>[self.session uploadTaskWithRequest:request
+                        fromData:body
+               completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+ NSLog(@&quot;-------%@&quot;, [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil]);
+ }];
+</code></pre><p>处于安全性考虑,通常我们会使用POST方式进行文件上传,所以较多使用第二种方式.</p>
+<p>但是,NSURLSession并没有为我们提供比NSURLConnection更方便的文件上传方式.方法中body处的参数需要填写request的请求体(http协议规定格式的大长串).因为你有90%的可能性用了AFNetworking,即使是自己写的应该也是copy,所以代码就不贴了，我们只说方法.</p>
+<h3 id="断点下载"><a href="#断点下载" class="headerlink" title="断点下载"></a>断点下载</h3><p>NSURLSessionDownloadTask提供了与断点下载相关的几个方法:</p>
+<pre><code>// 使用这种方式取消下载可以得到将来用来恢复的数据,保存起来
+[self.task cancelByProducingResumeData:^(NSData *resumeData) {
+    self.resumeData = resumeData;
+}];
+
+// 由于下载失败导致的下载中断会进入此协议方法,也可以得到用来恢复的数据
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
+{
+    // 保存恢复数据
+    self.resumeData = error.userInfo[NSURLSessionDownloadTaskResumeData];
+}
+
+// 恢复下载时接过保存的恢复数据
+self.task = [self.session downloadTaskWithResumeData:self.resumeData];
+// 启动任务
+[self.task resume];
+</code></pre><p>以目前我对NSURLSession的理解这种断点下载只支持应用内断点,如果程序在下载过程中途关闭,则不能恢复下载.(暂时对NSURLSession理解还不全面,不敢妄下断论,如有不妥简友们可以沟通下)</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>此外,task们自身有都拥有下面几个方法</p>
+<pre><code>- (void)suspend;//可以让当前的任务暂停
+- (void)resume;//方法不仅可以启动任务,还可以唤醒suspend状态的任务
+- (void)cancel;//方法可以取消当前的任务,你也可以向处于suspend状态的任务发送cancel消息,任务如果被取消便不能再恢复到之前的状态.
+</code></pre><h4 id="NSURLSessionConfiguration"><a href="#NSURLSessionConfiguration" class="headerlink" title="NSURLSessionConfiguration"></a>NSURLSessionConfiguration</h4><p>简单地说,就是session的配置信息.如:</p>
+<pre><code>NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+// 超时时间
+config.timeoutIntervalForRequest = 10;
+// 是否允许使用蜂窝网络(后台传输不适用)
+config.allowsCellularAccess = YES;
+// 还有很多可以设置的属性
+</code></pre><p>有没有发现我们使用的Configuration都是默认配置:[NSURLSessionConfiguration defaultSessionConfiguration],其实它的配置有三种类型:</p>
+<pre><code>//表示了NSURLSession几种不同的工作模式
++ (NSURLSessionConfiguration *)defaultSessionConfiguration;//默认的配置会将缓存存储在磁盘上
++ (NSURLSessionConfiguration *)ephemeralSessionConfiguration;//瞬时会话模式不会创建持久性存储的缓存
++ (NSURLSessionConfiguration *)backgroundSessionConfigurationWithIdentifier:(NSString *)identifier;//后台会话模式允许程序在后台进行上传下载工作
+</code></pre><p>除了支持任务的暂停和断点续传,我觉得NSURLSession之于NSURLConnection的最伟大的进步就是支持后台上传下载任务,这又是一个可以深入讨论的话题.但在这方面我还没有进行深入的研究,待后续了解之后另行开贴</p>
+<h2 id="三方框架对URLSession的封装-AFN"><a href="#三方框架对URLSession的封装-AFN" class="headerlink" title="三方框架对URLSession的封装(AFN)"></a>三方框架对URLSession的封装(AFN)</h2><p>在iOS中，可以根据SDK提供的相关类库自己封装HTTP类，也可以运用第三方开源的一些库，比如以前比较火的<a href="https://github.com/paytronix/ASIHTTPRequest" target="_blank" rel="noopener">ASIHTTPRequest</a>，和现在经常使用的<a href="https://github.com/AFNetworking/AFNetworking" target="_blank" rel="noopener">AFNetworking</a>，其中ASIHTTPRequest已经弃用很久，AFNetworking一直在维护，底层代码的实现也是从刚开始的NSURLConnection更新到现在的NSURLSession。现在我们开始讲解AFNetworking的源码，请同学们把书先翻到<a href="https://github.com/AFNetworking/AFNetworking" target="_blank" rel="noopener">88页</a>，在讲解的同时，我们顺便也看一下AFNetworking中用到的一些常用技术</p>
+<h3 id="h文件的封装"><a href="#h文件的封装" class="headerlink" title=".h文件的封装"></a>.h文件的封装</h3><p>在平时封装库的时候，应该在库中创建一个.h头文件，然后将一些常用的类导入进去，这样，如果其他开发者调用时，只需将此.h文件import，而不需要将用到的每个类import，简单了开发者的操作。如AFNetworking.h中：</p>
+<pre><code>#import &lt;Foundation/Foundation.h&gt;
+#import &lt;Availability.h&gt;
+#import &lt;TargetConditionals.h&gt;
+
+#ifndef _AFNETWORKING_
+    #define _AFNETWORKING_
+
+    #import &quot;AFURLRequestSerialization.h&quot;
+    #import &quot;AFURLResponseSerialization.h&quot;
+    #import &quot;AFSecurityPolicy.h&quot;
+
+#if !TARGET_OS_WATCH
+    #import &quot;AFNetworkReachabilityManager.h&quot;
+#endif
+
+    #import &quot;AFURLSessionManager.h&quot;
+    #import &quot;AFHTTPSessionManager.h&quot;
+
+#endif /* _AFNETWORKING_ */
+</code></pre><p>然后其他开发者调用的时候：</p>
+<pre><code>#import &lt;AFNetworking/AFNetworking.h&gt;
+</code></pre><blockquote>
+<p>注意，编译代码中有条件编译，如果不是OS_WATCH平台，才会导入AFNetworkReachabilityManager类，反之不然</p>
+</blockquote>
+<h3 id="Nonnull区域设置"><a href="#Nonnull区域设置" class="headerlink" title="Nonnull区域设置"></a>Nonnull区域设置</h3><p>AFHTTPSessionManager.h中用了NS_ASSUME_NONNULL_BEGIN和NS_ASSUME_NONNULL_END，如果需要每个属性或每个方法都去指定nonnull和nullable，是一件非常繁琐的事。苹果为了减轻我们的工作量，专门提供了两个宏：NS_ASSUME_NONNULL_BEGIN和NS_ASSUME_NONNULL_END</p>
+<pre><code>NS_ASSUME_NONNULL_BEGIN
+@interface TestNullabilityClass () 
+
+@property (nonatomic, copy) NSArray * items; 
+
+- (id)itemWithName:(nullable NSString *)name; 
+
+@end 
+NS_ASSUME_NONNULL_END
+</code></pre><p>在上面的代码中，items属性默认是nonnull的，itemWithName:方法的返回值也是nonnull，而参数是指定为nullable的</p>
+<p>我们都知道在swift中，可以使用!和?来表示一个对象是optional的还是non-optional，如view?和view!。而在Objective-C中则没有这一区分，view即可表示这个对象是optional，也可表示是non-optioanl。这样就会造成一个问题：在Swift与Objective-C混编时，Swift编译器并不知道一个Objective-C对象到底是optional还是non-optional，因此这种情况下编译器会隐式地将Objective-C的对象当成是non-optional。</p>
+<p>为了解决这个问题，苹果在Xcode 6.3引入了一个Objective-C的新特性：nullability annotations。这一新特性的核心是两个新的类型注释：<strong>nullable和</strong>nonnull。从字面上我们可以猜到，<strong>nullable表示对象可以是NULL或nil，而</strong>nonnull表示对象不应该为空。当我们不遵循这一规则时，编译器就会给出警告</p>
+<h3 id="NSAssert和NSParameterAssert"><a href="#NSAssert和NSParameterAssert" class="headerlink" title="NSAssert和NSParameterAssert"></a>NSAssert和NSParameterAssert</h3><p>在AFHTTPSessionManager类中，用到了NSParameterAssert，它其实是一个宏定义，下面开始他的讲解，<a href="http://www.jianshu.com/p/6e444981ab45" target="_blank" rel="noopener">原文地址</a></p>
+<pre><code>- (void)setRequestSerializer:(AFHTTPRequestSerializer &lt;AFURLRequestSerialization&gt; *)requestSerializer {
+    NSParameterAssert(requestSerializer);
+    _requestSerializer = requestSerializer;
+}
+
+- (void)setResponseSerializer:(AFHTTPResponseSerializer &lt;AFURLResponseSerialization&gt; *)responseSerializer {
+    NSParameterAssert(responseSerializer);
+    [super setResponseSerializer:responseSerializer];
+}
+</code></pre><p>NSAssert()是一个宏，用于开发阶段调试程序中的Bug，通过为NSAssert()传递条件表达式来断定是否属于Bug，满足条件返回真值，程序继续运行，如果返回假值，则抛出异常，并且可以自定义异常描述。</p>
+<p>NSAssert()是这样定义的：</p>
+<pre><code>#define NSAssert(condition, desc)
+</code></pre><p>condition是条件表达式，值为YES或NO；desc为异常描述，通常为NSString。当conditon为YES时程序继续运行，为NO时，则抛出带有desc描述的异常信息。NSAssert()可以出现在程序的任何一个位置</p>
+<p><strong>NSAssert的用法</strong></p>
+<pre><code>int a = 1;
+NSCAssert(a == 2, @&quot;a must equal to 2&quot;); //第一个参数是条件,如果第一个参数不满足条件,就会记录并打印后面的字符串
+</code></pre><p>运行则会崩溃并在控制台输出信息如下：</p>
+<pre><code>*** Assertion failure in -[ViewController viewDidLoad](), /Users/yinwentao/Desktop/MYAssert/MYAssert/ViewController.m:32
+*** Terminating app due to uncaught exception &apos;NSInternalInconsistencyException&apos;, reason: &apos;a must equal to 2&apos;
+</code></pre><p><strong>NSParameterAssert的用法</strong></p>
+<pre><code>- (void)assertWithPara:(NSString *)str {
+    NSParameterAssert(str); //只需要一个参数,如果参数存在程序继续运行,如果参数为空,则程序停止打印日志
+    //further code ...
+}
+</code></pre><p>如果 调用方法 assertWithPara: 传入参数为空则有如下日志</p>
+<pre><code>*** Assertion failure in -[ViewController assertWithPara:], /Users/yinwentao/Desktop/MYAssert/MYAssert/ViewController.m:45
+*** Terminating app due to uncaught exception &apos;NSInternalInconsistencyException&apos;, reason: &apos;Invalid parameter not satisfying: str&apos;
+</code></pre><p>日志中的数字是告诉你 第多少行代码出错了。</p>
+<p>Xcode 已经默认将release环境下的断言取消了, 免除了忘记关闭断言造成的程序不稳定. 所以不用担心 在开发时候大胆使用。</p>
+<p><strong>自定义NSAssertionHandler</strong></p>
+<p>NSAssertionHandler实例是自动创建的，用于处理错误断言。如果 NSAssert和NSCAssert条件评估为错误，会向 NSAssertionHandler实例发送一个表示错误的字符串。每个线程都有它自己的NSAssertionHandler实例。<br>我们可以自定义处理方法，从而使用断言的时候，控制台输出错误，但是程序不会直接崩溃。</p>
+<pre><code>#import &quot;MyAssertHandler.h&quot;
+
+@implementation MyAssertHandler
+
+//处理Objective-C的断言
+- (void)handleFailureInMethod:(SEL)selector object:(id)object file:(NSString *)fileName lineNumber:(NSInteger)line description:(NSString *)format,... {
+    NSLog(@&quot;NSAssert Failure: Method %@ for object %@ in %@#%li&quot;, NSStringFromSelector(selector), object, fileName, (long)line);
+}
+//处理C的断言
+- (void)handleFailureInFunction:(NSString *)functionName file:(NSString *)fileName lineNumber:(NSInteger)line description:(NSString *)format,... {
+    NSLog(@&quot;NSCAssert Failure: Function (%@) in %@#%li&quot;, functionName, fileName, (long)line);
+}
+
+@end
+</code></pre><p>给线程添加处理类</p>
+<pre><code>NSAssertionHandler *myHandler = [[MyAssertHandler alloc] init];
+//给当前的线程
+[[[NSThread currentThread] threadDictionary] setValue:myHandler
+                                           forKey:NSAssertionHandlerKey];
+</code></pre><p>自定义NSAssertionHandler后,程序能够获得断言失败后的信息,但是程序可以继续运行,不会强制退出程序.</p>
+<h3 id="pragma-处理警告"><a href="#pragma-处理警告" class="headerlink" title="#pragma 处理警告"></a>#pragma 处理警告</h3><p>首先#pragma在本质上是声明，常用的功能就是注释，尤其是给Code分段注释，AFNetworking中也有用到，如AFHTTPSessionManager中的#pragma mark - NSCopying；而且它还有另一个强大的功能是处理编译器警告，但却没有上一个功能用的那么多。</p>
+<p>clang/GCC diagnostic 是#pragma 第一个常用命令：</p>
+<pre><code>#pragma clang/GCC diagnostic push
+#pragma clang/GCC diagnostic ignored &quot;-相关命令&quot;
+    // 你自己的代码
+#pragma clang/GCC diagnostic pop
+</code></pre><p>相关命令包括：</p>
+<pre><code>-Wdeprecated-declarations//忽略方法弃用的警告
+-Wincompatible-pointer-types//忽略不兼容指针类型的警告
+-Warc-retain-cycles//忽略循环引用的警告
+-Wunused-variable//忽略未使用变量的警告
+</code></pre><p><a href="http://www.jianshu.com/p/eb03e20f7b1c" target="_blank" rel="noopener">更多关于命令的信息请查阅此处</a></p>
+<p>AFHTTPSessionManager.m 中POST方法：</p>
+<pre><code>NSError *serializationError = nil;
+NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:method URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:&amp;serializationError];
+if (serializationError) {
+    if (failure) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored &quot;-Wgnu&quot;
+        dispatch_async(self.completionQueue ?: dispatch_get_main_queue(), ^{
+            failure(nil, serializationError);
+        });
+#pragma clang diagnostic pop
+    }
+    return nil;
+}
+</code></pre><h3 id="NSCoding-amp-NSSecureCoding"><a href="#NSCoding-amp-NSSecureCoding" class="headerlink" title="NSCoding &amp; NSSecureCoding"></a>NSCoding &amp; NSSecureCoding</h3><h4 id="NSCoding源文地址"><a href="#NSCoding源文地址" class="headerlink" title="NSCoding源文地址"></a>NSCoding<a href="http://iosdevelopertips.com/cocoa/nscoding-without-boilerplate.html" target="_blank" rel="noopener">源文地址</a></h4><p>NSCoding是把数据存储在iOS和Mac OS上的一种极其简单和方便的方式，它把模型对象直接转变成一个文件，然后再把这个文件重新加载到内存里，并不需要任何文件解析和序列化的逻辑。如果要把对象保存到一个数据文件中（假设这个对象实现了NSCoding协议），那么你可以像下面这样做：</p>
+<pre><code>@interface Foo : NSObject 
+
+@property (nonatomic, assign) NSInteger property1;
+@property (nonatomic, assign) BOOL property2;
+@property (nonatomic, copy) NSString *property3;
+
+@end
+
+@implementation Foo
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+    if ((self = [super init]))
+    {
+        // Decode the property values by key, and assign them to the correct ivars
+        _property1 = [coder decodeIntegerForKey:@&quot;property1&quot;];
+        _property2 = [coder decodeBoolForKey:@&quot;property2&quot;];
+        _property3 = [coder decodeObjectForKey:@&quot;property3&quot;];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+    // Encode our ivars using string keys
+    [coder encodeInteger:_property1 forKey:@&quot;property1&quot;];
+    [coder encodeBool:_property2 forKey:@&quot;property2&quot;];
+    [coder encodeObject:_property3 forKey:@&quot;property3&quot;];
+}
+
+@end
+
+Foo *someFoo = [[Foo alloc] init];
+[NSKeyedArchiver archiveRootObject:someFoo toFile:someFile];
+</code></pre><p>稍后再加载它：</p>
+<pre><code>Foo *someFoo = [NSKeyedUnarchiver unarchiveObjectWithFile:someFile];
+</code></pre><p>详细观察一下上边的代码，我们会发现函数里会有很多相似的代码：</p>
+<pre><code>// In the initWithCoder: method
+self.someProperty = [coder decodeObjectForKey:@&quot;someProperty&quot;];
+
+// In the encodeWithCoder: method
+[coder encodeObject:self.someProperty forKey:@&quot;someProperty&quot;];
+</code></pre><p>我们可以通过KVC对这些相似代码进行统一处理，由于KVC本身就有拆箱和装箱的功能，所以我们不用担心使用哪种方法来操作</p>
+<pre><code>NSString *const PropertyName = @&quot;someProperty&quot;;
+
+// In the initWithCoder: method
+id value = [coder decodeObjectForKey:PropertyName];
+[self setValue:value forKey:PropertyName];
+
+// In the encodeWithCoder: method
+id value = [self valueForKey:PropertyName];
+[coder encodeObject:value forKey:PropertyName];
+</code></pre><p>我们可以循环遍历类的属性，然后通过方法来encode或者decode这些属性</p>
+<pre><code>@interface CodableObject : NSObject &lt;NSCoding&gt;
+
+- (NSArray *)propertyNames;
+
+@end
+
+@implementation CodableObject
+
+- (NSArray *)propertyNames
+{
+  // Override this in the subclass to return an array of property names
+  return @[@&quot;property1&quot;, @&quot;property2&quot;, @&quot;property3&quot;];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+  if ((self = [self init]))
+  {
+    // Loop through the properties
+    for (NSString *key in [self propertyNames])
+    {
+      // Decode the property, and use the KVC setValueForKey: method to set it
+      id value = [aDecoder decodeObjectForKey:key];
+      [self setValue:value forKey:key];
+      }
+  }
+  return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+  // Loop through the properties
+  for (NSString *key in [self propertyNames])
+  {
+    // Use the KVC valueForKey: method to get the property and then encode it
+    id value = [self valueForKey:key];
+    [aCoder encodeObject:value forKey:key];
+  }
+}
+
+@end
+</code></pre><p>每次有属性更改时只需要修改propertyNames方法中的属性即可，然而我们会发现，通过OC运行时的魔力，我们也可以动态获取这些属性的名称</p>
+<pre><code>// Import the Objective-C runtime headers
+#import &lt;objc/runtime.h&gt; 
+
+- (NSArray *)propertyNames
+{    
+  // Get the list of properties
+  unsigned int propertyCount;
+  objc_property_t *properties = class_copyPropertyList([self class], 
+    &amp;propertyCount);
+  NSMutableArray *array = [NSMutableArray arrayWithCapacity:propertyCount];
+  for (int i = 0; i &lt; propertyCount; i++)
+  {
+    // Get property name
+    objc_property_t property = properties[i];
+    const char *propertyName = property_getName(property);
+    NSString *key = @(propertyName);
+
+    // Add to array
+    [array addObject:key];
+  }
+
+  // Remember to free the list because ARC doesn&apos;t do that for us
+  free(properties);
+
+  return array;
+}
+</code></pre><p>这样的话便通过OC运行时的魔力完成了对类属性的遍历与保存，但是这样还是存在以下几个问题：</p>
+<ol>
+<li>这些属性中没有包括从父类继承而来的一些属性，如Dog &gt; Animal &gt; CodableObject，当保存Dog对象时，只会encode Dog类的属性，而不会encode Animal类的属性</li>
+<li>不是所有的property会被encode，如果属性没有变量并且只读（If a property is both virtual (not backed by an ivar) and readonly），则它不能用setValueForKey:，因为会crash，如果属性只读并且有变量，但是变量的名字和属性名称不匹配，setValueForKey:函数则不会被调用到。所以只有当属性名称和变量名称相同的时候才会被encode</li>
+<li>不是所有的property会被encode，如果属性是指针或者结构体，或者对象，而它本身不支持NSCoding的话，它就不会被encode</li>
+<li>有些时候我们想忽略一些属性，也不能完成</li>
+</ol>
+<p>所以鉴于第一个和第二个问题，我们修改代码如下</p>
+<pre><code>- (NSArray *) propertyNames
+{
+  // Loop through our superclasses until we hit NSObject
+  NSMutableArray *array = [NSMutableArray array];
+  Class subclass = [self class];
+  while (subclass != [NSObject class])
+  {
+    unsigned int propertyCount;
+    objc_property_t *properties = class_copyPropertyList(subclass,  
+      &amp;propertyCount);
+    for (int i = 0; i &lt; propertyCount; i++)
+    {
+      // Get property name
+      objc_property_t property = properties[i];
+      const char *propertyName = property_getName(property);
+      NSString *key = @(propertyName);
+
+      // Check if there is a backing ivar
+      char *ivar = property_copyAttributeValue(property, &quot;V&quot;);
+      if (ivar)
+      {
+        // Check if ivar has KVC-compliant name
+        NSString *ivarName = @(ivar);
+        if ([ivarName isEqualToString:key] || 
+          [ivarName isEqualToString:[@&quot;_&quot; stringByAppendingString:key]])
+        {
+            // setValue:forKey: will work
+            [array addObject:key];
+        }
+        free(ivar);
+      }
+    }
+    free(properties);
+    subclass = [subclass superclass];
+  }
+   return array;
+}
+</code></pre><p>对于第三个问题，我们尽量避免不支持NSCoding的指针、结构体、对象加入到类中作为一个属性，如果需要，则让他们先重写NSCoding来达到条件</p>
+<p>对于第三个问题，我们如何消除某个属性不让encode呢，首先，如果是private的属性，我们只定义一个变量，而不是定义属性；其次，如果是public的属性，则需要把属性对应的变量名称修改一下即可</p>
+<pre><code>@synthesize foo = foo; // This *will* be encoded
+@synthesize foo = _foo; // So will this
+@synthesize foo = foo_; // But this *won&apos;t* be
+@synthesize foo = bar; // Nor will this
+</code></pre><p>现在来说，获取类中的属性列表已经可以完成编码，但是，如果每次调用都要进行一次计算，会不会有些繁琐呢，我们以前了解过关联对象的使用， 现在，我们可以通过对象关联技术将propertyNames保存起来</p>
+<pre><code>- (NSArray *)propertyNames
+{
+  // Check for a cached value (we use _cmd as the cache key, 
+  // which represents @selector(propertyNames))
+  NSMutableArray *array = objc_getAssociatedObject([self class], _cmd);
+  if (array)
+  {
+      return array;
+  }
+
+  // Loop through our superclasses until we hit NSObject
+  array = [NSMutableArray array];
+  Class subclass = [self class];
+  while (subclass != [NSObject class])
+  {
+    unsigned int propertyCount;
+    objc_property_t *properties = class_copyPropertyList(subclass, 
+      &amp;propertyCount);
+    for (int i = 0; i &lt; propertyCount; i++)
+    {
+      // Get property name
+      objc_property_t property = properties[i];
+      const char *propertyName = property_getName(property);
+      NSString *key = @(propertyName);
+
+      // Check if there is a backing ivar
+      char *ivar = property_copyAttributeValue(property, &quot;V&quot;);
+      if (ivar)
+      {
+        // Check if ivar has KVC-compliant name
+        NSString *ivarName = @(ivar);
+        if ([ivarName isEqualToString:key] || 
+          [ivarName isEqualToString:[@&quot;_&quot; stringByAppendingString:key]])
+        {
+            // setValue:forKey: will work
+            [array addObject:key];
+        }
+        free(ivar);
+      }
+    }
+    free(properties);
+    subclass = [subclass superclass];
+  }
+
+  // Cache and return array
+  objc_setAssociatedObject([self class], _cmd, array, 
+    OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+   return array;
+}
+</code></pre><h3 id="NSSecureCoding"><a href="#NSSecureCoding" class="headerlink" title="NSSecureCoding"></a>NSSecureCoding</h3><p>这样做对于编译进APP里的资源来说是可以的（例如nib文件，它在底层使用了NSCoding），但是使用NSCoding来读写用户数据文件的问题在于，把类对象编码到一个文件里，也就间接地给了这个文件访问你APP里面实例类的权限。</p>
+<p>虽然你不能在一个NSCoded文件里（至少在iOS中的）存储可执行代码，但是一名黑客可以使用特制地文件骗过你的APP进入到实例化类中，这是你从没打算做的，或者是你想要在另一个不同的上下文时才做的。尽管以这种方式造成实际性的破坏很难，但是无疑会导致用户的APP崩溃掉或者数据丢失。</p>
+<p>在iOS6中，苹果引入了一个新的协议，是基于NSCoding的，叫做NSSecureCoding。NSSecureCoding和NSCoding是一样的，除了在解码时要同时指定key和要解码的对象的类，如果要求的类和从文件中解码出的对象的类不匹配，NSCoder会抛出异常，告诉你数据已经被篡改了。</p>
+<p>大部分支持NSCoding的系统对象都已经升级到支持NSSecureCoding了，所以能安全地写有关归档的代码，你可以确保正在加载的数据文件是安全的。实现的方式如下：</p>
+<pre><code>// Set up NSKeyedUnarchiver to use secure coding
+NSData *data = [NSData dataWithContentsOfFile:someFile];
+NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+[unarchiver setRequiresSecureCoding:YES];
+
+// Decode object
+Foo *someFoo = [unarchiver decodeObjectForKey:NSKeyedArchiveRootObjectKey];
+</code></pre><p>注意一下，如果要让编写归档的代码是安全的，那么存储在文件中的每一个对象都要实现NSSecureCoding协议，否则会有异常抛出。如果要告诉框架自定义的类支持NSSecureCoding协议，那么你必须在initWithCoder: method方法中实现新的解码逻辑，并且supportsSecureCodin方法要返回YES。encodeWithCoder:方法没有变化，因为与安全相关的事是围绕加载进行的，而不是保存</p>
+<h3 id="NSFoundationVersionNumber-iOS-8-0"><a href="#NSFoundationVersionNumber-iOS-8-0" class="headerlink" title="NSFoundationVersionNumber_iOS_8_0"></a>NSFoundationVersionNumber_iOS_8_0</h3><p>由于iOS的<a href="http://openradar.appspot.com/radar?id=5871104061079552" target="_blank" rel="noopener">这个bug</a>，大意是：在iOS8以前并发创建很多NSURLSessionTask，每个NSURLSessionTask的taskIdentifier不是唯一的。而要避免这个问题，只能通过串行队列去创建，所以为了规避iOS8.0以前系统bug，作者写出了这一段代码</p>
+<pre><code>//iOS8系统后定义了这么一段
+#define NSFoundationVersionNumber_iOS_8_0 1140.11
+
+#ifndef NSFoundationVersionNumber_iOS_8_0
+#define NSFoundationVersionNumber_With_Fixed_5871104061079552_bug 1140.11
+#else
+#define NSFoundationVersionNumber_With_Fixed_5871104061079552_bug NSFoundationVersionNumber_iOS_8_0
+#endif
+
+static dispatch_queue_t url_session_manager_creation_queue() {
+    static dispatch_queue_t af_url_session_manager_creation_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        af_url_session_manager_creation_queue = dispatch_queue_create(&quot;com.alamofire.networking.session.manager.creation&quot;, DISPATCH_QUEUE_SERIAL);
+    });
+    return af_url_session_manager_creation_queue;
+}
+
+static void url_session_manager_create_task_safely(dispatch_block_t block) {
+    if (NSFoundationVersionNumber &lt; NSFoundationVersionNumber_With_Fixed_5871104061079552_bug) {
+        // Fix of bug
+        // Open Radar:http://openradar.appspot.com/radar?id=5871104061079552 (status: Fixed in iOS8)
+        // Issue about:https://github.com/AFNetworking/AFNetworking/issues/2093
+        dispatch_sync(url_session_manager_creation_queue(), block);
+    } else {
+        block();
+    }
+}
+
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request
+                               uploadProgress:(nullable void (^)(NSProgress *uploadProgress)) uploadProgressBlock
+                             downloadProgress:(nullable void (^)(NSProgress *downloadProgress)) downloadProgressBlock
+                            completionHandler:(nullable void (^)(NSURLResponse *response, id _Nullable responseObject,  NSError * _Nullable error))completionHandler {
+
+    __block NSURLSessionDataTask *dataTask = nil;
+    url_session_manager_create_task_safely(^{
+        dataTask = [self.session dataTaskWithRequest:request];
+    });
+
+    [self addDelegateForDataTask:dataTask uploadProgress:uploadProgressBlock downloadProgress:downloadProgressBlock completionHandler:completionHandler];
+
+    return dataTask;
+}
+</code></pre><h3 id="线程相关"><a href="#线程相关" class="headerlink" title="线程相关"></a>线程相关</h3><pre><code>//为了保证创建队列线性安全的只执行一次，使用了dispatch_once_t来执行只需要运行一次的线程安全代码，group也同样
+static dispatch_queue_t url_session_manager_processing_queue() {
+    static dispatch_queue_t af_url_session_manager_processing_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        af_url_session_manager_processing_queue = dispatch_queue_create(&quot;com.alamofire.networking.session.manager.processing&quot;, DISPATCH_QUEUE_CONCURRENT);
+    });
+    return af_url_session_manager_processing_queue;
+}
+
+static dispatch_group_t url_session_manager_completion_group() {
+    static dispatch_group_t af_url_session_manager_completion_group;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        af_url_session_manager_completion_group = dispatch_group_create();
+    });
+    return af_url_session_manager_completion_group;
+}
+
+//delegate在[NSURLSessionDataTask resume]时新开启的线程中运行
+- (void)URLSession:(NSURLSession *)session
+          task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error {
+    AFURLSessionManagerTaskDelegate *delegate = [self delegateForTask:task];
+    // delegate may be nil when completing a task in the background
+    if (delegate) {
+        [delegate URLSession:session task:task didCompleteWithError:error];
+        [self removeDelegateForTask:task];
+    }
+
+    if (self.taskDidComplete) {
+        self.taskDidComplete(session, task, error);
+    }
+}
+
+    - (void)URLSession:(__unused NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored &quot;-Wgnu&quot;
+    __strong AFURLSessionManager *manager = self.manager;
+
+    __block id responseObject = nil;
+
+    __block NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+    userInfo[AFNetworkingTaskDidCompleteResponseSerializerKey] = manager.responseSerializer;
+
+    //Performance Improvement from #2672
+    NSData *data = nil;
+    if (self.mutableData) {
+        data = [self.mutableData copy];
+        //We no longer need the reference, so nil it out to gain back some memory.
+        self.mutableData = nil;
+    }
+
+    if (self.downloadFileURL) {
+        userInfo[AFNetworkingTaskDidCompleteAssetPathKey] = self.downloadFileURL;
+    } else if (data) {
+        userInfo[AFNetworkingTaskDidCompleteResponseDataKey] = data;
+    }
+
+    if (error) {
+        userInfo[AFNetworkingTaskDidCompleteErrorKey] = error;
+
+        //如果URLSessionManager有设置完成的group，则使用其固有的group管理并发的异步线程，如果没有设置，则使用默认的dispatch_get_main_queue
+        //如果URLSessionManager创建时有设置completionQueue，则回调的block在其设置的队列中执行，如果没有设置，则在主队列中完成操作
+        dispatch_group_async(manager.completionGroup ?: url_session_manager_completion_group(), manager.completionQueue ?: dispatch_get_main_queue(), ^{
+            if (self.completionHandler) {
+                self.completionHandler(task.response, responseObject, error);
+            }
+
+            //不管当前队列是设置的队列还是主队列，分发通知的过程应该是主队列中去执行
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidCompleteNotification object:task userInfo:userInfo];
+            });
+        });
+    } else {
+        //预处理response的队列，非主线程中进行
+        dispatch_async(url_session_manager_processing_queue(), ^{
+            NSError *serializationError = nil;
+            responseObject = [manager.responseSerializer responseObjectForResponse:task.response data:data error:&amp;serializationError];
+
+            if (self.downloadFileURL) {
+                responseObject = self.downloadFileURL;
+            }
+
+            if (responseObject) {
+                userInfo[AFNetworkingTaskDidCompleteSerializedResponseKey] = responseObject;
+            }
+
+            if (serializationError) {
+                userInfo[AFNetworkingTaskDidCompleteErrorKey] = serializationError;
+            }
+
+            //如果URLSessionManager创建时有设置completionQueue，则回调的block在其设置的队列中执行，如果没有设置，则在主队列中完成操作
+            dispatch_group_async(manager.completionGroup ?: url_session_manager_completion_group(), manager.completionQueue ?: dispatch_get_main_queue(), ^{
+                if (self.completionHandler) {
+                    self.completionHandler(task.response, responseObject, serializationError);
+                }
+
+                //不管当前队列是设置的队列还是主队列，分发通知的过程应该是主队列中去执行
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidCompleteNotification object:task userInfo:userInfo];
+                });
+            });
+        });
+    }
+#pragma clang diagnostic pop
+}
+</code></pre><p>顺便提一下，看过很多其他人调用AFNetworking时的代码，发现有一部分人是这样写的：</p>
+<pre><code>- (void)refreshUI {
+    self.staffArray = [NSArray mj_objectArrayWithKeyValuesArray:[json objectForKey:@&quot;data&quot;]];
+    [self.shopMemberCollectionView reloadData];
+}
+
+//方式1
+- (void)getMerchantStaffFromServer {
+    [CPServerAPIInstance shopStaff:@{@&quot;shopId&quot;:_merchantModel.shopId, @&quot;status&quot;:@&quot;3&quot;} success:^(id json) {
+        [self performSelectorOnMainThread:@selector(refreshUI) withObject:nil waitUntilDone:YES];
+    } failure:^{
+    }];
+}
+
+//方式2
+- (void)getMerchantStaffFromServer {
+    [CPServerAPIInstance shopStaff:@{@&quot;shopId&quot;:_merchantModel.shopId, @&quot;status&quot;:@&quot;3&quot;} success:^(id json) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self refreshUI];
+        });
+    } failure:^{
+    }];
+}
+</code></pre><p>仅从线程的角度来讲，这两种方式的目的都是让succ block中的执行代码能在主线程中执行，然而我们在源码中发现，AFNetworking源码的作者已经考虑到了此处</p>
+<pre><code>//如果URLSessionManager创建时有设置completionQueue，则回调的block在其设置的队列中执行，如果没有设置，则在主队列中完成操作
+        dispatch_group_async(manager.completionGroup ?: url_session_manager_completion_group(), manager.completionQueue ?: dispatch_get_main_queue(), ^{
+            if (self.completionHandler) {
+                self.completionHandler(task.response, responseObject, error);
+            }
+
+            //不管当前队列是设置的队列还是主队列，分发通知的过程应该是主队列中去执行
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidCompleteNotification object:task userInfo:userInfo];
+            });
+        });
+</code></pre><p>如果URLSessionManager创建时有设置completionQueue，则回调的block在其设置的队列中执行，如果没有设置，则在主队列中完成操作，所以这些都在主线程中分发任务到主线程，此举纯属多余，反倒会在当开发者设置了执行的manager.completionQueue时，没有在设置的队列中执行，而是分发到了主队列中去执行。</p>
+<h3 id="线程加锁"><a href="#线程加锁" class="headerlink" title="线程加锁"></a>线程加锁</h3><p>先举个例子来说明，为什么要使用锁</p>
+<pre><code>- (BOOL)cash:(int)money {
+    int totalMoney = getTotalMoney();
+    if (money&lt;=totalMoney) {
+        totalMoney -= money;
+        saveTotalMoney(totalMoney);
+        return YES;
+    } else {
+        NSLog(@&quot;取钱数大于存款总数，不能获取&quot;);
+        return NO;
+    }
+}
+</code></pre><p>如果有两个线程同时执行这段代码，我们知道这两个线程是并发执行，CPU随机执行两个线程并在每个线程的状态之间进行运行和挂起，假定存款总数100，两个线程每次取款数均是100，当第一个线程执行完if (money&lt;=totalMoney)判断后，发现成功，继续进行，如果此时线程1被挂起，线程2被激活，仍然判断if (money&lt;=totalMoney)，发现代码还是走进了成功代码块，所以会造成只有100元存款，却取出了200元而导致totalMoney变为负数的情况，这明显与现实不符。</p>
+<p>虽然这种问题出现的概率极小，但是还是有可能会发生，所以为了解决这个问题，就保证线程安全性，需要对线程加锁，在AFNetworking中用到的锁有以下三种：</p>
+<pre><code>- (AFURLSessionManagerTaskDelegate *)delegateForTask:(NSURLSessionTask *)task {
+    NSParameterAssert(task);
+
+    AFURLSessionManagerTaskDelegate *delegate = nil;
+    [self.lock lock];
+    delegate = self.mutableTaskDelegatesKeyedByTaskIdentifier[@(task.taskIdentifier)];
+    [self.lock unlock];
+
+    return delegate;
+}
+
+- (NSArray *)tasksForKeyPath:(NSString *)keyPath {
+    __block NSArray *tasks = nil;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        if ([keyPath isEqualToString:NSStringFromSelector(@selector(dataTasks))]) {
+            tasks = dataTasks;
+        } else if ([keyPath isEqualToString:NSStringFromSelector(@selector(uploadTasks))]) {
+            tasks = uploadTasks;
+        } else if ([keyPath isEqualToString:NSStringFromSelector(@selector(downloadTasks))]) {
+            tasks = downloadTasks;
+        } else if ([keyPath isEqualToString:NSStringFromSelector(@selector(tasks))]) {
+            tasks = [@[dataTasks, uploadTasks, downloadTasks] valueForKeyPath:@&quot;@unionOfArrays.self&quot;];
+        }
+
+        dispatch_semaphore_signal(semaphore);
+    }];
+
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+
+    return tasks;
+}
+
+- (void)setNetworkActivityIndicatorVisible:(BOOL)networkActivityIndicatorVisible {
+    if (_networkActivityIndicatorVisible != networkActivityIndicatorVisible) {
+        [self willChangeValueForKey:@&quot;networkActivityIndicatorVisible&quot;];
+        @synchronized(self) {
+             _networkActivityIndicatorVisible = networkActivityIndicatorVisible;
+        }
+        [self didChangeValueForKey:@&quot;networkActivityIndicatorVisible&quot;];
+        if (self.networkActivityActionBlock) {
+            self.networkActivityActionBlock(networkActivityIndicatorVisible);
+        } else {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:networkActivityIndicatorVisible];
+        }
+    }
+}
+</code></pre><p>为什么delegate的地方要设置lock呢，因为如果有很多线程同时访问self.mutableTaskDelegatesKeyedByTaskIdentifier，有的修改，有的访问，会导致执行的结果出现错误，就类似数据库的CoreData一样，不是线性安全的，有的插入，有的查询，则会引入一些不知名的错误。</p>
+<h3 id="多用类型常量，少用-define预处理指令"><a href="#多用类型常量，少用-define预处理指令" class="headerlink" title="多用类型常量，少用#define预处理指令"></a>多用类型常量，少用#define预处理指令</h3><p>不要用预处理指令定义常量。这样定义出来的常量不含类型信息，编译器只是会在编译前据此执行查找与替换操作。即使有人重新定义了常量值，编译器也不会产生警告信息，这将导致应用程序中的常量不一致。</p>
+<p>在实现文件中使用static const来定义“只在编译单元内可见的常量”，由于此类常量不在全局符号表中，所以无须为其名称加前缀。</p>
+<p>在头文件中使用extern来声明全局变量，并在相关实现文件中定义其值。这种常量要出现在全局符号表中，所以其名称应加以区隔，通常用与之相关的类名做前缀</p>
+<p>如果需要兼容其他平台，则需要将extern替换成FOUNDATION_EXPORT，如果你在NSObjCRuntime.h中查看FOUNDATION_EXPORT会发现，FOUNDATION_EXPORT在C语言中将会被编译成<code>extern</code>，在C++中会被编译成<code>extern &quot;C&quot;</code>，在Win32中会被编译成其他内容，在iOS的大部分工程中extern和FOUNDATION_EXPORT没有区别</p>
+<pre><code>//In the header file
+extern/FOUNDATION_EXPORT NSString *const EOCStringConstant;
+
+//In the implementation file
+NSString *const EOCStringConstant = @“VALUE”;
+</code></pre><p>应用则是在AFURLSessionManager类中的Notification和Key</p>
+<pre><code>//In the header file
+FOUNDATION_EXPORT NSString * const AFURLSessionDownloadTaskDidFailToMoveFileNotification;
+FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteResponseDataKey;
+
+//In the implementation file
+NSString * const AFURLSessionDownloadTaskDidFailToMoveFileNotification = @&quot;com.alamofire.networking.session.download.file-manager-error&quot;;
+NSString * const AFNetworkingTaskDidCompleteSerializedResponseKey = @&quot;com.alamofire.networking.task.complete.serializedresponse&quot;;
+</code></pre><h3 id="OC静态函数"><a href="#OC静态函数" class="headerlink" title="OC静态函数"></a>OC静态函数</h3><p>在函数的返回类型前加上关键字static，函数就被定义成为静态函数。</p>
+<p>函数的定义和声明默认情况下是extern的，但静态函数只是在声明他的文件当中可见，不能被其他文件所用。只能被本文件中的函数调用，而不能被同一程序其它文件中的函数调用</p>
+<p>好处：</p>
+<ol>
+<li>其他文件中可以定义相同名字的函数，不会发生冲突</li>
+<li>静态函数不能被其他文件所用</li>
+</ol>
+<p>如：</p>
+<pre><code>static dispatch_queue_t url_session_manager_processing_queue() {
+    static dispatch_queue_t af_url_session_manager_processing_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        af_url_session_manager_processing_queue = dispatch_queue_create(&quot;com.alamofire.networking.session.manager.processing&quot;, DISPATCH_QUEUE_CONCURRENT);
+    });
+
+    return af_url_session_manager_processing_queue;
+}
+
+static dispatch_group_t url_session_manager_completion_group() {
+    static dispatch_group_t af_url_session_manager_completion_group;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        af_url_session_manager_completion_group = dispatch_group_create();
+    });
+
+    return af_url_session_manager_completion_group;
+}
+</code></pre><h3 id="块"><a href="#块" class="headerlink" title="块"></a>块</h3><p>在AFNetworking中块的使用非常常见，如</p>
+<pre><code>typedef void (^AFURLSessionDidBecomeInvalidBlock)(NSURLSession *session, NSError *error);
+typedef void (^AFURLSessionTaskProgressBlock)(NSProgress *);
+typedef void (^AFURLSessionTaskCompletionHandler)(NSURLResponse *response, id responseObject, NSError *error);
+</code></pre><p>按照块存储的位置，分为全局静态block，保存在堆中的block和保存在栈中的block</p>
+<ul>
+<li>全局静态block不会访问任何外部静态变量：这种不捕捉外界变量的block是不需要内存管理的,这种block不存在于Heap或是Stack而是作为代码片段存在,类似于C函数</li>
+<li>保存在栈中的block，当块执行完并返回时被销毁：这就是这次探索的重点了,需要涉及到外界变量的block在创建的时候是在stack上面分配空间的,也就是一旦所在函数返回,则会被摧毁。这就导致内存管理的问题,如果我们希望保存这个block或者是返回它,如果没有做进一步的copy处理,则必然会出现问题</li>
+<li>保存在堆中的block，当引用计数未0时会被销毁：因此为了解决block作为Stack object的这个问题,我们最终需要把它拷贝到堆上面来。而此时NSConcreteMallocBlock扮演的就是这个角色。拷贝到堆后,block的生命周期就与一般的OC对象一样了,我们通过引用计数来对其进行内存管理</li>
+</ul>
+<p>举个栈块引用的例子，具体的<a href="http://blog.csdn.net/luozhiwei_ios/article/details/48572793" target="_blank" rel="noopener">博客地址</a>，</p>
+<pre><code>- (void)viewDidLoad {
+    [superviewDidLoad];
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+        NSString *str = self.NSString;
+        NSLog(@“%@“,str);
+    });
+}
+</code></pre><p>微博博主在此文中举了个例子，在上面代码中，self队形引用了block块，而block块又在内部引用了self，所以作者认为形成了一个保留环，具体的修改方式如下：</p>
+<pre><code>- (void)viewDidLoad {
+  [superviewDidLoad];
+  __weaktypeof(self) weakSelf = self;                     //问题一：通过定义弱指针，解决保留环的问题
+  dispatch_async(dispatch_get_global_queue(0,0), ^{
+       __strongtypeof(self) strongSelf = weakSelf;        //问题二：通过定义强指针，解决在block调用完之前，self被释放掉了，从而block的所有调用均无效
+       NSLog(@&quot;%@&quot;,strongSelf.string);
+  });
+ }
+</code></pre><p> 然而，通过我具体的测试，发现上述例子并未引入保留环，因为在pop此ViewController的时候，dealloc函数会被调用。从这点来说，作者的举例并不是很恰当。这是为什么呢？我们通过另一个<a href="http://www.sxt.cn/info-8671-u-13350.html" target="_blank" rel="noopener">案例</a>说明此问题：</p>
+<pre><code>@interface ViewController (){
+    void(^myBlock1)(void);//该block参数为void，返回值为void
+    void(^myBlock2)(void);
+    void(^myBlock3)(void);
+}
+
+@property (nonatomic,copy) NSString *person;
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.person = @&quot;frand&quot;;
+    [self test];
+}
+
+- (void)dealloc {
+    NSLog(@&quot;ViewController  delloc&quot;);
+}
+
+- (void)test {
+    __weak __typeof(self) weakSelf = self;
+    NSLog(@&quot;init--&gt; value:%@,address=%p,self=%p&quot;,self.person,self.person,self);
+
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+        //未引入保留环，因为block持有self，而self未持有block
+        NSLog(@&quot;%@&quot;,self.person);
+    });
+
+    myBlock1 = ^(void){
+        //这样不会造成循环引用，因为self持有block，而block未强持有self
+        NSLog(@&quot;execute1--&gt; value:%@,address=%p,weakSelf=%p&quot;,weakSelf.person,weakSelf.person,weakSelf);
+    };
+    myBlock1();
+
+    myBlock2 = ^(void){
+        //这样会造成循环引用，因为self持有block，block也强持有self
+        NSLog(@&quot;execute2--&gt; value:%@,address=%p,self=%p&quot;,self.person,self.person,self);
+    };
+    myBlock2();
+
+    myBlock3 = ^(void){
+        //这样也不会造成循环引用,因为self持有block，而block未强持有self
+        [weakSelf myBlock3Func];
+    };
+    myBlock3();
+
+    void(^myBlock4)(void);
+    myBlock4 = ^(void){
+        //这样也不会造成循环引用，因为block持有self，而self未持有block
+        NSLog(@&quot;execute2--&gt; value:%@,address=%p,self=%p&quot;,self.person,self.person,self);
+    };
+    myBlock4();
+}
+</code></pre><p> 从上边的这个案例可以得出一个结论，只有当引用造成一个环状的时候，才会导致对象相互持有，从而无法释放。我们可以从第一个案例中看出，self并未持有block，只是block在持有self，未形成环状引用，从而没有形成保留环，内存照样释放。而阻止引用环形成的一个方法就是应用weakSelf。weakSelf的意思就是对现有的self做一个弱引用，使block在引用的时候引用的不是self，而是weakSelf，这样的话，self便不受影响，可以随时释放。</p>
+<p> 我们再通过一个<a href="http://www.tuicool.com/articles/3uAv22f" target="_blank" rel="noopener">案例</a>验证一下，并且学习一下如何在实战中分析引用环问题</p>
+<p>场景1：Controller之间block传值</p>
+<p>现在，我们声明两个控制器类，一个叫ViewController，另一个叫HYBAController。其中，ViewController有一个按钮，点击时会push到HYBAController下。</p>
+<p>先看HYBAController：</p>
+<pre><code>// 公开了一个方法
+- (instancetype)initWithCallback:(HYBCallbackBlock)callback;
+
+// 非公开的属性，这里放出来只是告诉大家，HYBAController会对这个属性强引用
+@property (nonatomic, copy) HYBCallbackBlock callbackBlock;
+</code></pre><p>下面分几种小场景来看看循环引用问题：</p>
+<pre><code>@interface ViewController ()
+
+// 引用按钮只是为了测试
+@property (nonatomic, strong) UIButton *button;
+// 只是为了测试内存问题，引用之。在开发中，有很多时候我们是
+// 需要引用另一个控制器的，因此这里模拟之。
+@property (nonatomic, strong) HYBAController *vc;
+
+@end
+
+// 点击button时
+- (void)goToNext {
+  HYBAController *vc = [[HYBAController alloc]initWithCallback:^{
+    [self.buttonsetTitleColor:[UIColor greenColor]forState:UIControlStateNormal];
+  }];
+  self.vc = vc;
+  [self.navigationController pushViewController:vcanimated:YES];
+}
+</code></pre><p>现在看ViewController这里，这里在block的地方形成了循环引用，因此vc属性得不到释放。分析其形成循环引用的原因</p>
+<p>可以简单说，这里形成了两个环：</p>
+<ul>
+<li>ViewController-&gt;强引用了属性vc-&gt;强引用了callback-&gt;强引用了ViewController</li>
+<li>ViewController-&gt;强引用了属性vc-&gt;强引用了callback-&gt;强引用了ViewController的属性button</li>
+</ul>
+<p>对于此这问题，我们要解决内存循环引用问题，可以这么解：</p>
+<p>不声明vc属性或者将vc属性声明为weak引用的类型，在callback回调处，将self.button改成weakSelf.button，也就是让callback这个block对viewcontroller改成弱引用。如就是改成如下，内存就可以正常释放了：</p>
+<pre><code>- (void)goToNext {
+  __weak __typeof(self) weakSelf = self;
+  HYBAController *vc = [[HYBAController alloc]initWithCallback:^{
+    [weakSelf.buttonsetTitleColor:[UIColor greenColor]forState:UIControlStateNormal];
+  }];
+//  self.vc = vc;
+  [self.navigationControllerpushViewController:vcanimated:YES];
+}
+</code></pre><p>场景2：Controller与View之间Block传值</p>
+<p>我们先定义一个view，用于与Controller交互。当点击view的按钮时，就会通过block回调给controller，也就反馈到控制器了，并将对应的数据传给控制器以记录：</p>
+<pre><code>typedef void(^HYBFeedbackBlock)(id model);
+
+@interfaceHYBAView: UIView
+
+- (instancetype)initWithBlock:(HYBFeedbackBlock)block;
+
+@end
+
+@interface HYBAView ()
+
+@property (nonatomic, copy) HYBFeedbackBlock block;
+
+@end
+
+@implementation HYBAView
+
+- (void)dealloc {
+  NSLog(@&quot;dealloc: %@&quot;, [[self class]description]);
+}
+
+- (instancetype)initWithBlock:(HYBFeedbackBlock)block {
+  if (self = [super init]) {
+    self.block = block;
+
+    UIButton *button = [UIButtonbuttonWithType:UIButtonTypeCustom];
+    [buttonsetTitle:@&quot;反馈给controller&quot;forState:UIControlStateNormal];
+    button.frame = CGRectMake(50, 200, 200, 45);
+    button.backgroundColor = [UIColor redColor];
+    [buttonsetTitleColor:[UIColor yellowColor]forState:UIControlStateNormal];
+    [buttonaddTarget:selfaction:@selector(feedback)forControlEvents:UIControlEventTouchUpInside];
+    [selfaddSubview:button];
+  }
+
+  return self;
+}
+
+- (void)feedback {
+  if (self.block) {
+    // 传模型回去，这里没有数据，假设传nil
+    self.block(nil);
+  }
+}
+
+@end
+</code></pre><p>接下来看HYBAController，增加了两个属性，在viewDidLoad时，创建了aView属性：</p>
+<pre><code>@interface HYBAController()
+
+@property (nonatomic, copy) HYBCallbackBlock callbackBlock;
+
+@property (nonatomic, strong) HYBAView *aView;
+@property (nonatomic, strong) id currentModel;
+
+@end
+
+@implementation HYBAController
+
+- (instancetype)initWithCallback:(HYBCallbackBlock)callback {
+  if (self = [super init]) {
+    self.callbackBlock = callback;
+  }
+
+  return self;
+}
+
+- (void)viewDidLoad {
+  [super viewDidLoad];
+
+  self.title = @&quot;HYBAController&quot;;
+  self.view.backgroundColor = [UIColor whiteColor];
+
+  self.aView = [[HYBAView alloc]initWithBlock:^(id model) {
+    // 假设要更新model
+    self.currentModel = model;
+  }];
+  // 假设占满全屏
+  self.aView.frame = self.view.bounds;
+  [self.viewaddSubview:self.aView];
+  self.aView.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+  [superviewDidAppear:animated];
+
+  NSLog(@&quot;进入控制器：%@&quot;, [[self class]description]);
+}
+
+- (void)dealloc {
+  NSLog(@&quot;控制器被dealloc: %@&quot;, [[self class]description]);
+}
+
+@end
+</code></pre><p>所形成的环有：</p>
+<ul>
+<li>vc-&gt;aView-&gt;block-&gt;vc（self）</li>
+<li>vc-&gt;aView-&gt;block-&gt;vc.currentModel</li>
+</ul>
+<p>解决的办法可以是：在创建aView时，block内对currentModel的引用改成弱引用：</p>
+<pre><code>__weak __typeof(self) weakSelf = self;
+self.aView = [[HYBAView alloc]initWithBlock:^(id model) {
+    // 假设要更新model
+    weakSelf.currentModel = model;
+}];
+</code></pre><p>我见过很多类似这样的代码，直接使用成员变量，而不是属性，然后他们以为这样就不会引用self，也就是控制器，从而不形成环：</p>
+<pre><code>self.aView = [[HYBAView alloc]initWithBlock:^(id model) {
+    // 假设要更新model
+    _currentModel = model;
+}];
+</code></pre><p>这是错误的理解，当我们引用了_currentModel时，它是控制器的成员变量，因此也就引用了控制器。要解决此问题，也是要改成弱引用：</p>
+<pre><code>__block__weak __typeof(_currentModel) weakModel = _currentModel;
+self.aView = [[HYBAView alloc]initWithBlock:^(id model) {
+  // 假设要更新model
+  weakModel = model;
+}];
+</code></pre><p>这里还要加上__block哦！</p>
+<p>模拟循环引用</p>
+<p>假设下面如此写代码，是否出现内存得不到释放问题？（其中，controller属性都是强引用声明的）</p>
+<pre><code>@autoreleasepool {
+  A*aVC = [[A alloc]init];
+  B*bVC = [[B allcok]init];
+  aVC.controller = bVC;
+  bVC.controller = aVC;
+}
+</code></pre><p>分析：</p>
+<p>aVC-&gt;强引用了bVC-&gt;强引用了aVC，因此形成了一个环，导致内存得不到释放。</p>
+<p>从上面的例子中，我们得知，通过weakSelf可以不让block引用self，从而可以使self随时释放，不占用内存，也不会引用保留环，但是我们在很多地方看到了strongSelf，strongSelf的用途是什么呢？同样的，我们通过一个<a href="http://www.tuicool.com/articles/7byaiq2" target="_blank" rel="noopener">案例</a>来分析</p>
+<pre><code>__weak __typeof(self)weakSelf = self;
+NSBlockOperation *op = [[[NSBlockOperation alloc] init] autorelease];
+[op addExecutionBlock:^ {
+    [weakSelf doSomething];
+    [weakSelf doMoreThing];
+}];
+</code></pre><p>根据上面的例子，当你加了WeakSelf后，block中的self随时都会有被释放的可能，所以会出现一种情况，在调用doSomething的时候self还存在，在doMoreThing的时候self就变成nil了，所以为了避免这种情况发生，我们会重新strongify self。一般情况下，我们都建议这么做，这没什么风险，除非你不关心self在执行过程中变成nil，或者你确定它不会变成nil（比方说所以block都在main thread执行）</p>
+<p>现在我们举个关于AFNetworking中，block使用的例子</p>
+<pre><code>[CPServerAPIInstance shopStaff:@{@&quot;shopId&quot;:_merchantModel.shopId, @&quot;status&quot;:@&quot;3&quot;} success:^(id json) {
+    self.staffArray = [NSArray mj_objectArrayWithKeyValuesArray:[json objectForKey:@&quot;data&quot;]];
+    [self.shopMemberCollectionView reloadData];
+} failure:^{
+}];
+</code></pre><p>相信刚开始很多程序员在调用AFNetworking时都会对它再一次封装，然后在通过调用封装的类CPServerAPIInstance来调用方法，之后再回调succ和fail的block。这个block中的使用对不对呢</p>
+<p>我们先分析一下有没有引入保留环：</p>
+<p>AFURLSessionManager引用块succ和fail，succ块引用了self，而self引用了AFURLSessionManager或succ块了吗？答案显然是没有，所以，此过程是没有引入保留环的，从保留环的角度来看的话，没有任何问题。所以如果我们在self中添加dealloc方法并打印，发现在self从navigationController中pop出去的时候dealloc方法是被调用了，这个更进一步验证我们刚才的结论。</p>
+<p>在什么时候才会出现保留环呢？必须要self引用succ block或者AFURLSessionManager才可以，我们模拟一下引用block的情况，看一下是否出现了保留环</p>
+<pre><code>SuccessBlockHandler handler;
+
+handler = ^(id json) {
+    id data = [json objectForKey:@&quot;data&quot;];
+    if (data) {
+        CPMerchantNotice *notice = [CPMerchantNotice mj_objectWithKeyValues:data];
+        [self.merchantNoticeLabel setText:notice.noticeContent];
+    }
+};
+
+- (void)getNoticeFromServer {
+    [CPServerAPIInstance shopNotice:@{@&quot;shopId&quot;:_merchantModel.shopId, @&quot;noticeType&quot;:@&quot;1&quot;} success:handler failure:^{
+    }];
+}
+</code></pre><p>通过上边的代码，运行之后会发现dealloc函数未调用，证明引用的保留环。所以应该按照第一种方式来做处理，虽然在第一种方式中没有出现保留环，然而我们发现，很多程序员在用的时候依然是按照以下两种方式：</p>
+<pre><code>[CPServerAPIInstance shopStaff:@{@&quot;shopId&quot;:_merchantModel.shopId, @&quot;status&quot;:@&quot;3&quot;} success:^(id json) {
+    weakSelf.staffArray = [NSArray mj_objectArrayWithKeyValuesArray:[json objectForKey:@&quot;data&quot;]];
+    [weakSelf.shopMemberCollectionView reloadData];
+} failure:^{
+}];
+</code></pre><p>或</p>
+<pre><code> __weak __typeof(self) weakSelf = self;
+[CPServerAPIInstance shopStaff:@{@&quot;shopId&quot;:_merchantModel.shopId, @&quot;status&quot;:@&quot;3&quot;} success:^(id json) {
+    __strong __typeof(self) strongSelf = weakSelf;
+    strongSelf.staffArray = [NSArray mj_objectArrayWithKeyValuesArray:[json objectForKey:@&quot;data&quot;]];
+    [strongSelf.shopMemberCollectionView reloadData];
+} failure:^{
+}];
+</code></pre><p>这是为什么呢？我们分析一下这样写有什么不同，暂时把这三段代码根据顺序编码1，2，3。</p>
+<p>代码1中在block没有被释放时，self也不会被释放，这就是为什么在block未执行完成的时候，pop self以后未打印出dealloc的原因。</p>
+<p>然而在此例中，既然self已经被pop了，按此处的需求来说，self就不需要再存在了，所以应该在该释放的时候就被释放，不应该一直占着内存，所以会出现代码2片段，此时的self是可以在任何时候被系统回收的，回收后当执行到向weakSelf发送staffArray消息时，发现weakSelf是空的，所以weakSelf会接收此消息，但不会响应它。</p>
+<p>但是如果正巧当weakSelf.staffArray这句调用完成之后weakSelf.shopMemberCollectionView还未调用时回收了weakSelf怎么办呢？一般情况下会只调用上边那句而不会调用下边的，在此例中，这个完全没有什么影响，然而当在别的例子，如操作数据库时，当我们买了一件东西时，上边的一句是从存款的减去此次消费的数据，而下边一句是将此次消费的数据加到总消费数据中去，所以这两句要么全执行， 要么全不执行，要不然会出现数据总额不统一的情况，为了这个所谓的事务的原子性特性，就引用了strongSelf来处理，也就是代码3片段，在此段中，self可以在<strong>strong </strong>typeof(self) strongSelf = weakSelf;这句前任何地方释放，但是在此句后边，self则不允许被释放了，直到block执行完成strongSelf的作用域完结才可以。</p>
+<p>一般我们会采用第3种方式来在block中处理，因为这样既不会引入保留环，也不会占用多余内存，也考虑到了事务的原子性特性。当然如果在一些特殊需求下，或者一些有把握不会有问题的情况下，也可以用方式1或方式2来处理。</p>
+<p>最后再举个比较实用的例子来总结一下：</p>
+<pre><code>self.merchantCollectionView.mj_header = [MJRefreshHeader headerWithRefreshingBlock:^{
+    _currentPage = 0;
+    [self requestMerchandiseFromServer];
+}];
+</code></pre><p>MJRefresh第三方控件相信大家都使用过，一般很多人写法是像上边的代码一样，然而，当添加此代码后，不管block里边的代码有没有调用，当pop这个ViewController时，你会发现，dealloc函数没有被调用，这是为什么呢？</p>
+<p>我们先分析一下里边的引用关系，self引用了collectionView，collectionView中引用了MJRefresh，MJRefresh中又引用了block，最后block回过头来又引用了self，这样就形成一个闭环，导致相互持有而最终无法释放。所以最后的解决办法是：</p>
+<pre><code>weakSelf(self)
+self.merchantCollectionView.mj_header = [MJRefreshHeader headerWithRefreshingBlock:^{
+    _currentPage = 0;
+    [weakSelf requestMerchandiseFromServer];
+}];
+</code></pre><p>或</p>
+<pre><code>weakSelf(self)
+self.merchantCollectionView.mj_header = [MJRefreshHeader headerWithRefreshingBlock:^{
+    _currentPage = 0;
+    strongSelf(weakSelf)
+    [strongSelf requestMerchandiseFromServer];
+}];
+</code></pre><p>然而，经过测试，上边代码还是不对，发现仍有保留环，最后将<code>_currentPage = 0;</code>改为<code>weakSelf.currentPage = 0;</code>才解决了问题</p>
+<p>这两种的异同处前边已经分析过，此处不再赘述</p>
+<h3 id="NSNOTIFICATION-amp-KVO"><a href="#NSNOTIFICATION-amp-KVO" class="headerlink" title="NSNOTIFICATION &amp; KVO"></a>NSNOTIFICATION &amp; KVO</h3><pre><code>dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidResumeNotification object:task];
+        });
+</code></pre><p>在AFNetworking源码中，不止一次发送了通知，而大部分发送通知都是在主线程上发送，这是为什么呢？<strong>因为在哪个线程上边发送通知，就会在哪个线程上边接收并处理通知，这个不仅适用于NSNOTIFICATION，也适用于KVO</strong>。AFNetworking开发者为了使调用他们的程序员们在接收了进度通知后更方便的更新UI，而将每次发送通知放在了主线程上，我们先根据例子验证一下这个结论：</p>
+<pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(test) name:@&quot;test&quot; object:nil];
+    NSLog(@&quot;thread %@&quot;, [NSThread currentThread]);
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSLog(@&quot;thread %@&quot;, [NSThread currentThread]);
+        [self test1];
+    });
+
+    dispatch_async(dispatch_queue_create(&quot;com.swift3.imageQueue&quot;, DISPATCH_QUEUE_SERIAL) , ^{
+        NSLog(@&quot;thread %@&quot;, [NSThread currentThread]);
+        [self test2];
+    });
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@&quot;test&quot; object:nil];
+}
+
+- (void)test {
+    NSLog(@&quot;=================test thread %@&quot;, [NSThread currentThread]);
+}
+
+- (void)test1 {
+    NSLog(@&quot;=================test 1 thread %@&quot;, [NSThread currentThread]);
+}
+
+- (void)test2 {
+    NSLog(@&quot;=================test 2 thread %@&quot;, [NSThread currentThread]);
+}
+</code></pre><p>运行之后打印，查看log：</p>
+<pre><code>2016-12-22 17:19:07.521053 EasyPushDemo[3857:1591007] thread &lt;NSThread: 0x174067ec0&gt;{number = 1, name = main}
+2016-12-22 17:19:07.521708 EasyPushDemo[3857:1591007] =================test thread &lt;NSThread: 0x174067ec0&gt;{number = 1, name = main}
+2016-12-22 17:19:07.522903 EasyPushDemo[3857:1591129] thread &lt;NSThread: 0x1742637c0&gt;{number = 6, name = (null)}
+2016-12-22 17:19:07.523223 EasyPushDemo[3857:1591129] =================test 1 thread &lt;NSThread: 0x1742637c0&gt;{number = 6, name = (null)}
+2016-12-22 17:19:07.523733 EasyPushDemo[3857:1591066] thread &lt;NSThread: 0x174260100&gt;{number = 7, name = (null)}
+2016-12-22 17:19:07.524009 EasyPushDemo[3857:1591066] =================test 2 thread &lt;NSThread: 0x174260100&gt;{number = 7, name = (null)}
+</code></pre><p>可以验证出，因为在哪个线程上边发送通知，就会在哪个线程上边接收并处理通知。</p>
+<p>我们先通过<a href="http://www.cnblogs.com/xunziji/p/3257447.html" target="_blank" rel="noopener">博客1</a>和<a href="http://blog.csdn.net/lxl_815520/article/details/51153168" target="_blank" rel="noopener">博客2</a>来看看NSNotification和KVO的基本用法</p>
+<ol>
+<li><p>观察者注册消息通知</p>
+<pre><code>//notificationObserver 观察者 : self
+//notificationSelector 处理消息的方法名: getUserProfileSuccess 
+//notificationName 消息通知的名字: Notification_GetUserProfileSuccess
+//notificationSender 消息发送者 : 表示接收哪个发送者的通知，如果第四个参数为nil,接收所有发送者的通知
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getUserProfileSuccess:) name:@&quot;Notification_GetUserProfileSuccess&quot; object:nil];
+
+//observer:观察者,也就是KVO通知的订阅者。订阅着必须实现observeValueForKeyPath:ofObject:change:context:方法
+//keyPath：描述将要观察的属性，相对于被观察者。
+//options：KVO的一些属性配置；有四个选项。
+* NSKeyValueObservingOptionNew：change字典包括改变后的值
+* NSKeyValueObservingOptionOld:   change字典包括改变前的值 
+* NSKeyValueObservingOptionInitial:注册后立刻触发KVO通知
+* NSKeyValueObservingOptionPrior:值改变前是否也要通知（这个key决定了是否在改变前改变后通知两次）
+//context: 上下文，这个会传递到订阅着的函数中，用来区分消息，所以应当是不同的。 
+- (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
+</code></pre></li>
+<li><p>发送消息通知</p>
+<pre><code>//notificationName 消息通知的名字: Notification_GetUserProfileSuccess
+//notificationSender 消息发送者: userProfile
+//userInfo 消息中带的参数 
+[[NSNotificationCenter defaultCenter] postNotificationName:@&quot;Notification_GetUserProfileSuccess&quot; object:userProfile userInfo:nil];
+
+//任何对keyPath属性的修改都视为发送消息通知
+//self.keyPath = @&quot;&quot;;
+</code></pre></li>
+<li><p>观察者处理消息</p>
+<pre><code>//NSNotification 接受到的消息信息，主要含：
+//Name: 消息名称 Notification_GetUserProfileSuccess
+//object: 消息发送者 userProfile
+//userInfo: 消息传递的数据信息
+- (void) getUserProfileSuccess: (NSNotification*) aNotification {
+    self.userProfile = [aNotification object];
+
+    lblName.text = self.userProfile.Name;
+    lblEENO.text = self.userProfile.EENO;
+    lblNric.text = self.userProfile.NRIC;
+    lblBirthday.text =self.userProfile.Birthday;
+    lblHireDate.text = self.userProfile.Hiredate;
+
+    txtMobilePhone.text = self.userProfile.Mobile;
+    txtEmail.text = self.userProfile.Email;
+}
+</code></pre></li>
+</ol>
+<pre><code>//keyPath：被监听的keyPath , 用来区分不同的KVO监听。 
+//object： 被观察修改后的对象（可以通过object获得修改后的值） 
+//change：保存信息改变的字典（可能有旧的值，新的值等） 
+//context：上下文，用来区分不同的KVO监听
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
+</code></pre><ol start="4">
+<li><p>观察者注销，移除消息观察者</p>
+<pre><code>//虽然在 IOS 用上 ARC 后，不显示移除 NSNotification Observer 也不会出错，但是这是一个很不好的习惯，不利于性能和内存。
+//注销观察者有2个方法：
+//a. 最优的方法，在 UIViewController.m 中：
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+//b. 单个移除：
+[[NSNotificationCenter defaultCenter] removeObserver:self name:@&quot;Notification_GetUserProfileSuccess&quot; object:nil];
+
+- (void)removeObserver:(NSObject *)anObserver forKeyPath:(NSString *)keyPath
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath context:(void *)context
+</code></pre></li>
+</ol>
+<p>记得在货车帮面试时，有个考题是如果不用系统提供的NSNotification类，如何自己实现一个此功能的模块，会用到哪些技术？基于这个问题，我查到了一篇<a href="http://www.jianshu.com/p/a307587ac62c" target="_blank" rel="noopener">博客</a>,现在现在来具体研究一下这篇博客：</p>
+<p>创建两个新类HHNotification,HHNotificationCenter，这两个类的接口和苹果提供的接口完全一样，我将根据接口提供的功能给出实现代码。</p>
+<p>要点是通知中心是单例类，并且通知中心维护了一个包含所有注册的观察者的集合，这里我选择了动态数组来存储所有的观察者，源码如下：</p>
+<pre><code>+ (HHNotificationCenter *)defaultCenter {
+    static HHNotificationCenter *singleton;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        singleton = [[self alloc] initSingleton];
+    });
+    return singleton;
+}
+
+- (instancetype)initSingleton {
+    if ([super init]) {
+        _observers = [NSMutableArray array];
+    }
+    return self;
+}
+</code></pre><p>还定义了一个观察者模型用于保存观察者，通知消息名，观察者收到通知后执行代码所在的操作队列和执行代码的回调，模型源码如下：</p>
+<pre><code>@interface HHObserverModel : NSObject
+
+@property (nonatomic, strong) id observer;
+@property (nonatomic, assign) SEL selector;
+@property (nonatomic, copy) NSString *notificationName;
+@property (nonatomic, strong) id object;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, copy) OperationBlock block;
+
+@end
+</code></pre><p>向通知中心注册观察者，源码如下：</p>
+<pre><code>- (void)addObserver:(id)observer selector:(SEL)aSelector name:(NSString *)aName object:(id)anObject {
+    HHObserverModel *observerModel = [[HHObserverModel alloc] init];
+    observerModel.observer = observer;
+    observerModel.selector = aSelector;
+    observerModel.notificationName = aName;
+    observerModel.object = anObject;
+    [self.observers addObject:observerModel];
+}
+
+- (id &lt;NSObject&gt;)addObserverForName:(NSString *)name object:(id)obj queue:(NSOperationQueue *)queue usingBlock:(void (^)(HHNotification * _Nonnull))block {
+    HHObserverModel *observerModel = [[HHObserverModel alloc] init];
+    observerModel.notificationName = name;
+    observerModel.object = obj;
+    observerModel.operationQueue = queue;
+    observerModel.block = block;
+    [self.observers addObject:observerModel];
+    return nil;
+}
+</code></pre><p>发送通知有三种方式，最终都是调用- (void)postNotification:(HHNotification *)notification，源码如下：</p>
+<pre><code>- (void)postNotification:(HHNotification *)notification {
+    [self.observers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        HHObserverModel *observerModel = obj;
+        id observer = observerModel.observer;
+        SEL selector = observerModel.selector;
+        if ([observerModel.notificationName isEqualToString:notification.notificationName]) {
+            if (!observerModel.operationQueue) {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored &quot;-Warc-performSelector-leaks&quot;
+                [observer performSelector:selector withObject:notification];
+    #pragma clang diagnostic pop
+            } else {
+                NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                    observerModel.block(notification);
+                }];
+                NSOperationQueue *operationQueue = observerModel.operationQueue;
+                [operationQueue addOperation:operation];
+            }
+        }
+    }];
+}
+</code></pre><p>其实也可以用KVC和KVO来实现，但是具体的实现步骤没有跟面试官讲清楚，现在将NSNotification和KVO的功能实现分别列举如下</p>
+<pre><code>+ (HHNotificationCenter *)defaultCenter {
+    static HHNotificationCenter *singleton;
+    static dispatch_once_t onceToken;
+    dispatch_once(&amp;onceToken, ^{
+        singleton = [[self alloc] initSingleton];
+    });
+    return singleton;
+}
+
+- (instancetype)initSingleton {
+    if ([super init]) {
+    }
+    return self;
+}
+</code></pre><p>还定义了一个观察者模型用于保存观察者，通知消息名，观察者收到通知后执行代码所在的操作队列和执行代码的回调，模型源码如下：</p>
+<pre><code>@interface HHObserverModel : NSObject
+
+@property (nonatomic, strong) id observer;
+@property (nonatomic, assign) SEL selector;
+@property (nonatomic, copy) NSString *notificationName;
+@property (nonatomic, strong) id object;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, copy) OperationBlock block;
+
+@end
+</code></pre><p>向通知中心注册观察者，源码如下：</p>
+<pre><code>//在目标target上添加关联对象，属性名propertyname(也能用来添加block)，值value
+- (void)addAssociatedObjectPropertyName:(NSString *)propertyName withValue:(id)value {
+    id property = objc_getAssociatedObject(target, &amp;propertyName);
+    if(property == nil) {
+        property = value;
+        objc_setAssociatedObject(self, &amp;propertyName, property, OBJC_ASSOCIATION_RETAIN);
+    }
+}
+
+//获取目标target的指定关联对象值
+- (id)getAssociatedObjectWithPropertyName:(NSString *)propertyName {
+    id property = objc_getAssociatedObject(self, &amp;propertyName);
+    return property;
+}
+
+- (void)addObserver:(id)observer selector:(SEL)aSelector name:(NSString *)aName object:(id)anObject {
+    HHObserverModel *observerModel = [[HHObserverModel alloc] init];
+    observerModel.observer = observer;
+    observerModel.selector = aSelector;
+    observerModel.notificationName = aName;
+    observerModel.object = anObject;
+    [self addAssociatedObjectPropertyName:name withValue:observerModel];
+    [self addObserver:self forKeyPath:name options:nil context:nil];
+}
+</code></pre><p>发送通知有三种方式，最终都是调用- (void)postNotification:(HHNotification *)notification，源码如下：</p>
+<pre><code>- (id &lt;NSObject&gt;)addObserverForName:(NSString *)name object:(id)obj queue:(NSOperationQueue *)queue usingBlock:(void (^)(HHNotification * _Nonnull))block {
+    HHObserverModel *observerModel = [[HHObserverModel alloc] init];
+    observerModel.notificationName = name;
+    observerModel.object = obj;
+    observerModel.operationQueue = queue;
+    observerModel.block = block;
+    [self setValue:observerModel forKey:name];
+    return nil;
+}
+
+- (void)postNotification:(HHNotification *)notification {
+    NSString *notificationName = notification.name;
+    [self setValue:notification forKey:[self valueForKey:notificationName]];
+}
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSString *,id&gt; *)change context:(voidvoid *)context{  
+    HHObserverModel *observerModel = [self valueForKey:keyPath];
+    id observer = observerModel.observer;
+    SEL selector = observerModel.selector;
+    if ([observerModel.notificationName isEqualToString:notification.notificationName]) {
+        if (!observerModel.operationQueue) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored &quot;-Warc-performSelector-leaks&quot;
+            [observer performSelector:selector withObject:notification];
+#pragma clang diagnostic pop
+        } else {
+            NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+                observerModel.block(notification);
+            }];
+            NSOperationQueue *operationQueue = observerModel.operationQueue;
+            [operationQueue addOperation:operation];
+        }
+    }
+</code></pre><p>在这里顺便说一下KVO的原理，当你观察一个对象时，一个新的类会动态被创建。这个类继承自该对象的原本的类，并重写了被观察属性的 setter 方法。自然，重写的 setter 方法会负责在调用原 setter 方法之前和之后，通知所有观察对象值的更改。最后把这个对象的 isa 指针 ( isa 指针告诉 Runtime 系统这个对象的类是什么 ) 指向这个新创建的子类，对象就神奇的变成了新创建的子类的实例，具体的<a href="http://www.cocoachina.com/ios/20150313/11321.html" target="_blank" rel="noopener">博客地址如下</a>。</p>
+<h3 id="内联函数inline"><a href="#内联函数inline" class="headerlink" title="内联函数inline"></a>内联函数inline</h3><p>在iOS中的一些框架中,inline是经常出现的关键字组合，这种关键字定义的函数就是内联函数</p>
+<p>为了搞懂为什么会出现<a href="http://www.cnblogs.com/wyk19910103/p/5660627.html" target="_blank" rel="noopener">内联函数</a>，我们先解释一下什么是函数</p>
+<p>函数在内存中就是一段代码，起始位置叫函数入口，也就是函数地址，其他代码通过这个地址调用函数，有时候需要把函数提供给外部使用，就需要把函数地址列成一个表放在文件头部，这些列出的函数就叫导出函数。函数有很多种，除了普通的函数，还有类成员函数、类虚函数、类静态函数等，有的是访问权限不一样(比如类成员函数和类静态函数)，调用过程不一样(虚函数)，有的是编译期行为，有的是运行时行为，但这些函数本身的存在形式都是一样的，就是函数入口加上一段代码</p>
+<p>从上面的描述中可知，函数就是在内存中的一段代码，当需要调用时会根据函数的地址去找到，然后执行</p>
+<p>然而由于函数在调用时必须call，就有了参数的进栈出栈，会有内存和CPU的消耗，所以引入了内联函数的概念，内联函数会在编译时就将函数编译到代码里边去，从而会减少内存和CPU的开销，但是会增加二进制文件的大小，例如</p>
+<pre><code>inline int foo(int a, int b) {
+    return a+b;
+}
+
+void bar(int a, int b) {
+    NSLog(@&quot;%d&quot;, foo(a, b));
+}
+
+//上边的代码编译后会成为
+void bar(int a, int b) {
+    NSLog(@&quot;%d&quot;, a+b);
+}
+</code></pre><p>由此可以看出，内联函数相比于普通函数而言，有一些优点：</p>
+<ol>
+<li>inline函数避免了普通函数的,在汇编时必须调用call的缺点:取消了函数的参数压栈，减少了调用的开销,提高效率.所以执行速度确比一般函数的执行速度要快.</li>
+<li>集成了宏的优点,使用时直接用代码替换(像宏一样);</li>
+</ol>
+<p>这里提到了宏，我们发现它的特点相比于宏，确实有很大一部分类似，相比于宏，还是有一些优点</p>
+<ol>
+<li>避免了宏的缺点:需要预编译.因为inline内联函数也是函数,不需要预编译.</li>
+<li>编译器在调用一个内联函数时，会首先检查它的参数的类型，保证调用正确。然后进行一系列的相关检查，就像对待任何一个真正的函数一样。这样就消除了它的隐患和局限性。</li>
+<li>内联函数可以使用所在类的保护成员及私有成员</li>
+</ol>
+<p>内联函数既然相对于普通函数和宏都有这么多优点，为什么还没有被大量应用</p>
+<ol>
+<li>内联函数只是我们向编译器提供的申请,编译器不一定采取inline形式调用函数.</li>
+<li>内联函数不能承载大量的代码.如果内联函数的函数体过大,编译器会自动放弃内联.</li>
+<li>内联函数内不允许使用循环语句或开关语句.</li>
+<li>内联函数的定义须在调用之前.</li>
+<li>内联函数会导致生成的二进制文件增大</li>
+</ol>
+<h3 id="load时的方法交换调试"><a href="#load时的方法交换调试" class="headerlink" title="load时的方法交换调试"></a>load时的方法交换调试</h3><p>在运行期，可以向类中新增或替换选择子所对应的方法实现</p>
+<p>使用另一份实现来替换原有的方法实现，这道工序叫方法调配，开发者常用此功能向原有实现中添加新功能</p>
+<p>一般来说，只有调试程序的时候才需要在运行期修改实现方法，这种做法不宜滥用</p>
+<p>AFNetworking中就用到了这种技术，在NSURLSessionTasks中，有什么方法能监听任务状态的改变呢？由于NSURLSessionTasks类是系统提供的类，我们没有他的源码，所以我们无法监听当其调用suspend或者resume方法，从而发送通知，只能通过一些技术从外部来想办法，这时，方法交换调试就是一个很好的技术选择：</p>
+<pre><code>+ (void)load {
+    /**
+     WARNING: Trouble Ahead
+     https://github.com/AFNetworking/AFNetworking/pull/2702
+     */
+
+    if (NSClassFromString(@&quot;NSURLSessionTask&quot;)) {
+        /**
+         iOS 7 and iOS 8 differ in NSURLSessionTask implementation, which makes the next bit of code a bit tricky.
+         Many Unit Tests have been built to validate as much of this behavior has possible.
+         Here is what we know:
+            - NSURLSessionTasks are implemented with class clusters, meaning the class you request from the API isn&apos;t actually the type of class you will get back.
+            - Simply referencing `[NSURLSessionTask class]` will not work. You need to ask an `NSURLSession` to actually create an object, and grab the class from there.
+            - On iOS 7, `localDataTask` is a `__NSCFLocalDataTask`, which inherits from `__NSCFLocalSessionTask`, which inherits from `__NSCFURLSessionTask`.
+            - On iOS 8, `localDataTask` is a `__NSCFLocalDataTask`, which inherits from `__NSCFLocalSessionTask`, which inherits from `NSURLSessionTask`.
+            - On iOS 7, `__NSCFLocalSessionTask` and `__NSCFURLSessionTask` are the only two classes that have their own implementations of `resume` and `suspend`, and `__NSCFLocalSessionTask` DOES NOT CALL SUPER. This means both classes need to be swizzled.
+            - On iOS 8, `NSURLSessionTask` is the only class that implements `resume` and `suspend`. This means this is the only class that needs to be swizzled.
+            - Because `NSURLSessionTask` is not involved in the class hierarchy for every version of iOS, its easier to add the swizzled methods to a dummy class and manage them there.
+
+         Some Assumptions:
+            - No implementations of `resume` or `suspend` call super. If this were to change in a future version of iOS, we&apos;d need to handle it.
+            - No background task classes override `resume` or `suspend`
+
+         The current solution:
+            1) Grab an instance of `__NSCFLocalDataTask` by asking an instance of `NSURLSession` for a data task.
+            2) Grab a pointer to the original implementation of `af_resume`
+            3) Check to see if the current class has an implementation of resume. If so, continue to step 4.
+            4) Grab the super class of the current class.
+            5) Grab a pointer for the current class to the current implementation of `resume`.
+            6) Grab a pointer for the super class to the current implementation of `resume`.
+            7) If the current class implementation of `resume` is not equal to the super class implementation of `resume` AND the current implementation of `resume` is not equal to the original implementation of `af_resume`, THEN swizzle the methods
+            8) Set the current class to the super class, and repeat steps 3-8
+         */
+        NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+        NSURLSession * session = [NSURLSession sessionWithConfiguration:configuration];
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored &quot;-Wnonnull&quot;
+        NSURLSessionDataTask *localDataTask = [session dataTaskWithURL:nil];
+#pragma clang diagnostic pop
+        IMP originalAFResumeIMP = method_getImplementation(class_getInstanceMethod([self class], @selector(af_resume)));
+        Class currentClass = [localDataTask class];
+
+        while (class_getInstanceMethod(currentClass, @selector(resume))) {
+            Class superClass = [currentClass superclass];
+            IMP classResumeIMP = method_getImplementation(class_getInstanceMethod(currentClass, @selector(resume)));
+            IMP superclassResumeIMP = method_getImplementation(class_getInstanceMethod(superClass, @selector(resume)));
+            if (classResumeIMP != superclassResumeIMP &amp;&amp;
+                originalAFResumeIMP != classResumeIMP) {
+                [self swizzleResumeAndSuspendMethodForClass:currentClass];
+            }
+            currentClass = [currentClass superclass];
+        }
+
+        [localDataTask cancel];
+        [session finishTasksAndInvalidate];
+    }
+}
+
++ (void)swizzleResumeAndSuspendMethodForClass:(Class)theClass {
+    Method afResumeMethod = class_getInstanceMethod(self, @selector(af_resume));
+    Method afSuspendMethod = class_getInstanceMethod(self, @selector(af_suspend));
+
+    if (af_addMethod(theClass, @selector(af_resume), afResumeMethod)) {
+        af_swizzleSelector(theClass, @selector(resume), @selector(af_resume));
+    }
+
+    if (af_addMethod(theClass, @selector(af_suspend), afSuspendMethod)) {
+        af_swizzleSelector(theClass, @selector(suspend), @selector(af_suspend));
+    }
+}
+
+- (NSURLSessionTaskState)state {
+    NSAssert(NO, @&quot;State method should never be called in the actual dummy class&quot;);
+    return NSURLSessionTaskStateCanceling;
+}
+
+- (void)af_resume {
+    NSAssert([self respondsToSelector:@selector(state)], @&quot;Does not respond to state&quot;);
+    NSURLSessionTaskState state = [self state];
+    [self af_resume];
+
+    if (state != NSURLSessionTaskStateRunning) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:AFNSURLSessionTaskDidResumeNotification object:self];
+    }
+}
+
+- (void)af_suspend {
+    NSAssert([self respondsToSelector:@selector(state)], @&quot;Does not respond to state&quot;);
+    NSURLSessionTaskState state = [self state];
+    [self af_suspend];
+
+    if (state != NSURLSessionTaskStateSuspended) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:AFNSURLSessionTaskDidSuspendNotification object:self];
+    }
+}
+</code></pre><h3 id="NSCopying"><a href="#NSCopying" class="headerlink" title="NSCopying"></a>NSCopying</h3><p>为了学习和理解NSCopying的用法，请参考这两篇博客：<a href="http://www.jianshu.com/p/f84803356cbb" target="_blank" rel="noopener">NSCopying和NSMutableCopying协议</a>和<a href="http://blog.csdn.net/tskyfree/article/details/7999620" target="_blank" rel="noopener">Objective-C深复制和<nscopying>协议</nscopying></a></p>
+<pre><code>//为何用self？如果编写一个类的copyWithZone:方法那么子类的方法应该先调用父类的copy方法以复制继承来的copy实例变量.
+-(id)copyWithZone:(NSZone *)zone
+{
+         Student *stu = [[self allocWithZone:zone]initWithName:self.name Age:self.age];
+         return stu;
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/AFNetworking/" rel="tag"># AFNetworking</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/02/14/iOS动态库和静态库/" rel="next" title="iOS动态库和静态库">
+                <i class="fa fa-chevron-left"></i> iOS动态库和静态库
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/24/Objective-C高级编程1/" rel="prev" title="OC高级编程1">
+                OC高级编程1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP简介"><span class="nav-number">1.</span> <span class="nav-text">HTTP简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-SDK中的HTTP框架"><span class="nav-number">2.</span> <span class="nav-text">iOS SDK中的HTTP框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NSURLSessionDataTask"><span class="nav-number">2.1.</span> <span class="nav-text">NSURLSessionDataTask</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单GET请求"><span class="nav-number">2.1.1.</span> <span class="nav-text">简单GET请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简单POST请求"><span class="nav-number">2.1.2.</span> <span class="nav-text">简单POST请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSURLSessionDataDelegate代理方法"><span class="nav-number">2.1.3.</span> <span class="nav-text">NSURLSessionDataDelegate代理方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSURLSessionDownloadTask"><span class="nav-number">2.2.</span> <span class="nav-text">NSURLSessionDownloadTask</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单下载"><span class="nav-number">2.2.1.</span> <span class="nav-text">简单下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSURLSessionDownloadDelegate代理方法"><span class="nav-number">2.2.2.</span> <span class="nav-text">NSURLSessionDownloadDelegate代理方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSURLSessionUploadTask"><span class="nav-number">2.3.</span> <span class="nav-text">NSURLSessionUploadTask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#断点下载"><span class="nav-number">2.4.</span> <span class="nav-text">断点下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">2.5.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSURLSessionConfiguration"><span class="nav-number">2.5.1.</span> <span class="nav-text">NSURLSessionConfiguration</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三方框架对URLSession的封装-AFN"><span class="nav-number">3.</span> <span class="nav-text">三方框架对URLSession的封装(AFN)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#h文件的封装"><span class="nav-number">3.1.</span> <span class="nav-text">.h文件的封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nonnull区域设置"><span class="nav-number">3.2.</span> <span class="nav-text">Nonnull区域设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSAssert和NSParameterAssert"><span class="nav-number">3.3.</span> <span class="nav-text">NSAssert和NSParameterAssert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pragma-处理警告"><span class="nav-number">3.4.</span> <span class="nav-text">#pragma 处理警告</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSCoding-amp-NSSecureCoding"><span class="nav-number">3.5.</span> <span class="nav-text">NSCoding &amp; NSSecureCoding</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSCoding源文地址"><span class="nav-number">3.5.1.</span> <span class="nav-text">NSCoding源文地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSSecureCoding"><span class="nav-number">3.6.</span> <span class="nav-text">NSSecureCoding</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSFoundationVersionNumber-iOS-8-0"><span class="nav-number">3.7.</span> <span class="nav-text">NSFoundationVersionNumber_iOS_8_0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程相关"><span class="nav-number">3.8.</span> <span class="nav-text">线程相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程加锁"><span class="nav-number">3.9.</span> <span class="nav-text">线程加锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多用类型常量，少用-define预处理指令"><span class="nav-number">3.10.</span> <span class="nav-text">多用类型常量，少用#define预处理指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OC静态函数"><span class="nav-number">3.11.</span> <span class="nav-text">OC静态函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块"><span class="nav-number">3.12.</span> <span class="nav-text">块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSNOTIFICATION-amp-KVO"><span class="nav-number">3.13.</span> <span class="nav-text">NSNOTIFICATION &amp; KVO</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内联函数inline"><span class="nav-number">3.14.</span> <span class="nav-text">内联函数inline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#load时的方法交换调试"><span class="nav-number">3.15.</span> <span class="nav-text">load时的方法交换调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSCopying"><span class="nav-number">3.16.</span> <span class="nav-text">NSCopying</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

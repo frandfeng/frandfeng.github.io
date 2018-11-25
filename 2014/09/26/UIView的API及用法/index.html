@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,UIKit,UIView,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="UIViewUIView 类在屏幕上定义了一个长方形区域和及其接口，通过此方式来管理这个区域内的内容 概要在运行时，一个 view 对象负责对其区域内部的内容进行渲染，并且负责与其内部的内容进行交互。UIView 类为自己背景颜色的填充区域自己提供了基本的行为。通过继承UIView并实现一些必要的绘图和事件处理方法，可以完成更加复杂的内容和功能。UIKit 框架也提供了一些标准的子类来直接运用，比">
+<meta name="keywords" content="iOS,UIKit,UIView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIView的API及用法">
+<meta property="og:url" content="https://frandfeng.github.io/2014/09/26/UIView的API及用法/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="UIViewUIView 类在屏幕上定义了一个长方形区域和及其接口，通过此方式来管理这个区域内的内容 概要在运行时，一个 view 对象负责对其区域内部的内容进行渲染，并且负责与其内部的内容进行交互。UIView 类为自己背景颜色的填充区域自己提供了基本的行为。通过继承UIView并实现一些必要的绘图和事件处理方法，可以完成更加复杂的内容和功能。UIKit 框架也提供了一些标准的子类来直接运用，比">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T07:55:24.463Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UIView的API及用法">
+<meta name="twitter:description" content="UIViewUIView 类在屏幕上定义了一个长方形区域和及其接口，通过此方式来管理这个区域内的内容 概要在运行时，一个 view 对象负责对其区域内部的内容进行渲染，并且负责与其内部的内容进行交互。UIView 类为自己背景颜色的填充区域自己提供了基本的行为。通过继承UIView并实现一些必要的绘图和事件处理方法，可以完成更加复杂的内容和功能。UIKit 框架也提供了一些标准的子类来直接运用，比">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2014/09/26/UIView的API及用法/">
+
+
+
+
+
+  <title>UIView的API及用法 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/09/26/UIView的API及用法/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">UIView的API及用法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-09-26T00:00:00+08:00">
+                2014-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="UIView"><a href="#UIView" class="headerlink" title="UIView"></a>UIView</h2><p>UIView 类在屏幕上定义了一个长方形区域和及其接口，通过此方式来管理这个区域内的内容</p>
+<h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>在运行时，一个 view 对象负责对其区域内部的内容进行渲染，并且负责与其内部的内容进行交互。UIView 类为自己背景颜色的填充区域自己提供了基本的行为。通过继承UIView并实现一些必要的绘图和事件处理方法，可以完成更加复杂的内容和功能。UIKit 框架也提供了一些标准的子类来直接运用，比如从简单的buttons到复杂的tables，UILabel来负责绘制文字，UIImageView来负责绘图。</p>
+<p>由于 view 对象是用户和应用交互的主要方式，所以他们有大量的方法：如</p>
+<ul>
+<li>绘制和动画<ul>
+<li>通过技术(如UIKit，Core Graphics和OpenGL ES等)绘制矩形内的区域</li>
+<li>view 声明的一些属性可以通过动画方式转换到另一个值</li>
+</ul>
+</li>
+<li>布局和子view管理<ul>
+<li>一个 view 可以包含0个或多个子 view</li>
+<li>每个 view 都定义了他们同父 view 之间的放大缩小关系</li>
+<li>一个 view 可以定义其内部子 view 的大小和位置</li>
+</ul>
+</li>
+<li>事件处理<ul>
+<li>一个 view 是一个可以处理触摸事件的响应者，其他的事件在其父类 UIResponser 中定义</li>
+<li>可以用<code>addGestureRecognizer</code>方法为 view 添加公共的手势识别</li>
+</ul>
+</li>
+</ul>
+<p>View 可以嵌入其他的 View 来创建复杂的视图层次，这会在 view 之间创建一种父子关系。通常，子 view 的边界不会裁剪到他的父 view 的边界，不过你可以修改属性 clipsToBounds 来改变这种行为。一个父视图可以包含很多字视图，但是每个子视图只能有一个父视图，通过这个父视图来负责处理他的位置。</p>
+<blockquote>
+<p>如题，有两个view： view1,view2，view2添加view1中，如果view2大于view1，或者view2的坐标不在view1的范围内，view2是盖着view1的，意思就是超出的部份也会画出来，UIView有一个属性，clipsTobounds 默认情况下是NO,如果，我们想要view2把超出的那部份隐藏起来的话，就得改变它的父视图也就view1的clipsTobounds属性值。view1.clipsTobounds = YES;</p>
+</blockquote>
+<p>一个 view 的位置通过他的 frame，bounds 和 center 属性来定义，frame 属性定义了它在其父 view 的坐标系中的初始点和宽高像素点数，通常被用在布局时来调整其位置和大小。center 属性用来调整自己的位置，而不会改变其大小。bounds 属性定义了他在其自己的坐标系中的位置，通常被用在自定义绘制代码中。修改 view 的 size 属性时，frame 和 bounds 属性是一块更改。</p>
+<p>更多关于如何使用 UIView 的详细信息，请阅读 <a href="https://developer.apple.com/library/content/documentation/WindowsViews/Conceptual/ViewPG_iPhoneOS/Introduction/Introduction.html#//apple_ref/doc/uid/TP40009503" target="_blank" rel="noopener">View Programming Guide for iOS.</a></p>
+<blockquote>
+<p>在 iOS2.x 的版本中，view 的最大的大小是 1024x1024，在 iOS3.0 以后，view 大小不再有严格的限制，但是仍然受内存的限制，应该尽力让 view 保持足够小，如果不考虑 iOS 版本的问题，你应该注意比屏幕大的那些 view 的内容。</p>
+</blockquote>
+<h4 id="创建一个视图"><a href="#创建一个视图" class="headerlink" title="创建一个视图"></a>创建一个视图</h4><p>如果用代码创建视图，可以用如下方法</p>
+<pre><code>CGRect viewRect = CGRectMake(10, 10, 100, 100);
+UIView* myView = [[UIView alloc] initWithFrame:viewRect];
+</code></pre><p>这段代码创建了一个视图，并将其放置在父视图的坐标系统的位置(10, 10)，为了添加视图到另一个视图中，你可以应用<code>addSubview:</code>方法。在 iOS 中，兄弟 view 可以相互覆盖而不会引起任何问题，也允许兄弟 view 之间相互替代。<code>addSubview</code> 方法会将指定的 view 添加到其他兄弟 view 的顶层，你可以通过运用 <code>insertSubview:aboveSubview:</code> 和 <code>insertSubview:belowSubview:</code> 将子 view 插入到指定的位置，也可以通过 <code>exchangeSubviewAtIndex:withSubviewAtIndex:</code> 方法将两个指定的 view 交换位置。</p>
+<p>当创建一个 view 的时候，赋一个合适的值到 autoresizingMast 属性是非常重要的，这样可以保证 view 正常缩放。view 的缩放一般会发生在当你手机的方向发生变化的时候，很多时候也会发生其他情况，比如，调用 setNeedsLayout 方法强制来使 view 刷新布局。</p>
+<h4 id="视图绘制周期"><a href="#视图绘制周期" class="headerlink" title="视图绘制周期"></a>视图绘制周期</h4><p>绘制视图是视图最基本的功能。布局改变时，当一个 view 第一次出现，或他所有的子部分出现的时候，系统会让 view 来绘制他自己的内容。对那些包括了通过 UIKit 或 Core Graphics 来自定义内容的 view，系统会调用 drawRect: 方法，此时你只需要实现此方法来绘制内容到当前的图像上下文 graphics context 当中去，系统会自动优先调用此方法来完成绘制，这将会创建一个静态的视图，这个视图会作为你 view 的内容而绘制到屏幕上去。</p>
+<blockquote>
+<p>如果你运用 OpenGL ES 来绘制视图，你应该继承 GLKView 类，而不是 UIView 类。更多关于<a href="https://developer.apple.com/library/content/documentation/3DDrawing/Conceptual/OpenGLES_ProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40008793" target="_blank" rel="noopener">如何通过 OpenGL ES 绘制的问题，请阅读此处</a></p>
+</blockquote>
+<blockquote>
+<p>在绘制周期中，更多关于<a href="https://developer.apple.com/library/content/documentation/WindowsViews/Conceptual/ViewPG_iPhoneOS/Introduction/Introduction.html#//apple_ref/doc/uid/TP40009503" target="_blank" rel="noopener">视图绘制和视图角色的内容，请阅读此处</a></p>
+</blockquote>
+<h4 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h4><p>更改 view 的几项属性可以引起动画，也就是说，更改属性会创建动画，这些动画会在一段时间内给用户展现出效果。UIView 类会完成大部分的属性动画，但是你必须表明哪些属性的改变需要动画。一般有两种方式来初始化动画：</p>
+<ul>
+<li>在 iOS4 或者以后，用基于块的动画方法.(推荐)</li>
+<li>用 begin/commit 动画方法</li>
+</ul>
+<p>基于块的动画方法，比如 <code>animateWithDuration:animations:</code>，极大的简化了动画的创建。运用一个方法就可以定义一个动画并设置其选项，然而，这个方法只能应用在 iOS4 或者以后的版本。如果你的应用需要在更早的版本上运行，你必须用 <code>beginAnimations:context:</code> 和 <code>commitAnimations</code> 类方法类完成动画的实现。</p>
+<p>view 的以下几个属性均可以动画：</p>
+<ul>
+<li>frame</li>
+<li>bounds</li>
+<li>center</li>
+<li>transform</li>
+<li>alpha</li>
+<li>backgroundColor</li>
+</ul>
+<p>更多关于<a href="https://developer.apple.com/library/content/documentation/WindowsViews/Conceptual/ViewPG_iPhoneOS/Introduction/Introduction.html#//apple_ref/doc/uid/TP40009503" target="_blank" rel="noopener">如何配置动画的内容，请访问此处</a></p>
+<h4 id="线程考虑"><a href="#线程考虑" class="headerlink" title="线程考虑"></a>线程考虑</h4><p>应用主界面的控制必须在主线程中发生。因此，你必须在应用的主线程中调用 UIView 的方法。唯一没有严格限制必须在主线程中进行的操作时创建 view 的时候，但是其他的操作必须在主线程中去实现。</p>
+<h4 id="继承注意事项"><a href="#继承注意事项" class="headerlink" title="继承注意事项"></a>继承注意事项</h4><p>UIView 是视图的继承基类，并且需要和用户交互。尽管关于继承 UIView 我们可以提出很多原因，但是我们建议只有在基本的 UIView 类或者系统提供的标准子类不满足需求情况的时候才去继承和自定义。继承需要你做很多工作来实现相应功能。</p>
+<p>更多关于避免继承 UIView 的内容，请阅读Alternatives to Subclassing</p>
+<h4 id="重写方法"><a href="#重写方法" class="headerlink" title="重写方法"></a>重写方法</h4><p>当继承一个 UIView 的时候，根据你的需求，你应该重写很多方法，因为 UIView 是一个高度配置类，所以除过通过重写方法的方式实现以外，还有很多方式来完成一些复杂的视图行为，这将会在Alternatives to Subclassing这节中讨论，不过，可以考虑通过重写以下的几个方法来实现</p>
+<ul>
+<li>初始化<ul>
+<li>initWithFrame: 建议你实现这个方法，也可以添加或者替代自定义的初始化方法</li>
+<li>initWithCoder: 如果是从nib中加载而来的并且需要自定义初始化的view，则需要实现此方法</li>
+<li>layerClass 只有当你想用不同的Core Animation layout来backing store时，会用到这个属性，比如你想用一小片区域来展示一个大的滑动区域，你可能会设置此属性为 CATiledLayer 类</li>
+</ul>
+</li>
+<li>绘制和打印<ul>
+<li>drawRect: 如果需要绘制自定义的内容，则需要实现此方法。如果不做一些自定义的绘制，则避免使用此方法</li>
+<li>drawRect:forViewPrintFormatter: 仅当你想要在打印时绘制不同的内容，才会实现此方法</li>
+</ul>
+</li>
+<li>约束<ul>
+<li>requiresConstraintBasedLayout 如果你的 view 需要包含约束来正确运行，运用这个方法（我们应该在自定义View中重写这个方法。如果我们要使用Auto Layout布局当前视图,应该设置为返回YES）</li>
+<li>updateConstraints 如果需要在子 view 之间创建约束关系，则实现这个方法</li>
+<li>alignmentRectForFrame:, frameForAlignmentRect: 实现这个方法来定义 view 是如何和其他 view 对齐的</li>
+</ul>
+</li>
+<li>布局<ul>
+<li>sizeThatFits: 如果你需要你的 view 在进行缩放操作时有一个默认的大小，而不是随意缩放，你需要实现此方法。比如，你可以运用这个方法来阻止收缩来保证子 view 可以正确的显示</li>
+<li>layoutSubviews 如果需要根据约束或者自动缩放行为来更精确的控制子 view的布局，则需要调用此方法</li>
+<li>didAddSubview:, willRemoveSubview: 当添加子 view 后或者移除子 view 前做的操作</li>
+<li>willMoveToSuperview:, didMoveToSuperview 当被当做子 view 从父 view 中添加或移除时做的操作</li>
+<li>willMoveToWindow:, didMoveToWindow 当从窗口中添加或移除时做的操作</li>
+</ul>
+</li>
+<li>事件处理<ul>
+<li>touchesBegan:withEvent:, touchesMoved:withEvent:, touchesEnded:withEvent:, touchesCancelled:withEvent: 如果你想要直接处理触摸事件，实现此方法（对于基于手势的处理，直接用gesture recognizers）</li>
+<li>gestureRecognizerShouldBegin: 询问一个手势接收者是否应该开始解释执行一个触摸接收事件</li>
+</ul>
+</li>
+</ul>
+<h4 id="Alternatives-to-Subclassing"><a href="#Alternatives-to-Subclassing" class="headerlink" title="Alternatives to Subclassing"></a>Alternatives to Subclassing</h4><p>很多视图行为可以不用通过继承就能完成。在你重写方法之前，考虑修改现有的属性就可以完成需要的行为。</p>
+<ul>
+<li>addConstraint: 为 view 或其 subView 添加定义自动布局行为</li>
+<li>autoresizingMask 当父 view 的 frame 改变时，提供自动布局行为。这些行为可以和自动布局的约束相结合</li>
+<li>contentMode 为 view 的内容提供布局行为，跟 view 的 frame 相对应。这个属性也会影响当内容被缩放时如何自适应 view，和被缓存，被重绘。</li>
+<li>hidden or alpha 将 view 和子 view 作为一个整体改变其透明度，而不是仅将透明度应用到 view 提供的内容中</li>
+<li>backgroundColor 设置 view 的颜色而不是自己去绘制颜色</li>
+<li>Subviews 不需要用 drawRect: 方法来绘制自己的内容，而是将 image 和 label 等子 view 嵌入到你想显示的 view 中去</li>
+<li>Gesture recognizers 不需要继承 view 和自己处理触摸事件，可以运用手势识别来发送一个 Target-Action 到你的对象中去</li>
+<li>Animations 用已经构造的内部动画，而不是自己来写动画。Core Animation 提供的动画又简单又快速</li>
+<li>Image-based backgrounds 对于那些显示相对静态的内容，要考虑用 UIImageView 对象和手势识别，而不是直接继承 UIView 和自己绘制 image，选择性的，你可以用一般的 UIView 对象，并且将你的 image 作为内容赋值到这个 view 的 CALayer 的属性上去</li>
+</ul>
+<p>动画是另一种可以使 view 可视中动态改变的方法，不需要你来继承类并完成复杂的绘制代码。UIView 类的许多属性有动画效果，这意味着这些属性的修改将会触发系统生成的动画。开始动画只需要很少量甚至一行代码来表明需要改变哪个属性。更多关于<a href="https://developer.apple.com/reference/uikit/uiview#1652828" target="_blank" rel="noopener">对于 view 的动画的信息，请阅读此处</a></p>
+<p>更多关于外观和行为的配置，请阅读 <a href="https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/UIKitUICatalog/index.html#//apple_ref/doc/uid/TP40012857-UIView" target="_blank" rel="noopener">About Views in UIKit User Interface Catalog</a></p>
+<h2 id="模块-API"><a href="#模块-API" class="headerlink" title="模块 API"></a>模块 API</h2><h3 id="初始化View对象"><a href="#初始化View对象" class="headerlink" title="初始化View对象"></a>初始化View对象</h3><ul>
+<li>initWithFrame: </li>
+</ul>
+<h3 id="配置View的外观"><a href="#配置View的外观" class="headerlink" title="配置View的外观"></a>配置View的外观</h3><ul>
+<li>backgroundColor</li>
+<li>hidden</li>
+<li>alpha</li>
+<li>opaque 是否不透明，如果为YES，则表示是不透明，这时系统在绘制时会做一些优化来提升性能，比如不绘制其底部的视图。如果为NO，则系统不会自动优化。因此，如果视图部分或全部支持透明，那么你必须把opaque这个值设置为NO，否则会导致一些未知的结果</li>
+<li>tintColor 色调颜色，是被使用在UIView中改变应用程序的外观的。默认tintColor的值为nil，这表示它将会运用父视图层次的颜色来进行着色。如果父视图中没有设置tintColor，那么默认系统就会使用蓝色。</li>
+<li>tintAdjustmentMode 它可以使tint color变暗, 因此整个视图层次变暗</li>
+<li>clipsToBounds 是指视图上的子视图,如果超出父视图的部分就截取掉</li>
+<li>clearsContextBeforeDrawing 决定在视图重画之前是否先清理视图以前的内容,缺省值为YES，如果你把这个属性设为NO，那么你要保证能在 drawRect：方法中正确的绘画。如果你的代码已经做了大量优化，那么设为NO可以提高性能，尤其是在滚动时可能只需要重新绘画视图的一部分</li>
+<li>maskView maskView主要是通过CAGradientLayer 或者 带有alpha的view来作为一个蒙版 view 来操作</li>
+<li>layerClass 只有当你想用不同的Core Animation layout来backing store时，会用到这个属性</li>
+<li>layer</li>
+</ul>
+<h3 id="配置事件行为"><a href="#配置事件行为" class="headerlink" title="配置事件行为"></a>配置事件行为</h3><ul>
+<li>userInteractionEnabled</li>
+<li>multipleTouchEnabled</li>
+<li>exclusiveTouch 可以达到同一界面上多个控件接受事件时的排他性,从而避免一些问题。也就是说避免在一个界面上同时点击多个button</li>
+</ul>
+<h3 id="配置bounds和frame矩形"><a href="#配置bounds和frame矩形" class="headerlink" title="配置bounds和frame矩形"></a>配置bounds和frame矩形</h3><ul>
+<li>frame</li>
+<li>bounds</li>
+<li>center</li>
+<li>transform</li>
+</ul>
+<h3 id="管理View的层级"><a href="#管理View的层级" class="headerlink" title="管理View的层级"></a>管理View的层级</h3><ul>
+<li>superview</li>
+<li>subviews</li>
+<li>window</li>
+<li>addSubview:</li>
+<li>bringSubviewToFront:</li>
+<li>sendSubviewToBack:</li>
+<li>removeFromSuperview</li>
+<li>insertSubview:atIndex:</li>
+<li>insertSubview:aboveSubview:</li>
+<li>insertSubview:belowSubview:</li>
+<li>exchangeSubviewAtIndex:withSubviewAtIndex:</li>
+<li>isDescendantOfView: 此 view 是否是指定 view 的子 view</li>
+</ul>
+<h3 id="配置缩放行为"><a href="#配置缩放行为" class="headerlink" title="配置缩放行为"></a>配置缩放行为</h3><ul>
+<li>autoresizingMask 当父 view 的bounds改变时，他如何缩放他自己来适配</li>
+<li>autoresizesSubviews 当自己的 bounds 改变时，是否需要重新缩放他的子 view 来适配</li>
+<li>contentMode 当自己的 bounds 改变时，如何重新布局他的内容</li>
+<li>contentStretch（Deprecated） 定义了一个矩形来控制 view 的哪些区域可以被拉伸，哪些区域不可以</li>
+<li>sizeThatFits: 给定一个矩形大小，从而返回一个最合适此矩形大小的矩形。此方法不会resize，只是计算一下下</li>
+<li>sizeToFit 直接缩放并且移动内容来使其完全包括在里边，这样搞就直接改变了这个的宽和高，使它根据上面字符串的大小做合适的改变</li>
+</ul>
+<h3 id="布局子View"><a href="#布局子View" class="headerlink" title="布局子View"></a>布局子View</h3><ul>
+<li>layoutSubviews 布局子 view，在很多时候都会调用，一般需要重写</li>
+<li>setNeedsLayout 标记使当前的布局无效，系统将会在下一个更新周期重新布局</li>
+<li>layoutIfNeeded 立马更新布局</li>
+<li>requiresConstraintBasedLayout 此 view 内部是否需要基于约束的布局系统</li>
+<li>translatesAutoresizingMaskIntoConstraints 标志是否需要将自动缩放转换为自动布局种的约束</li>
+</ul>
+<h3 id="用Layout-Anchors创建约束"><a href="#用Layout-Anchors创建约束" class="headerlink" title="用Layout Anchors创建约束"></a>用Layout Anchors创建约束</h3><ul>
+<li>bottomAnchor view 的底部边界</li>
+<li>centerXAnchor</li>
+<li>centerYAnchor</li>
+<li>firstBaselineAnchor</li>
+<li>heightAnchor</li>
+<li>lastBaselineAnchor</li>
+<li>leadingAnchor</li>
+<li>leftAnchor</li>
+<li>rightAnchor</li>
+<li>topAnchor</li>
+<li>trailingAnchor</li>
+<li>widthAnchor</li>
+</ul>
+<h3 id="管理View的约束"><a href="#管理View的约束" class="headerlink" title="管理View的约束"></a>管理View的约束</h3><ul>
+<li>constraints</li>
+<li>addConstraint:</li>
+<li>addConstraints:</li>
+<li>removeConstraint:</li>
+<li>removeConstraints:</li>
+</ul>
+<h3 id="运用Layout-Guide"><a href="#运用Layout-Guide" class="headerlink" title="运用Layout Guide"></a>运用Layout Guide</h3><ul>
+<li>addLayoutGuide:</li>
+<li>layoutGuides</li>
+<li>layoutMarginsGuide</li>
+<li>readableContentGuide 这个属性为View定义了一个可以放置用于阅读的内容的最佳区域</li>
+<li>removeLayoutGuide:</li>
+</ul>
+<h3 id="在Auto-Layout中测量"><a href="#在Auto-Layout中测量" class="headerlink" title="在Auto Layout中测量"></a>在Auto Layout中测量</h3><ul>
+<li>systemLayoutSizeFittingSize: 返回满足约束的 view 的大小，如UITableViewCell 中的 label</li>
+<li>systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:</li>
+<li>intrinsicContentSize view 的固有大小</li>
+<li>invalidateIntrinsicContentSize 废除视图原本内容的固有大小，使其重新计算</li>
+<li>contentCompressionResistancePriorityForAxis:</li>
+<li>setContentCompressionResistancePriority:forAxis:</li>
+<li>contentHuggingPriorityForAxis:</li>
+<li>setContentHuggingPriority:forAxis:</li>
+</ul>
+<h3 id="在Auto-Layout中对齐View"><a href="#在Auto-Layout中对齐View" class="headerlink" title="在Auto Layout中对齐View"></a>在Auto Layout中对齐View</h3><ul>
+<li>alignmentRectForFrame: 返回给定框架的视图的对齐矩阵，和frameForAlignmentRect互逆</li>
+<li>frameForAlignmentRect: </li>
+<li>alignmentRectInsets 大多数自定义视图只需要重写alignmentRectInsets以报告内容在其框架内的位置</li>
+<li>viewForBaselineLayout（Deprecated） 可以通过实现 viewForBaselineLayout 来激活基线对齐</li>
+<li>viewForFirstBaselineLayout</li>
+<li>viewForLastBaselineLayout</li>
+</ul>
+<blockquote>
+<p>Cocoa和Cocoa Touch还有其他几种表现对齐几何图形的方式。可以使用alignmentRectForFrame:、frameForAlignmentRect:、baselineOffsetFromBottom和alignmentRectInsets方法。使用这些方法可以让视图通过代码来声明和转换对齐矩形</p>
+</blockquote>
+<h3 id="触发Auto-Layout"><a href="#触发Auto-Layout" class="headerlink" title="触发Auto Layout"></a>触发Auto Layout</h3><ul>
+<li>needsUpdateConstraints 决定是否需要刷新约束</li>
+<li>setNeedsUpdateConstraints 设置是否需要刷新约束</li>
+<li>updateConstraints 刷新view的约束</li>
+<li>updateConstraintsIfNeeded 刷新view及其子view的约束</li>
+</ul>
+<h3 id="调试Auto-Layout"><a href="#调试Auto-Layout" class="headerlink" title="调试Auto Layout"></a>调试Auto Layout</h3><p>更多关于自动布局向导的细节请参考<a href="https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/AutolayoutPG/index.html#//apple_ref/doc/uid/TP40010853" target="_blank" rel="noopener">调试基于约束的布局</a></p>
+<ul>
+<li>constraintsAffectingLayoutForAxis: 返回基于给定方向的所有约束</li>
+<li>hasAmbiguousLayout 此view是否有不明确的约束</li>
+<li>exerciseAmbiguityInLayout 在调试时，在不同的有效值之间切换模糊布局来随机改变视图的frame</li>
+</ul>
+<h3 id="管理用户交互方向"><a href="#管理用户交互方向" class="headerlink" title="管理用户交互方向"></a>管理用户交互方向</h3><ul>
+<li>semanticContentAttribute 语义内容属性，他决定了布局时是否有方向规则</li>
+<li>effectiveUserInterfaceLayoutDirection 对于view来说，当前有效的布局方向</li>
+<li>+userInterfaceLayoutDirectionForSemanticContentAttribute: 当创建一个view并且内容包含其他view时，可以用此方法来决定是否此view的子view可以被翻转，从而使内部的子view重新排序</li>
+<li>+userInterfaceLayoutDirectionForSemanticContentAttribute:relativeToLayoutDirection: </li>
+</ul>
+<h3 id="配置内容边框"><a href="#配置内容边框" class="headerlink" title="配置内容边框"></a>配置内容边框</h3><ul>
+<li>layoutMargins</li>
+<li>preservesSuperviewLayoutMargins 是否需要保存父view的边距，默认是NO</li>
+<li>layoutMarginsDidChange 边距被改变时的回调</li>
+</ul>
+<h3 id="绘制和更新View"><a href="#绘制和更新View" class="headerlink" title="绘制和更新View"></a>绘制和更新View</h3><ul>
+<li>drawRect:</li>
+<li>setNeedsDisplay</li>
+<li>setNeedsDisplayInRect:</li>
+<li>contentScaleFactor 内容缩放因子，做多屏幕分辨率时会不同</li>
+<li>tintColorDidChange</li>
+</ul>
+<h3 id="格式化View打印内容"><a href="#格式化View打印内容" class="headerlink" title="格式化View打印内容"></a>格式化View打印内容</h3><ul>
+<li>viewPrintFormatter 返回view的打印格式</li>
+<li>drawRect:forViewPrintFormatter: 绘制需要打印的view</li>
+</ul>
+<h3 id="管理手势识别"><a href="#管理手势识别" class="headerlink" title="管理手势识别"></a>管理手势识别</h3><ul>
+<li>addGestureRecognizer:</li>
+<li>removeGestureRecognizer:</li>
+<li>gestureRecognizers</li>
+<li>gestureRecognizerShouldBegin: 询问一个手势接收者是否应该开始解释执行一个触摸接收事件，此方法在gesture recognizer视图转出UIGestureRecognizerStatePossible状态时调用，如果返回NO,则转换到UIGestureRecognizerStateFailed;如果返回YES,则继续识别触摸序列</li>
+</ul>
+<h3 id="用块对象实现View动画"><a href="#用块对象实现View动画" class="headerlink" title="用块对象实现View动画"></a>用块对象实现View动画</h3><ul>
+<li>+animateWithDuration:delay:options:animations:completion:</li>
+<li>+animateWithDuration:animations:completion:</li>
+<li>+animateWithDuration:animations:</li>
+<li>+transitionWithView:duration:options:animations:completion:</li>
+<li>+transitionFromView:toView:duration:options:completion:</li>
+<li>+animateKeyframesWithDuration:delay:options:animations:completion:</li>
+<li>+addKeyframeWithRelativeStartTime:relativeDuration:animations:</li>
+<li>+performSystemAnimation:onViews:options:animations:completion: 从带有动画的层级视图中移除一个视图的方法, 第一个参数使用。Delete（仅有的可用的第一个参数）。这会让那个视图变模糊、收缩和褪色, 之后再给它发送 removeFromSuperview 方法</li>
+<li>+animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion: 弹性动画。Damping阻尼系数，范围 0~1 当它设置为1时，动画是平滑的没有振动的达到静止状态，越接近0 振动越大，Velocity弹性速率，就是形变的速度，从视觉上看可以理解弹簧的形变速度，到动画结束，该速度减为0，所以，velocity速度越大，那么形变会越快，当然在同等时间内，速度的变化（就是速率）也会越快，因为速度最后都要到0。</li>
+<li>+performWithoutAnimation: 调用时使动画失效</li>
+</ul>
+<h3 id="View动画"><a href="#View动画" class="headerlink" title="View动画"></a>View动画</h3><p>在iOS4或者以后的版本中这些方法不推荐使用，而应该使用块对象实现View动画</p>
+<ul>
+<li>+beginAnimations:context:</li>
+<li>+commitAnimations</li>
+<li>+setAnimationStartDate:</li>
+<li>+setAnimationsEnabled:</li>
+<li>+setAnimationDelegate:</li>
+<li>+setAnimationWillStartSelector: 当动画开始时调用selector的方法</li>
+<li>+setAnimationDidStopSelector:</li>
+<li>+setAnimationDuration:</li>
+<li>+setAnimationDelay:</li>
+<li>+setAnimationCurve:</li>
+<li>+setAnimationRepeatCount:</li>
+<li>+setAnimationRepeatAutoreverses:</li>
+<li>+setAnimationBeginsFromCurrentState: 是否从当前的状态开始动画</li>
+<li>+setAnimationTransition:forView:cache: 设置动画方式，并指出动画发生的位置</li>
+<li>areAnimationsEnabled</li>
+</ul>
+<h3 id="运用移动效果"><a href="#运用移动效果" class="headerlink" title="运用移动效果"></a>运用移动效果</h3><ul>
+<li>-addMotionEffect:</li>
+<li>motionEffects</li>
+<li><p>-removeMotionEffect:</p>
+<pre><code>UIInterpolatingMotionEffect *xAxis = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@&quot;center.x&quot; type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+self.effectGroup.motionEffects = @[xAxis, yAxis];
+
+// 给view添加效果
+[self addMotionEffect:self.effectGroup];
+</code></pre></li>
+</ul>
+<h3 id="保存和恢复状态"><a href="#保存和恢复状态" class="headerlink" title="保存和恢复状态"></a>保存和恢复状态</h3><ul>
+<li>restorationIdentifier 这个标识符决定是否这个view支持状态保存</li>
+<li>-encodeRestorableStateWithCoder: 为view压缩状态相关信息</li>
+<li>-decodeRestorableStateWithCoder: 为view解压状态相关信息</li>
+</ul>
+<h3 id="抓取View快照"><a href="#抓取View快照" class="headerlink" title="抓取View快照"></a>抓取View快照</h3><ul>
+<li>-snapshotViewAfterScreenUpdates: 返回一个view的内容的快照</li>
+<li>-resizableSnapshotViewFromRect:afterScreenUpdates:withCapInsets: 返回一个view的指定区域的，刷新屏幕前后的，设置了可以缩放边界的内容快照</li>
+<li><p>-drawViewHierarchyInRect:afterScreenUpdates: 它允许你截取一个UIView或者其子类中的内容，并且以位图的形式（bitmap）保存到UIImage中</p>
+<pre><code>-(UIImage *)snapshot:(UIView *)view {
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, 0);
+    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return image;
+}
+</code></pre></li>
+</ul>
+<h3 id="在运行时鉴定View"><a href="#在运行时鉴定View" class="headerlink" title="在运行时鉴定View"></a>在运行时鉴定View</h3><ul>
+<li>tag</li>
+<li>-viewWithTag:</li>
+</ul>
+<h3 id="在View的坐标系统之间转换"><a href="#在View的坐标系统之间转换" class="headerlink" title="在View的坐标系统之间转换"></a>在View的坐标系统之间转换</h3><ul>
+<li>-convertPoint:toView:</li>
+<li>-convertPoint:fromView:</li>
+<li>-convertRect:toView:</li>
+<li>-convertRect:fromView:</li>
+</ul>
+<h3 id="在View中点击测试"><a href="#在View中点击测试" class="headerlink" title="在View中点击测试"></a>在View中点击测试</h3><ul>
+<li>-hitTest:withEvent: 返回包含了指定点的最远层的子view（）</li>
+<li>-pointInside:withEvent: 返回一个Bool类型的值表明是否接收者包含了指定的接触点</li>
+</ul>
+<blockquote>
+<p>hitTest:withEvent:方法的处理流程如下:  </p>
+<ol>
+<li>首先调用当前视图的pointInside:withEvent:方法判断触摸点是否在当前视图内；  </li>
+<li>若返回NO,则hitTest:withEvent:返回nil;  </li>
+<li>若返回YES,则向当前视图的所有子视图(subviews)发送hitTest:withEvent:消息，所有子视图的遍历顺序是从top到bottom，即从subviews数组的末尾向前遍历,直到有子视图返回非空对象或者全部子视图遍历完毕；  </li>
+<li>若第一次有子视图返回非空对象,则hitTest:withEvent:方法返回此对象，处理结束；  </li>
+<li>如所有子视图都返回非，则hitTest:withEvent:方法返回自身(self)。</li>
+</ol>
+</blockquote>
+<h3 id="结束一个View的编辑"><a href="#结束一个View的编辑" class="headerlink" title="结束一个View的编辑"></a>结束一个View的编辑</h3><ul>
+<li>-endEditing: 让这个view放弃第一个响应者的状态</li>
+</ul>
+<h3 id="监测View之间关系的变化"><a href="#监测View之间关系的变化" class="headerlink" title="监测View之间关系的变化"></a>监测View之间关系的变化</h3><ul>
+<li>-didAddSubview:</li>
+<li>-willRemoveSubview:</li>
+<li>-willMoveToSuperview:</li>
+<li>-didMoveToSuperview</li>
+<li>-willMoveToWindow:</li>
+<li>-didMoveToWindow</li>
+</ul>
+<h3 id="监测焦点"><a href="#监测焦点" class="headerlink" title="监测焦点"></a>监测焦点</h3><ul>
+<li>canBecomeFocused</li>
+<li>inheritedAnimationDuration 继承到的动画持续时间</li>
+<li>focused</li>
+</ul>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><ul>
+<li>UIViewAnimationOptions 用block对象做动画时的选项</li>
+<li>UIViewAnimationCurve 定义了支持的动画时间曲线</li>
+<li>UIViewKeyframeAnimationOptions animateKeyframesWithDuration:delay:options:animations:completion:方法中会用到的选项</li>
+<li>UIViewContentMode 当view大小变化时，怎么样去调整其内部的内容的选项</li>
+<li>UILayoutConstraintAxis UILayoutConstraintAxisHorizontal/Vertical 在对象之间的约束是横向的还是竖向的定义选项</li>
+<li>UIViewTintAdjustmentMode Tint颜色的调整模式选项</li>
+<li>UISystemAnimation UISystemAnimationDelete，当动画结束时view从view层级中移除时的选项</li>
+<li>Fitting Size systemLayoutSizeFittingSize: 方法中用到的view适配选项</li>
+<li>UIView Intrinsic Metric Constant UIViewNoIntrinsicMetric</li>
+<li>UIViewAutoresizing view自动缩放时的选项</li>
+<li>UIViewAnimationTransition 用块对象做过渡动画时的选项</li>
+<li>UISemanticContentAttribute 视图的方向规则选项</li>
+</ul>
+<blockquote>
+<p>为了在自定义视图中实现固有内容大小，你需要做两件事：重写 intrinsicContentSize为内容返回恰当的大小，无论何时有任何会影响固有内容大小的改变发生时，调用invalidateIntrinsicContentSize。如果这个视图只有一个方向的尺寸设置了固有大小，那么为另一个方向的尺寸返回UIViewNoIntrinsicMetric/NSViewNoIntrinsicMetric。 需要注意的是，固有内容大小必须是独立于视图frame的</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/UIKit/" rel="tag"># UIKit</a>
+          
+            <a href="/tags/UIView/" rel="tag"># UIView</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/08/29/UITableView的API及其应用/" rel="next" title="UITableView的API及其应用">
+                <i class="fa fa-chevron-left"></i> UITableView的API及其应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/10/31/UIScrollView的API及用法/" rel="prev" title="UIScrollView的API及用法">
+                UIScrollView的API及用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UIView"><span class="nav-number">1.</span> <span class="nav-text">UIView</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概要"><span class="nav-number">1.1.</span> <span class="nav-text">概要</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个视图"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建一个视图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#视图绘制周期"><span class="nav-number">1.1.2.</span> <span class="nav-text">视图绘制周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动画"><span class="nav-number">1.1.3.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程考虑"><span class="nav-number">1.1.4.</span> <span class="nav-text">线程考虑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承注意事项"><span class="nav-number">1.1.5.</span> <span class="nav-text">继承注意事项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重写方法"><span class="nav-number">1.1.6.</span> <span class="nav-text">重写方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Alternatives-to-Subclassing"><span class="nav-number">1.1.7.</span> <span class="nav-text">Alternatives to Subclassing</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块-API"><span class="nav-number">2.</span> <span class="nav-text">模块 API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化View对象"><span class="nav-number">2.1.</span> <span class="nav-text">初始化View对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置View的外观"><span class="nav-number">2.2.</span> <span class="nav-text">配置View的外观</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置事件行为"><span class="nav-number">2.3.</span> <span class="nav-text">配置事件行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置bounds和frame矩形"><span class="nav-number">2.4.</span> <span class="nav-text">配置bounds和frame矩形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管理View的层级"><span class="nav-number">2.5.</span> <span class="nav-text">管理View的层级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置缩放行为"><span class="nav-number">2.6.</span> <span class="nav-text">配置缩放行为</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局子View"><span class="nav-number">2.7.</span> <span class="nav-text">布局子View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用Layout-Anchors创建约束"><span class="nav-number">2.8.</span> <span class="nav-text">用Layout Anchors创建约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管理View的约束"><span class="nav-number">2.9.</span> <span class="nav-text">管理View的约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运用Layout-Guide"><span class="nav-number">2.10.</span> <span class="nav-text">运用Layout Guide</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Auto-Layout中测量"><span class="nav-number">2.11.</span> <span class="nav-text">在Auto Layout中测量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Auto-Layout中对齐View"><span class="nav-number">2.12.</span> <span class="nav-text">在Auto Layout中对齐View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发Auto-Layout"><span class="nav-number">2.13.</span> <span class="nav-text">触发Auto Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调试Auto-Layout"><span class="nav-number">2.14.</span> <span class="nav-text">调试Auto Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管理用户交互方向"><span class="nav-number">2.15.</span> <span class="nav-text">管理用户交互方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置内容边框"><span class="nav-number">2.16.</span> <span class="nav-text">配置内容边框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制和更新View"><span class="nav-number">2.17.</span> <span class="nav-text">绘制和更新View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化View打印内容"><span class="nav-number">2.18.</span> <span class="nav-text">格式化View打印内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管理手势识别"><span class="nav-number">2.19.</span> <span class="nav-text">管理手势识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用块对象实现View动画"><span class="nav-number">2.20.</span> <span class="nav-text">用块对象实现View动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View动画"><span class="nav-number">2.21.</span> <span class="nav-text">View动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运用移动效果"><span class="nav-number">2.22.</span> <span class="nav-text">运用移动效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#保存和恢复状态"><span class="nav-number">2.23.</span> <span class="nav-text">保存和恢复状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抓取View快照"><span class="nav-number">2.24.</span> <span class="nav-text">抓取View快照</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在运行时鉴定View"><span class="nav-number">2.25.</span> <span class="nav-text">在运行时鉴定View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在View的坐标系统之间转换"><span class="nav-number">2.26.</span> <span class="nav-text">在View的坐标系统之间转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在View中点击测试"><span class="nav-number">2.27.</span> <span class="nav-text">在View中点击测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结束一个View的编辑"><span class="nav-number">2.28.</span> <span class="nav-text">结束一个View的编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监测View之间关系的变化"><span class="nav-number">2.29.</span> <span class="nav-text">监测View之间关系的变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监测焦点"><span class="nav-number">2.30.</span> <span class="nav-text">监测焦点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常量"><span class="nav-number">2.31.</span> <span class="nav-text">常量</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

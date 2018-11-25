@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="事件层次分析iOS事件有哪些  UIEventTypeTouches触摸事件 UIEventTypeMotion “动作”事件(比如摇晃手机设备) UIEventTypeRemoteControl远程控制事件 UIEventTypePresses事件(和触按物理按钮有关)   响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIA">
+<meta name="keywords" content="OC,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件传递及应用案例">
+<meta property="og:url" content="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="事件层次分析iOS事件有哪些  UIEventTypeTouches触摸事件 UIEventTypeMotion “动作”事件(比如摇晃手机设备) UIEventTypeRemoteControl远程控制事件 UIEventTypePresses事件(和触按物理按钮有关)   响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIA">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:13:39.474Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="事件传递及应用案例">
+<meta name="twitter:description" content="事件层次分析iOS事件有哪些  UIEventTypeTouches触摸事件 UIEventTypeMotion “动作”事件(比如摇晃手机设备) UIEventTypeRemoteControl远程控制事件 UIEventTypePresses事件(和触按物理按钮有关)   响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIA">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/">
+
+
+
+
+
+  <title>事件传递及应用案例 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/12/25/事件传递及应用案例/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">事件传递及应用案例</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-12-25T00:00:00+08:00">
+                2015-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="事件层次分析"><a href="#事件层次分析" class="headerlink" title="事件层次分析"></a>事件层次分析</h1><p>iOS事件有哪些</p>
+<ol>
+<li>UIEventTypeTouches触摸事件</li>
+<li>UIEventTypeMotion “动作”事件(比如摇晃手机设备)</li>
+<li>UIEventTypeRemoteControl远程控制事件</li>
+<li>UIEventTypePresses事件(和触按物理按钮有关)</li>
+</ol>
+<blockquote>
+<p>响应者对象：不过在ios中不是任何对象都可以处理事件，只有继承了UIResponder的对象才能接收、处理事件，比如UIApplication、UIViewController、UIView、UIWindow。</p>
+</blockquote>
+<p>UITouch</p>
+<p>当用一根手指触摸屏幕时，会创建一个与手指相关联的UITouch对象。如果两根手指同时触摸屏幕，则会调用一次touchesBegan方法，创建两个UITouch对象（如果不是同时触摸，调用两次方法，每次的touches参数都只有一个UITouch对象）。</p>
+<p>判断是否多点触摸：NSSet有多少个UITouch对象元素。</p>
+<p>UITouch保存着跟本次手指触摸相关的信息，比如触摸的位置、时间。当手指移动时，系统会更新同一个UITouch对象，使之能够一直保存该手指的触摸位置。当手指离开屏幕时，系统会销毁相应的UITouch对象。<br>比如，判断单击、双击或者多击：tapCount属性</p>
+<p>UITouch常用方法：</p>
+<p>-(CGPoint)locationInView:(UIView<em>)view;返回触摸在参数view上的位置，该位置基于view的坐标系（以view的左上角为原点(0, 0)）；如果调用时传入的view参数为nil的话，返回的是触摸点在UIWindow的位置<br>-(CGPoint)previousLocationInView:(UIView</em>)view;前一个触摸点的位置,参数同上</p>
+<p>第二个参数(UIEvent)event</p>
+<p>每产生一个事件，就会产生一个UIEvent对象，UIEvent保存事件产生的事件和类型。UIEvent还提供了相应的方法可以获得在某个view上面的UITouch触摸对象。<br>一次完整的触摸过程中，只会产生一个事件对象，4个触摸方法都是同一个event参数.</p>
+<p>UIView无法与用户交互的情况</p>
+<p>userInteractionEnabled= NO 如果父视图不能与用户交互, 那么所有子控件也不能与用户交互<br>hidden= YES<br>alpha= 0.0 ~ 0.01<br>子视图的位置超出了父视图的有效范围, 那么子视图超出部分无法与用户交互的<br>UIImageView的userInteractionEnabled默认是NO，因此UIImageView以及它的子控件默认是不能接收触摸事件的</p>
+<ol>
+<li>事件传递和响应</li>
+</ol>
+<p>a. 手指触摸屏幕<br>b. 事件发生，被封装为IOHIDEvent对象(IOKit.framework)<br>c. 通过mach port转发到当前APP的主线程(SpringBoard IPC进程间通信)<br>d. 主线程Runloop的Source1触发，因此触发Source1回调(Source1接收系统封装的触摸屏幕事件)<br>e. Source1回调内部触发Source0回调<br>f. Source0回调内部封装IOHIDEvent为UIEvent，并调用UIApplication的sendEvent将UIEvent传送给UIWindow<br>g. UIWindow调用内部的<code>hitText</code>和<code>pointInside</code>方法从上层到下层遍历其各个子View从而返回处理改事件的UIView</p>
+<p>hitTest：判断pointInside，是不是在view里？是的话，遍历，不是的话返回nil;</p>
+<ul>
+<li>(UIView <em>)hitTest:(CGPoint)point event:(UIEvent </em>)event {<br>if (self.alpha &lt;= 0.01 || !self.userInteractionEnabled || self.hidden) {<br>return nil;<br>}<br>if ([self pointInside:point withEvent:event]) {<br>NSArray <em>subViews = [[self.subviews reverseObjectEnumerator] allObjects];<br>UIView </em>tmpView = self;<br>for (UIView *view in subViews) {<br>CGPoint convertedPoint = [self convertPoint:point toView:view];<br>tmpView = [view hitTest:convertedPoint withEvent:event];<br>}<br>return tmpView;<br>} else {<br>return nil;<br>}<br>}</li>
+</ul>
+<p>NSObject-UIResponder-UIView</p>
+<p>响应链：initial view - view - view controller - window - application - app delegate</p>
+<blockquote>
+<p>Hit-Test的目的就是找到手指点击到的最外层的那个view。它进行类似于探测的工作，判断是否点击在某个视图上。</p>
+</blockquote>
+<p>所有的视图按照树状层次结构组织，每个view都有自己的superView，包括vc的self.view：<br>1.当一个view被添加到superView上的时候，它的nextResponder就会被指向它的superView；<br>2.当vc被初始化的时候，self.view(topmost view)的nextResponder会被指向所在的controller；<br>(概括前两者就是：如果当前这个view是控制器的self.view,那么控制器就是上一个响应者 如果当前这个view不是控制器的view,那么父控件就是上一个响应者)<br>3.vc的nextResponder会被指向self.view的superView。<br>4.最顶级的vc的nextResponder指向UIWindow。<br>5.UIWindow的nextResponder指向UIApplication<br>这就形成了响应链。并没有一个对象来专门存储这样的一条链，而是通过UIResponder的串连起来的。</p>
+<ol start="2">
+<li>触摸事件的运用</li>
+</ol>
+<ol start="3">
+<li>手势事件</li>
+</ol>
+<p>手势识别和触摸事件是两个独立的事，不要混淆。</p>
+<p>通过touches方法监听view触摸事件，有很明显的几个缺点：必须得自定义view、由于是在view内部的touches方法中监听触摸事件，因此默认情况下，无法让其他外界对象监听view的触摸事件、不容易区分用户的具体手势行为。</p>
+<p>iOS3.2之后,把触摸事件做了封装, 对常用的手势进行了处理, 封装了6种常见的手势<br>UITapGestureRecognizer(敲击)<br>UILongPressGestureRecognizer(长按)<br>UISwipeGestureRecognizer(轻扫)<br>UIRotationGestureRecognizer(旋转)<br>UIPinchGestureRecognizer(捏合，用于缩放)<br>UIPanGestureRecognizer(拖拽)</p>
+<p>通过pointInside以及hitTest找到了view，然后如果view或者它的superView有手势事件，都会响应</p>
+<p>手势种类是通过Touch的四个事件决定的</p>
+<p>///view的手势和touch事件的关系</p>
+<blockquote>
+<p>在默认情况下（即这3个属性都处于默认值的情况下），如果触摸window，首先由window上最先符合条件的控件(该控件记为hit-test view)接收到该touch并触发触摸事件touchesBegan。同时如果某个控件的手势识别器接收到了该touch，就会进行识别。手势识别成功之后发送触摸事件touchesCancelled给hit-testview，hit-test view不再响应touch。</p>
+</blockquote>
+<blockquote>
+<p>手势识别和触摸事件是两个独立的事，只是可以通过这3个属性互相影响，不要混淆</p>
+</blockquote>
+<p>tapGesture.cancelsTouchesInView = YES;   /// 默认为YES,这种情况下当手势识别器识别到touch之后，会发送touchesCancelled给hit-testview以取消hit-test view对touch的响应，这个时候只有手势识别器响应touch。</p>
+<p>当设置成NO时，手势识别器识别到touch之后不会发送touchesCancelled给hit-test，这个时候手势识别器和hit-test view均响应touch。</p>
+<p>tapGesture.delaysTouchesBegan = YES;   /// 默认是NO，这种情况下当发生一个touch时，手势识别器先捕捉到到touch，然后发给hit-testview，两者各自做出响应。如果设置为YES，手势识别器在识别的过程中（注意是识别过程），不会将touch发给hit-test view，即hit-testview不会有任何触摸事件。只有在识别失败之后才会将touch发给hit-testview，这种情况下hit-test view的响应会延迟约0.15ms。<br>tapGesture.delaysTouchesEnded = YES; /// 默认为YES。这种情况下发生一个touch时，在手势识别成功后,发送给touchesCancelled消息给hit-testview，手势识别失败时，会延迟大概0.15ms,期间没有接收到别的touch才会发送touchesEnded。如果设置为NO，则不会延迟，即会立即发送touchesEnded以结束当前触摸。</p>
+<p>例如：</p>
+<ol>
+<li>给button同时添加UITapGestureRecognizer手势和UIControlEventTouchUpInside事件，如果cancelsTouchesInView为NO，两个都可执行，并且先执行tapAction后执行btnAction。如果cancelsTouchesInView为YES，则只会执行手势而不会执行事件(手势识别屏蔽了touch，touch生成事件，所以事件不执行)</li>
+<li>把手势添加到btn的父view上即[self.view addGestureRecognizer:tap];<br>cancelsTouchesInView=NO，点击按钮，会先后触发“tapAction:”和“btnAction:”方法；cancelsTouchesInView=YES，只会触发按钮方法不会触发手势。</li>
+<li>如果不是btn而是别的控件，把手势添加到控件的父view上<br>项目中用到的是collectionView，cancelsTouchesInView=NO，点击collectionViewCell，先后触发手势和Cell，cancelsTouchesInView=YES只会触发手势。</li>
+</ol>
+<p>对于UIButton,UISlider等继承自UIControl的控件，都会先响应触摸事件，从而阻止手势事件。手势可以理解为是“特殊的层”。对于TableView，CollectionView这种弱点击事件，系统优先响应手势，如果要响应Cell点击事件就要实现代理方法</p>
+<p>总结：<br>1、手势和pointInside以及hitTest：必须得先找到view，然后才能触发手势<br>2、第一步找到的view，那么view和它的superView的手势都能响应<br>3、手势的种类怎么分辨出来：根据手势自己的touch四个方法来辨别出来<br>4、手势和view的touch事件的关系:delayTouchBegin、cancelTouchInView</p>
+<ol start="4">
+<li>button事件</li>
+</ol>
+<p>a. button Target Action事件 </p>
+<p>[customBtn addTarget:self action:@selector(btnAction:withEvent:) forControlEvents:UIControlEventTouchUpInside];<br>[customBtn sendActionsForControlEvents:UIControlEventTouchUpInside];</p>
+<p>b. 触摸和button</p>
+<p>button按压种类(UITouchUpInside等)是通过Touch的四个事件决定的</p>
+<p>c. button的touch事件和Target Action事件联系</p>
+<p>对于UIControl类型的控件，一个给定的事件，UIControl会调用- (void)sendAction:(SEL)action to:(nullable id)target forEvent:(nullable UIEvent *)event来将action message转发到UIApplication对象，再由UIApplication对象调用其sendAction:to:fromSender:forEvent:方法来将消息分发到指定的target上，如果没有指定target(即nil)，则会将事件分发到响应链上第一个想处理消息的对象上。而如果UIControl子类想监控或修改这种行为的话，则可以重写sendAction: to: forEvent:</p>
+<p>// Btn.m</p>
+<ul>
+<li><p>(void)sendAction:(SEL)action to:(id)target forEvent:(UIEvent *)event {<br>// 将事件传递到对象本身来处理<br>[super sendAction:@selector(handleAction:) to:self forEvent:event];<br>}</p>
+</li>
+<li><p>(void)handleAction:(id)sender {<br>NSLog(@”handle Action”);<br>}</p>
+</li>
+</ul>
+<p>// ViewController.m</p>
+<ul>
+<li>(void)viewDidLoad {<br>[super viewDidLoad];<br>self.view.backgroundColor = [UIColor whiteColor];<br>Btn *btn = [[Btn alloc]initWithFrame:CGRectMake(30, 30, 100, 100)];<br>btn.backgroundColor = [UIColor yellowColor];<br>[btn addTarget:self action:@selector(btnclick:) forControlEvents:UIControlEventTouchUpInside];<br>[self.view addSubview:btn];<br>}</li>
+<li>(IBAction)btnclick:(id)sender {<br>NSLog(@”click”);<br>}</li>
+</ul>
+<h1 id="Button实践运用案例，事件冲突"><a href="#Button实践运用案例，事件冲突" class="headerlink" title="Button实践运用案例，事件冲突"></a>Button实践运用案例，事件冲突</h1><ol>
+<li>多手势共存和互斥</li>
+</ol>
+<p>案例：写两个View，ViewOne和ViewTwo，在两个View上分别添加手势PanGestureOne和PanGestureTwo，结果发现都执行了gesture的touch方法，但只执行了panTwo操作</p>
+<p>修改PanGestureOne类，得到实验现象：</p>
+<p>///手势是否接受touch事件</p>
+<ul>
+<li>(BOOL)gestureRecognizer:(UIGestureRecognizer <em>)gestureRecognizer shouldReceiveTouch:(UITouch </em>)touch {<br>return YES;//返回YES，PanGestureOne中的touch方法会执行，否则不执行<br>}<br>///手势已经识别出来了，但是手势是否响应由它决定</li>
+<li>(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {<br>return YES;//返回YES，如果不被panTwo排斥，可以出现panOne操作，否则不出现panOne操作<br>}<br>///本手势是否和other另外一个手势共存；你只要有一个手势，这个代理方法返回了YES，那么就是共存</li>
+<li>(BOOL)gestureRecognizer:(UIGestureRecognizer <em>)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer </em>)otherGestureRecognizer {<br>return YES;//返回YES会同时执行panOne和panTwo，否则只执行panTwo<br>}</li>
+</ul>
+<p>需求如果需要panOne，而不需要panTwo，有两种方法实现，一种是通过gesture自带方法实现，另一种是在gesture的delegate方法中实现</p>
+<ol>
+<li>[gestureTwo requireGestureRecognizerToFail:gestureOne]://gestureTwo的响应需要gestureOne响应失败，相当于提高了gestureOne的识别优先级，gestureOne检测失败后gestureTwo才能开始响应</li>
+<li>需要在one中添加shouldBeRequiredToFailByGestureRecognizer或在two中添加shouldRequiredToFailByGestureRecognizer为YES<br>///otherGestureRecognizer它要识别，需要gestureRecognizer被响应失败</li>
+</ol>
+<ul>
+<li>(BOOL)gestureRecognizer:(UIGestureRecognizer <em>)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer </em>)otherGestureRecognizer {<br>return YES;//把one的优先级调至最高<br>}<br>///gestureRecognizer 需要otherGestureRecognizer响应失败</li>
+<li>(BOOL)gestureRecognizer:(UIGestureRecognizer <em>)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer </em>)otherGestureRecognizer {<br>return YES;//把two的优先级调至最低<br>}</li>
+</ul>
+<ol start="2">
+<li><p>UIScrollView上的触摸案例</p>
+</li>
+<li><p>scrollview超出边界的部分不能动（hitTest修改返回的view）</p>
+</li>
+<li>图片超出了self.view的位置 (self.view.clipToBounds=YES)</li>
+<li>scrollView滑动和导航栏侧滑的有冲突</li>
+</ol>
+<p>///scrollview有一个手势pangesture、navigationController也有一个手势screenPanGestrure<br>//[self.navigationController.interactivePopGestureRecognizer requireGestureRecognizerToFail:scrollView.panGestureRecognizer];</p>
+<ol start="3">
+<li>scrollView和它的父view的touch事件关系，scrollView它的子view的touch和手势响应的关系</li>
+</ol>
+<p>1、scrollview会拦截往superview的touch事件，如果想让继续传，需要在touch事件中调用[self.nextResponder touchesBegan:];<br>2、添加在scrollview里的视图，一般接收不到touch事件，因为ScrollView首会先响应手势事件，而忽视touch事件</p>
+<p>如果需要不忽视touch事件如下操作：</p>
+<p>///delayTouchInview默认是NO，cancelsTouchesInView为YES<br>scrollView.panGestureRecognizer.cancelsTouchesInView = NO;</p>
+<p>如果需要只响应touch事件而不管手势，如下操作：</p>
+<p>///这两个值默认都是为YES<br>scrollView.delaysContentTouches = NO;<br>scrollView.canCancelContentTouches = YES;  ///你设置为NO，就响应subView的触摸事件了，scrollView就不响应了</p>
+<ol start="4">
+<li>tableview点击和手势分析</li>
+</ol>
+<p>ViewController中给View添加一个手势，再给View添加一个tableview，结果发现点击cell的时候不会调用didSelectRow方法：</p>
+<p>///分析：1. cell的点击效果不是cell的手势触发，如果是cell的手势触发的话，会在view的手势触发之前调用，并且会影响view的手势执行；2、同理，tableView手势数组，也不是tableView的手势来的<br>///所以：tableView的点击效果，就是根据tableView的touch来判断的，根据touch：location判断出index，再根据index调用didSelectRow<br>手势的优先级高于触摸事件，所以应该放开触摸事件的操作<br>gestureRecognizer.cancelTouchInView = NO;</p>
+<p>如果需要只调用didSelectRow而不需要view响应手势，则需要对手势接收到的</p>
+<ul>
+<li>(BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer <em>)gestureRecognizer {<br>UIView </em>view = getstureRecognizer.view.superView;<br>if ([view isSubclassOf:[UITableViewCell class]) {<br>return NO;<br>}<br>return YES;<br>}</li>
+</ul>
+<ol start="5">
+<li>UIScreenEdgeGesture</li>
+</ol>
+<p>UIScreenEdgePanGestureRecognizer *screenEdgePanGesture = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(panAction:)];<br>screenEdgePanGesture.edges = UIRectEdgeRight;<br>[self.showView addGestureRecognizer:screenEdgePanGesture];</p>
+<ol start="6">
+<li>UISlider的事件处理</li>
+</ol>
+<p>UISlider放在UIScrollView中会出现拖动冲突的问题：</p>
+<p>///手势和touch的冲突问题<br>//self.scrollView.delaysContentTouches = NO;<br>//self.scrollView.canCancelContentTouches = NO;</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/27/控制器加载底层原理和UI初始化过程/" rel="next" title="控制器加载底层原理和UI初始化过程">
+                <i class="fa fa-chevron-left"></i> 控制器加载底层原理和UI初始化过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/26/京东MVCS框架/" rel="prev" title="京东MVCS框架">
+                京东MVCS框架 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#事件层次分析"><span class="nav-number">1.</span> <span class="nav-text">事件层次分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Button实践运用案例，事件冲突"><span class="nav-number">2.</span> <span class="nav-text">Button实践运用案例，事件冲突</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

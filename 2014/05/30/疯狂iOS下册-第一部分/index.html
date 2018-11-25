@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本篇主要接着《疯狂iOS讲义》上册的内容将下册第一部分的重点知识列举一下，包括:多点触摸与手势检测、国际化、iOS的数据存储与IO、多媒体应用开发、管理手机、加速剂与陀螺仪、多线程七大部分。 多点触摸与手势检测响应者链事件的传递顺序：First Responder-&amp;gt;First Responder的视图控制器-&amp;gt;父容器-&amp;gt;父容器的视图控制器-&amp;gt;UIWindow-&amp;gt;UI">
+<meta name="keywords" content="OC,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="疯狂iOS下册第一部分">
+<meta property="og:url" content="https://frandfeng.github.io/2014/05/30/疯狂iOS下册-第一部分/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="本篇主要接着《疯狂iOS讲义》上册的内容将下册第一部分的重点知识列举一下，包括:多点触摸与手势检测、国际化、iOS的数据存储与IO、多媒体应用开发、管理手机、加速剂与陀螺仪、多线程七大部分。 多点触摸与手势检测响应者链事件的传递顺序：First Responder-&amp;gt;First Responder的视图控制器-&amp;gt;父容器-&amp;gt;父容器的视图控制器-&amp;gt;UIWindow-&amp;gt;UI">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T07:52:02.557Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="疯狂iOS下册第一部分">
+<meta name="twitter:description" content="本篇主要接着《疯狂iOS讲义》上册的内容将下册第一部分的重点知识列举一下，包括:多点触摸与手势检测、国际化、iOS的数据存储与IO、多媒体应用开发、管理手机、加速剂与陀螺仪、多线程七大部分。 多点触摸与手势检测响应者链事件的传递顺序：First Responder-&amp;gt;First Responder的视图控制器-&amp;gt;父容器-&amp;gt;父容器的视图控制器-&amp;gt;UIWindow-&amp;gt;UI">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2014/05/30/疯狂iOS下册-第一部分/">
+
+
+
+
+
+  <title>疯狂iOS下册第一部分 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/05/30/疯狂iOS下册-第一部分/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">疯狂iOS下册第一部分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-05-30T00:00:00+08:00">
+                2014-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本篇主要接着《疯狂iOS讲义》上册的内容将下册第一部分的重点知识列举一下，包括:多点触摸与手势检测、国际化、iOS的数据存储与IO、多媒体应用开发、管理手机、加速剂与陀螺仪、多线程七大部分。</p>
+<h2 id="多点触摸与手势检测"><a href="#多点触摸与手势检测" class="headerlink" title="多点触摸与手势检测"></a>多点触摸与手势检测</h2><h3 id="响应者链"><a href="#响应者链" class="headerlink" title="响应者链"></a>响应者链</h3><p>事件的传递顺序：First Responder-&gt;First Responder的视图控制器-&gt;父容器-&gt;父容器的视图控制器-&gt;UIWindow-&gt;UIApplication-&gt;应用程序的委托对象</p>
+<p>一般来说，如果已经经过完整的传播过程依然没有被处理，那么该事件就会被丢弃，上面响应者链的任何响应者处理该事件，该事件就会停止传播，如果某个响应者截获了某个事件，那么该响应者要根据条件决定是否处理该事件，如果处理不掉，则需要在处理方法中手动传递该事件到下一个响应者：</p>
+<pre><code>-(void)handleTapEvent:(UIEvent *)event {
+    if (condition) {
+        //***;
+    } else {
+        [self.nextResponder handleTapEvent:event]
+    }
+};
+</code></pre><h3 id="响应触碰方法"><a href="#响应触碰方法" class="headerlink" title="响应触碰方法"></a>响应触碰方法</h3><p>如果希望自定义控件可以响应用户的触碰事件，则可以通过UIResponser的如下4个方法来实现：</p>
+<pre><code>-touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
+-touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
+-touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;
+-touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;
+</code></pre><h3 id="使用手势处理器-UIGestureRecogniser"><a href="#使用手势处理器-UIGestureRecogniser" class="headerlink" title="使用手势处理器(UIGestureRecogniser)"></a>使用手势处理器(UIGestureRecogniser)</h3><p>手势处理器有如下子类:UITap/Pinch/Rotation/Swipe/Pan/LongPressGestureRecogniser</p>
+<p>手势处理器有如下方法和属性:</p>
+<ul>
+<li>-locationInView:(UIView *)view;</li>
+<li>-locationOfTouch:(NSUInteger)touchIndex inView:(UIView *)view;</li>
+<li>-numberOfTouches:;</li>
+<li>-view 激发该手势的UI控件;</li>
+<li>-enabled 该手势处理器是否可用;</li>
+<li>-state 该手势所处的状态;</li>
+<li>-userInteractionEnabled;</li>
+<li>-multiTouchEnabled;</li>
+</ul>
+<p>UITapGestureRecogniser 还提供了两个属性：</p>
+<ul>
+<li>-numberOfTapsRequired;指定该手势处理器只处理几次触碰事件</li>
+<li>-numberOfTouchesRequired;指定该手势只处理几个手指的触碰事件</li>
+</ul>
+<p>UIPinchGestureRecogniser 定义了如下两个信息来获取捏合相关信息</p>
+<ul>
+<li>-scale:捏合比例;</li>
+<li>-velocity;捏合速度</li>
+</ul>
+<p>UIRotationGestureRecogniser 有两个属性来获取旋转相关信息:</p>
+<ul>
+<li>-rotation:旋转角度</li>
+<li>-velocity;旋转速度</li>
+</ul>
+<p>UISwipeGestureRecogniser 两个属性:</p>
+<ul>
+<li>direction 方向枚举</li>
+<li>numberOfTouchesRequired 几个指头</li>
+</ul>
+<p>UIPanGestureRecogniser 两个属性:</p>
+<ul>
+<li>max/minimumNumberOfTouches: 最多/最少支持几个指头拖动</li>
+</ul>
+<p>两个方法</p>
+<ul>
+<li>-translationInView:在指定控件上的位移</li>
+<li>-velocityInView:在指定控件上的速度</li>
+</ul>
+<p>UILongPressGestureRecogniser 三个属性：</p>
+<ul>
+<li>minimumPressDuration:按下多少秒后才会触发，默认0.5</li>
+<li>numberOfTouchesRequired：指定必须使用几个手指</li>
+<li>allowableMovement:指定允许移动的最大距离</li>
+</ul>
+<h3 id="创建和使用自定义手势处理器"><a href="#创建和使用自定义手势处理器" class="headerlink" title="创建和使用自定义手势处理器"></a>创建和使用自定义手势处理器</h3><ol>
+<li>创建继承UIGestureRecogniser的子类</li>
+<li>重写4个方法，通过这些方法识别用户的手势，当用户手指划过的痕迹符合要求时，将该手势的state设为UIGestureRecogniserStateEnded即可</li>
+</ol>
+<h2 id="国际化"><a href="#国际化" class="headerlink" title="国际化"></a>国际化</h2><p>Internationalisation简称I18N,本地化Localisation简称L10N</p>
+<h3 id="iOS应用国际化的基础"><a href="#iOS应用国际化的基础" class="headerlink" title="iOS应用国际化的基础"></a>iOS应用国际化的基础</h3><p>iOS应用的国际化得靠OC来实现，而OC的国际化主要通过NSLocale和NSLocalisedString(NSString *key, NSString *comment)来实现</p>
+<p>通过Finder打开任意一个项目，即可在项目文件结构下看到如下子文件夹：en.lproj/Base.lproj/zh-Hans.lproj等，他们是本地化文件夹，其命名规范有两种形式：language-country.lproj和language.lproj</p>
+<h3 id="国际化界面设计文件"><a href="#国际化界面设计文件" class="headerlink" title="国际化界面设计文件"></a>国际化界面设计文件</h3><p>可以对xib，storyboard界面设计文件提供国际化支持，有两种方式</p>
+<ul>
+<li>Interface Builder Cocoa Touch Storyboard：表示系统要对整个界面设计文件进行国际化支持</li>
+<li>Localisable Strings：表明只对界面设计文件上的字符内容进行国际化</li>
+</ul>
+<h3 id="国际化应用程序的显示名称"><a href="#国际化应用程序的显示名称" class="headerlink" title="国际化应用程序的显示名称"></a>国际化应用程序的显示名称</h3><p>应用程序的显示名称可通过XXX-Info.plist文件里边的key值CFBundleDisplayName来设置，而InfoPlist.strings文件就是控制对XXX-Info.plist国际化的，所以在InfoPlist.strings(Chinese)文件中添加一行代码即可 “CFBundleDisplayName” = “国际化测试”; 其他的字段控制同理</p>
+<h3 id="国际化图片"><a href="#国际化图片" class="headerlink" title="国际化图片"></a>国际化图片</h3><p>应用程序的图片国际化可通过如下方式：</p>
+<ol>
+<li>添加一张图片到工程，找到图片的文件导航器下的Localization按钮并点击，弹出国际化列表框并选择后即可将图片移动到对应的国际化文件夹中去</li>
+<li>同样的方式添加第二张图片即可</li>
+</ol>
+<h3 id="国际化文本"><a href="#国际化文本" class="headerlink" title="国际化文本"></a>国际化文本</h3><p>国际化文本可通过两种方式：</p>
+<ul>
+<li>File-&gt;New-&gt;Resource-&gt;String File-&gt;Localisable.strings-&gt;放入不同的国际化子目录下</li>
+<li>启动OS X Terminal窗口，cd到iOS项目所在目录，执行命令：genstrings *.m，该命令可以提供所有.m文件中通过NSLocalizedString()函数用过的国际化消息key，此时生成资源文件并将这些key添加到资源文件中</li>
+</ul>
+<h2 id="iOS的数据存储与IO"><a href="#iOS的数据存储与IO" class="headerlink" title="iOS的数据存储与IO"></a>iOS的数据存储与IO</h2><h3 id="应用程序沙盒"><a href="#应用程序沙盒" class="headerlink" title="应用程序沙盒"></a>应用程序沙盒</h3><p>iOS应用程序只能在系统为该应用所分配的文件区域下读、写文件，这个文件区域就被称为该应用的沙盒，这种机制保证每个应用程序只能访问本沙盒内的数据，避免与其他应用形成冲突。</p>
+<p>任何应用程序的文件夹都有如下文件结构：</p>
+<ul>
+<li>Document:除了NSUserDefaults的首选项设置以外，应用程序的数据、文件都保存在该目录下</li>
+<li>Library:基于NSUserDefaults的首选项参数保存在Library/Preferences目录下</li>
+<li>tmp:该目录供应用程序存储临时文件，当iOS同步执行时，iTunes不会备份tmp目录下的文件</li>
+</ul>
+<p>获取Document目录：其中NSUserDomainMask代表仅搜索应用程序沙盒</p>
+<pre><code>NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+</code></pre><p>获取tmp目录：<code>NSTemporaryDirectory()</code>;</p>
+<h3 id="应用程序参数与用户默认设置"><a href="#应用程序参数与用户默认设置" class="headerlink" title="应用程序参数与用户默认设置"></a>应用程序参数与用户默认设置</h3><p>创建Settings Bundle：File-&gt;New-&gt;File-&gt;Resource-&gt;Setting Bundle，其中包括一个en.lproj文件夹和一个Root.plist文件，en.lproj负责国际化，Root.plist文件负责界面设计与键值保存，里边有Preferences Items与Strings Filename两大项，String Filename的作用是告诉系统到*.lproj中去找Root.plist文件作为国际化资源文件，PreferencesItems里边包括多个item,每个Item用于设置一个应用程序参数</p>
+<p>每个Item通常可指定如下4个通用项目：</p>
+<ol>
+<li>Title，参数的显示标题</li>
+<li><p>Type，支持一下几个属性值</p>
+<p> a,PSTextFieldSpecifier,指定应用程序参数是一个文本框，可由用户输入该参数的值<br> b,PSTitleValueSpecifier,指定应用程序参数与显示标题相同<br> c,PSToggleSwitchSpecifier,指定应用程序参数表现为UISwitch控件，通过此可设置参数为YES或NO<br> d,PSSliderSpecifier,指定参数表现为UISlider控件，其参数是一个浮点型<br> e,PSMultiValueSpecifier,指定参数为一个可供选择的列表，其参数是列表中的一个值<br> f,PSGroupSpecifier,指定该参数是一个分组<br> g,PSChildPanSpecifier,指定参数是一个子视图，系统会打开新的设置页面，必须要重新指定一个plist</p>
+</li>
+<li><p>key，指定保存应用程序参数的key</p>
+</li>
+<li>DefaultValue，用于指定参数的默认值</li>
+</ol>
+<p>通过Settings Bundle设置的应用参数，还可以通过NSUserDefaults进行读取、保存，NSUserDefaults是一个单例类，每个程序只有一个NSUserDefaults对象，获得方法如下：</p>
+<pre><code>NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+-xxxForKey:(NSString *)key:
+-setXxx:xxx forKey:(NSString *)key;
+-synchronise
+</code></pre><h3 id="属性列表"><a href="#属性列表" class="headerlink" title="属性列表"></a>属性列表</h3><p>对于只需要保存简单数据的应用而言，使用属性列表是一个不错的选择</p>
+<p>NSArray、NSDictionary对象都提供了<code>writeToFile:(NSString *)filePath atomically:(BOOL)flag</code>方法，该方法可以把NSArray和NSDictionary包含的数据写入属性文件，当恢复这些数据时，只要调用NSArray或NSDictionary的<code>xxxWithContentsOfFile:(NSString *)filePath</code>方法执行初始化即可，但需要注意，如果NSArray或NSDictionary中保存了其他类型的或自定义类型的对象，则不能用writeToFile执行保存</p>
+<h3 id="对象归档和原生I-O-API（详情参照上册第八章内容）"><a href="#对象归档和原生I-O-API（详情参照上册第八章内容）" class="headerlink" title="对象归档和原生I/O API（详情参照上册第八章内容）"></a>对象归档和原生I/O API（详情参照上册第八章内容）</h3><p>如果需要保存一个自定义类的实例，则可让该类实现NSCoding协议，并实现该协议中定义的<code>-(void)encodeWithCoder:(NSCoder *)coder</code>、<code>-(id)initWithCoder:(NSCoder *)coder</code>两个方法，接下来即可使用NSKeyedArchiver进行归档，当程序需要恢复该对象时，可使用NSKeyedUnarchiver进行恢复</p>
+<h3 id="使用SQLite3数据库"><a href="#使用SQLite3数据库" class="headerlink" title="使用SQLite3数据库"></a>使用SQLite3数据库</h3><p>SQLite是一个嵌入式的轻量级的数据库，只是一个文件，不需要服务器进程，iOS的SQLite编程并没有使用OC面向对象的语法，而是使用了原生的C函数库，操作之前必须先做两个操作</p>
+<ol>
+<li>增加函数库libsqlite3.dylib</li>
+<li>在类中导入#import &lt;sqlite3.h&gt;</li>
+</ol>
+<p>接着就可以使用SQLite的API执行数据库访问了</p>
+<ul>
+<li><code>-int sqlite3_open(const char *fileName,sqlite3 **ppDb)</code> 打开与fileName文件关联的数据库连接，并让ppDb参数引用被打开的数据库连接</li>
+<li><code>-int sqlite3_exec(sqlite3 *db,const char *sql, int(*callback)(void *,int,char**,char**),void*,char**err)</code> 执行没有任何返回的sql语句，sqlite3代表数据库，sql代表要执行的sql语句，callback表示回调函数，第四个参数表示传给回调函数的参数，第五个参数封装sql语句出错时的信息</li>
+<li><code>-int sqlite3_prepare/_v2(sqlite3*db,const char*zSql,int nByte,sqlite3_stmt**ppStmt,const char**pTail)</code> 对SQL语句预编译，db表示打开的数据库连接，zSql表示SQL语句，nByte表示SQL语句的最大长度，ppStmt表示预编译SQL产生的sqlite3_stmt,pTail表示sql中未使用的部分</li>
+<li><code>-int sqlite3_bind_xxx(sqlite3_stmt*,int,NSString*)</code> 用于为sqlite3_stmt中的占位符参数绑定参数值</li>
+<li><code>-int sqlite3_step(sqlite3_stmt*)</code> 用于执行sqlite3_stmt，如果返回SQLITE_DONE表示sqlite3_stmt执行成功，如果返回SQLITE_ROW,表明sqlite3_stmt正在逐行提取查询结果集</li>
+<li><code>-int sqlite3_column_xxx(sqlite3_stmt*, int iCol)</code> 返回当前的行指定列的数据</li>
+<li><code>-int sqlite3_reset(sqlite3_stmt*)</code> 销毁sqlite3_stmt，并回收资源</li>
+<li><code>-int sqlite3_close(sqlite3 *db)</code> 关闭数据库链接，关闭前需释放资源，否则返回SQLITE_BUSY</li>
+</ul>
+<blockquote>
+<p>Mac OS X系统自带了sqlite3工具，它是一个简单的SQLite数据库管理工具，类似于MySQL提供的命令行窗口，有些时候，开发者可以利用该工具来查询，管理数据库 <code>sqlite3 myWords.db</code></p>
+<p>.databases查看当前数据库 .tables查看当前数据库的数据表 .help查看sqlite3支持的命令</p>
+<p>也可以使用SQLite Manager等其他可视化窗体SQLITE数据库管理器</p>
+</blockquote>
+<h3 id="使用Core-Data框架"><a href="#使用Core-Data框架" class="headerlink" title="使用Core Data框架"></a>使用Core Data框架</h3><p>iOS提供的Core Data框架，其本质就是一个ORM框架，它允许开发者以面向对象的方式持久化操作SQLite</p>
+<p>Core Data应用中的核心API有如下几个：</p>
+<ol>
+<li>托管对象模型(NSManagedObjectModel) 该对象负责管理整个应用的所有实体以及实体之间的关联关系，当开发者使用Xcode的图形界面设计了实体与实体的关联关系之后，需要使用该对象来加载、管理应用的托管对象模型</li>
+<li>持久化存储协调器(NSPersistentStoreCoordinator) 负责管理底层的存储文件</li>
+<li>托管对象上下文(NSManagedObjectContext) Core Data的核心对象，应用程序对实体所做的增删改查操作都需要通过该对象来完成</li>
+<li>实体描述(NSEntityDescription)该对象代表了关于某个实体的描述信息，是对该对象的抽象</li>
+<li>抓取请求(NSFetchRequest)该对象封装了查询实体的请求，包括程序需要查询那些实体，查询条件、排序规则等</li>
+</ol>
+<p>File-&gt;New-&gt;File-&gt;Core Data-&gt;Data Model即可为项目创建一个实体模型文件</p>
+<p>Editor-&gt;Create NSManagedObject Subclass创建实体模型文件对应的NSManagedObject的子类</p>
+<pre><code>NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@“xx” withExtension:@“momd”];
+_managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
+            initWithManagedObjectModel: _managedObjectModel];
+_managedObjectContext = [[NSManagedObjectContext alloc] init];
+[_managedObjectContent setPersistentStoreCoordinator: _persistentStoreCoordinator];
+</code></pre><p>打开Xcode项目导航面板中的xcdatamodeld文件，打开实体模型开始编辑，Xcode将会显示如下属性</p>
+<ol>
+<li>实体(属性，关联关系，抓取属性)</li>
+<li>抓取请求</li>
+<li>配置</li>
+</ol>
+<p>添加实体</p>
+<pre><code>FKEvent *event = [NSEntityDescription insertNewObjectForEntityName:@“FKEvent” inManagedObjectContext:_managedObjectContext]
+[_managedObjectContext save]
+</code></pre><p>删除实体</p>
+<pre><code>[_managedObjectContext deleteObject:event]
+</code></pre><p>修改实体</p>
+<pre><code>[_managedObjectContext save]
+</code></pre><p>查询实体</p>
+<pre><code>NSFetchRequest *request = [[NSFetchRequest alloc] init]
+NSEntityDescription *entity = [[NSEntityDescription entityForName:@“FKEvent” inManagedObjectContext:_managedObjectContext]
+request.entity = entity;
+request.predicate = [NSPredicate predicateWithFormat:@“”]
+NSArray *result = [[_managedObjectContext executeFetchRequest:request error:&amp;error] mutableCopy]
+</code></pre><p>Core Data除了可用于管理单独的实体之外，还可用于管理实体与实体之间的关联关系，这些关联关系同样可通过.xcdatamodeld文件设计，接下来Core Data应用完全可以利用实体之间的关联执行删除、查找等</p>
+<blockquote>
+<p>Core Data提供的关联关系有一对一，一对多，多对多，相互关联的实体支持如下选项：</p>
+<p>1，No Action,当主实体被删除时，关联的目标实体没有任何改变</p>
+<p>2，Nullify，当主实体被删除时，关联的目标实体的外键值被设为null</p>
+<p>3，Cascade，当主实体被删除时，关联的目标实体也被级联删除</p>
+<p>4，Deny，当主实体被删除时，如果关联的目标实体依然存在，则删除失败</p>
+</blockquote>
+<h2 id="多媒体应用开发"><a href="#多媒体应用开发" class="headerlink" title="多媒体应用开发"></a>多媒体应用开发</h2><h3 id="音频和视频的播放"><a href="#音频和视频的播放" class="headerlink" title="音频和视频的播放"></a>音频和视频的播放</h3><p><strong>使用System Sound Services播放音效</strong>，需要AudioToolbox框架的支持</p>
+<pre><code>#import &lt;AudioToolbox/AudioToolbox.h&gt;
+SystemSoundID crash;
+NSURL *crashUrl = [[NSBundle mainBundle] URLForResource:@“crash” withExtension:@“wav”];
+AudioServicesCreateSystemSoundID((_bridge CFURLRef)crashUrl, &amp;crash);
+static void completionCallback(SystemSoundID Sid) {
+    AudioServicesPlaySystemSound(Sid)
+};
+AudioServicesAddSystemSoundCompletion(crash,NULL,NULL,(void*)completionCallback,NULL);
+AudioServicesPlaySystemSound(crash)/AudioServicesPlayAlertSound(crash)(自带震动)
+</code></pre><p>使用System Sound Service播放只是适合播放一些很小的提示或警告音频，并且有如下的限制：</p>
+<ol>
+<li>声音长度不能超过30秒</li>
+<li>声音文件必须是PCM或者IMA4格式</li>
+<li>打包成.caf/.aif/.wav的文件</li>
+<li>不能控制播放进度</li>
+<li>调用后立即播放声音</li>
+<li>没有循环播放和立体声控制</li>
+</ol>
+<p><strong>使用AVAudioPlayer播放音乐</strong></p>
+<p>AVAudioPlayer是一个属于AVFoundation.framework的类，它的作用类似于一个功能强大播放器，它支持广泛的音频格式，有如下方法</p>
+<ul>
+<li><code>-play:</code> 开始或恢复播放,如果该音频还没有准备好，程序会隐式先执行prepareToPlay方法</li>
+<li><code>-playAtTime:</code> 在指定时间开始或恢复播放</li>
+<li><code>-pause</code> 暂停</li>
+<li><code>-stop</code> 停止</li>
+<li><code>prepareToPlay</code> 准备开始播放</li>
+<li><code>-initWithContentsOfURL:error</code></li>
+<li><code>-initWithData:error</code> 初始化AVAudioPlayer对象</li>
+</ul>
+<blockquote>
+<p>还支持其他的一些属性或方法，如：</p>
+<ul>
+<li>playing 是否正在播放</li>
+<li>volume 音量增益</li>
+<li>pan 立体声平衡，左音道为负，右音道为正</li>
+<li>rate 播放速率</li>
+<li>enableRate 是否允许修改速率</li>
+<li>numberOfLoops 播放的循环次数</li>
+<li>delegate 设置 AVAudioPlayer 代理对象</li>
+<li>numberOfChannels 音频的声道数目</li>
+<li>duration 音频的持续时间</li>
+<li>currentTime 音频的播放点</li>
+<li>deviceCurrentTime 设备播放音频的时间</li>
+<li>url 音频的URL</li>
+<li>data 音频的数据</li>
+</ul>
+</blockquote>
+<p>其中，delegate的 回调有：</p>
+<ul>
+<li><code>-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player{}</code></li>
+<li><code>-(void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{}</code></li>
+</ul>
+<p><strong>使用MPMediaPickerController选择系统音乐</strong></p>
+<pre><code>MPMediaPickerController *mediaPickerController = [MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeAnyAudio/Music/Podcast/AudioBook/AudioITunesU]
+allowPickingMultipleItems/showsCloudItems/delegate/mediaTypes/prompt
+
+-mediaPicker:didPickMediaItems:
+</code></pre><p><strong>使用MPMusicPlayerController播放音乐</strong></p>
+<pre><code>//注意：前者是与iPod播放器内的信息相关，退出后不会停止播放，后者是内部播放器，退出后会停止
+MPMusicPlayerController *musicPlayer = [MPMusicPlayerController iPodMusicPlayer/applicationMusicPlayer]
+musicPlayer.currentPlaybackTime 设置音乐播放时间点
+currentPlaybackRate 设置音乐播放速率
+nowPlayingItem
+playbackState 当前播放状态(播放/停止/暂停/快进/快退)
+repeatMode/shuffleMode随机模式/volume
+musicPlayer play/pause/stop/beginSeekingForward/beginSeekingBackward/endSeeking/skipToNextItem/skipToBegin/skipToPreviousItem
+</code></pre><p><strong>使用MPMoviePlayerController播放视频</strong></p>
+<p>MPMoviePlayerController与MPMusicPlayerController相似，它们都是一个简单的播放器，而且都实现了MPMediaPlayback协议，因此都有相同的play,stop,pause等播放方法，MPMoviePlayerController播放器播放的视频需要被显示出来，该对象的view属性代表它的播放器视图</p>
+<pre><code>MPMoviePlayerController *moviePlayer = [MPMoviePlayerController moviePlayer]
+moviePlayer.contentURL/movieMediaTypes/allowsAirPlay
+airPlayVideoActive 是否处于无线播放模式
+nutralSize/fullScreen/scalingMode/controlStyle控制条风格
+duration/playableDuration 已下载部分的持续时间
+</code></pre><h3 id="使用AVAudioRecorder录制音频"><a href="#使用AVAudioRecorder录制音频" class="headerlink" title="使用AVAudioRecorder录制音频"></a>使用AVAudioRecorder录制音频</h3><p>AVAudioRecorder与AVAudioPlayer类似，都属于AVFoundation.framework的类，AVAudioRecord相当于一个录音器</p>
+<pre><code>-prepareToRecord/-record/recordAtTime:
+recordAtTime:forDuration:/pause/stop/prepareToPlay
+
+-initWithURL:settings:error:指定将录制的音频存入URL对应的音频文件，Settings参数是一个NSDictionary对象，包含大量key-value对，用于设置录制音频的相关信息，其中key必须是AVFormatIDKey(格式),AVSampleRateKey(采样率),AVNumberOfChannelsKey(声道数),AVLinearPCMBitDepthKey(样点的位数),AVLinearPCMIsBigEndianKey(高位优先)
+
+-(void)audioRecorderBeginInterruption:(AVAudioRecorder *)recorder{}
+-(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder{}
+</code></pre><h3 id="拍照和录制视频"><a href="#拍照和录制视频" class="headerlink" title="拍照和录制视频"></a>拍照和录制视频</h3><p><strong>使用UIImagePickerController拍照和录制视频</strong></p>
+<p>UIImagePickerController是一个功能强大的视图控制器类，它继承了UINavigationController，因此完全可以作为视图控制器使用，它有如下属性</p>
+<ul>
+<li>sourceType，控制是选取相册中的图片还是调用摄像头，UIImagePickerControllerSourceTypeLibrary/Camera</li>
+<li>allowsEditing，控制拍摄的照片是否允许编辑</li>
+<li>mediaTypes，是一个NSArray值，录视频时控制它只支持哪些类型的多媒体数据，比如kUTTypeImage/Movie/Video</li>
+<li>videoQuality，设置录制视频的质量UIImagePickerControllerQualityTypeHigh/Low</li>
+<li>videoMaximumDuration，录视频时的最大录制时间</li>
+<li>showCameraControls，是否显示拍摄按钮等控件</li>
+<li>cameraViewTransform，对预览画面进行变换的变换矩形</li>
+<li>cameraDevice，控制设备使用哪个摄像头 UIImagePickerControllerCameraDeviceRear/Front</li>
+<li>cameraCaptureMode，拍摄模式是拍照还是录制</li>
+<li>cameraFlashMode，控制闪光灯模式</li>
+<li>delegate，用于为UIImagePickerController设置委托对象</li>
+<li>-takePicture/-startVideoCapture/-stopVideoCapture</li>
+</ul>
+<p><strong>使用AVFoundation拍照和录制视频</strong></p>
+<p>使用UIImagePickerController拍照和录制视频虽然简单，但由于这种方式完全依赖于iOS的控制器，因此灵活性不足</p>
+<p>AVFoundation提供了一些类来完成拍照和视频的录制</p>
+<ul>
+<li>AVCaptureDevice:该对象代表物理输入设备，包括摄像头和麦克风，开发者可以通过该对象来配置底层物理设备的属性，如摄像头的对焦模式、闪光灯模式、曝光补偿、白平衡等，在配置前，必须先调用lockForConfiguration执行锁定，配置完后调用unlockForConfiguration方法解锁，可以通过类的<code>devices/defaultDeviceWithMediaType:/devicesWithMediaType:AVMediaTypeVideo/Audio</code></li>
+<li>AVCaptureDeviceInput/AVCaptureScreenInput:AVCaptureInput的子类，会被添加给AVCaptureSession管理</li>
+<li>AVCaptureSession:该对象负责把AVCaptureDevice捕捉到的视频或声音数据输出到输出设备中，不管是实时录制还是离线录制，都必须创建AVCaptureSession对象，并为对象添加输入设备(负责捕捉数据)和输出端(负责接收数据)</li>
+<li>AVCaptureAudioData/AudioPreview/File/StillImage/VideoDataOutput都是AVCaptureOutput的子类，用于接收各种数据，该对象也会被添加给AVCaptureSession管理</li>
+<li>AVCaptureAudio/MovieFileOutput:都是AVCaptureFileOutput的子类，分别代表输出到音频文件、电影文件的输出端</li>
+<li><p>AVCaptureVideoPreviewLayer:该对象是CALayer的子类，只要创建它的实例，并为它设置AVCaptureSession就可以非常方便的用它来实现拍摄预览</p>
+<pre><code>AVCaptureDevice *device = [[AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeMovie];
+AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&amp;e];
+AVCaptureSession *session = [[AVCaptureSession alloc] init];
+[session addInput:input];
+AVCaptureStillImageOutput *output = [[AVCaptureStillImageOutput alloc] init];
+[session addOutput:output];
+NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+AVCaptureVideoPreviewLayer *layer = [AVCaptureVideoPreviewLayer layerWithSession:session];
+layer.frame = CGRectMake(***);
+[self.view.layer addSublayer:layer];
+</code></pre></li>
+</ul>
+<h3 id="使用AVFoundation生成视频缩略图"><a href="#使用AVFoundation生成视频缩略图" class="headerlink" title="使用AVFoundation生成视频缩略图"></a>使用AVFoundation生成视频缩略图</h3><ul>
+<li>AVURLAsset：该类是AVAsset的子类，AVAsset类专门用于获取多媒体的相关信息，包括多媒体画面、声音等信息</li>
+<li><p>AVAssetImageGenerator:该类专门用于截取视频指定帧的画面</p>
+<pre><code>AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:videoURL options:nil];
+AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+CGImageRef image = [generator copyCGImageAtTime:time actualTime:&amp;actualTime error:&amp;error];
+//获取指定时间点的视频截图，time用于指定获取哪个时间点的视频截图，actualTime用于获取实际截图位于哪个时间点
+</code></pre></li>
+</ul>
+<p>CMTime是专门用于表示电影时间的结构体，通常有两个函数来创建</p>
+<ol>
+<li><code>CMTimeMake(int64_t value, int32_t timescale)</code> value表示第几帧图，timescale表示每秒的帧数，因此实际截取的时间点是value/timescale</li>
+<li><code>CMTimeMakeWithSeconds(Float64 seconds,int32_t preferredTimeScale)seconds</code> 代表第几秒，preferredTimeScale表示每秒的帧数</li>
+</ol>
+<h2 id="管理手机"><a href="#管理手机" class="headerlink" title="管理手机"></a>管理手机</h2><h3 id="使用AddressBook管理联系人"><a href="#使用AddressBook管理联系人" class="headerlink" title="使用AddressBook管理联系人"></a>使用AddressBook管理联系人</h3><p>iPhone手机通常都有一个自带的Contacts应用，该应用用于管理用户的联系人信息，通常Contacts应用管理的联系人数据将保持在自己的应用程序沙盒中，其他应用不能访问它们，但有些时候其他应用程序需要访问这些数据，所以iOS系统提供了如下两个框架：</p>
+<ol>
+<li>AddressBook.framework，通过该框架提供的系列函数，开发者可以开发程序界面对手机中的联系人信息进行增删改查</li>
+<li>AddressBookUI.framework，该框架以AddressBook.framework为基础，包含4个视图控制器类以及相应的委托协议</li>
+</ol>
+<p>AddressBook框架主要由如下4组API组成</p>
+<p>1，ABAddressBook，实例代表地址簿对象，该对象提供了一个通用的编程接口，允许开发者无须理会底层，直接面向ABAddressBook(ABAddressBookRef)编程，里边的数据包括联系人和组，并且是多对多的关系</p>
+<pre><code>-(ABAddressBookRef)ABAddressBookCreateWithOptions(CFDictionaryRef options,CFErrorRef*error)
+-(ABAuthorizationStatus)ABAddressBookGetAuthorisationStatus(void)获取iOS应用访问地址簿的授权状态
+-(void)ABAddressBookRequestAccessWithCompletion(ABAddressBookRef addressBook,ABAddressBookRequestAccessCompletionHandler completion)发送访问请求，如果同意或拒绝会执行代码块
+-(bool)ABAddressBookHasUnsavedChanges(ABAddressBookRef addressBook)判断AddressBook是否未保存修改
+-(bool)ABAddressBookSave/Revert(ABAddressBookRef addressBook, CFErrorRef*error)保存/撤销修改
+-(bool)ABAddressBookAdd/RemoveRecord(ABAddressBookRef addBook,ABRecordRef record,CFError*e)
+-(void)ABAddressBookRegister/UnregisterExternalChangeCallback(ABAddressBookRef addressBook,ABExternalChangeCallback callback,void *context)，为AddressBook注册/移除一个监听改变的代码块
+</code></pre><p>2，ABRecord，代表一个通用的记录对象，每个记录在底层数据库中都有一个ID，可以通过ABRecordGetRecordID()函数获取指定记录的ID，此记录可以是一个联系人，也可以是一个组，可以通过ABRecordGetRecordType()获取该记录的类型,ABPersonType(0)和ABGroupType(1)，实际编程时，总是面向ABRecord(ABRecordRef)编程</p>
+<pre><code>-(bool)ABRecordSetValue(ABRecordRef record,ABPropertyID property,CFTypeRef value,CFErrorRef *error)将record记录中的property属性设置为value值，其中property必须是由ABPerson，ABGroup定义的常量，用于表示预置的各种属性，而且不同的属性需要的属性值类型不同，如kABPersonFirstNameProperty(string),kABPersonPhoneProperty(ABMutableMultiValue)
+-(CFTypeRef)ABRecordCopyValue(ABRecordRef record,ABPropertyId property)返回record记录中property属性的值
+-(bool)ABRecordRemoveValue(ABRecordRef record,ABPropertyID property,CFErrorRef*error)删除record记录中property属性的值，返回删除是否成功
+-(CFStringRef)ABRecordCopyCompositeName(ABRecordRef record)返回该record记录中复合姓、名、组织信息
+-(ABRecordID/ABRecordType)ABRecordGetRecordID/Type(ABRecordRef record)
+</code></pre><p>3，ABPerson，代表联系人信息<br>4，ABGroup，代表分组</p>
+<p>ABMutableMultiValue相当于一个集合，每个对象都可以添加多个电话号码，多个电子邮件或多个住址，然后将该对象设置为ABRecord的一个属性，这样就可以为该记录对应的联系人设置多个值，其提供了如下常用函数</p>
+<pre><code>-(ABMutableMultiValueRef)ABMultiValueCreateMutable(ABPropertyType type)创建一个管理type类型的属性值的对象
+-(bool)ABMultiValueAddValueAndLabel(ABMutableMultiValueRef multiValue,CFTypeRef value,CFStringRef label,ABMultiValueIdentifier*outIdentifier)向multiValue中添加一个属性值
+-(bool)ABMultiValueReplaceValueAtIndex(ABMutableMultiValueRef multiValue,CFTypeRef value,CFIndex index)将multiValue中index索引处的属性替换为新的value值
+-(bool)ABMultiValueReplaceLabelAtIndex(ABMutableMultiValueRef multiValue,CFStringRef label,CFIndex index)将multiValue中index索引处的出行标签替换为新的label值
+-(bool)ABMultiValueInsertValueAndLabelAtIndex(ABMutableMultiValueRef multiValue,CFTypeRef value,CFStringRef label,CFIndex index,ABMultiValueIdentifier*outIdentifier)向multiValue的index索引处插入一个属性值，value代表属性值，label代表属性值的标签
+-(bool)ABMultiValueRemoveValueAndLabelAtIndex(ABMutableMultiValueRef multiValue,CFIndex index)删除multiValue中index索引处的属性值
+</code></pre><blockquote>
+<p>从iOS9开始，AddressBook框架被CNContact框架替代，因为AddressBook框架调用的C函数，没有基于OC的API，非常难用，所以苹果引入了CNContact框架，CNContact的框架的核心类是CNContact，代表一个联系人，它包括很多属性，常用的有identifier，contactType，namePrefix，imageData，phoneNumbers，emailAddresses等</p>
+</blockquote>
+<h3 id="使用AddressBookUI管理联系人"><a href="#使用AddressBookUI管理联系人" class="headerlink" title="使用AddressBookUI管理联系人"></a>使用AddressBookUI管理联系人</h3><p>iOS用AddressBook管理联系人非常繁琐，要注意很多细节，如果应用程序对界面的要求不高，可直接使用AddressBookUI框架，它为iOS提供了如下特殊的视图控制器：</p>
+<p>1，ABPersonViewController用于显示指定联系人数据的视图控制器</p>
+<pre><code>-personViewController:shouldPerformDefaultActionForPerson:property:identifier:方法，当用户选中某个联系人的某个属性时激发该方法，如果希望激活默认动作返回YES，否则返回NO
+</code></pre><p>2，ABNewPersonViewController用于新增联系人的视图控制器</p>
+<pre><code>-newPersonViewController:didCompleteWithNewPerson:点击取消或完成时激活该方法
+</code></pre><p>3，ABPeoplePickerViewController用于让某个用户选择某个联系人的视图控制器</p>
+<pre><code>—peoplePickerNavigationController:shouldContinueAfterSelectingPerson:当用户选中某个联系人激活该方法，如果希望激活默认动作返回YES，否则返回NO
+-peoplePickerNavigationController:shouldContinueAfterSelectionPerson:property:identifier:当用户选中某个联系人的某个属性后激活该方法，如果希望激活默认动作返回YES，否则返回NO
+-peoplePickerNavigationController:didCancel:当用户取消选择时激活该方法
+</code></pre><p>4，ABUnknownPersonViewController用于通过一组联系人信息来添加联系人记录</p>
+<pre><code>-unknownPersonViewController:didResolveToPerson:当用户将未知联系人数据添加为新的联系人时激活该方法
+</code></pre><p>四个视图控制器包含的常用属性有：</p>
+<ul>
+<li>-displayedPerson:/-displayedProperties:/-addressBook:</li>
+<li>-allowActions:(设置是否在联系人界面显示动作按钮，比如打电话，发短信)</li>
+<li>-allowsEditing:/-allowsAddingToAddressBook</li>
+</ul>
+<p>一般情况下，四个视图控制器最好被UINavigationController包裹一下才能加入项目中</p>
+<blockquote>
+<p>从iOS9开始，CNContactUI框架已替换AddressBookUI框架，此框架主要包括两个类</p>
+<ul>
+<li>CNContactPickerViewController，选择通讯录，有相应的委托类CNContactPickerDelegate:<ul>
+<li>contactPickerDidCancel:</li>
+<li>contactPicker:didSelectContact:</li>
+<li>contactPicker:didSelectContactProperty:</li>
+<li>contactPicker:didSelectContacts:</li>
+<li>contactPicker:didSelectContactProperties:</li>
+</ul>
+</li>
+<li>CNContactViewController，显示通讯录的某条记录，有相应的委托类CNContactViewControllerDelegate:<ul>
+<li>contactViewController:shouldPerformDefaultActionForContactProperty:</li>
+<li>contactViewController:didCompleteWithContact:</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="使用UIApplication打电话、发短信"><a href="#使用UIApplication打电话、发短信" class="headerlink" title="使用UIApplication打电话、发短信"></a>使用UIApplication打电话、发短信</h3><p>如果应用希望直接启用iOS系统内置的打电话、发短信、发邮件、浏览网页应用程序，则可调用UIApplication的openURL方法打开特定URL，这个方法将会根据NSURL的前缀不同而启动对应的应用程序，如sms:(//)\tel:(//)\mailto:\http:(//)</p>
+<h3 id="使用MFMessageComposeViewController发送短信"><a href="#使用MFMessageComposeViewController发送短信" class="headerlink" title="使用MFMessageComposeViewController发送短信"></a>使用MFMessageComposeViewController发送短信</h3><pre><code>+canSendText/+canSendAttachments/+canSendSubject/-recipients(NSArray值，多个收件人号码)/-subject/-body/-attachment/-messageComposeDelegate
+
+-(void)messageComposeViewController:(MFMessageComposeViewController*)controller didFinishWithResult:(MessageComposeResult)result(MFMessageComposeResultCancelled/Sent/Failed);
+</code></pre><h3 id="使用MFMailComposeViewController发送邮件"><a href="#使用MFMailComposeViewController发送邮件" class="headerlink" title="使用MFMailComposeViewController发送邮件"></a>使用MFMailComposeViewController发送邮件</h3><pre><code>+canSendMail/-toRecipients(NSArray值，多个收件人地址)/-ccRecipients(抄送)/-bccRecipients(秘密抄送)/-setMessageBody:isHTML:(邮件正文)/-addAttachmentData:mimeType:fileName:(附件)/mailComposeDelegate
+
+-(void)mailComposeController:didFinishWithResult:error:(MFMailComposeResultCancelled/Sent/Failed);
+</code></pre><h2 id="加速剂与陀螺仪"><a href="#加速剂与陀螺仪" class="headerlink" title="加速剂与陀螺仪"></a>加速剂与陀螺仪</h2><h3 id="iOS支持的加速计、陀螺仪和磁感应"><a href="#iOS支持的加速计、陀螺仪和磁感应" class="headerlink" title="iOS支持的加速计、陀螺仪和磁感应"></a>iOS支持的加速计、陀螺仪和磁感应</h3><p>基于代码方式获取加速度、陀螺仪和磁感应数据</p>
+<pre><code>CMMotionManage *manager = [[CMMotionManager alloc] init];
+if(manager.accelerometerAvailable/manager.gyroAvailable/magnetometerAvailable) {
+    manager.accelerometer/gyro/magnetometerUpdateInterval = 0.1;
+    manager.startAccelerometer/Gyro/MagnetometerUpdatesToQueue:[[NSOperationQueue alloc] init] withHandler:^(CMAccelerometer/CMGyro/CMMagnetometerData *data, NSError *error) {
+        if(error) {
+            manager.stopAccelerometer/Gyro/MagnetometerUpdates];
+        } else {
+            NSLog(data.acceleration.x/y/z,rotationRate.x/y/z,magneticField.x/y/z);
+        }
+    }
+}
+</code></pre><p>主动请求获取加速度、陀螺仪和磁感应数据</p>
+<pre><code>if(manager.accelerometerAvailable/manager.gyroAvailable/magnetometerAvailable) {
+    manager.startAccelerometer/Gyro/MagnetometerUpdates;
+}
+
+NSTimer *updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateDisplay) userInfo:nil repeats:YES];
+
+NSLog(manager.accelerometer/gyro/magnetometerData.acceleration.x/y/z,rotationRate.x/y/z,magneticField.x/y/z);
+</code></pre><h3 id="感知设备移动"><a href="#感知设备移动" class="headerlink" title="感知设备移动"></a>感知设备移动</h3><p>除了获取加速度、陀螺仪和磁感应数据外，CMMotionManager还可以用于感知设备移动数据，方法无任何差别，关键词为DeviceMotion，其属性有</p>
+<ul>
+<li>attitude，该属性返回该设备的方位信息，是一个CMAttitude类型的对象，包含roll，pitch，yaw3个欧拉角的值，通过这三个值即可获取该设备的空间方位<ul>
+<li>roll:表示手机左侧或右侧翘起的角度，当手机绕着Y轴倾斜时，该值发生变化</li>
+<li>pitch:表示手机顶部或尾部翘起的角度，当手机绕着X轴倾斜时，该值发生变化</li>
+<li>yaw:表示手机顶部转过的夹角，当手机绕着Z轴倾斜时，该值发生变化</li>
+</ul>
+</li>
+<li>rotationRate，返回原始的陀螺仪信息，该属性是CMRotationRate结构体变量，值基本等同于陀螺仪数据</li>
+<li>gravity，返回地球重力对该设备在X、Y、Z轴上施加的重力加速度</li>
+<li>userAcceleration，返回用户外力对该设备在X、Y、Z轴上施加的重力加速度</li>
+<li>magneticField，返回校准后的磁场信息，值是一个CMCalibratedMagneticField结构体变量，变量包括field和accuracy两个字段，其中field代表X、Y、Z轴上的磁场强度，accuracy表示磁场强度的精度</li>
+</ul>
+<h3 id="iOS7新增的计步器"><a href="#iOS7新增的计步器" class="headerlink" title="iOS7新增的计步器"></a>iOS7新增的计步器</h3><pre><code>if([CMStepCounter isStepCountingAvailable]) {
+    stepCounter = [[CMStepCounter alloc] init];
+    [stepCounter startStepCountingUpdatesToQueue:[[NSOperationQueue alloc] init] updateOn:5 withHandler:^(NSInteger numberOfSteps,NSDate *timeStamp,NSError *error) {
+        NSLog(numberOfSteps);//updateOn参数表示设置每行走多少步执行一次代码块
+    }];
+    [stepCounter queryStepCountStartingFrom:(NSDate *) to:(NSDate *) toQueue:(NSOperationQueue *) withHandler:^()
+}
+</code></pre><h3 id="iOS7新增的CMMotionActivityManager"><a href="#iOS7新增的CMMotionActivityManager" class="headerlink" title="iOS7新增的CMMotionActivityManager"></a>iOS7新增的CMMotionActivityManager</h3><pre><code>CMMotionActivityManager可以返回用户的运动信息，反应用户当前处于步行、跑步、驾驶车辆或处于静止状态
+if(CMMotionActivityManager.isActivityAvailable) {
+    [motionActivityManager startActivityUpdatesToQueue:queue withHandler:^(CMMotionActivity *activity) {
+        activity.stationary(是否静止)/.walking/.running/.automotive(驾车)/unknown/startDate(开始日期)/confidence(可信度)
+    }]
+    [motionActivityManager queryActivityStartingFromDate:toDate:toQueue:withHandler:];
+}
+</code></pre><h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><h3 id="线程概述"><a href="#线程概述" class="headerlink" title="线程概述"></a>线程概述</h3><p>所有运行中的任务通常对应一个进程(process)，当一个程序进入内存运行后，即变成一个进程，进程是处于运行过程中的程序，并且具有一定的独立功能，进程是系统进行资源分配和调度的一个独立单位，一般而言，进程包含如下3个特征：</p>
+<ol>
+<li>独立性：进程是系统中独立存在的实体，它可以拥有自己独立的资源，每一个进程都有自己私有的地址空间</li>
+<li>动态性：进程与程序的区别在于，程序只是一个静态的指令集合，而进程是一个正在系统中活动的指令集和</li>
+<li>并发性：多个进程可以在单个处理器上并发执行，多个进程之间不会相互影响</li>
+</ol>
+<blockquote>
+<p>并发(concurrency)和并行性(parallel)是两个概念，并行指在同一时刻，有多条指令在多个处理器上同时执行，并发指在同一时刻，只能有一条指令执行，但多个进程指令被快速轮换执行，使得宏观上具有多个进程同时执行的效果</p>
+</blockquote>
+<p>多线程则扩展了多进程的概念，使得同一个进程可以同时并发处理多个任务，线程(Thread)也被称作轻量级进程(Lightweight Process)，线程是进程的执行单元，但程序被初始化后，主线程就被创建了，一般也只有一个主线程，我们也可以在进程中创建其他线程</p>
+<p>线程是进程的组成部分，一个进程可以拥有多个线程，一个线程必须只有一个父进程，线程拥有自己的堆栈，变量等，但不再独自拥有系统资源，它与父进程的其它线程共享该进程所拥有的全部资源，因此变成更加方便，但必须更加小心，确保线程不会妨碍其它线程</p>
+<p>操作系统可以同时执行多个任务，每个任务就是进程，进程可以同时执行多个任务，每个任务就是线程</p>
+<p>iOS大致提供了如下3中多线程编程的技术：</p>
+<ol>
+<li>使用NSThread实现多线程</li>
+<li>使用NSOperation和NSOperationQueue实现多线程</li>
+<li>使用GCD(Grand Central Dispatch)实现多线程</li>
+</ol>
+<h3 id="使用NSThread实现多线程"><a href="#使用NSThread实现多线程" class="headerlink" title="使用NSThread实现多线程"></a>使用NSThread实现多线程</h3><pre><code>NSThread *thread=[[NSThread alloc] initWithTarget:self selector:@selector(run) object:nil];
+[thread start];
+
+[NSThread detachNewThreadSelector:@selector(run) toTarget:self withObject:nil];
+</code></pre><p>上面的方式的本质都是将target对象的selector方法转换为线程执行体，其中selector方法最多可以接受一个参数，而arg就代表传给selector方法的参数</p>
+<pre><code>[NSThread currentThread][NSThread setName:@“”];-isExecuting/-isFinished;
+</code></pre><p>线程的状态：线程不可能一直霸占着CPU独自运行，所以CPU需要在多个线程之间进行切换，线程状态也会多次在运行、就绪状态之间切换，当创建时处于新建状态，当调用了start方法之后，处于就绪状态，当系统开始调度资源执行时，处于运行状态</p>
+<p>如果程序希望调用子线程的start方法后子线程立即开始执行，程序可以使用<code>[NSThread sleepForTimeInterval:0.001]</code></p>
+<p>当主线程结束时，其他线程不受任何影响，并不会随之结束，一旦子线程启动起来后，它就拥有和主线程相同的地位，不会受主线程影响</p>
+<p>线程会以以下3种方式之一结束，结束后就处于死亡状态</p>
+<ol>
+<li>线程执行完正常结束</li>
+<li>执行过程中出现错误</li>
+<li>exit方法主动结束</li>
+</ol>
+<p>在主线程中调用<code>[thread cancel]</code>;对应线程<code>if(NSThread currentThread].isCancelled) {[NSThread exit];}</code></p>
+<p>如果需要让正在执行的线程暂停一段时间，并进入阻塞状态，则可以调用NSThread类的sleepXxx类方法来完成</p>
+<pre><code>+(void)sleepUntilDate:(NSDate *)date;
++(void)sleepForTimeInterval:(NSTimeInterval)ti;
+</code></pre><blockquote>
+<p>iOS不允许在非UI线程中修改UI控件属性，这是因为：加入程序允许任意子线程访问、修改UI控件的属性，这就需要对多个新线程的并发访问进行同步，否则，多个线程会破坏UI控件内部状态的完整性</p>
+<p>如果需要在子线程中修改UI控件，则需要调用<code>[self performSelectorOnMainThread:@selector(updateUI:) withObject:image waitUntilDone:YES];</code></p>
+</blockquote>
+<p>每个线程都具有一定的优先级，优先级高的线程获得较多的执行机会，反之亦然，每个子线程默认的优先级为0.5</p>
+<pre><code>+threadPriority/-threadPriority/+setThreadPriority/-setThreadPriority
+</code></pre><h3 id="线程同步与线程通信"><a href="#线程同步与线程通信" class="headerlink" title="线程同步与线程通信"></a>线程同步与线程通信</h3><p>多线程编程很容易出现“错误情况”，这是由于系统的线程调度具有一定随机性。其中解决的办法之一是使用@synchronized实现线程同步</p>
+<pre><code>@synchronized(obj) {
+    //此处的代码就是同步代码块
+}
+</code></pre><p>但是这些都是以降低程序的运行效率为代价的，为了减少，需采取：</p>
+<ul>
+<li>不要对线程安全类的所有方法都进行同步，只对那些会改变竞争资源的方法进行同步</li>
+<li>如果可变类有两种运行环境：单线程环境和多线程环境，则应该为可变类提供两种版本，线程不安全版本和线程安全版本</li>
+</ul>
+<p>除了用synchronized保证线程同步外，还可以使用NSLock对象显式的加锁，释放锁</p>
+<pre><code>NSLock *lock = [[NSLock alloc] init];
+[lock lock];
+//同步代码块;
+[lock unlock];
+</code></pre><p>当线程在系统内运行，程序通常无法准确控制线程的轮换执行，但我们可以通过一些机制来保证线程协调运行，就是线程之间的通信</p>
+<p>Foundation提供了一个NSCondition类来处理线程通信，NSCondition也实现了NSLocking协议，因此也可以调用lock、unlock来实现线性同步，除此之外，NSCondition可以让那些已经锁定NSCondition对象却无法继续执行的线程的线程释放NSCondition对象，也可以唤醒其他处于等待状态的线程，NSCondition提供了如下3个方法：</p>
+<ol>
+<li>-wait，该方法导致当前线程一直等待，直到其他线程调用该NSCondition的signal方法或broadcast方法来唤醒该线程</li>
+<li>-signal，唤醒在此NSCondition对象上等待的任意一个线程</li>
+<li>-broadcast，唤醒在此NSCondition对象上等待的所有线程</li>
+</ol>
+<h3 id="使用GCD实现多线程"><a href="#使用GCD实现多线程" class="headerlink" title="使用GCD实现多线程"></a>使用GCD实现多线程</h3><p>使用NSThread实现多线程比较复杂，需要程序员自己控制多线程的同步、多线程的并发，稍不留神，就会出现错误，为了简化开发，iOS提供了GCD来实现多线程，GCD的两个核心概念如下</p>
+<ol>
+<li>队列：队列负责管理开发者提交的任务，GCD队列始终以先进先出FIFO的方式来处理队列，队列可以是串行的也可以是并发的，串行队列每次只处理一个任务，并发队列可以同时处理多个任务，队列的底层会维护一个线程池来处理用户提交的任务，线程池的任务就是管理队列，串行队列底层的线程池只需要维护一个线程即可，并发队列的底层则需要维护多个线程</li>
+<li>任务：任务就是用户提交给队列的工作单元，这些任务将会提交给队列底层的线程池执行</li>
+</ol>
+<p>对于打算使用GCD的开发者来说，只要遵守两个步骤即可：</p>
+<ol>
+<li><p>创建队列，GCD的队列可分为两种，串行队列和并发队列</p>
+<pre><code>dispatch_queue_t dispatch_get_current_queue(void)获取当前线程所关联的队列
+dispatch_queue_t dispatch_get_global_queue(long priority, unsigned long flags)根据指定的优先级、额外的标识来获取系统的全局并发队列 DISPATCH_QUEUE_PRIORITY_HIGH(2)/_DEFAULT(0)/_LOW(-2)/BACKGROUND()
+dispatch_queue_t dispatch_get_main_queue(void)获取应用主线程所关联的串行队列
+dispatch_queue_t dispatch_queue_create(const char *label, dispatch_queue_attr_t attr)根据指定字符串标签创建队列，第二个参数可以控制创建串联还是并发队列DISPATCH_QUEUE_SERIAL/CONCURRENT,在没有启用ARC机制下，通过这种方式创建的队列需要调用dispatch_release()函数释放引用计数
+const char* dispatch_queue_get_label(dispatch_queue_t queue);
+</code></pre></li>
+<li><p>将任务提交给队列，iOS提供了如下函数向队列提交任务，这些函数一般有两个版本，一个接收代码块作为参数的版本，一个接收函数作为参数的版本，其中接收函数作为参数的函数名后多了_f后缀，而且会多一个参数，用于向函数传入应用程序的上下文定义</p>
+<pre><code>void dispatch_async(dispatch_queue_t queue,dispatch_block_t block)异步方式提交代码块给队列
+void dispatch_async_f(dispatch_queue_t queue,Void *context,dispatch_function_t function)函数
+void dispatch_sync(dispatch_queue_t queue,dispatch_block_t block)同步方式提交代码块给队列
+void dispatch_after(dispatch_time_t when,dispatch_queue_t queue,dispatch_block_t block)将代码块以异步方式提交给队列，队列将在when指定的时间点执行该代码块
+void dispatch_apply(size_t iterations,dispatch_queue_t queue,void(^block)(size_t))将代码块以异步的方式提交给指定队列，该队列底层的线程池将会多次重复执行该代码块
+void dispatch_once(dispatch_once_t *predicate,dispatch_block_t block)将代码块提交给指定队列，该队列底层的线程池控制应用的某个生命周期内仅执行该函数一次，predicate是一个指向dispatch_once_t变量的指针，该变量判断代码是否已经执行过，dispatch_once函数无须传入队列，这意味着系统将直接用主线程执行该函数提交的代码块
+</code></pre></li>
+</ol>
+<h3 id="后台运行"><a href="#后台运行" class="headerlink" title="后台运行"></a>后台运行</h3><p>当应用进入后台时，系统会自动回调应用程序委托方法<code>-applicationDidEnterBackground</code>方法，应用可以在该方法中完成转入后台前需要做的准备工作，其中包括</p>
+<ol>
+<li>释放所有可以释放的资源</li>
+<li>保存用户数据或状态信息</li>
+</ol>
+<blockquote>
+<p>应用进入后台时占用的内存越少，则越容易存活下来，因为iOS系统会优先终止那些占用内存大的应用</p>
+</blockquote>
+<p>当应用转入后台后，不要在主线程中执行超过5秒的任务，如果应用进入后台花费了太多时间，应用可能会从内存中被删除，如果有耗时操作，正确的做法是：以<code>applicationDidEnterBackground</code>方法为平台，告诉系统进入后台还有更多的任务需要完成，从而向系统申请更多的后台时间，一般是10分钟</p>
+<pre><code>[[NSNotificationCentre defaultCentre] addObserver:self selector:@selector(enterBack:) name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication];
+-(void)enterBack:(NSNotification *)notification {
+    _block UIBackgroundTaskIdentifier backTaskId;
+    UIApplication *app = [UIApplication sharedApplication];
+    backTaskId = [app beginBackgroundTaskWithExpirationHandler:^{
+        //出现异常或在10分钟内仍然没有完成任务
+        [app endBackgroundTask:backTaskId];
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //耗时操作
+        [app endBackgroundTask:backTaskId];
+    });
+}
+</code></pre><h3 id="使用NSOperation与NSOperationQueue实现多线程"><a href="#使用NSOperation与NSOperationQueue实现多线程" class="headerlink" title="使用NSOperation与NSOperationQueue实现多线程"></a>使用NSOperation与NSOperationQueue实现多线程</h3><p>除了使用GCD实现多线程以外，NSOperation与NSOperationQueue也是一种简单的多线程实现方式</p>
+<ul>
+<li>NSOperationQueue：代表一个FIFO的队列，它负责管理系统提交的多个NSOperation，它底层维护着一个线程池，会按顺序启动线程来执行提交给该队列的NSOperation任务</li>
+<li>NSOperation：代表一个多线程任务，类似于Java中的Runnable，NSOperation有NSInvocationOperation子类和NSBlockOperation子类，NSOperation有两种使用方式，自定义实现NSOperation的子类或直接使用其已有子类</li>
+</ul>
+<p>使用步骤：</p>
+<ol>
+<li><p>创建NSOperationQueue队列，并为该队列设置相关属性</p>
+<pre><code>+currentQueue/+mainQueue
+-(void)addOperation:(NSOperation*)operation
+-(void)addOperations:(NSArray*)ops waitUntilFinished:(BOOL)wait;如果wait是yes，将会阻塞，一个一个加，如果是NO，全加然后直接返回
+-operations:/-operationCount:/-cancelAllOperations:/-setSuspended:
+-waitUntilAllOperationsAreFinished:/-(NSInteger)maxConcurrentOperationCount:最大并发数量
+</code></pre></li>
+<li><p>创建NSOperation并添加到NSOperationQueue</p>
+</li>
+</ol>
+<p>创建NSOperation方式有两种：</p>
+<ul>
+<li><p>直接使用其已有子类创建</p>
+<pre><code>NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(downloadImageFromURL) object:nil];
+NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{//异步执行的代码块}
+FKDownImageOperation *operation = [[FKDownImageOperation alloc] initWithURL:url imageView:imageView];
+[queue addOperation:operation];
+</code></pre></li>
+<li><p>自定义NSOperation子类并重写其main方法</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/04/25/疯狂iOS上册-第二部分/" rel="next" title="疯狂iOS上册第二部分">
+                <i class="fa fa-chevron-left"></i> 疯狂iOS上册第二部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/06/27/疯狂iOS下册-第二部分/" rel="prev" title="疯狂iOS下册第二部分">
+                疯狂iOS下册第二部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多点触摸与手势检测"><span class="nav-number">1.</span> <span class="nav-text">多点触摸与手势检测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#响应者链"><span class="nav-number">1.1.</span> <span class="nav-text">响应者链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#响应触碰方法"><span class="nav-number">1.2.</span> <span class="nav-text">响应触碰方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用手势处理器-UIGestureRecogniser"><span class="nav-number">1.3.</span> <span class="nav-text">使用手势处理器(UIGestureRecogniser)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建和使用自定义手势处理器"><span class="nav-number">1.4.</span> <span class="nav-text">创建和使用自定义手势处理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#国际化"><span class="nav-number">2.</span> <span class="nav-text">国际化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS应用国际化的基础"><span class="nav-number">2.1.</span> <span class="nav-text">iOS应用国际化的基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#国际化界面设计文件"><span class="nav-number">2.2.</span> <span class="nav-text">国际化界面设计文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#国际化应用程序的显示名称"><span class="nav-number">2.3.</span> <span class="nav-text">国际化应用程序的显示名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#国际化图片"><span class="nav-number">2.4.</span> <span class="nav-text">国际化图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#国际化文本"><span class="nav-number">2.5.</span> <span class="nav-text">国际化文本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS的数据存储与IO"><span class="nav-number">3.</span> <span class="nav-text">iOS的数据存储与IO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序沙盒"><span class="nav-number">3.1.</span> <span class="nav-text">应用程序沙盒</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序参数与用户默认设置"><span class="nav-number">3.2.</span> <span class="nav-text">应用程序参数与用户默认设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性列表"><span class="nav-number">3.3.</span> <span class="nav-text">属性列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对象归档和原生I-O-API（详情参照上册第八章内容）"><span class="nav-number">3.4.</span> <span class="nav-text">对象归档和原生I/O API（详情参照上册第八章内容）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用SQLite3数据库"><span class="nav-number">3.5.</span> <span class="nav-text">使用SQLite3数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Core-Data框架"><span class="nav-number">3.6.</span> <span class="nav-text">使用Core Data框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多媒体应用开发"><span class="nav-number">4.</span> <span class="nav-text">多媒体应用开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#音频和视频的播放"><span class="nav-number">4.1.</span> <span class="nav-text">音频和视频的播放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AVAudioRecorder录制音频"><span class="nav-number">4.2.</span> <span class="nav-text">使用AVAudioRecorder录制音频</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拍照和录制视频"><span class="nav-number">4.3.</span> <span class="nav-text">拍照和录制视频</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AVFoundation生成视频缩略图"><span class="nav-number">4.4.</span> <span class="nav-text">使用AVFoundation生成视频缩略图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理手机"><span class="nav-number">5.</span> <span class="nav-text">管理手机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AddressBook管理联系人"><span class="nav-number">5.1.</span> <span class="nav-text">使用AddressBook管理联系人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用AddressBookUI管理联系人"><span class="nav-number">5.2.</span> <span class="nav-text">使用AddressBookUI管理联系人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用UIApplication打电话、发短信"><span class="nav-number">5.3.</span> <span class="nav-text">使用UIApplication打电话、发短信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用MFMessageComposeViewController发送短信"><span class="nav-number">5.4.</span> <span class="nav-text">使用MFMessageComposeViewController发送短信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用MFMailComposeViewController发送邮件"><span class="nav-number">5.5.</span> <span class="nav-text">使用MFMailComposeViewController发送邮件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加速剂与陀螺仪"><span class="nav-number">6.</span> <span class="nav-text">加速剂与陀螺仪</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS支持的加速计、陀螺仪和磁感应"><span class="nav-number">6.1.</span> <span class="nav-text">iOS支持的加速计、陀螺仪和磁感应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#感知设备移动"><span class="nav-number">6.2.</span> <span class="nav-text">感知设备移动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS7新增的计步器"><span class="nav-number">6.3.</span> <span class="nav-text">iOS7新增的计步器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iOS7新增的CMMotionActivityManager"><span class="nav-number">6.4.</span> <span class="nav-text">iOS7新增的CMMotionActivityManager</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程"><span class="nav-number">7.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程概述"><span class="nav-number">7.1.</span> <span class="nav-text">线程概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用NSThread实现多线程"><span class="nav-number">7.2.</span> <span class="nav-text">使用NSThread实现多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程同步与线程通信"><span class="nav-number">7.3.</span> <span class="nav-text">线程同步与线程通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用GCD实现多线程"><span class="nav-number">7.4.</span> <span class="nav-text">使用GCD实现多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台运行"><span class="nav-number">7.5.</span> <span class="nav-text">后台运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用NSOperation与NSOperationQueue实现多线程"><span class="nav-number">7.6.</span> <span class="nav-text">使用NSOperation与NSOperationQueue实现多线程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

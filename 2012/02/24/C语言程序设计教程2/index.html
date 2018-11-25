@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="C,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="函数程序员在设计一个复杂的应用程序时，往往也就是把整个程序划分为若干功能较为单一的程序模块，然后分别予以实现，最后再把所有的程序模块像搭积木一样装配起来，这种策略被称为模块化程序设计方法。 每个C源程序都是由一个主函数和若干个其他函数组成的。函数时程序的基本组成单位，因此可以很方便地用函数作为程序模块来实现C语言程序。从函数的定义角度，函数可以分为库函数和用户自定义函数两种；从兼有其他语言功能角度">
+<meta name="keywords" content="C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言程序设计教程2">
+<meta property="og:url" content="https://frandfeng.github.io/2012/02/24/C语言程序设计教程2/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="函数程序员在设计一个复杂的应用程序时，往往也就是把整个程序划分为若干功能较为单一的程序模块，然后分别予以实现，最后再把所有的程序模块像搭积木一样装配起来，这种策略被称为模块化程序设计方法。 每个C源程序都是由一个主函数和若干个其他函数组成的。函数时程序的基本组成单位，因此可以很方便地用函数作为程序模块来实现C语言程序。从函数的定义角度，函数可以分为库函数和用户自定义函数两种；从兼有其他语言功能角度">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-23T08:52:25.932Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言程序设计教程2">
+<meta name="twitter:description" content="函数程序员在设计一个复杂的应用程序时，往往也就是把整个程序划分为若干功能较为单一的程序模块，然后分别予以实现，最后再把所有的程序模块像搭积木一样装配起来，这种策略被称为模块化程序设计方法。 每个C源程序都是由一个主函数和若干个其他函数组成的。函数时程序的基本组成单位，因此可以很方便地用函数作为程序模块来实现C语言程序。从函数的定义角度，函数可以分为库函数和用户自定义函数两种；从兼有其他语言功能角度">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2012/02/24/C语言程序设计教程2/">
+
+
+
+
+
+  <title>C语言程序设计教程2 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2012/02/24/C语言程序设计教程2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言程序设计教程2</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-02-24T00:00:00+08:00">
+                2012-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>程序员在设计一个复杂的应用程序时，往往也就是把整个程序划分为若干功能较为单一的程序模块，然后分别予以实现，最后再把所有的程序模块像搭积木一样装配起来，这种策略被称为模块化程序设计方法。</p>
+<p>每个C源程序都是由一个主函数和若干个其他函数组成的。函数时程序的基本组成单位，因此可以很方便地用函数作为程序模块来实现C语言程序。从函数的定义角度，函数可以分为库函数和用户自定义函数两种；从兼有其他语言功能角度分类，函数分有返回值函数和无返回值函数两种；从函数间传送的角度分类，函数分为无参函数和有参函数两种；</p>
+<pre><code>返回值类型 函数名(参数表) {
+    函数体;
+}
+</code></pre><p>在主调函数中调用某函数之前应对该被调函数进行原型说明，这与使用变量之前要先进行变量说明是一样的。在主调函数中对被调函数作说明的目的是使编译器程序知道被调函数的返回值类型，以便在主调函数中按此种类型值做相应的处理<code>类型说明符 被调用函数名(类型1 形参1, 类型2 形参2);</code>或<code>类型说明符 被调用函数名(类型1, 类型2);</code>。函数的调用方法如下<code>函数名(实际参数表);</code></p>
+<p>一般来说，有两种方法可以把参数传递给函数，一种方法叫做传值调用，另一种方法是传址调用。</p>
+<ul>
+<li>传值调用：把实参的值复制到函数的形参中</li>
+<li>传址调用：将实参的存储地址作为参数传递给形参</li>
+</ul>
+<p>数组也可以作为函数的参数使用，进行数据传送。数组用作函数参数有两种形式：一种是把数组元素(下标变量)作为实参使用；另一种是把数组名作为函数的形参和实参使用</p>
+<p>在变量做函数参数时，所进行的值传递是单向的，即只能从实参传向形参，不能从形参传回实参。</p>
+<p>函数的传值调用可以通过参数使用调用环境中变量的值，但不能改变那里的变量值。想要改变那里的变量值，就得利用指针机制：在调用时把变量的地址通过指针参数传进被调函数，在被调用函数里对参数指针间接访问，就能完成对变量的各种操作，包括对变量赋值。</p>
+<p>在C语言中允许一个函数的返回值是一个指针(即地址)，这种返回指针值的函数称为指针型函数。定义指针型函数的一般形式为：</p>
+<pre><code>类型说明符 *函数名(形参表) {
+    ...;//函数体
+}
+</code></pre><p>在C语言中一个函数总是占用一段连续的内存区，而函数名就是该函数所占内存区的首地址。我们可以给函数的首地址赋予一个指针变量，使该指针变量指向该函数，然后，通过指针变量就可以找到并调用这个函数。我们把这种指向函数的指针变量称为“函数指针变量”。函数指针变量定义的一般格式为：<code>类型说明符 (*指针变量名)();</code>。其中”类型说明符”表示被指函数的返回值的返回值类型，(*指针变量名)表示*后边的变量是定义的指针变量，空括号表示指针变量所指的是一个函数。调用函数的一般形式为<code>(*指针变量名) (实参表)</code></p>
+<p>在ANSI C标准中允许用结构变量作函数参数进行整体传送。但是这种传送要将全部的成员逐个传送，特别是成员为数组时将会使传送的时间和空间开销很大，严重地降低程序的效率，因此，最好的办法就是使用指针，即用指针变量作函数参数进行传送。这时由实参传向形参的只是地址，从而减少了时间和空间的开销。<code>结构型函数</code>是指返回值为结构变量的函数。返回指向结构变量指针的函数称为结构指针型函数，结构型函数返回的是结构变量，函数返回时要带回结构变量的各成员值，影响执行效率，而采用返回结构型指针的函数可以避免这一点。</p>
+<p>函数的递归调用是指在调用一个函数的过程中，直接或间接地调用函数自身，这种函数称为递归函数。C语言允许函数的递归调用。在递归调用中，主调函数又是被调函数。</p>
+<h2 id="变量的存储类型"><a href="#变量的存储类型" class="headerlink" title="变量的存储类型"></a>变量的存储类型</h2><p>C语言中的变量具有两个属性：数据类型和存储类型。数据类型确定了变量在内存中分配存储单元的大小，存储类型指数据在内存中的存储方式。变量的存储类型决定了变量的作用域和生命周期。存储方式分为静态存储和动态存储。</p>
+<p>静态存储方式指在程序运行期间分配固定存储空间，在整个程序运行期间保持不变，直到程序运行结束才释放所占有的存储空间。动态存储方式指在程序运行的过程中，根据需要，使用时才分配存储空间，使用结束后立即释放。典型的例子是函数的形式参数。</p>
+<p>在C程序中，函数之间的参数传送主要有两种方式：传值和传地址。</p>
+<p>C程序中的每个变量都要经历 分配存储空间，用以存放该变量的值，然后在程序中使用变量，使用结束后释放所占有的存储空间的过程。这个过程称为变量的生命期。在变量的生存期内，该变量可以使用的范围称为变量的作用域。在变量作用域内引用变量，称变量在此作用域内可见。</p>
+<p>变量的作用域是一个空间的概念，由定义变量语句的位置决定，根据变量定义语句的位置的不同，变量分为局部变量和全局变量。</p>
+<p>C语言中的四种类型的变量：</p>
+<ol>
+<li>自动变量：自动变量定义时，前面可以加关键字auto，其格式为<code>auto 类型说明符 变量名表;</code>。在函数内定义的变量称为内部变量，由于内部变量的作用域仅局限于其所在的函数，因此内部变量也称为“局部变量”。内部变量分为自动变量和静态局部变量。</li>
+<li>外部变量：所有在函数外部定义的变量称为外部变量，外部变量是全局变量，外部变量可以被本源程序文件中的其他函数使用。外部变量的作用域从其定义的位置开始，一直到本源程序结束。由于外部变量在程序执行过程中，占有固定的存储单元，其生存期为整个程序。在C语言中，可以使用关键字extern，将外部变量的作用域扩展到外部变量定义之前或其他源程序文件中。也可以使用extern关键字进行引用性声明，引用性声明不分配存储空间<code>extern 类型标识符 变量名表;</code></li>
+<li>静态变量：定义变量时，前面加关键字static，则定义的变量就是静态变量。在编译时，系统分配固定的存储单元，并在程序运行过程中始终存在，直到源程序运行结束，因此静态变量的生存期为整个源程序。静态变量根据位置不同分为静态局部变量和静态全局变量。全局变量和静态全局变量的存储方式均为静态存储方式，两者的区别在于作用域扩展上的不同，静态全局变量的作用域为其所在的源程序文件，即只能被该源程序中的函数使用，而全局变量可以通过extern关键字将作用域扩展到其他源程序文件。所以在由多个源文件组成的C程序中，如要限制外部变量不能再其他源程序文件中使用，可以将其定义为静态外部变量。</li>
+<li>寄存器变量：寄存器变量是指将局部变量的值存放在CPU的寄存器中的变量。由于寄存器的存钱速度远高于对内存的存取速度，因此，可以将使用频繁的局部变量定义为寄存器变量，可以提高程序的运算效率，寄存器变量定义形式如下：<code>register 数据类型 变量名表;</code></li>
+</ol>
+<p>C程序在运行时使用的存储空间分为三个部分</p>
+<ol>
+<li>程序区：用于存放程序代码</li>
+<li>静态存储区：用于存放程序的全局数据和静态数据</li>
+<li>动态存储区：用于存放自动变量、函数的形式参数、函数调用时的现场保护和返回地址</li>
+</ol>
+<p>动态内存分配是指在程序运行过程中，根据需要而分配内存空间的方式，这种就可以解决有时分配过大或过小的问题。在C系统的函数库中提供的动态分配和释放内存空间的函数主要有：</p>
+<ol>
+<li>malloc函数：<code>void *malloc(unsigned int size)</code>在内存动态存储区分配一段长度为size个字节的连续空间，如果分配成功，函数返回一个指向该区域起始地址的指针，否则返回NULL指针</li>
+<li>calloc函数：<code>void *calloc(unsigned int n, unsigned int size);</code>在内存动态存储区分配n个长度为size的连续空间，如果分配成功，函数返回一个指向该区域起始地址的指针，否则返回NULL指针</li>
+<li>free函数：<code>void free(void *p);</code>释放指针p指向的存储空间，free函数无返回值</li>
+<li>realloc函数：<code>void *realloc(void *p, unsigned int size);</code>将p所指向的存储空间，重新分配改变为size的字节，并将原存储空间存放的数据拷贝到新分配的存储空间，如果分配成功，函数返回一个指向该区域起始地址的指针，否则返回NULL指针。注意：为了增加或减少存储空间，系统新分配的起始地址不一定与原来的地址相同</li>
+</ol>
+<h2 id="位域、联合、枚举、定义类型及预处理功能"><a href="#位域、联合、枚举、定义类型及预处理功能" class="headerlink" title="位域、联合、枚举、定义类型及预处理功能"></a>位域、联合、枚举、定义类型及预处理功能</h2><h3 id="8-1-位域及结构嵌套"><a href="#8-1-位域及结构嵌套" class="headerlink" title="8.1 位域及结构嵌套"></a>8.1 位域及结构嵌套</h3><p>为了节省空间，C语言允许定义具有可变长度位的结构成员，这种成员称为位域。通过位域可以方便地用成员名访问小于一个字节的存储区。位域是结构成员的特殊形式，它需要定义位的长度。位域定义的一般形式是：</p>
+<pre><code>//冒号表示使用的是位域，其后的长度表示需要分配的存储单元的位数
+struct 结构名 {
+    类型 变量名1:长度;
+    类型 变量名2:长度;
+}
+
+//内存分配情况是位域变量总共占用2个字节其余位未用
+//注意：在不同的机器里，位域变量从左到右还是从右到左的规则不同
+struct {
+    unsigned bit0:1;
+    unsigned bit1:1;
+}
+</code></pre><p>与结构成员的访问方式一样，位域可以用结构成员运算符”.”来访问。若位域是由指针访问的，必须使用箭头运算符。位域变量有某些限制，比如，不能取一个位域变量的地址；不允许超越整形量边界。</p>
+<p>在C语言中，结构成员不仅可以是位数可变的位域变量，而且可以是另一个结构类型变量。这种情况被称为嵌套式结构。</p>
+<h3 id="8-2-联合"><a href="#8-2-联合" class="headerlink" title="8.2 联合"></a>8.2 联合</h3><p>联合是一种与结构相类似的构造类型，联合与结构一样，可以包括不同类型和长度的数据。联合与结构的主要区别在于，联合类型变量所占内存空间不是各个成员所需存储空间字节数的总和，而是联合成员中需要存储空间最大的成员所要求的字节数。这是因为C编译程序规定联合的各个成员共享一个公共存储空间。在任何给定的时刻，只能允许一个成员驻留在联合中，而对结构而言，则是所有成员一直都驻留在结构中。</p>
+<pre><code>union 联合名 {
+    类型 变量名;
+    类型 变量名;
+}联合变量;
+</code></pre><p>使用联合不仅比使用结构更能节省一些存储空间，而且增加了处理数据的灵活性。</p>
+<h3 id="8-3-枚举"><a href="#8-3-枚举" class="headerlink" title="8.3 枚举"></a>8.3 枚举</h3><p>通过列举一系列由用户自己确定的有序标识符所定义的类型叫枚举类型。标识符名称代表一个数据值，其间有先后次序，可以进行比较，通常把标识符称为枚举类型的元素。</p>
+<p>枚举和结构一样，都是自定义的一种数据类型，枚举用关键字enum表示，定义枚举型的一般形式为：<code>enum 枚举名{枚举表};</code></p>
+<pre><code>enum color {white, black, red};
+enum color col;
+col = black;
+</code></pre><p>枚举的作用域与变量一致，即在一个函数中定义的枚举型数据只限于在该函数中使用。而在程序中任何函数之外定义的外部枚举型数据可以为所有函数共用。</p>
+<h3 id="8-4-定义类型名-typedef"><a href="#8-4-定义类型名-typedef" class="headerlink" title="8.4 定义类型名-typedef"></a>8.4 定义类型名-typedef</h3><p>C语言允许用户使用关键字typedef，为已有的类型定义一个新的名字，定义类型的一般形式为：<code>typedef 类型 定义名;</code>，例如 <code>typedef int integer;</code>，在这里，类型是任一种合法的数据类型，定义名是为这种类型新取的名字。</p>
+<p>必须强调指出，typedef的作用，在任何意义上讲都不是创建一种新的数据类型，它仅仅为现有的类型赋给一个新的名字，也没有任何新语义。</p>
+<h3 id="8-5-预处理功能"><a href="#8-5-预处理功能" class="headerlink" title="8.5 预处理功能"></a>8.5 预处理功能</h3><p>C语言的预处理程序负责分析和处理以“#”为首字符的预处理控制行。预处理控制行主要有宏替换、文件包含和条件编译。</p>
+<p>用#define作为标志的预处理命令不仅可以定义符号常量及字符串，而且也可定义带参数的宏。宏替换命令#define用来定义一个宏标识符和一个字符串，在程序中每次遇到该标识符时，就用所定义的字符串替换，这个标识符也叫宏替换名，替换过程称为宏替换，宏替换命令的一般形式是：<code>#define 宏标识符 字符串</code>。注意#define、宏标识符、字符串各部分之间用空格分隔，其末尾不带分号，以换行结束。</p>
+<p>宏标识符像函数一样可以带有形式参数。在程序中用到宏标识符时，实际参数将代替这些形式参数，使用更为灵活。带参数宏定义的一般形式是：<code>#define 宏标识符(参数表) 表达式</code>。标识符就是带参数宏的名字，参数表中的参数类似函数中的形式参数，宏标识符与左圆括号之间不能有空格；表达式是用于替换的表达式。宏调用的一般形式是<code>宏标识符(参数表)</code>，此处的宏标识符是已经被定义的宏标识符，参数表中的参数类似于函数中的实参数。</p>
+<p>宏一旦被定义，在其所在的文件中均是存在和可见的，这一点很像外部变量。如果要对某一个宏定义撤销，可用如下预处理命令:<code>#undef 宏标识符</code>。</p>
+<p>包含文件处理是用#include命令把给定的包含文件内容嵌入到另一个源程序文件中。其一般形式是：<code>#include 文件名</code> 或 <code>#include &lt;文件名&gt;</code>。#include预处理命令的实质是，告诉预处理程序将包含文件的内容嵌入到源文件中#include出现的地方。</p>
+<p>需要嵌入的包含文件的存放地点，必须由文件的路径和文件名指定，并且被放在双引号内，系统约定先在引用包含文件的源文件所在的目录中查找，若找不到，再按系统指定的标准方式向外查找，如果已经知道被包含文件不在当前工作目录，可以使用尖括号形式查找标准目录。因此，从使用角度上看，在包含文件中使用双引号比使用尖括号更靠谱。</p>
+<h2 id="输入、输出及文件管理"><a href="#输入、输出及文件管理" class="headerlink" title="输入、输出及文件管理"></a>输入、输出及文件管理</h2><p>C语言的文件系统分为“缓冲型文件系统(buffered file system)”和“非缓冲型文件系统(unbuffered file system)”。通常把缓冲型文件系统提供的函数称为流式I/O函数，把非缓冲型文件系统提供的函数称为低级I/O函数。</p>
+<ol>
+<li>fopen：打开文件函数 <code>File *fp=fopen(filename, mode)</code>其中fp定义为指向FILE类型的指针，filename表示要打开的文件名，mode表示使用该文件的模式，如可读r、可写w和可添加a。若要打开的文件不存在，fopen函数返回NULL指针，也就是0</li>
+<li>fclose:关闭文件函数<code>int fclose(File fp)</code>其中fp是一个调用fopen函数所返回的文件指针。文件关闭成功返回0，返回其他值说明关闭出错。文件处理结束后，必须关闭文件。文件未关闭会引起很多问题，如数据丢失，文件损坏及其他一些错误。</li>
+<li>stdin、stdout、stderr：当一个C程序开始执行时，系统首先自动打开预定义的三个流式文件：标准输入stdin，标准输出stdout和标准错误stderr。当程序运行结束后，系统又自动将这些标准文件关闭。用户则不能控制它们的打开和关闭。通常stdin被指定为键盘，用于从控制台读，stdout和stderr被指定为显示终端，用于向控制台写。但是用户在执行某个程序时，可以临时性地改变系统的设定，把标准设备文件指定为其他设备文件。</li>
+<li>getc、putc简单字符输入输出：这两个函数时用于从一个打开的文件中读取一个字符或向打开的文件写入一个字符的函数。调用方式为<code>int getc(FILE *fp);</code>或<code>int putc(int ch, FILE *fp)</code>，这里，fp是由fopen函数打开文件时返回的文件指针。fp指针告诉这两个函数应该从哪一个磁盘文件去读字符或写入字符。</li>
+<li>fgets、fputs行输入输出：fgets和fputs是用来从文件中读取字符串，或向文件中写字符串的函数，其调用方式是：<code>char *fgets(char *str, int length, FILE *fp);</code>和<code>char *fputs(char *str, FILE *fp);</code>，函数fgets从fp指向的文件读出字符串，一直读至换行符或第(length-1)个字符为止。</li>
+<li>fread、fwrite数据块的输入输出：这是两个读写数据块的函数，其调用方式是<code>int fread(void *buffer, int size, int n, FILE *fp);</code>或<code>int fwrite(void *buffer, int size, int n, FILE *fp);</code>buffer是一个指向数据存储区的指针。在fread函数中，buffer接收从文件中读取的数据。在fwrite函数中，buffer中的数据向文件写入。读写的字段数用n表示（每个字段是size个字节），fp是已打开文件的文件指针。</li>
+<li>fprintf、fscanf流式文件数据的格式化输入输出：这两个函数的操作对象是磁盘文件，以上的操作对象都不是磁盘文件，调用这两个函数的方式分别是<code>fprintf(fp, &quot;控制字符串&quot;, &quot;参量表&quot;)</code>和<code>fscanf(fp, &quot;控制字符串&quot;, &quot;参量表&quot;)</code>，其中，fp是由fopen函数返回的文件指针，fprintf函数将格式化的数据写入到fp指向的文本文件中，fscanf函数从fp指向的文本文件中读取格式化数据，两个函数的操作方法与printf和scanf函数完全相同。</li>
+<li>fseek文件的随机访问：fseek函数可以改变文件的位置指针，以实现文件的随机访问。调用方式为：<code>int fseek(FILE *stream, long offset, int origin);</code>，即按偏移量offset和起始位置origin的值，设置与stream相连的文件位置指示器。操作成功返回值为0，否则返回值为非0。偏移量offset是从起始位置origin到要确定的新位置之间的的字节数目，当文件是结构类型时，可用sizeof()函数确定便宜量。起始位置用0，1，2表示，0表示从文件头开始，1表示从当前位置开始，2则表示从文件末端开始。</li>
+</ol>
+<h2 id="C高级程序应用"><a href="#C高级程序应用" class="headerlink" title="C高级程序应用"></a>C高级程序应用</h2><h3 id="10-1-链表"><a href="#10-1-链表" class="headerlink" title="10.1 链表"></a>10.1 链表</h3><p>链表是由链指针构成的一种动态数据结构。链表分为单向链表、双向链表和循环链表。单向链表只用一个链指针指向下一个结点。双向链表用两个链指针分别指向前一个结点和后一个结点。循环链表最后一个数据项的指针指向第一个数据项，因此循环链表是一个无表头和表尾的链表。</p>
+<h3 id="10-2-与操作系统密切相关的库函数"><a href="#10-2-与操作系统密切相关的库函数" class="headerlink" title="10.2 与操作系统密切相关的库函数"></a>10.2 与操作系统密切相关的库函数</h3><p>在Windows操作系统中，用户可以通过图形化界面方便地完成操作系统的各种功能。而在DOS磁盘操作系统环境下，是通过在命令行输入命令并回车来完成相应的功能，目前在嵌入式系统编程等方面仍大量采用这种工作方式。</p>
+<p>Turbo C库函数的一个重要特色就是设置有与操作系统密切相关的一些函数。这些函数包括：</p>
+<ol>
+<li>BIOS接口调用函数</li>
+<li>DOS系统调用函数</li>
+<li>时间和日期函数</li>
+</ol>
+<h3 id="10-3-图形程序"><a href="#10-3-图形程序" class="headerlink" title="10.3 图形程序"></a>10.3 图形程序</h3><p>Turbo C提供了非常丰富的图形函数，所有图形函数的原型均在graphics.h中，本节注意介绍图形模式的初始化、独立图形程序的建立、基本图形功能、图形窗口以及图形模式写的文本输出等函数。</p>
+<h3 id="10-4-声音程序"><a href="#10-4-声音程序" class="headerlink" title="10.4 声音程序"></a>10.4 声音程序</h3><p>Turbo C中提供了几个队扬声器操作的库函数：</p>
+<ol>
+<li>接通扬声器：<code>sound(int frequence);</code>按照参数要求的频率发音</li>
+<li>关闭扬声器：<code>nosound();</code></li>
+<li>Outportb(int port, char byte)/Inportb(int port)：通过对端口的直接操作函数来控制扬声器的发音。扬声器的端口地址为0x42，对端口的操作方式一般分两步：初始化端口、向端口传送频率值。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/01/27/C语言程序设计教程1/" rel="next" title="C语言程序设计教程1">
+                <i class="fa fa-chevron-left"></i> C语言程序设计教程1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/03/30/数据结构第一部分/" rel="prev" title="数据结构第一部分">
+                数据结构第一部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-number">1.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量的存储类型"><span class="nav-number">2.</span> <span class="nav-text">变量的存储类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位域、联合、枚举、定义类型及预处理功能"><span class="nav-number">3.</span> <span class="nav-text">位域、联合、枚举、定义类型及预处理功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-位域及结构嵌套"><span class="nav-number">3.1.</span> <span class="nav-text">8.1 位域及结构嵌套</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-联合"><span class="nav-number">3.2.</span> <span class="nav-text">8.2 联合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-枚举"><span class="nav-number">3.3.</span> <span class="nav-text">8.3 枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-定义类型名-typedef"><span class="nav-number">3.4.</span> <span class="nav-text">8.4 定义类型名-typedef</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-预处理功能"><span class="nav-number">3.5.</span> <span class="nav-text">8.5 预处理功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入、输出及文件管理"><span class="nav-number">4.</span> <span class="nav-text">输入、输出及文件管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C高级程序应用"><span class="nav-number">5.</span> <span class="nav-text">C高级程序应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-链表"><span class="nav-number">5.1.</span> <span class="nav-text">10.1 链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-与操作系统密切相关的库函数"><span class="nav-number">5.2.</span> <span class="nav-text">10.2 与操作系统密切相关的库函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-图形程序"><span class="nav-number">5.3.</span> <span class="nav-text">10.3 图形程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-声音程序"><span class="nav-number">5.4.</span> <span class="nav-text">10.4 声音程序</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

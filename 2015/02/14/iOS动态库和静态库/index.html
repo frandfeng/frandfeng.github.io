@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Framework,Library,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="库是一段编译好的二进制代码，是共享程序代码的方式，一般分为静态库和动态库。iOS 中静态库是static Library，后缀名是 .a，动态库是dynamic library，后缀名是 .dylib。iOS 中的 Framework 称作框架，框架其实是一种打包方式，将库的二进制文件、头文件和有关的资源文件打包到一起，方便管理和分发，框架根据其在内存中的加载方式分类，可以是动态库，也可以是静态库">
+<meta name="keywords" content="iOS,Framework,Library">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS动态库和静态库">
+<meta property="og:url" content="https://frandfeng.github.io/2015/02/14/iOS动态库和静态库/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="库是一段编译好的二进制代码，是共享程序代码的方式，一般分为静态库和动态库。iOS 中静态库是static Library，后缀名是 .a，动态库是dynamic library，后缀名是 .dylib。iOS 中的 Framework 称作框架，框架其实是一种打包方式，将库的二进制文件、头文件和有关的资源文件打包到一起，方便管理和分发，框架根据其在内存中的加载方式分类，可以是动态库，也可以是静态库">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:04:41.129Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS动态库和静态库">
+<meta name="twitter:description" content="库是一段编译好的二进制代码，是共享程序代码的方式，一般分为静态库和动态库。iOS 中静态库是static Library，后缀名是 .a，动态库是dynamic library，后缀名是 .dylib。iOS 中的 Framework 称作框架，框架其实是一种打包方式，将库的二进制文件、头文件和有关的资源文件打包到一起，方便管理和分发，框架根据其在内存中的加载方式分类，可以是动态库，也可以是静态库">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2015/02/14/iOS动态库和静态库/">
+
+
+
+
+
+  <title>iOS动态库和静态库 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/02/14/iOS动态库和静态库/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS动态库和静态库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-02-14T00:00:00+08:00">
+                2015-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>库是一段编译好的二进制代码，是共享程序代码的方式，一般分为静态库和动态库。iOS 中静态库是static Library，后缀名是 .a，动态库是dynamic library，后缀名是 .dylib。iOS 中的 Framework 称作框架，框架其实是一种打包方式，将库的二进制文件、头文件和有关的资源文件打包到一起，方便管理和分发，框架根据其在内存中的加载方式分类，可以是动态库，也可以是静态库。以前，系统的.framework是动态库，我们自己建立的.framework是静态库，从swift开始时，我们也可以建立自己的动态库了。</p>
+<h2 id="静态库"><a href="#静态库" class="headerlink" title="静态库"></a>静态库</h2><p>链接时完整地拷贝至可执行文件中，被多次使用就有多份冗余拷贝</p>
+<p>下边通过一个教程翻译，来更加了解静态库，<a href="https://www.raywenderlich.com/41377/creating-a-static-library-in-ios-tutorial" target="_blank" rel="noopener">源地址</a>，内容如下：</p>
+<h3 id="创建静态库"><a href="#创建静态库" class="headerlink" title="创建静态库"></a>创建静态库</h3><p>如果我们已经做了很长时间的iOS开发了，我们可能会有一些大多数APP都能共用的代码</p>
+<p>如果要共用这些代码，最简单的方式就是拷贝粘贴源码，但是这将会对以后的维护产生巨大的困难，这时，就需要使用静态库，静态库是很多类、函数、定义和资源组成的一个包，用这个静态库包，你可以很容易的在其他工程中引用</p>
+<p>在这个教程中，你将会学习用两种不同的方式创建你自己的静态库</p>
+<p>为什么你会用静态库</p>
+<ol>
+<li>你可能和你的小伙伴分享一系列常用类</li>
+<li>你想将你的常用类归结到一个地方，这样的话利于修改bug和更新</li>
+<li>你可能需要将你的代码和很多人分享，但是不想让他们看到你的代码</li>
+<li>你持续开发等功能代码，可能需要给他们做一个版本快照</li>
+</ol>
+<p>打开Xcode，选择<code>File／New／Project</code>，对话框中选择<code>iOS／Framework&amp;Library／Cocoa Touch Static Library</code>则会创建Static Library工程，写入.h和.m的代码，运行工程，则会在Products中看到.a文件，右击在资源管理器中显示文件，则会看到有两部分组成：</p>
+<ol>
+<li>Header files：在头文件文件夹中，你会发现这个库工程的公共头文件们，在等会儿你的工程中，你将会用到这些头文件，这样Xcode在编译的时候才会识别这些导出类</li>
+<li>静态库生成的就是这个.a文件，如果你需要在你的应用中使用这个静态库，就需要链接这个.a文件</li>
+</ol>
+<p>这两个部分就像你往工程中添加一个新的framework一样，你只需要添加framework的header就可以将framework的code链接到你的工程中去</p>
+<p>默认情况下，这个.a文件只能在当前架构上编译，如果你需要在模拟器中编译，就需要包含i386的架构，其他情况架构情况，如下：</p>
+<ol>
+<li>arm64：iPhone5S及以后｜ iPad Air｜ iPad mini2(iPad mini with Retina Display)</li>
+<li>armv7s：iPhone5｜iPhone5C｜iPad4(iPad with Retina Display)</li>
+<li>armv7：iPhone3GS｜iPhone4｜iPhone4S｜iPad｜iPad2｜iPad3(The New iPad)｜iPad mini｜iPod Touch 3G｜iPod Touch4</li>
+<li>armv6 设备： iPhone, iPhone2, iPhone3G, 第一代、第二代 iPod Touch（一般不需要去支持）</li>
+<li>i386:模拟器</li>
+</ol>
+<p>从上边能看出，不同的设备需要不同架构编译出来的.a文件，这个应该怎么办呢？幸运的是，我们可以创建一个终极版本来支持各种架构</p>
+<p>终极版本是一个比较特别的二进制文件，它包含各种架构的代码，如何制作这种终极版本呢，这就需要用到一种工具－lipo，lipo是一个命令行工具，它可以允许你操作终极文件，在此处，我们用lipo工具来将各个架构的.a文件合成一个多架构的.a文件。lipo可以在命令行执行，也可以在Xcode中执行，此教程中我们用Xcode来操作，具体步骤见原文，过程如下：</p>
+<p>新建一个Aggregate target，这个Aggregate target的目的是可以一次性完成多个对象的build操作，方法是<code>File／New／Target－》Other／Aggregate</code>，选择刚创建的Aggregate Target，选择Build Phases，添加运行脚本，点击运行，然后在设置的路径就会看到<code>iphoneos/iphoneSimulator/universal</code>文件夹中的.a文件和include下的.h文件</p>
+<p>顺便解释一下这个脚本的内容</p>
+<pre><code># define output folder environment variable
+UNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal
+
+# Step 1. Build Device and Simulator versions
+xcodebuild -target ImageFilters ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=&quot;${BUILD_DIR}&quot; BUILD_ROOT=&quot;${BUILD_ROOT}&quot;
+</code></pre><p>xcodebuild -target ImageFilters -configuration ${CONFIGURATION} -sdk iphonesimulator -arch i386 BUILD_DIR=”${BUILD_DIR}” BUILD_ROOT=”${BUILD_ROOT}”</p>
+<pre><code># make sure the output directory exists
+mkdir -p &quot;${UNIVERSAL_OUTPUTFOLDER}&quot;
+
+# Step 2. Create universal binary file using lipo
+lipo -create -output &quot;${UNIVERSAL_OUTPUTFOLDER}/lib${PROJECT_NAME}.a&quot; &quot;${BUILD_DIR}/${CONFIGURATION}-iphoneos/lib${PROJECT_NAME}.a&quot; &quot;${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/lib${PROJECT_NAME}.a&quot;
+
+# Last touch. copy the header files. Just for convenience
+cp -R &quot;${BUILD_DIR}/${CONFIGURATION}-iphoneos/include&quot; “${UNIVERSAL_OUTPUTFOLDER}/&quot;
+
+UNIVERSAL_OUTPUTFOLDER：设置universal的路径
+</code></pre><p>Step 1：分别编译iphoneos／iphoneSimulator架构生成.a文件</p>
+<p>Step 2：lipo命令将两个.a文件合并成一个，放到universal的路径下</p>
+<p>最后一步，将.h文件拷贝到universal的路径下</p>
+<h3 id="如何用静态库"><a href="#如何用静态库" class="headerlink" title="如何用静态库"></a>如何用静态库</h3><ol>
+<li>直接用.h文件和.a文件</li>
+</ol>
+<p>直接用.h文件和.a文件需要将告诉Xcode，.h文件和.a文件分别在那里。.h文件的告诉方法是<code>project navigator／target／Build Settings／Header Search Paths</code>。.a的告诉方式是<code>Build Phases／Link Binary With Libraries／click the + button／Add Other…</code></p>
+<p>告诉了之后，还要设置linker flag为-Objc，之所以使用该标志，和Objective-C的一个重要特性：类别（category)有关。根据这里的解释，Unix的标准静态库实现和Objective-C的动态特性之间有一些冲突：Objective-C没有为每个函数（或者方法）定义链接符号，它只为每个类创建链接符号。这样当在一个静态库中使用类别来扩展已有类的时候，链接器不知道如何把类原有的方法和类别中的方法整合起来，就会导致你调用类别中的方法时，出现”selector not recognized”，也就是找不到方法定义的错误。为了解决这个问题，引入了-ObjC标志，它的作用就是将静态库中所有的和对象相关的文件都加载进来</p>
+<p>本来这样就可以解决问题了，不过在64位的Mac系统或者iOS系统下，链接器有一个bug，会导致只包含有类别的静态库无法使用-ObjC标志来加载文件。变通方法是使用-all_load 或者-force_load标志，它们的作用都是加载静态库中所有文件，不过all_load作用于所有的库，而-force_load后面必须要指定具体的文件。</p>
+<ol start="2">
+<li>将此库工程用作别的工程的子工程</li>
+</ol>
+<p>将此库工程的工程文件拖入正在操作的工程中，此正在操作的工程中先将库工程的target设置为此工程的target Dependencies，步骤为：<code>project root／target／Build Phases／Target Dependencies／Click on the + button</code> 添加target</p>
+<p>随后将.a文件也加载进来，步骤是<code>Build Phases／Link Binary With Libraries／click the + button／Add Other…</code><br>最后也是设置linker flag为－ObjC</p>
+<p>第二种方法和第一种方法的不同之处是</p>
+<ol>
+<li>第二种方法没有设置Header Search Paths</li>
+<li>第二种方法本身生成的就是Universal library</li>
+</ol>
+<p>为什么会这样，因为第二种方法，当添加xcodeprj作为子工程时Xcode会知道在哪里寻找.h和.a以及根据情况确定到底编译的时候用的哪种架构，所以第二种方法要简单许多，如果你有源码或工程，第二种方法是比较优先的使用方式</p>
+<h3 id="创建framework"><a href="#创建framework" class="headerlink" title="创建framework"></a>创建framework</h3><p>上一篇已经讲过，你为什么使用静态库以及如何使用静态库，我们可以看出，静态库的使用是比较繁琐的，需要导入.a和.h文件，如果.h比较多的话，就会显的很繁琐，怎么解决这个问题呢，下边我们跟着这个教程，来学习一下，如何将你的代码像iOS SDK的API一样根据模块来划分，从iOS8,Xcode6开始，苹果提供了直接创建Cocoa Touch Framework的模版，这种方法比以前要简单很多，framework要三个主要目的</p>
+<ol>
+<li>对代码进行封装</li>
+<li>对代码化分模块</li>
+<li>对代码重用</li>
+</ol>
+<p>你可以将你的framework与你的其它app，其它团队成员，第三方平台分享。当将swift的访问控制和framework结合起来后，framework可以在代码模块间定义强大的并且可测试的接口</p>
+<p>在swift中，一个模块就是一些被编译出来的代码一起被发布。framework就是一种模块，一个app也是一种模块</p>
+<p>跟着这篇博客，你会做下边几个事情</p>
+<ol>
+<li>为这个环形控件创建一个工程（此处直接下载）</li>
+<li>迁移现有的代码并且测试（将代码中的核心代码和资源分离出来，放到framework工程中去）</li>
+<li>将所有的东西导入到app中（1，以引用子工程的形式将库工程导入到app中，将库工程编译出来的framework文件手动添加到主工程的Embedded Binary中，现在主工程的代码即可识别库工程中的类和对象 2，修改swift中的访问控制全部为public public表示全部可引用 Internal表示同一个framework中可用 private表示只在本类中能用 3，设置storyboard中的custom class的module属性，因为打成framework后，用类时不仅要知道view对应的类，也需要知道它在哪一个模块中 4，运行 5，如果有单元测试，在单元测试文件中添加import，告诉代码应该去哪个framework下去寻找）</li>
+<li>将它放在超级便捷的cocoapods中</li>
+<li>奖励：为你的framework设置目录</li>
+</ol>
+<p>frameworks是一个包含一系列代码和资源的包，可以将它导入到任意多个app中去，就像其它语言的modules，packages，gems，jars等等</p>
+<blockquote>
+<p>本篇文章也讲了如何将你的代码发布在第三方的平台cocoapods，因为不是本节相关内容，故暂且省略</p>
+</blockquote>
+<h3 id="制作静态库时的几点注意："><a href="#制作静态库时的几点注意：" class="headerlink" title="制作静态库时的几点注意："></a>制作静态库时的几点注意：</h3><ol>
+<li>注意理解：无论是.a静态库还.framework静态库，我们需要的都是二进制文件+.h+其它资源文件的形式，不同的是，.a本身就是二进制文件，需要我们自己配上.h和其它文件才能使用，而.framework本身已经包含了.h和其它文件，可以直接使用。</li>
+<li>图片资源的处理：两种静态库，一般都是把图片文件单独的放在一个.bundle文件中，一般.bundle的名字和.a或.framework的名字相同。.bundle文件很好弄，新建一个文件夹，把它改名为.bundle就可以了，右键，显示包内容可以向其中添加图片资源。</li>
+<li>category是我们实际开发项目中经常用到的，把category打成静态库是没有问题的，但是在用这个静态库的工程中，调用category中的方法时会有找不到该方法的运行时错误（selector not recognized），解决办法是：在使用静态库的工程中配置other linker flags的值为-ObjC。</li>
+<li>如果一个静态库很复杂，需要暴露的.h比较多的话，就可以在静态库的内部创建一个.h文件（一般这个.h文件的名字和静态库的名字相同），然后把所有需要暴露出来的.h文件都集中放在这个.h文件中，而那些原本需要暴露的.h都不需要再暴露了，只需要把.h暴露出来就可以了。</li>
+</ol>
+<h4 id="如何解决静态库中的图片资源问题"><a href="#如何解决静态库中的图片资源问题" class="headerlink" title="如何解决静态库中的图片资源问题"></a>如何解决静态库中的图片资源问题</h4><p>最近在做静态库的封装，发现图片文件的加载没问题，但是加载xib时总是报  .bundle&gt; (not yet loaded)，很是头疼。</p>
+<p>先说怎么加载图片，一定要带上bundle的包名，要不然找不到文件。如下：<br>[UIImage imageNamed:@”FFTKeyBoardBundle.bundle/ps.png”];</p>
+<h4 id="如何解决静态库中的xib问题"><a href="#如何解决静态库中的xib问题" class="headerlink" title="如何解决静态库中的xib问题"></a>如何解决静态库中的xib问题</h4><ol>
+<li>不用xib,纯代码写。</li>
+<li>第一个方法实在让我不爽，折腾了好几天，查了好些资料总算解决了。</li>
+</ol>
+<p>如下操作：</p>
+<ol>
+<li>先给你的静态库新建一个bundle,这个很关键。<br>File/New/Target/OS X Framework&amp;Library/Bundle</li>
+<li>这个时候你就创建了一个bundle,但这个bundle是OS X的。要做下修改。<br>Build Settings/Base SDK/Latest iOS</li>
+<li>设置bundle里面的资源。<br>Build Phases/copy Bundle Resources</li>
+<li>到这里我们基本上是完成了。下面是最关键的地方。运行项目找到这个bundle.我是用下图的方法找的，不知道你们的路径写的是哪里，如果是默认的应该和我的一样。<br>说的简单点Xcode需要的bundle是编译后的bundle.</li>
+</ol>
+<p>用的话就这么用就可以了：</p>
+<pre><code>NSBundle *bundle = [NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@&quot;FFTKeyBoardBundle&quot; withExtension:@&quot;bundle&quot;]];
+self = [bundle loadNibNamed:@&quot;PassWordKeyBoard&quot; owner:nil options:nil].firstObject;
+</code></pre><p>另：编译后的bundle文件如果有1x,和2X的图片我们可以看到变成了.tiff文件<br>当然如果你使用的界面是纯代码的就不用这么麻烦了，直接把资源文件夹后缀改成.bundle就可以了</p>
+<h3 id="framework的热更新做法"><a href="#framework的热更新做法" class="headerlink" title="framework的热更新做法"></a>framework的热更新做法</h3><p>具体参见这几个博客<a href="http://www.cnblogs.com/sunjianfei/p/5781900.html" target="_blank" rel="noopener">热更新-动态加载framework</a>、<a href="http://www.cocoachina.com/industry/20140613/8810.html" target="_blank" rel="noopener">WWDC2014之iOS使用动态库</a>、<a href="http://amazingw.github.io/2016/06/21/hot-update-iOS.html" target="_blank" rel="noopener">iOS的原生热更新做法</a></p>
+<p>具体过程如下：</p>
+<ol>
+<li>创建framework工程，在里边新建类及方法</li>
+<li>新建Aggregate Target，添加run script，将代码在各个平台上编译后合并成一个.framework文件，注意demo的run script是不对的，需自己写</li>
+<li>run Aggregate Target后生成.framework文件</li>
+<li>将framework以资源包的形势添加到主工程中</li>
+<li>代码实现</li>
+</ol>
+<p>也可以将Framework放到远程，通过下载来实现其内部的代码</p>
+<pre><code>NSString * bundlePath = [[ NSBundle mainBundle] pathForResource: @&quot;Dylib&quot; ofType :@ &quot;framework&quot;];
+NSError *error = nil;
+NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+NSLog(@&quot;%@&quot;, bundlePath);
+if([bundle loadAndReturnError:&amp;error]) {
+    NSLog(@&quot;bundle load framework succ&quot;);
+} else {
+    NSLog(@&quot;bundle load framework fail&quot;);
+}
+Class rootClass = NSClassFromString(@&quot;test&quot;);
+if (rootClass) {
+    id object = [[rootClass alloc] init];
+    [object performSelector:@selector(runtestRun:) withObject:@&quot;哈哈，调用成功&quot;];
+}
+</code></pre><h2 id="动态库"><a href="#动态库" class="headerlink" title="动态库"></a>动态库</h2><p>链接时不复制，程序运行时由系统动态加载到内存，供程序调用，系统只加载一次，多个程序共用，节省内存</p>
+<blockquote>
+<p>总结来说：其实就是加载时机和加载次数的不同</p>
+</blockquote>
+<p>framework 一般情况下就是对library的封装，同时封装了对应的header文件、以及引用的资源文件(如果有)</p>
+<h3 id="静态库与动态库的区别"><a href="#静态库与动态库的区别" class="headerlink" title="静态库与动态库的区别"></a>静态库与动态库的区别</h3><ul>
+<li>静态库：链接时完整地拷贝至可执行文件中，被多次使用就有多份冗余拷贝。</li>
+<li>动态库：链接时不复制，程序运行时由系统动态加载到内存，供程序调用，系统只加载一次，多个程序共用，节省内存。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Framework/" rel="tag"># Framework</a>
+          
+            <a href="/tags/Library/" rel="tag"># Library</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/30/iOS工程框架/" rel="next" title="iOS工程框架">
+                <i class="fa fa-chevron-left"></i> iOS工程框架
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/27/AFNetworking源码解析/" rel="prev" title="AFNetworking源码解析">
+                AFNetworking源码解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#静态库"><span class="nav-number">1.</span> <span class="nav-text">静态库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建静态库"><span class="nav-number">1.1.</span> <span class="nav-text">创建静态库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何用静态库"><span class="nav-number">1.2.</span> <span class="nav-text">如何用静态库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建framework"><span class="nav-number">1.3.</span> <span class="nav-text">创建framework</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#制作静态库时的几点注意："><span class="nav-number">1.4.</span> <span class="nav-text">制作静态库时的几点注意：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决静态库中的图片资源问题"><span class="nav-number">1.4.1.</span> <span class="nav-text">如何解决静态库中的图片资源问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何解决静态库中的xib问题"><span class="nav-number">1.4.2.</span> <span class="nav-text">如何解决静态库中的xib问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#framework的热更新做法"><span class="nav-number">1.5.</span> <span class="nav-text">framework的热更新做法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态库"><span class="nav-number">2.</span> <span class="nav-text">动态库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#静态库与动态库的区别"><span class="nav-number">2.1.</span> <span class="nav-text">静态库与动态库的区别</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,UIKit,UIScrollView,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="UIScrollViewUIScrollView 类为那些比应用窗口大的显示内容提供一种支持，它可以让用户在区域内通过手势来滑动，捏合来缩放操作 概要UIScrollView 是 UITableView 和 UITextView 的基类 UIScrollView 对象最主要特征就是它的内部有一个可以调整位置的内容视图，它把内容视图剪切到它自己的框架位置，当手指移动时，它自动调整内容视图的位置。UI">
+<meta name="keywords" content="iOS,UIKit,UIScrollView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIScrollView的API及用法">
+<meta property="og:url" content="https://frandfeng.github.io/2014/10/31/UIScrollView的API及用法/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="UIScrollViewUIScrollView 类为那些比应用窗口大的显示内容提供一种支持，它可以让用户在区域内通过手势来滑动，捏合来缩放操作 概要UIScrollView 是 UITableView 和 UITextView 的基类 UIScrollView 对象最主要特征就是它的内部有一个可以调整位置的内容视图，它把内容视图剪切到它自己的框架位置，当手指移动时，它自动调整内容视图的位置。UI">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T07:55:46.556Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UIScrollView的API及用法">
+<meta name="twitter:description" content="UIScrollViewUIScrollView 类为那些比应用窗口大的显示内容提供一种支持，它可以让用户在区域内通过手势来滑动，捏合来缩放操作 概要UIScrollView 是 UITableView 和 UITextView 的基类 UIScrollView 对象最主要特征就是它的内部有一个可以调整位置的内容视图，它把内容视图剪切到它自己的框架位置，当手指移动时，它自动调整内容视图的位置。UI">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2014/10/31/UIScrollView的API及用法/">
+
+
+
+
+
+  <title>UIScrollView的API及用法 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2014/10/31/UIScrollView的API及用法/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">UIScrollView的API及用法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2014-10-31T00:00:00+08:00">
+                2014-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="UIScrollView"><a href="#UIScrollView" class="headerlink" title="UIScrollView"></a>UIScrollView</h2><p>UIScrollView 类为那些比应用窗口大的显示内容提供一种支持，它可以让用户在区域内通过手势来滑动，捏合来缩放操作</p>
+<h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>UIScrollView 是 UITableView 和 UITextView 的基类</p>
+<p>UIScrollView 对象最主要特征就是它的内部有一个可以调整位置的内容视图，它把内容视图剪切到它自己的框架位置，当手指移动时，它自动调整内容视图的位置。UIScrollView的内容视图会根据offset位置来绘制自己。UIScrollView只负责绘制横向和竖向滚动指示器，其他的不负责。UIScrollView必须要知道它的内容视图的大小，这样它才会知道什么时候应该停止滚动。默认的，当滑动超越了边界时，它会弹回来。</p>
+<p>在 UIScrollView 中负责管理内容视图显示的对象应该也管理子视图，从而使视图不会超出屏幕的范围。当用户滑动的时候，这个对象应该持续添加和删除子视图。</p>
+<p>由于 UIScrollView 没有滚动条，它又必须知道用户的触摸操作是滑动内容还是和它的内容视图的交互，所以基于这个目的，它暂时触发一个touch-down事件，同时开启一个Timer，在timer触发以前看指头是否有一些可观的移偏量，如果没有，UIScrollView 会将事件发送到子视图中，如果在timer触发之前，用户手指移动了一定距离，UIScrollView 就会取消和其子视图的交互并且触发自己的滑动操作。UIScrollView 的子类可以重写<code>touchesShouldBegin:withEvent:inContentView:</code>、<code>pagingEnabled</code>、<code>touchesShouldCancelInContentView:</code>方法，这些方法会影响 UIScrollView 如何处理那些滚动手势。</p>
+<blockquote>
+<p>UIScrollView重载了hitTest方法，当手指touch的时候，UIScrollView会拦截所有event,然后等待150ms，在这段时间内，如果没有手指没有移动，当时间结束时，UIScrollView会发送tracking event到子视图上，并且自身不滑动。在时间结束前，手指发生了移动，那么UIScrollView就会进行滑动，从而取消发送tracking。</p>
+</blockquote>
+<p>UIScrollView 也可以处理缩放和平移操作。当用户做捏合操作的时候，它会自动调整内容视图的位置和大小比例，当操作结束的时候，内容视图管理器会自动更新内容视图的子视图（注意当只有一个手指在视图上时，操作也会结束），当手势在进行时中，UIScrollView 不会向它的子视图发送操作。</p>
+<p>UIScrollView 类可以有一个实现了协议 UIScrollViewDelegate 的委托，为了让缩放和平移有效果，必须实现<code>viewForZoomingInScrollView:</code>和<code>scrollViewDidEndZooming:withView:atScale:</code>方法，同时缩放的最大值(maximumZoomScale)和最小值(minimumZoomScale)必须不同</p>
+<p>更多关于view基本行为的信息，请阅读<a href="https://developer.apple.com/library/content/documentation/WindowsViews/Conceptual/ViewPG_iPhoneOS/Introduction/Introduction.html" target="_blank" rel="noopener">View Programming Guide for iOS</a></p>
+<h3 id="状态保存"><a href="#状态保存" class="headerlink" title="状态保存"></a>状态保存</h3><p>在iOS6以及以后的版本中，如果你对 UIScrollView 的 restorationIdentifier 属性赋值了，它就会试着保存滑动相关的一些信息，比如zoomScale、contentInset和contentOffset等属性。在恢复的时候，UIScrollView会恢复那些属性以至于内容视图被显示在以前的位置。更多关于状态保存的恢复的内容，请阅读<a href="https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40007072" target="_blank" rel="noopener">App Programming Guide for iOS</a></p>
+<p>更多关于外观和行为的配置，请阅读<a href="https://developer.apple.com/library/content/documentation/UserExperience/Conceptual/UIKitUICatalog/UIScrollView.html#//apple_ref/doc/uid/TP40012857-UIScrollView" target="_blank" rel="noopener">Scroll Views</a></p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><h4 id="管理内容的显示"><a href="#管理内容的显示" class="headerlink" title="管理内容的显示"></a>管理内容的显示</h4><ul>
+<li>-setContentOffset:animated:</li>
+<li>contentOffset</li>
+<li>contentSize</li>
+<li>contentInset</li>
+</ul>
+<h4 id="管理滚动"><a href="#管理滚动" class="headerlink" title="管理滚动"></a>管理滚动</h4><ul>
+<li>scrollEnabled</li>
+<li>directionalLockEnabled 让用户每次只在一个方向上滚动，竖直或者水平，但是如果初始移动方向处于45°左右的时候，这个锁就失效了</li>
+<li>scrollsToTop 击设备的状态栏时，使scrollsToTop == YES的控件滚动返回至顶部</li>
+</ul>
+<blockquote>
+<p>每一个默认的UIScrollView的实例，他的scrollsToTop属性默认为YES，所以要实现某一UIScrollView的实例点击设备状态栏返回顶部，则需要关闭其他的UIScrollView的实例的scrollsToTop属性为NO。很好理解：若多个scrollView响应返回顶部的事件，系统就不知道到底要将那个scrollView返回顶部了，因此也就不做任何操作了。。。</p>
+</blockquote>
+<ul>
+<li>-scrollRectToVisible:animated:</li>
+<li>pagingEnabled</li>
+<li>bounces 控制控件遇到边框是否反弹</li>
+<li>alwaysBounceVertical</li>
+<li>alwaysBounceHorizontal</li>
+<li>-touchesShouldBegin:withEvent:inContentView: 子类重写此方法，当手指在显示内容中按下时自定义默认的行为</li>
+<li>-touchesShouldCancelInContentView: 子类重写此方法，返回是否停止contentView的相关触摸方法并开始滚动UIScrollView</li>
+</ul>
+<blockquote>
+<p><code>-touchesShouldBegin:withEvent:inContentView:</code>和<code>-touchesShouldCancelInContentView:</code>方法中有touches和contentView两个关键字，表示在UIScrollView中触摸contentView的内部时的一些处理</p>
+<p><code>-touchesShouldBegin:withEvent:inContentView:</code>是否将touch事件传入到contentView中去开始处理，如果返回YES说明是传入，此情况下UIScrollView不会接收事件，就不会滚动</p>
+<p><code>-touchesShouldCancelInContentView:</code> 是否取消将事件传入到contentView，如果返回YES说明取消，此情况下UIScrollView就会接收事件，从而发生滚动</p>
+</blockquote>
+<ul>
+<li>canCancelContentTouches 这个BOOL类型的值控制content view里的触摸是否总能引发跟踪(tracking)</li>
+</ul>
+<blockquote>
+<p>如果属性值为YES并且跟踪到手指正触摸到一个内容控件，这时如果用户拖动手指的距离足够产生滚动，那么内容控件将收到一个touchesCancelled:withEvent:消息，而scroll view将这次触摸作为滚动来处理。如果值为NO，一旦content view开始跟踪(tracking==YES)，则无论手指是否移动，scrollView都不会滚动。</p>
+<p>简单通俗点说，如果为YES，就会等待用户下一步动作，如果用户移动手指到一定距离，就会把这个操作作为滚动来处理并开始滚动，同时发送一个touchesCancelled:withEvent:消息给内容控件，由控件自行处理。如果为NO，就不会等待用户下一步动作，并始终不会触发scrollView的滚动了。</p>
+</blockquote>
+<ul>
+<li>delaysContentTouches 是否延迟内容视图的触摸</li>
+</ul>
+<blockquote>
+<p>delaysContentTouches。默认值为YES；如果设置为NO，则无论手指移动的多么快，始终都会将触摸事件传递给内部控件；设置为NO可能会影响到UIScrollView的滚动功能。</p>
+</blockquote>
+<ul>
+<li><p>decelerationRate UIScrollView 减速，它的值域是（0.0，1.0）,当decelerationRate设置为0.1时，当手指touch up时就会很慢的停下来</p>
+</li>
+<li><p>dragging 是否正在拖动 UIScrollView</p>
+</li>
+<li>tracking 当touch后还没有拖动的时候值是YES,否则NO</li>
+<li>decelerating 当用户抬起手指后，判断UIScrollView的内容是否还在滑动</li>
+</ul>
+<blockquote>
+<p>如何判断UIScrollView停止滑动:停止滑动有两种情况<br>滑动ScrollView，当手指抬起时，此时会调用scrollViewDidEndDragging</p>
+<ol>
+<li>如果是手指慢慢抬起，此时decelerate参数为NO，说明不会再减速了，也不会调用有关减速的delegate了</li>
+<li>如果手指快速抬起，ScrollView会滑动一段距离减速停止，此时会调用delegate 的 scrollViewDidEndDecelerating函数</li>
+</ol>
+</blockquote>
+<pre><code>- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if(!decelerate) {
+        //OK,真正停止了，do something
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    //OK,真正停止了,do something
+}
+</code></pre><h4 id="管理滑动指示器"><a href="#管理滑动指示器" class="headerlink" title="管理滑动指示器"></a>管理滑动指示器</h4><ul>
+<li>indicatorStyle UIScrollViewIndicatorStyleDefault/Black/White</li>
+<li>scrollIndicatorInsets 滚动指标点到滚动视图的边缘的距离,默认值为UIEdgeInsetsZero</li>
+<li>showsHorizontalScrollIndicator</li>
+<li>showsVerticalScrollIndicator</li>
+<li>-flashScrollIndicators 闪一下滚动条,暗示是否有可滚动的内容</li>
+</ul>
+<h4 id="缩放和平移"><a href="#缩放和平移" class="headerlink" title="缩放和平移"></a>缩放和平移</h4><ul>
+<li>panGestureRecognizer 当UIScrollView想要更加精确的平移手势时会用到此属性</li>
+<li>pinchGestureRecognizer</li>
+<li>-zoomToRect:animated:</li>
+<li>zoomScale 当前的缩放比例</li>
+<li>-setZoomScale:animated:</li>
+<li>maximumZoomScale</li>
+<li>minimumZoomScale</li>
+<li>zoomBouncing 布尔值,表明缩放是否已超过了指定接收器的缩放限制</li>
+<li>zooming 是否正在缩放</li>
+<li>bouncesZoom 属性可以确保view的放缩比例超出设置比例范围时自动进行反弹</li>
+</ul>
+<h4 id="管理委托"><a href="#管理委托" class="headerlink" title="管理委托"></a>管理委托</h4><ul>
+<li>delegate</li>
+</ul>
+<h4 id="管理键盘"><a href="#管理键盘" class="headerlink" title="管理键盘"></a>管理键盘</h4><ul>
+<li>keyboardDismissMode UIScrollViewKeyboardDismissModeNone/OnDrag/Interactive 在滚动的时候可以让键盘消失</li>
+</ul>
+<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><ul>
+<li>UIScrollViewIndicatorStyle UIScrollViewIndicatorStyleDefault/Black/White</li>
+<li>Deceleration Constants UIScrollViewDecelerationRateNormal/RateFast</li>
+<li>UIScrollViewKeyboardDismissMode UIScrollViewKeyboardDismissModeNone/OnDrag/Interactive</li>
+</ul>
+<h4 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h4><ul>
+<li>directionalPressGestureRecognizer</li>
+<li>refreshControl</li>
+</ul>
+<h2 id="UIScrollViewDelegate"><a href="#UIScrollViewDelegate" class="headerlink" title="UIScrollViewDelegate"></a>UIScrollViewDelegate</h2><h3 id="概要-1"><a href="#概要-1" class="headerlink" title="概要"></a>概要</h3><p>实现了UIScrollViewDelegate协议的对象可以被指定为UIScrollView的委托，UIScrollViewDelegate协议中的方法可以用来作为一些操作的回调，比如滚动、缩放、减速、滚动动画等操作</p>
+<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><h4 id="滚动和拖动操作的回调"><a href="#滚动和拖动操作的回调" class="headerlink" title="滚动和拖动操作的回调"></a>滚动和拖动操作的回调</h4><ul>
+<li>-scrollViewDidScroll: 当用户滑动内容时</li>
+<li>-scrollViewWillBeginDragging:</li>
+<li>-scrollViewWillEndDragging:withVelocity:targetContentOffset:</li>
+<li>-scrollViewDidEndDragging:willDecelerate:</li>
+<li>-scrollViewShouldScrollToTop:</li>
+<li>-scrollViewDidScrollToTop:</li>
+<li>-scrollViewWillBeginDecelerating:</li>
+<li>-scrollViewDidEndDecelerating:</li>
+</ul>
+<h4 id="管理缩放"><a href="#管理缩放" class="headerlink" title="管理缩放"></a>管理缩放</h4><ul>
+<li>-viewForZoomingInScrollView:</li>
+<li>-scrollViewWillBeginZooming:withView:</li>
+<li>-scrollViewDidEndZooming:withView:atScale:</li>
+<li>-scrollViewDidZoom:</li>
+</ul>
+<h4 id="滚动动画回调"><a href="#滚动动画回调" class="headerlink" title="滚动动画回调"></a>滚动动画回调</h4><ul>
+<li>-scrollViewDidEndScrollingAnimation:</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/UIKit/" rel="tag"># UIKit</a>
+          
+            <a href="/tags/UIScrollView/" rel="tag"># UIScrollView</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/09/26/UIView的API及用法/" rel="next" title="UIView的API及用法">
+                <i class="fa fa-chevron-left"></i> UIView的API及用法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/11/28/Effective-OC2.0第一部分/" rel="prev" title="Effective-OC2.0第一部分">
+                Effective-OC2.0第一部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UIScrollView"><span class="nav-number">1.</span> <span class="nav-text">UIScrollView</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概要"><span class="nav-number">1.1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#状态保存"><span class="nav-number">1.2.</span> <span class="nav-text">状态保存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作"><span class="nav-number">1.3.</span> <span class="nav-text">操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管理内容的显示"><span class="nav-number">1.3.1.</span> <span class="nav-text">管理内容的显示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理滚动"><span class="nav-number">1.3.2.</span> <span class="nav-text">管理滚动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理滑动指示器"><span class="nav-number">1.3.3.</span> <span class="nav-text">管理滑动指示器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缩放和平移"><span class="nav-number">1.3.4.</span> <span class="nav-text">缩放和平移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理委托"><span class="nav-number">1.3.5.</span> <span class="nav-text">管理委托</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理键盘"><span class="nav-number">1.3.6.</span> <span class="nav-text">管理键盘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常量"><span class="nav-number">1.3.7.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例属性"><span class="nav-number">1.3.8.</span> <span class="nav-text">实例属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UIScrollViewDelegate"><span class="nav-number">2.</span> <span class="nav-text">UIScrollViewDelegate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概要-1"><span class="nav-number">2.1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作-1"><span class="nav-number">2.2.</span> <span class="nav-text">操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#滚动和拖动操作的回调"><span class="nav-number">2.2.1.</span> <span class="nav-text">滚动和拖动操作的回调</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理缩放"><span class="nav-number">2.2.2.</span> <span class="nav-text">管理缩放</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#滚动动画回调"><span class="nav-number">2.2.3.</span> <span class="nav-text">滚动动画回调</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

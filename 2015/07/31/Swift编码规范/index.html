@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="iOS,Swift,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。 我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide">
+<meta name="keywords" content="iOS,Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift编码规范">
+<meta property="og:url" content="https://frandfeng.github.io/2015/07/31/Swift编码规范/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:description" content="这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。 我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-11-25T08:07:57.889Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift编码规范">
+<meta name="twitter:description" content="这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。 我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich swift-style-guide ，此翻译版对应的是swift-style-guide">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2015/07/31/Swift编码规范/">
+
+
+
+
+
+  <title>Swift编码规范 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2015/07/31/Swift编码规范/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Swift编码规范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2015-07-31T00:00:00+08:00">
+                2015-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇Swift风格指南与你看到的其他的指南有所不同，此篇指南主要焦点集中在打印和Web展示的可读写上。我们创建此篇风格指南的目的，是为了让我们的图书、教程以及初学者套件中的代码保持优美和一致，即使我们有很多不同的作者共同编写这些图书。</p>
+<p>我们的首要目标是一致性，可读性和简洁性。具体参见raywenderlich <a href="https://github.com/raywenderlich/swift-style-guide/commits/master" target="_blank" rel="noopener">swift-style-guide</a> ，此翻译版对应的是swift-style-guide May 11, 2017 commit 版本 0f1f0848c4313201006e18cbf3b5c8b1365204ce</p>
+<h2 id="正确性"><a href="#正确性" class="headerlink" title="正确性"></a>正确性</h2><p>要尽量使你的代码编译时没有警告，甚至把警告当做错误处理。这条规则影响了很多语法的使用，如推荐使用#selector文而不是用字符串</p>
+<h2 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h2><p>使用具有描述性的和一致的命名使你的代码更加易读和易懂，更多关于Swift的命名方式参见<a href="https://swift.org/documentation/api-design-guidelines/" target="_blank" rel="noopener">Swift API Design Guidelines</a>，下边列出几项比较重要的规则</p>
+<ul>
+<li>在调用的地方力求清晰</li>
+<li>相对于简介，清晰更重要</li>
+<li>用驼峰式命名规则</li>
+<li>类型和协议用大写，其他的都用小写</li>
+<li>保留所有需要的词同时省略不必要的词</li>
+<li>使用基于角色的名称，而不是类型</li>
+<li>有时对弱类型信息进行补偿</li>
+<li>力求流畅使用</li>
+<li>工厂方法应以make开头</li>
+<li>命名方法时的一些副作用<ul>
+<li>动词方法转非变异版本加ed，ing的规则</li>
+<li>名词方法转变异版本直接加formX规则</li>
+<li>boolean类型应该读起来像断言</li>
+<li>协议描述的东西读起来应该像名词</li>
+<li>协议描述的能力应该以able或ible结尾</li>
+</ul>
+</li>
+<li>使用不让专家惊讶或混淆初学者的术语</li>
+<li>一般避免缩略语</li>
+<li>用先例命名</li>
+<li>使用方法和属性来简化函数</li>
+<li>大小写均匀分布（casing acronyms and initialisms uniformly up or down）</li>
+<li>给相似功能的方法相同的基本名称</li>
+<li>避免在返回值上负载过多的值</li>
+<li>选择一个号的参数名称，这样文档会更加清晰</li>
+<li>给闭包和元组设置标签</li>
+<li>充分利用默认参数</li>
+</ul>
+<h3 id="章法"><a href="#章法" class="headerlink" title="章法"></a>章法</h3><p>当提起方法规范时，易懂是最重要的，所以给方法命名的时候，越简单越好</p>
+<ol>
+<li>写方法时不带参数，这样，调用的时候直接用<code>addTarget</code></li>
+<li>写方法时用参数标记，这样，调用的时候用<code>addTarget(_:action:)</code></li>
+<li>写方法时用参数标记和类型标记，这样，调用的时候用<code>addTarget(_: Any?, action: Selector?)</code></li>
+</ol>
+<p>举个例子，当我们用UIGestureRecognizer时，会采用第一种方式</p>
+<h3 id="类前缀"><a href="#类前缀" class="headerlink" title="类前缀"></a>类前缀</h3><p>Swift中类别(类，结构体)在编译时会把模块设置为默认的命名空间，所以不用为了区分类别而添加前缀，比如RW。如果担心来自不同模块的两个名称发生冲突，可以在使用时添加模块名称来区分，注意不要滥用模块名称，仅在有可能发生冲突或疑惑的场景下使用</p>
+<pre><code>import SomeModule
+let myClass = MyModule.UsefulClass()
+</code></pre><h3 id="Delegates"><a href="#Delegates" class="headerlink" title="Delegates"></a>Delegates</h3><p>在定义委托方法时，第一个未命名参数应是委托数据源（UIKit包含了很多例子）</p>
+<p>正例</p>
+<pre><code>func namePickerView(_ namePickerView: NamePickerView, didSelectName name: String)
+func namePickerViewShouldReload(_ namePickerView: NamePickerView) -&gt; Bool
+</code></pre><p>反例</p>
+<pre><code>func didSelectName(namePicker: NamePickerViewController, name: String)
+func namePickerShouldReload() -&gt; Bool
+</code></pre><h3 id="使用类型推断"><a href="#使用类型推断" class="headerlink" title="使用类型推断"></a>使用类型推断</h3><p>使用编译器提供的类型推断可以写出更简单，清晰的代码(更多见<a href="https://github.com/raywenderlich/swift-style-guide#type-inference" target="_blank" rel="noopener">Type Inference</a>)</p>
+<p>正例</p>
+<pre><code>let selector = #selector(viewDidLoad)
+view.backgroundColor = .red
+let toView = context.view(forKey: .to)
+let view = UIView(frame: .zero)
+</code></pre><p>反例</p>
+<pre><code>let selector = #selector(ViewController.viewDidLoad)
+view.backgroundColor = UIColor.red
+let toView = context.view(forKey: UITransitionContextViewKey.to)
+let view = UIView(frame: CGRect.zero)
+</code></pre><h3 id="泛型"><a href="#泛型" class="headerlink" title="泛型"></a>泛型</h3><p>泛型类参数应具有描述性，遵守“大骆驼命名法”,如果一个参数名没有具体的含义，可以使用传统单大写字符，如T,  U, 或V等</p>
+<p>正例</p>
+<pre><code>struct Stack&lt;Element&gt; { ... }
+func write&lt;Target: OutputStream&gt;(to target: inout Target)
+func swap&lt;T&gt;(_ a: inout T, _ b: inout T)
+</code></pre><p>反例</p>
+<pre><code>struct Stack&lt;T&gt; { ... }
+func write&lt;target: OutputStream&gt;(to target: inout target)
+func swap&lt;Thing&gt;(_ a: inout Thing, _ b: inout Thing)
+</code></pre><h3 id="语言"><a href="#语言" class="headerlink" title="语言"></a>语言</h3><p>使用美式英语的拼写方式来定义接口</p>
+<p>正例</p>
+<pre><code>let color = &quot;red&quot;
+</code></pre><p>反例</p>
+<pre><code>let colour = &quot;red&quot;
+</code></pre><h2 id="代码组织"><a href="#代码组织" class="headerlink" title="代码组织"></a>代码组织</h2><p>用<code>extension</code>组织你的代码可以让代码更有逻辑块性，每个<code>extension</code>应该设置一个<code>//MARK:</code>块来让代码更好的组织起来</p>
+<h3 id="协议一致性"><a href="#协议一致性" class="headerlink" title="协议一致性"></a>协议一致性</h3><p>特别地，在向模型添加协议一致性时，更倾向于为协议方法添加一个单独的扩展。这样可以让相关联的一些方法放在一起，从而简化向类及其相关方法添加协议的说明</p>
+<blockquote>
+<p>你可以使用is和as操作符来检查是否遵循某一协议或强制转化为某一类型，此操作叫做检验协议的一致性</p>
+</blockquote>
+<p>正例</p>
+<pre><code>class MyViewController: UIViewController {
+  // class stuff here
+}
+
+// MARK: - UITableViewDataSource
+extension MyViewController: UITableViewDataSource {
+  // table view data source methods
+}
+
+// MARK: - UIScrollViewDelegate
+extension MyViewController: UIScrollViewDelegate {
+  // scroll view delegate methods
+}
+</code></pre><p>反例</p>
+<pre><code>class MyViewController: UIViewController, UITableViewDataSource, UIScrollViewDelegate {
+  // all methods
+}
+</code></pre><p>由于编译器不允许您在派生类中重新声明协议一致性，因此并不总是需要复制基类的扩展组，如果派生类是一个终端类，并且覆盖了少量的方法，情况尤其如此。保留扩展组的时间由作者自行决定。</p>
+<p>对于UIKit view controllers, 建议用extensions定义不同的类，按照生命周期，自定义访问，IBAction分组。</p>
+<h3 id="没有用到的代码"><a href="#没有用到的代码" class="headerlink" title="没有用到的代码"></a>没有用到的代码</h3><p>无用的代码，包括Xcode生成的模板代码和占位符注释应该删除，除非是有目的性的保留这些代码。只有当你的文章或书指引用户使用被注释的代码时除外(For RW)</p>
+<p>一些方法内只是简单地调用了父类里面的方法也需要删除，包括UIApplicationDelegate内的空方法和无用方法。</p>
+<p>正例</p>
+<pre><code>override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+  return Database.contacts.count
+}
+</code></pre><p>反例</p>
+<pre><code>override func didReceiveMemoryWarning() {
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+}
+
+override func numberOfSections(in tableView: UITableView) -&gt; Int {
+  // #warning Incomplete implementation, return the number of sections
+  return 1
+}
+
+override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int {
+  // #warning Incomplete implementation, return the number of rows
+  return Database.contacts.count
+}
+</code></pre><h3 id="最少引入"><a href="#最少引入" class="headerlink" title="最少引入"></a>最少引入</h3><p>减少不必要的引入，例如引入Foundation能满足的情况下不用引入UIKit</p>
+<h2 id="间隔"><a href="#间隔" class="headerlink" title="间隔"></a>间隔</h2><ol>
+<li>缩进使用2个空格. 在Xcode的偏好设置和项目设置都可以配置。(缩进两个是为了更好的显示和打印，一般都是用4个空格)</li>
+<li>方法体的大括号和其他大括号 (if/else/switch/while等) 首括号和首行语句在同一行，尾括号新起一行</li>
+<li>可以先选择代码，然后按Control-I (or Editor\Structure\Re-Indent in the menu)重新缩进整理代码</li>
+<li>方法之间应该有一条空行，以帮助视觉清晰度和组织。方法内的空行应该分隔单独的功能，但是有太多的空行往往意味着你应该将此方法重构为几个方法。</li>
+<li>冒号往往在左边没有空格，在右边有一个空格。除三元运算符<code>?:</code>，空字典[:]和#selector语法(_:)外</li>
+<li>每一行尽量保持在70个字符以内，不要故意做折行处理</li>
+<li>每一行的末尾要避免空格的出现</li>
+<li>在每个文件的末尾添加一个换行符</li>
+</ol>
+<p>正例</p>
+<pre><code>if user.isHappy {
+  // Do something
+} else {
+  // Do something else
+}
+</code></pre><p>反例</p>
+<pre><code>if user.isHappy
+{
+  // Do something
+}
+else {
+  // Do something else
+}
+</code></pre><p>正例</p>
+<pre><code>class TestDatabase: Database {
+  var data: [String: CGFloat] = [&quot;A&quot;: 1.2, &quot;B&quot;: 3.2]
+}
+</code></pre><p>反例</p>
+<pre><code>class TestDatabase : Database {
+  var data :[String:CGFloat] = [&quot;A&quot; : 1.2, &quot;B&quot;:3.2]
+}
+</code></pre><h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>如果有需要，用注释来解释某一段代码做了什么事情。注释必须保持最新，过期的注释要及时删除。</p>
+<p>避免代码中出现注释块，代码本身应尽量起到注释的作用，如果注释是为了生成文档可以例外。</p>
+<h2 id="类和结构体"><a href="#类和结构体" class="headerlink" title="类和结构体"></a>类和结构体</h2><p>应该使用哪一个?</p>
+<p>注意，结构体是值类型。结构体在使用中没有标识。一个数组包含[a, b, c]和另外一个数组包含[a, b, c]是完全一样的，它们完全可以互相替换，使用第一个还是使用第二个都一样，因为它们代表的是同一个东西。这就是为什么数组是结构体。</p>
+<p>类是引用类型。类使用的场景是需要一个标识或者需要一个特定的生命周期。假设你需要对人抽象为一个类，因为两个人，是两个不同的东西。即使两个人有同样的名字和生日，也不能确定这两个人是一样的。但是人的生日是一个结构体，因为日期1950/03/03和另外一个日期1950/03/03是相同的,日期是结构体没有唯一标示。</p>
+<p>有时，一些事物应该定义为结构体，但是还需要实现AnyObject协议或者已经在以前的历史版本中定义为类（NSDate，NSSet），所以尽可能的注意类和结构体之间的区别。</p>
+<p>类定义</p>
+<pre><code>class Circle: Shape {
+  var x: Int, y: Int
+  var radius: Double
+  var diameter: Double {
+    get {
+      return radius * 2
+    }
+    set {
+      radius = newValue / 2
+    }
+  }
+
+  init(x: Int, y: Int, radius: Double) {
+    self.x = x
+    self.y = y
+    self.radius = radius
+  }
+
+  convenience init(x: Int, y: Int, diameter: Double) {
+    self.init(x: x, y: y, radius: diameter / 2)
+  }
+
+  override func area() -&gt; Double {
+    return Double.pi * radius * radius
+  }
+}
+
+extension Circle: CustomStringConvertible {
+  var description: String {
+    return &quot;center = \(centerString) area = \(area())&quot;
+  }
+  private var centerString: String {
+    return &quot;(\(x),\(y))&quot;
+  }
+}
+</code></pre><p>上面的例子展示了下面的设计准则：</p>
+<ul>
+<li>属性，变量，常量和参数等在声明定义时，其中: 符号后有空格，而: 符号前没有空格。比如x: Int, 和Circle: Shape</li>
+<li>如果出于相同的目的和上下文定义多个变量/数据结构时，可以定义在同一行。</li>
+<li>缩进getter，setter的定义和属性观察器的定义。</li>
+<li>不需要添加internal这样的默认的修饰符。也不需要在重写一个方法时添加访问修饰符。</li>
+<li>将其他的一些函数(如打印)等组织在扩展(extension)中</li>
+<li>用private访问控制权限隐藏不需要分享的细节，如centerString方法</li>
+</ul>
+<h3 id="self的使用"><a href="#self的使用" class="headerlink" title="self的使用"></a>self的使用</h3><p>为了保持简洁，可以避免使用 self 关键词，因为Swift 在访问对象属性和调用对象方法不需要使用 self。</p>
+<p>只有在编译器需要的时候（当在构造器中需要区分属性名和参数名时需要使用 self，还有当在在闭包表达式中引用属性值）才会用到self，也就是说，如果编译器不要self能编译正确，就省略self</p>
+<h3 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h3><p>为了保持简洁，如果一个属性是只读的，请忽略掉get语句。因为只有在需要定义set语句的时候，才需要get语句。</p>
+<p>正例</p>
+<pre><code>var diameter: Double {
+  return radius * 2
+}
+</code></pre><p>反例</p>
+<pre><code>var diameter: Double {
+  get {
+    return radius * 2
+  }
+}
+</code></pre><h3 id="Final"><a href="#Final" class="headerlink" title="Final"></a>Final</h3><p>在教程中将类或者成员标记为final有可能会使人从主题上分心，所以这个不是很必要，然而有些情况下，使用final可以更加澄清你的意图，值得付出代价。在下面的示例中，Box具有特定的用途，不允许有派生类存在，所以把他标志成final会更加清楚</p>
+<pre><code>// Turn any generic type into a reference type using this Box class.
+final class Box&lt;T&gt; {
+  let value: T
+  init(_ value: T) {
+    self.value = value
+  }
+}
+</code></pre><h2 id="函数声明"><a href="#函数声明" class="headerlink" title="函数声明"></a>函数声明</h2><p>在定义短函数声明时保持在一行，一行内包括头括号:    </p>
+<pre><code>func reticulateSplines(spline: [Double]) -&gt; Bool {
+  // reticulate code goes here
+}
+</code></pre><p>对于声明较长的函数时，在适当的位置换行并在第二行多添加一个缩进：</p>
+<pre><code>func reticulateSplines(spline: [Double], adjustmentFactor: Double,
+    translateConstant: Int, comment: String) -&gt; Bool {
+  // reticulate code goes here
+}
+</code></pre><h3 id="闭包表达式"><a href="#闭包表达式" class="headerlink" title="闭包表达式"></a>闭包表达式</h3><p>仅在闭包表达式参数在参数列表中最后一个时，才使用尾随闭包表达式。闭包参数命名要有描述性。</p>
+<p>正例</p>
+<pre><code>UIView.animate(withDuration: 1.0) {
+  self.myView.alpha = 0
+}
+
+UIView.animate(withDuration: 1.0, animations: {
+  self.myView.alpha = 0
+}, completion: { finished in
+  self.myView.removeFromSuperview()
+})
+</code></pre><p>反例</p>
+<pre><code>UIView.animate(withDuration: 1.0, animations: {
+  self.myView.alpha = 0
+})
+
+UIView.animate(withDuration: 1.0, animations: {
+  self.myView.alpha = 0
+}) { f in
+  self.myView.removeFromSuperview()
+}
+</code></pre><p>当单个闭包表达式上下文清晰时，使用隐式的返回值：</p>
+<pre><code>attendeeList.sort { a, b in
+  a &gt; b
+}
+</code></pre><p>链式方法使用尾随闭包应该要做到清晰易读，至于如何使用空格，换行，还是使用命名和匿名参数不做具体要求</p>
+<pre><code>let value = numbers.map{ $0 * 2  }.filter{  $0 % 3 == 0 }.index(of: 90)
+let value=numbers
+          .map{ $0 * 2 }
+          .filter{ $0 &gt; 50 }
+          .map{$0 + 10}
+</code></pre><h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p>优先使用Swift原生类型，因为Swift提供了到Objective-C的桥接，所以你仍然可以根据需要使用Objective-C提供的方法</p>
+<p>正例</p>
+<pre><code>let width = 120.0                                    // Double
+let widthString = (width as NSNumber).stringValue    // String
+</code></pre><p>反例</p>
+<pre><code>let width: NSNumber = 120.0                          // NSNumber
+let widthString: NSString = width.stringValue        // NSString
+</code></pre><p>在 Sprite Kit 代码中, 使用CGFloat可以避免数据多次转换，让代码更简洁。</p>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>定义常量使用 let 关键字，定义变量使用 var 关键字， 如果变量的值未来不会发生变化要使用常量。</p>
+<blockquote>
+<p>建议: 一个好的技巧是，使用 let 定义任何东西，只有在编译器提出警告需要改变的时候才修改为 var 定义。</p>
+</blockquote>
+<p>您可以使用类型属性定义类型上的常量而不是类型的实例上的常量。若要将类型属性声明为常量，只需使用<code>static let</code>。以这种方式声明的类型属性通常优于全局常量，因为它们更容易与实例属性区别开来。例子:</p>
+<p>正例</p>
+<pre><code>enum Math {
+  static let e = 2.718281828459045235360287
+  static let root2 = 1.41421356237309504880168872
+}
+
+let hypotenuse = side * Math.root2
+</code></pre><p>反例</p>
+<pre><code>let e = 2.718281828459045235360287  // pollutes global namespace
+let root2 = 1.41421356237309504880168872
+
+let hypotenuse = side * root2 // what is root2?
+</code></pre><blockquote>
+<p>注意：使用不区分大小写的枚举的好处是变量不会被无意初始化，且在一个单独的命名空间中工作</p>
+</blockquote>
+<h3 id="静态方法和变量类型属性"><a href="#静态方法和变量类型属性" class="headerlink" title="静态方法和变量类型属性"></a>静态方法和变量类型属性</h3><p>静态方法和类形属性类似于全局方法和全局属性，应该节制使用。它们的使用场景在于如果某些功能局限于特别的类型或和Objective-C 互相调用。</p>
+<h3 id="可选类型"><a href="#可选类型" class="headerlink" title="可选类型"></a>可选类型</h3><p>变量和函数返回值声明为可选类型(?)，这样如果赋nil值可以接受。</p>
+<p>当你确认实例变量稍晚会在使用前初始化，可以在声明时用 ！表示隐式的拆包类型，比如在viewDidLoad中会初始化的子视图。</p>
+<p>当你访问一个可选类型值时，如果只需要访问一次或者在可选值链中有多个可选类型值时，请使用可选类型值链：</p>
+<pre><code>self.textContainer?.textLabel?.setNeedsDisplay()
+</code></pre><p>如果可以方便的一次性拆包或者执行多次性操作时，使用可选类型绑定:</p>
+<pre><code>if let textContainer = self.textContainer {
+  // do many things with textContainer
+}
+</code></pre><p>当我们命名一个可选值变量和属性时，避免使用如optionalString 或 maybeView名称，因为可选值的已经体现在类型定义中。</p>
+<p>在可选值绑定时，直接映射原始的命名比使用诸如unwrappedView 或 actualLabel好。</p>
+<p>正例</p>
+<pre><code>var subview: UIView?
+var volume: Double?
+
+// later on...
+if let subview = subview, let volume = volume {
+  // do something with unwrapped subview and volume
+}
+</code></pre><p>反例</p>
+<pre><code>var optionalSubview: UIView?
+var volume: Double?
+
+if let unwrappedSubview = optionalSubview {
+  if let realVolume = volume {
+    // do something with unwrappedSubview and realVolume
+  }
+}
+</code></pre><h3 id="延迟初始化"><a href="#延迟初始化" class="headerlink" title="延迟初始化"></a>延迟初始化</h3><p>延迟初始化用来细致地控制对象的生命周期，这对于想实现延迟加载视图的UIViewController特别有用，你可以即时调用闭包，也可以调用私有构造方法：</p>
+<pre><code>lazy var locationManager: CLLocationManager = self.makeLocationManager()
+
+private func makeLocationManager() -&gt; CLLocationManager {
+  let manager = CLLocationManager()
+  manager.desiredAccuracy = kCLLocationAccuracyBest
+  manager.delegate = self
+  manager.requestAlwaysAuthorization()
+  return manager
+}
+</code></pre><blockquote>
+<p>注意：</p>
+<ul>
+<li>这个地方不需要[unowned self]，因为没有形成闭环</li>
+<li>Location manager 的负面效果会弹出对话框要求用户提供权限，这是做延时加载的原因</li>
+</ul>
+</blockquote>
+<h3 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h3><p>推荐使用更加紧凑的代码，让编译器能够推断出每个常量和变量的类型。类型推断也适用于小的数组和字典，如果需要可以指定特定的类型，如 CGFloat 或 Int16 </p>
+<p>正例</p>
+<pre><code>let message = &quot;Click the button&quot;
+let currentBounds = computeViewBounds()
+var names = [&quot;Mic&quot;, &quot;Sam&quot;, &quot;Christine&quot;]
+let maximumWidth: CGFloat = 106.5
+</code></pre><p>反例</p>
+<pre><code>let message: String = &quot;Click the button&quot;
+let currentBounds: CGRect = computeViewBounds()
+let names = [String]()
+</code></pre><p>对空的数组和字典，如何使用类型注解</p>
+<p>正例</p>
+<pre><code>var names: [String] = []
+var lookup: [String: Int] = [:]
+</code></pre><p>反例</p>
+<pre><code>var names = [String]()
+var lookup = [String: Int]()
+</code></pre><blockquote>
+<p>遵循这个准则意味着提取描述性名称比以前更重要</p>
+</blockquote>
+<h3 id="语法糖"><a href="#语法糖" class="headerlink" title="语法糖"></a>语法糖</h3><p>使用简洁的类型定义语法，而不是全称语法</p>
+<p>正例</p>
+<pre><code>var deviceModels: [String]
+var employees: [Int: String]
+var faxNumber: Int?
+</code></pre><p>反例</p>
+<pre><code>var deviceModels: Array&lt;String&gt;
+var employees: Dictionary&lt;Int, String&gt;
+var faxNumber: Optional&lt;Int&gt;
+</code></pre><h2 id="函数-VS-方法"><a href="#函数-VS-方法" class="headerlink" title="函数 VS 方法"></a>函数 VS 方法</h2><p>自由函数不依附于任何类或类型，应该节制地使用。如果可能，优先使用方法而不是自由函数，这有助于代码的可读性和易发现性。</p>
+<p>正例</p>
+<pre><code>let sorted = items.mergeSorted()  // easily discoverable
+rocket.launch()  // acts on the model
+</code></pre><p>反例</p>
+<pre><code>let sorted = mergeSort(items)  // hard to discover
+launch(&amp;rocket)
+</code></pre><p>自由函数使用的场景是当他本身不和具体的类别或实例相关。</p>
+<pre><code>let tuples = zip(a, b)  // feels natural as a free function (symmetry)
+let value = max(x, y, z)  // another free function that feels natural
+</code></pre><h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><p>代码（不仅正式代码，包括demo）应避免指针循环引用，分析对象图，使用弱引用和无主引用避免强引用循环. 另外使用值类型(结构体和枚举)可以避免循环引用</p>
+<h3 id="延长对象生命周期"><a href="#延长对象生命周期" class="headerlink" title="延长对象生命周期"></a>延长对象生命周期</h3><ul>
+<li>延长对象生命周期习惯上使用<code>[weak self]</code>和<code>guard let strongSelf = self else { return }</code>语法。</li>
+<li>[weak self] 优于 [unowned self] 因为前者更更能明显地体现self 生命周期长于闭包块。</li>
+<li>显式延长生命周期优先于可选性拆包。</li>
+</ul>
+<p>正例</p>
+<pre><code>resource.request().onComplete { [weak self] response in
+  guard let strongSelf = self else {
+    return
+  }
+  let model = strongSelf.updateModel(response)
+  strongSelf.updateUI(model)
+}
+</code></pre><p>反例</p>
+<pre><code>// might crash if self is released before response returns
+resource.request().onComplete { [unowned self] response in
+  let model = self.updateModel(response)
+  self.updateUI(model)
+}
+</code></pre><p>反例</p>
+<pre><code>// deallocate could happen between updating the model and updating UI
+resource.request().onComplete { [weak self] response in
+  let model = self?.updateModel(response)
+  self?.updateUI(model)
+}
+</code></pre><h2 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h2><p>教程中的严格访问控制注释可能会分散主题，所以不是必需的。然而，如果合适的应用<code>private</code>和<code>fileprivate</code>访问控制，则会增进封装并使主题更加明显，所以，当合适的时候选择使用<code>private</code>和<code>fileprivate</code>访问控制。有时在写<code>extension</code>的时候会用到<code>fileprivate</code></p>
+<p>当需要访问控制权限的时候，用<code>open</code>,<code>public</code>,<code>internal</code>关键字</p>
+<p>访问控制符一般放在属性修饰符的最前面. 除非需要使用 static 修饰符和一些属性关键字，如@IBAction,  @IBOutlet 或 @discardableResult</p>
+<p>正例</p>
+<pre><code>private let message = &quot;Great Scott!&quot;
+
+class TimeMachine {  
+  fileprivate dynamic lazy var fluxCapacitor = FluxCapacitor()
+}
+</code></pre><p>反例</p>
+<pre><code>fileprivate let message = &quot;Great Scott!&quot;
+
+class TimeMachine {  
+  lazy dynamic fileprivate var fluxCapacitor = FluxCapacitor()
+}
+</code></pre><h2 id="控制流程"><a href="#控制流程" class="headerlink" title="控制流程"></a>控制流程</h2><p>循环使用for-in表达式，而不使用 while 表达式。</p>
+<p>正例</p>
+<pre><code>for _ in 0..&lt;3 {
+  print(&quot;Hello three times&quot;)
+}
+
+for (index, person) in attendeeList.enumerated() {
+  print(&quot;\(person) is at position #\(index)&quot;)
+}
+
+//by表示step，步长
+for index in stride(from: 0, to: items.count, by: 2) {
+  print(index)
+}
+
+for index in (0...3).reversed() {
+  print(index)
+}
+</code></pre><p>反例</p>
+<pre><code>var i = 0
+while i &lt; 3 {
+  print(&quot;Hello three times&quot;)
+  i += 1
+}
+
+
+var i = 0
+while i &lt; attendeeList.count {
+  let person = attendeeList[i]
+  print(&quot;\(person) is at position #\(i)&quot;)
+  i += 1
+}
+</code></pre><h2 id="黄金路径"><a href="#黄金路径" class="headerlink" title="黄金路径"></a>黄金路径</h2><p>当编码遇到条件判断时，左边的距离是黄金路径或幸福路径，也就是说，不要嵌套if循环，多个返回语句是可以的。guard 就为此而生的。</p>
+<p>正例</p>
+<pre><code>func computeFFT(context: Context?, inputData: InputData?) throws -&gt; Frequencies {
+
+  guard let context = context else {
+    throw FFTError.noContext
+  }
+  guard let inputData = inputData else {
+    throw FFTError.noInputData
+  }
+
+  // use context and input to compute the frequencies
+  return frequencies
+}
+</code></pre><p>反例</p>
+<pre><code>func computeFFT(context: Context?, inputData: InputData?) throws -&gt; Frequencies {
+
+  if let context = context {
+    if let inputData = inputData {
+      // use context and input to compute the frequencies
+
+      return frequencies
+    } else {
+      throw FFTError.noInputData
+    }
+  } else {
+    throw FFTError.noContext
+  }
+}
+</code></pre><p>当有多个条件需要用 guard 或 if let 解包，可用复合语句避免嵌套。</p>
+<p>正例</p>
+<pre><code>guard let number1 = number1,
+      let number2 = number2,
+      let number3 = number3 else {
+  fatalError(&quot;impossible&quot;)
+}
+// do something with numbers
+</code></pre><p>反例</p>
+<pre><code>if let number1 = number1 {
+  if let number2 = number2 {
+    if let number3 = number3 {
+      // do something with numbers
+    } else {
+      fatalError(&quot;impossible&quot;)
+    }
+  } else {
+    fatalError(&quot;impossible&quot;)
+  }
+} else {
+  fatalError(&quot;impossible&quot;)
+}
+</code></pre><h3 id="失败防护"><a href="#失败防护" class="headerlink" title="失败防护"></a>失败防护</h3><p>防护语句的退出有很多方式，一般都是单行语句，如 return,throw,break,continue 和 fatalError()等。 避免出现大的代码块，如果清理代码需要多个退出点，可以用 defer 模块避免重复清理代码。？？？</p>
+<h2 id="分号"><a href="#分号" class="headerlink" title="分号"></a>分号</h2><p>Swift不强制每条语句有分号，当一行内写多个语句的时候是必须的，但是，代码规范要求不要在一行里写多个语句。</p>
+<p>正例</p>
+<pre><code>let swift = &quot;not a scripting language&quot;
+</code></pre><p>反例</p>
+<pre><code>let swift = &quot;not a scripting language&quot;;
+</code></pre><blockquote>
+<p>Swift和JS是完全不同的语言，JS<a href="http://stackoverflow.com/questions/444080/do-you-recommend-using-semicolons-after-every-statement-in-javascript" target="_blank" rel="noopener">省略分号</a>一般是不安全的</p>
+</blockquote>
+<h2 id="圆括号"><a href="#圆括号" class="headerlink" title="圆括号"></a>圆括号</h2><p>条件判断时圆括号不是必须的，建议省略</p>
+<p>正例</p>
+<pre><code>if name == &quot;Hello&quot; {
+  print(&quot;World&quot;)
+}
+</code></pre><p>反例</p>
+<pre><code>if (name == &quot;Hello&quot;) {
+  print(&quot;World&quot;)
+}
+</code></pre><p>在一些比较长的表达式中，圆括号有时候可以让代码更易读</p>
+<pre><code>let playerMark = (player == current ? &quot;X&quot; : &quot;O&quot;)
+</code></pre><h2 id="组织和APP唯一标识"><a href="#组织和APP唯一标识" class="headerlink" title="组织和APP唯一标识"></a>组织和APP唯一标识</h2><p>在本网站的课程上的工程信息，组织应该被设置成<code>Ray Wenderlich</code>，并且APP唯一标识应该被设置成<code>com.razeware.TutorialName</code>，其中<code>TutorialName</code>标识课程工程的名称</p>
+<h2 id="版权声明"><a href="#版权声明" class="headerlink" title="版权声明"></a>版权声明</h2><p>以下的版权信息应该包括在每个文件的顶部</p>
+<pre><code>/**
+* Copyright (c) 2017 Razeware LLC
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the &quot;Software&quot;), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* Notwithstanding the foregoing, you may not use, copy, modify, merge, publish, 
+* distribute, sublicense, create a derivative work, and/or sell copies of the 
+* Software in any work that is designed, intended, or marketed for pedagogical or 
+* instructional purposes related to programming, coding, application development, 
+* or information technology.  Permission for such use, copying, modification,
+* merger, publication, distribution, sublicensing, creation of derivative works, 
+* or sale is expressly withheld.
+*
+* THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
+*/
+</code></pre><h2 id="笑脸"><a href="#笑脸" class="headerlink" title="笑脸"></a>笑脸</h2><p>笑脸是<a href="https://www.raywenderlich.com/" target="_blank" rel="noopener">raywenderlich.com</a>网站一个非常突出的特性！对编码的主题来说，正确的使用笑脸会产生巨大的快乐和幸福感。由于ASCII的艺术，右方括号能代表最大的笑脸，而右圆括号只能创建一半的笑脸，所以，我们使用右方括号代表一个笑脸<code>:]</code></p>
+<p>正例</p>
+<pre><code>:]
+</code></pre><p>反例</p>
+<pre><code>:)
+</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://swift.org/documentation/api-design-guidelines/" target="_blank" rel="noopener">The Swift API Design Guidelines</a></li>
+<li><a href="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/index.html" target="_blank" rel="noopener">The Swift Programming Language</a></li>
+<li><a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html" target="_blank" rel="noopener">Using Swift with Cocoa and Objective-C</a></li>
+<li><a href="https://developer.apple.com/library/prerelease/ios/documentation/General/Reference/SwiftStandardLibraryReference/index.html" target="_blank" rel="noopener">Swift Standard Library Reference</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/06/26/Swift语法学习/" rel="next" title="Swift2语法学习">
+                <i class="fa fa-chevron-left"></i> Swift2语法学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/28/Swift重点基础语法/" rel="prev" title="Swift的重点基础语法">
+                Swift的重点基础语法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#正确性"><span class="nav-number">1.</span> <span class="nav-text">正确性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命名"><span class="nav-number">2.</span> <span class="nav-text">命名</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#章法"><span class="nav-number">2.1.</span> <span class="nav-text">章法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类前缀"><span class="nav-number">2.2.</span> <span class="nav-text">类前缀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Delegates"><span class="nav-number">2.3.</span> <span class="nav-text">Delegates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用类型推断"><span class="nav-number">2.4.</span> <span class="nav-text">使用类型推断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#泛型"><span class="nav-number">2.5.</span> <span class="nav-text">泛型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语言"><span class="nav-number">2.6.</span> <span class="nav-text">语言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码组织"><span class="nav-number">3.</span> <span class="nav-text">代码组织</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#协议一致性"><span class="nav-number">3.1.</span> <span class="nav-text">协议一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没有用到的代码"><span class="nav-number">3.2.</span> <span class="nav-text">没有用到的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最少引入"><span class="nav-number">3.3.</span> <span class="nav-text">最少引入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#间隔"><span class="nav-number">4.</span> <span class="nav-text">间隔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-number">5.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类和结构体"><span class="nav-number">6.</span> <span class="nav-text">类和结构体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#self的使用"><span class="nav-number">6.1.</span> <span class="nav-text">self的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算属性"><span class="nav-number">6.2.</span> <span class="nav-text">计算属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Final"><span class="nav-number">6.3.</span> <span class="nav-text">Final</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数声明"><span class="nav-number">7.</span> <span class="nav-text">函数声明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包表达式"><span class="nav-number">7.1.</span> <span class="nav-text">闭包表达式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型"><span class="nav-number">8.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常量"><span class="nav-number">8.1.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态方法和变量类型属性"><span class="nav-number">8.2.</span> <span class="nav-text">静态方法和变量类型属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可选类型"><span class="nav-number">8.3.</span> <span class="nav-text">可选类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#延迟初始化"><span class="nav-number">8.4.</span> <span class="nav-text">延迟初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型推断"><span class="nav-number">8.5.</span> <span class="nav-text">类型推断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法糖"><span class="nav-number">8.6.</span> <span class="nav-text">语法糖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数-VS-方法"><span class="nav-number">9.</span> <span class="nav-text">函数 VS 方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存管理"><span class="nav-number">10.</span> <span class="nav-text">内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#延长对象生命周期"><span class="nav-number">10.1.</span> <span class="nav-text">延长对象生命周期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问控制"><span class="nav-number">11.</span> <span class="nav-text">访问控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制流程"><span class="nav-number">12.</span> <span class="nav-text">控制流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#黄金路径"><span class="nav-number">13.</span> <span class="nav-text">黄金路径</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#失败防护"><span class="nav-number">13.1.</span> <span class="nav-text">失败防护</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分号"><span class="nav-number">14.</span> <span class="nav-text">分号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#圆括号"><span class="nav-number">15.</span> <span class="nav-text">圆括号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组织和APP唯一标识"><span class="nav-number">16.</span> <span class="nav-text">组织和APP唯一标识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版权声明"><span class="nav-number">17.</span> <span class="nav-text">版权声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笑脸"><span class="nav-number">18.</span> <span class="nav-text">笑脸</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">19.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
