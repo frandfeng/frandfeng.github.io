@@ -302,6 +302,330 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/12/28/KVO原理解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/28/KVO原理解析/" itemprop="url">KVO原理解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T00:00:00+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src="/assets/outline/KVO.png" alt=""></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/12/28/KVO原理解析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/11/30/KVC原理解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/30/KVC原理解析/" itemprop="url">KVC原理解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-30T00:00:00+08:00">
+                2018-11-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>键值编码是一种由NSKeyValueCoding非正式协议启用的机制，对象采用该机制提供对其属性的间接访问。当对象符合键值编码时，其属性可通过字符串参数通过简洁，统一的消息传递接口寻址。这种间接访问机制补充了实例变量及其相关访问​​器方法提供的直接访问。</p>
+<p>您通常使用访问器方法来访问对象的属性。get访问器（或getter）返回属性的值。set访问器（或setter）设置属性的值。在Objective-C中，您还可以直接访问属性的基础实例变量。以任何这些方式访问对象属性都很简单，但需要调用特定于属性的方法或变量名称。随着属性列表的增长或变化，访问这些属性的代码也必须如此。相反，符合键值编码的对象提供了一个简单的消息传递接口，该接口在其所有属性中都是一致的。</p>
+<p>键值编码是一个基本概念，是许多其他Cocoa技术的基础，例如键值观察(key-value observing)，Cocoa绑定(Cocoa bindings)，Core Data和AppleScript-ability。在某些情况下，键值编码还有助于简化代码。</p>
+<ul>
+<li><p>使用键值编码可以干什么？</p>
+<p>  对象通常在NSObject（直接或间接）继承时采用键值编码，它们都采用NSKeyValueCoding协议并为基本方法提供默认实现。这样的对象通过紧凑的消息传递接口使其他对象能够执行以下操作：</p>
+<ul>
+<li>访问对象属性。 该协议指定方法，例如getter valueForKey: 和setter setValue:forKey:，用于通过名称或键访问对象属性，参数为字符串。这些和相关方法的默认实现使用键来定位基础数据并与其交互，如Accessing Object Properties</li>
+<li>操纵集合属性。 访问方法的默认实现和对象的集合属性（如NSArray对象）一样，也和任何其他属性一样。此外，如果对象定义属性的集合访问器方法，则它允许对集合内容进行键值访问。这通常比直接访问更有效，并允许您通过标准化界面使用自定义集合对象，如Accessing Collection Properties</li>
+<li>在集合对象上调用集合运算符。 在符合键值编码的对象中访问集合属性时，可以将集合运算符插入到键字符串中，如Using Collection Operators。集合运算符根据默认的NSKeyValueCodinggetter实现对集合执行操作，然后返回集合的新的过滤版本或表示集合的某些特征的单个值。</li>
+<li>访问非对象属性。 协议默认实现检测非对象属性，包括标量和结构体，并自动将它们包装和解包为协议接口上使用的对象，如Representing Non-Object Values。此外，该协议声明了一种方法，该方法允许兼容对象nil通过键值编码接口在非对象属性上设置值时为该情况提供合适的作用。</li>
+<li>key path访问属性。 如果具有符合键值编码的对象层次结构，则可以使用基于key path的方法调用，使用单个调用在层次结构内深入查看，获取或设置值。</li>
+</ul>
+</li>
+<li><p>如何使用键值编码？</p>
+<p>  为了使您自己的对象键值编码符合要求，您需要确保它们采用NSKeyValueCoding非正式协议并实现相应的方法，例如作为valueForKey: 通用getter和setValue:forKey: 通用setter。幸运的是，如上所述，NSObject  采用此协议并为这些和其他基本方法提供默认实现。因此，如果您从NSObject（或其许多子类中的任何一个）派生对象，那么大部分工作已经完成。</p>
+<p>  为了使默认方法完成其工作，您需要确保对象的访问器方法和实例变量遵循某些明确定义的模式。这允许默认实现找到对象的属性以响应键值编码消息。然后，您可以选择通过提供验证方法和处理某些特殊情况来扩展和自定义键值编码。</p>
+</li>
+<li><p>如何使用Swift进行键值编码</p>
+<p>  NSObject从其子类或其子类之一 继承的Swift对象默认情况下是符合其属性的键值编码。而在Objective-C中，属性的访问器和实例变量必须遵循某些模式，Swift中的标准属性声明会自动保证这一点。另一方面，协议的许多功能要么不相关，要么使用Objective-C中不存在的本机Swift构造或技术来更好地处理。例如，因为所有Swift属性都是对象，所以您永远不会使用默认实现对非对象属性的特殊处理。</p>
+<p>  因此，虽然键值编码协议方法直接转换为Swift，但本指南主要关注Objective-C，您需要做更多工作以确保合规性，以及键值编码通常最有用的地方。整个指南中都提到了需要在Swift中采用明显不同方法的情况。</p>
+<p>  有关使用Swift和Cocoa技术的更多信息，请阅读将Swift与Cocoa和Objective-C一起使用（Swift 3）。有关Swift的完整描述，请阅读Swift编程语言（Swift 3）</p>
+</li>
+<li><p>哪些技术用到了KVO？</p>
+<p>  符合键值编码的对象可以参与依赖于此类访问的各种Cocoa技术，包括：</p>
+<ul>
+<li>键值观察(Key-value observing)。 此机制使对象能够注册异步通知监听另一个对象属性的改变，如“ Key-Value Observing Programming</li>
+<li>Cocoa绑定(Cocoa bindings)。 这一系列技术完全实现了Model-View-Controller范例，其中模型(Model)用于封装应用程序数据，视图(View)用于显示和编辑数据，控制器(Controller)在两者之​​间进行调解。阅读<em>Cocoa Bindings Programming Topics</em>以了解有关Cocoa绑定的更多信息</li>
+<li>核心数据(Core Data)。 该框架为与对象生命周期和对象图形化管理相关的常见任务（包括持久性）提供通用和自动化解决方案。您可以在<em>Core Data Programming Guide</em>阅读Core Data </li>
+<li>AppleScript。 这种脚本语言可以直接控制脚本化应用程序和macOS的许多部分。Cocoa的脚本支持利用键值编码来获取和设置脚本化对象中的信息。NSScriptKeyValueCoding非正式协议中的方法提供了使用键值编码的附加功能，包括通过多值键中的索引获取和设置键值，以及将键值强制（或转换）为适当的数据类型。<em>AppleScript Overview</em>提供了AppleScript及其相关技术的高级概述。</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/30/KVC原理解析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/10/26/ARKit增强现实/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1603,322 +1927,6 @@ UIImage的底层是通过ImageIO库实现的，ImageIO库的.h头如下：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/02/23/网络及框架/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/23/网络及框架/" itemprop="url">网络及框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-23T00:00:00+08:00">
-                2018-02-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          断点下载原理及文件上传
-断点下载方式
-1. 断点下载（URL）
-2. 判断过渡区(中转站tmp)是否存在该请求的网络数据?
-3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求
-4. 过度区没有相关数据:直接发起网络请求
-5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开
-6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Document)
-#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
-@interface BreakLoadImageVC ()&lt;NSURLSessionDelegate, NSURLSessionDataDelegate&gt; {
-    NS
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/23/网络及框架/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/01/26/京东MVCS框架/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Frand Feng">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Frand Feng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/26/京东MVCS框架/" itemprop="url">京东MVCS框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-26T00:00:00+08:00">
-                2018-01-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/框架/" itemprop="url" rel="index">
-                    <span itemprop="name">框架</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          京东MVCS框架搭建
-
-NSObject+SYKVO.h/NSObject+SYKVO.m
-typedef void(^SYKVOBlock)(id newValue);
-
-@interface NSObject (SYKVO)
-- (void)addObserverSuny:(NSObject *)observer keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(SYKVOBlock)block;
-// 默认是NSKeyValueObservingOptionNew
-- (void)addObserverSuny:(NSObject *)observer keyPath:(NSString *)keyPath block:(SYKVOBlock)block;
-@end
-CSBas
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/26/京东MVCS框架/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1971,7 +1979,7 @@ CSBas
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">90</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1993,7 +2001,7 @@ CSBas
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

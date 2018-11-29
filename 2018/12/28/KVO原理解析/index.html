@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="OC,iOS,KVO,">
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="OC,iOS,KVO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KVO原理解析">
+<meta property="og:url" content="https://frandfeng.github.io/2018/12/28/KVO原理解析/index.html">
+<meta property="og:site_name" content="Frand Feng">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/KVO.png">
+<meta property="og:updated_time" content="2018-11-29T09:39:33.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KVO原理解析">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/KVO.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://frandfeng.github.io/2018/12/28/KVO原理解析/">
+
+
+
+
+
+  <title>KVO原理解析 | Frand Feng</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?033e49e2955598a86e6aef7bb5784a98";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Frand Feng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Win yourself to succeed!</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="Searching..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://frandfeng.github.io/2018/12/28/KVO原理解析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Frand Feng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Frand Feng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">KVO原理解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-28T00:00:00+08:00">
+                2018-12-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="/assets/outline/KVO.png" alt=""></p>
+<a id="more"></a>
+<p>基本使用先引用刘小壮同学的<a href="https://www.jianshu.com/p/badf5cac0130" target="_blank" rel="noopener">博客</a></p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>KVO全称KeyValueObserving，是苹果提供的一套事件通知机制。允许对象监听另一个对象特定属性的改变，并在改变时接收到事件。由于KVO的实现机制，所以对属性才会发生作用，一般继承自NSObject的对象都默认支持KVO。</p>
+<p>KVO和NSNotificationCenter都是iOS中观察者模式的一种实现。区别在于，相对于被观察者和观察者之间的关系，KVO是一对一的，而不一对多的。KVO对被监听对象无侵入性，不需要修改其内部代码即可实现监听。</p>
+<p>KVO可以监听单个属性的变化，也可以监听集合对象的变化。通过KVC的mutableArrayValueForKey:等方法获得代理对象，当代理对象的内部对象发生改变时，会回调KVO监听的方法。集合对象包含NSArray和NSSet。</p>
+<pre><code>[kvoObject1 addObserver:self forKeyPath:@&quot;array&quot; options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+//打出来的地址不同
+NSLog(@&quot;array %p, array %p&quot;, kvoObject1.array, [kvoObject1 mutableArrayValueForKey:@&quot;array&quot;]);
+//只有第二个触发了KVO，第一个未触发KVO
+[kvoObject1.array addObject:@&quot;item1&quot;];
+[[kvoObject1 mutableArrayValueForKey:@&quot;array&quot;] addObject:@&quot;item2&quot;];
+</code></pre><h1 id="基础使用"><a href="#基础使用" class="headerlink" title="基础使用"></a>基础使用</h1><p>使用KVO分为三个步骤：</p>
+<ol>
+<li>通过addObserver:forKeyPath:options:context:方法注册观察者，观察者可以接收keyPath属性的变化事件。</li>
+<li>在观察者中实现observeValueForKeyPath:ofObject:change:context:方法，当keyPath属性发生改变后，KVO会回调这个方法来通知观察者。</li>
+<li>当观察者不需要监听时，可以调用removeObserver:forKeyPath:方法将KVO移除。需要注意的是，调用removeObserver需要在观察者消失之前，否则会导致Crash。</li>
+</ol>
+<h2 id="注册方法"><a href="#注册方法" class="headerlink" title="注册方法"></a>注册方法</h2><p>在注册观察者时，可以传入options参数，参数是一个枚举类型。如果传入NSKeyValueObservingOptionNew和NSKeyValueObservingOptionOld表示接收新值和旧值，默认为只接收新值。如果想在注册观察者后，立即接收一次回调，则可以加入NSKeyValueObservingOptionInitial枚举。</p>
+<p>还可以通过方法context传入任意类型的对象，在接收消息回调的代码中可以接收到这个对象，是KVO中的一种传值方式。</p>
+<p>在调用addObserver方法后，KVO并不会对观察者进行强引用，所以需要注意观察者的生命周期，否则会导致观察者被释放带来的Crash。</p>
+<h2 id="监听方法"><a href="#监听方法" class="headerlink" title="监听方法"></a>监听方法</h2><p>观察者需要实现observeValueForKeyPath:ofObject:change:context:方法，当KVO事件到来时会调用这个方法，如果没有实现会导致Crash。change字典中存放KVO属性相关的值，根据options时传入的枚举来返回。枚举会对应相应key来从字典中取出值，例如有NSKeyValueChangeOldKey字段，存储改变之前的旧值。</p>
+<p>change中还有NSKeyValueChangeKindKey字段，和NSKeyValueChangeOldKey是平级的关系，来提供本次更改的信息，对应NSKeyValueChange枚举类型的value。例如被观察属性发生改变时，字段为NSKeyValueChangeSetting。</p>
+<p>如果被观察对象是集合对象，在NSKeyValueChangeKindKey字段中会包含NSKeyValueChangeInsertion、NSKeyValueChangeRemoval、NSKeyValueChangeReplacement的信息，表示集合对象的操作方式。</p>
+<h2 id="移除方法"><a href="#移除方法" class="headerlink" title="移除方法"></a>移除方法</h2><p>KVO的addObserver和removeObserver需要是成对的，如果重复remove则会导致NSRangeException类型的Crash，如果忘记remove则会在观察者释放后再次接收到KVO回调时Crash。</p>
+<p>苹果官方推荐的方式是，在init的时候进行addObserver，在dealloc时removeObserver，这样可以保证add和remove是成对出现的，是一种比较理想的使用方式。</p>
+<h1 id="KVO兼容"><a href="#KVO兼容" class="headerlink" title="KVO兼容"></a>KVO兼容</h1><h2 id="自动调用KVO"><a href="#自动调用KVO" class="headerlink" title="自动调用KVO"></a>自动调用KVO</h2><p>调用KVO属性对象时，不仅可以通过点语法和set语法进行调用，KVO兼容很多种调用方式。</p>
+<pre><code>// 直接调用set方法，或者通过属性的点语法间接调用
+[account setName:@&quot;Savings&quot;];
+
+// 使用KVC的setValue:forKey:方法
+[account setValue:@&quot;Savings&quot; forKey:@&quot;name&quot;];
+
+// 使用KVC的setValue:forKeyPath:方法
+[document setValue:@&quot;Savings&quot; forKeyPath:@&quot;account.name&quot;];
+
+// 通过mutableArrayValueForKey:方法获取到代理对象，并使用代理对象进行操作
+Transaction *newTransaction = &lt;#Create a new transaction for the account#&gt;;
+NSMutableArray *transactions = [account mutableArrayValueForKey:@&quot;transactions&quot;];
+[transactions addObject:newTransaction];
+</code></pre><h2 id="手动调用KVO"><a href="#手动调用KVO" class="headerlink" title="手动调用KVO"></a>手动调用KVO</h2><p>手动变化通知在当通知被发送给观察者的时候提供了更多精细的控制。对于减少不必要的触发通知，或者一大波变化给一个通知，都很有帮助。</p>
+<p>实现手动通知的类必须重写 NSObject 实现的方法 automaticallyNotifiesObserversForKey: 。有可能在相同的类中使用自动和手动的观察通知。对于执行手动通知的属性，子类的 automaticallyNotifiesObserversForKey: 方法实现应该返回 NO。子类实现中对于任何为确认的 key，应该调用父类。清单2的例子对于 openingBalance 属性启用了手动通知，允许父类来决定所有其他 key 的通知。</p>
+<pre><code>//当调用set改变openingBalance属性时，不会触发KVO，因为[automaticallyNotifiesObserversForKey: openingBalance]返回NO
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey {
+    BOOL automatic = NO;
+    if ([theKey isEqualToString:@&quot;openingBalance&quot;]) {
+        automatic = NO;
+    } else {
+        automatic = [super automaticallyNotifiesObserversForKey:theKey];
+    }
+    return automatic;
+}
+</code></pre><p>要实现手动观察通知，在值变化之前要调用 willChangeValueForKey:，值变化之后要调用 didChangeValueForKey: 。清单3的例子，对于 openingBalance 属性实现了手动通知。</p>
+<pre><code>//因为调用了will/didChangeValueForKey方法，所以在调用set时会手动触发KVO
+- (void)setOpeningBalance:(double)theBalance {
+    [self willChangeValueForKey:@&quot;openingBalance&quot;];
+    _openingBalance = theBalance;
+    [self didChangeValueForKey:@&quot;openingBalance&quot;];
+}
+</code></pre><p>因此，你可以先检查值是否改变，来将不必要发送的通知最小化。清单3的例子测试了 openingBalance 的值，并且只提供了如果它改变的通知。</p>
+<pre><code>- (void)setOpeningBalance:(double)theBalance {
+    if (theBalance != _openingBalance) {
+        [self willChangeValueForKey:@&quot;openingBalance&quot;];
+        _openingBalance = theBalance;
+        [self didChangeValueForKey:@&quot;openingBalance&quot;];
+    }
+}
+</code></pre><p>如果一个操作导致多个 key 的变化，你必须像清单5 一样将变化通知进行嵌套。</p>
+<pre><code>- (void)setOpeningBalance:(double)theBalance {
+    [self willChangeValueForKey:@&quot;openingBalance&quot;];
+    [self willChangeValueForKey:@&quot;itemChanged&quot;];
+    _openingBalance = theBalance;
+    _itemChanged = _itemChanged+1;
+    [self didChangeValueForKey:@&quot;itemChanged&quot;];
+    [self didChangeValueForKey:@&quot;openingBalance&quot;];
+}
+</code></pre><p>KVO的setter方法的伪代码如下：注意：will/didChangeValueForKey会自动触发KVO</p>
+<pre><code>- (void) setBalance:(double)theBalance {
+    if (+automaticallyNotifiesObserversForKey) {
+        [self willChangeValueForKey:@&quot;balance&quot;];
+        _balance = theBalance;
+        [self didChangeValueForKey:@&quot;balance&quot;];
+        //will/didChangeValueForKey会触发KVO
+    }
+}
+</code></pre><p>在有序，一对多关系的情况下，你必须指出不仅 key 发生了变化，还要指出变化的类型以及被调用对象的下标。变换的类型是 NSKeyValueChange ，可以指定 NSKeyValueChangeInsertion，NSKeyValueChangeRemoval或者 NSKeyValueChangeReplacement 。受影响对象的索引作为 NSIndexSet 对象被传递。</p>
+<pre><code>- (void)removeTransactionsAtIndexes:(NSIndexSet *)indexes {
+    [self willChange:NSKeyValueChangeRemoval
+        valuesAtIndexes:indexes forKey:@&quot;transactions&quot;];
+
+    // Remove the transaction objects at the specified indexes.
+
+    [self didChange:NSKeyValueChangeRemoval
+        valuesAtIndexes:indexes forKey:@&quot;transactions&quot;];
+}
+</code></pre><h1 id="Key值依赖"><a href="#Key值依赖" class="headerlink" title="Key值依赖"></a>Key值依赖</h1><h2 id="一对一关系"><a href="#一对一关系" class="headerlink" title="一对一关系"></a>一对一关系</h2><p>对于一对一关系，为了自动触发通知，你应该重写 keyPathsForValuesAffectingValueForKey: 方法，或者实现一个合适的方法，遵循一种模式，它定义取决于注册相关的key。例如，一个人的全名依赖于人的姓和名。一个返回全名的方法可以写成下面形式：</p>
+<pre><code>- (NSString *)fullName {
+    return [NSString stringWithFormat:@&quot;%@ %@&quot;,firstName, lastName];
+}
+</code></pre><p>应用观察 fullName 属性，必须注意到当 firstName 或者 lastName 属性变化时，会影响到 fullName属性的值。</p>
+<p>一种解决方法是重写 keyPathsForValuesAffectingValueForKey: ，指定人的 fullName 属性依赖于 lastName 和 firstName 属性。清单1 展示了这样一个例子：</p>
+<pre><code>+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key {
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    if ([key isEqualToString:@&quot;fullName&quot;]) {
+        NSArray *affectingKeys = @[@&quot;lastName&quot;, @&quot;firstName&quot;];
+        keyPaths = [keyPaths setByAddingObjectsFromArray:affectingKeys];
+    }
+    return keyPaths;
+}
+</code></pre><p>重写，通常应该调用 super ，并且返回一个 set ，包括这样做的导致结果的任何成员。（在父类中不要因为这个方法的重写造成干扰）。</p>
+<p>你也可以通过实现一个类方法达到同样的结果，遵循命名约定 keyPathsForValuesAffecting， 是属性名（首字母大写），依赖于值。清单1中使用这种模式的代码，可以像在清单2中被重写为一个类方法 keyPathsForValuesAffectingFullName 。</p>
+<pre><code>+ (NSSet *)keyPathsForValuesAffectingFullName {
+    return [NSSet setWithObjects:@&quot;lastName&quot;, @&quot;firstName&quot;, nil];
+}
+</code></pre><p>当你使用一个 category 给一个现有的类添加一个计算属性的时候，你不能重写 keyPathsForValuesAffectingValueForKey: 方法，因为不允许重写分类（categories）中的方法。这种情况下，实现一个匹配的 keyPathsForValuesAffecting<key> 类方法，体现了这种机制的优势。</key></p>
+<h2 id="一对多关系"><a href="#一对多关系" class="headerlink" title="一对多关系"></a>一对多关系</h2><p>keyPathsForValuesAffectingValueForKey: 方法不支持包含一对多关系的 key-path。例如，Department 对象有一个一对多的关系 对于 Employee，Employee 有 salary 属性。你希望 Department 对象有一个 totalSalary 属性，这个属性依赖于所有 Employees。你不能像下面这样，keyPathsForValuesAffectingTotalSalary 并且将 employees.salary 作为一个 key 返回。</p>
+<p>在两种情况中有两个可能的解决方法：</p>
+<ol>
+<li><p>可以使用键值观察注册 parent(例子中就是 Department) 作为所有 children（Employees） 相关属性的观察者。你必须添加和移除 parent 。在 observeValueForKeyPath:ofObject:change:context: 方法中，在响应变化中更新相关的值，就像下面的代码所示：</p>
+<pre><code>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == totalSalaryContext) {
+        [self updateTotalSalary];
+    } else // deal with other observations and/or invoke super...
+}
+- (void)updateTotalSalary {
+    [self setTotalSalary:[self valueForKeyPath:@&quot;employees.@sum.salary&quot;]];
+}
+- (void)setTotalSalary:(NSNumber *)newTotalSalary {
+
+    if (totalSalary != newTotalSalary) {
+        [self willChangeValueForKey:@&quot;totalSalary&quot;];
+        _totalSalary = newTotalSalary;
+        [self didChangeValueForKey:@&quot;totalSalary&quot;];
+    }
+}
+- (NSNumber *)totalSalary {
+    return _totalSalary;
+}
+</code></pre></li>
+<li><p>如果使用Core Data，你可以在应用程序的通知中心注册 parent 作为它管理的对象 context 的观察者。parent 应该响应 与键值观察类似方式被 children 发出的的变化通知。</p>
+</li>
+</ol>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><p>实现原理引用<a href="https://www.jianshu.com/p/0e75d99c3480" target="_blank" rel="noopener">DeerRun的博客</a></p>
+<p>KVO 是基于运行时实现的 isa Class NSKVONotifying_Person。<br>基本的原理：当观察某对象A时，KVO机制动态创建一个对象A当前类的子类，并为这个新的子类重写了被观察属性keyPath的setter 方法。setter 方法随后负责通知观察对象属性的改变状况。</p>
+<p>Apple 使用了 isa 混写（isa-swizzling）来实现 KVO 。当观察对象A时，KVO机制动态创建一个新的名为： NSKVONotifying_A的新类，该类继承自对象A的本类，且KVO为NSKVONotifying_A重写观察属性的setter 方法，setter 方法会负责在调用原 setter 方法之前和之后，通知所有观察对象属性值的更改情况。（备注： isa 混写（isa-swizzling）isa：is a kind of ； swizzling：混合，搅合；）</p>
+<ol>
+<li><p>NSKVONotifying_A类剖析：在这个过程，被观察对象的 isa 指针从指向原来的A类，被KVO机制修改为指向系统新创建的子类 NSKVONotifying_A类，来实现当前类属性值改变的监听。所以当我们从应用层面上看来，完全没有意识到有新的类出现，这是系统“隐瞒”了对KVO的底层实现过程，让我们误以为还是原来的类。但是此时如果我们创建一个新的名为“NSKVONotifying_A”的类()，就会发现系统运行到注册KVO的那段代码时程序就崩溃，因为系统在注册监听的时候动态创建了名为NSKVONotifying_A的中间类，并指向这个中间类了。（isa 指针的作用：每个对象都有isa 指针，指向该对象的类，它告诉 Runtime 系统这个对象的类是什么。所以对象注册为观察者时，isa指针指向新子类，那么这个被观察的对象就神奇地变成新子类的对象（或实例）了。） 因而在该对象上对 setter 的调用就会调用已重写的 setter，从而激活键值通知机制。我猜，这也是KVO回调机制，为什么都俗称KVO技术为黑魔法的原因之一吧：内部神秘、外观简洁。</p>
+</li>
+<li><p>子类setter方法剖析：KVO的键值观察通知调用了 NSObject 的两个方法:willChangeValueForKey:和 didChangevlueForKey:，在存取数值的前后分别调用2个方法：被观察属性发生改变之前，willChangeValueForKey:被调用，通知系统该 keyPath 的属性值即将变更；当改变发生后， didChangeValueForKey: 被调用，通知系统该 keyPath 的属性值已经变更；之后observeValueForKey:ofObject:change:context: 也会被调用。且重写观察属性的setter 方法这种继承方式的注入是在运行时而不是编译时实现的。</p>
+</li>
+</ol>
+<h2 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h2><pre><code>@implementation ViewController
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    KVOObject *kvoObject1 = [[KVOObject alloc] init];
+    [kvoObject1 description];
+    KVOObject *kvoObject2 = [[KVOObject alloc] init];
+    [kvoObject2 description];
+
+    [kvoObject1 addObserver:self forKeyPath:@&quot;name&quot; options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+    [kvoObject1 addObserver:self forKeyPath:@&quot;age&quot; options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
+
+    [kvoObject1 description];
+    [kvoObject2 description];
+
+    kvoObject1.name = @&quot;frand&quot;;
+    kvoObject1.age = 22;
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (context == nil) {
+        if ([keyPath isEqualToString:@&quot;name&quot;]) {
+            NSLog(@&quot;name changed to %@&quot;, change);
+        } else if ([keyPath isEqualToString:@&quot;age&quot;]) {
+            NSLog(@&quot;age changed to %@&quot;, change);
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+@end
+
+@implementation KVOObject
+
+- (NSString *)description {
+    NSLog(@&quot;object address : %p \n&quot;, self);
+    IMP nameIMP = class_getMethodImplementation(object_getClass(self), @selector(setName:));
+    IMP ageIMP = class_getMethodImplementation(object_getClass(self), @selector(setAge:));
+    NSLog(@&quot;object setName: IMP %p； object setAge: IMP %p \n&quot;, nameIMP, ageIMP);
+    //objc_getClass参数是类名的字符串，返回的就是这个类的类对象；
+    //object_getClass参数是id类型，它返回的是这个id的isa指针所指向的Class，如果传参是Class，则返回该Class的metaClass
+    //self.class:当self是实例对象的时候，返回的是类对象，否则则返回自身
+    Class objectMethodClass = [self class];
+    //object_getClass:获得的是isa的指向
+    Class objectRuntimeClass = object_getClass(self);
+    Class isaClass = object_getClass(objectRuntimeClass);
+    Class superClass = class_getSuperclass(objectRuntimeClass);
+    NSLog(@&quot;objectMethodClass : %@, ObjectRuntimeClass : %@, isaClass : %@, superClass : %@ \n&quot;, objectMethodClass, objectRuntimeClass, isaClass, superClass);
+
+    NSLog(@&quot;object method list \n&quot;);
+    unsigned int count;
+    Method *methodList = class_copyMethodList(objectRuntimeClass, &amp;count);
+    for (NSInteger i = 0; i &lt; count; i++) {
+        Method method = methodList[i];
+        NSString *methodName = NSStringFromSelector(method_getName(method));
+        NSLog(@&quot;method Name = %@\n&quot;, methodName);
+    }
+
+    return @&quot;&quot;;
+}
+
+- (void)willChangeValueForKey:(NSString *)key {
+    [super willChangeValueForKey:key];
+    NSLog(@&quot;willChangeValueForKey %@&quot;, key);
+}
+
+- (void)didChangeValueForKey:(NSString *)key {
+    [super didChangeValueForKey:key];
+    NSLog(@&quot;didChangeValueForKey %@&quot;, key);
+}
+
+@end
+
+2018-11-26 18:11:00.584925+0800 KVO原理[3014:120655] objectMethodClass : KVOObject, ObjectRuntimeClass : KVOObject, isaClass : KVOObject, superClass : NSObject
+2018-11-26 18:11:00.594078+0800 KVO原理[3014:120655] objectMethodClass : KVOObject, ObjectRuntimeClass : NSKVONotifying_KVOObject, isaClass : NSKVONotifying_KVOObject, superClass : KVOObject
+2018-11-26 18:11:00.601868+0800 KVO原理[3014:120655] name changed to {
+    kind = 1;
+    new = frand;
+    old = &quot;&lt;null&gt;&quot;;
+}
+</code></pre><p>我们发现对象被KVO后，其真正类型变为了<code>NSKVONotifying_KVOObject</code>类，已经不是之前的类了。KVO会在运行时动态创建一个新类，将对象的isa指向新创建的类，新类是原类的子类，命名规则是<code>NSKVONotifying_xxx</code>的格式。KVO为了使其更像之前的类，还会将对象的class实例方法重写，使其更像原类。</p>
+<p>在上面的代码中还发现了<code>_isKVOA</code>方法，这个方法可以当做使用了KVO的一个标记，系统可能也是这么用的。如果我们想判断当前类是否是KVO动态生成的类，就可以从方法列表中搜索这个方法。</p>
+<h2 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h2><p>为什么上面调用runtime的<code>object_getClass</code>函数，就可以获取到真正的类呢？</p>
+<p>调用<code>object_getClass</code>函数后其返回的是一个Class类型，Class是<code>objc_class</code>定义的一个typedef别名，通过<code>objc_class</code>就可以获取到对象的isa指针指向的Class，也就是对象的类对象。</p>
+<p>由此可以推测，object_getClass函数内部返回的是对象的isa指针。</p>
+<pre><code>typedef struct objc_class *Class;
+
+struct objc_class {
+    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;
+
+#if !__OBJC2__
+    Class _Nullable super_class                      OBJC2_UNAVAILABLE;
+    const char * _Nonnull name                       OBJC2_UNAVAILABLE;
+    long version                                     OBJC2_UNAVAILABLE;
+    long info                                        OBJC2_UNAVAILABLE;
+    long instance_size                               OBJC2_UNAVAILABLE;
+    struct objc_ivar_list * _Nullable ivars          OBJC2_UNAVAILABLE;
+    struct objc_method_list * _Nullable * _Nullable methodLists                    OBJC2_UNAVAILABLE;
+    struct objc_cache * _Nonnull cache               OBJC2_UNAVAILABLE;
+    struct objc_protocol_list * _Nullable protocols  OBJC2_UNAVAILABLE;
+#endif
+}
+</code></pre><h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><p>苹果提供的KVO自身存在很多问题，首要问题在于，KVO如果使用不当很容易崩溃。例如重复add和remove导致的Crash，Observer被释放导致的崩溃，keyPath传错导致的崩溃等。除了上面的缺点，KVO还不支持block语法，需要单独重写父类方法，这样加上add和remove方法就会导致代码很分散。</p>
+<p>在调用KVO时需要传入一个keyPath，由于keyPath是字符串的形式，所以其对应的属性发生改变后，字符串没有改变容易导致Crash。我们可以利用系统的反射机制将keyPath反射出来，这样编译器可以在@selector()中进行合法性检查。</p>
+<pre><code>NSStringFromSelector(@selector(isFinished))
+</code></pre><p>KVO是一种事件绑定机制的实现，在keyPath对应的值发生改变后会回调对应的方法。这种数据绑定机制，在对象关系很复杂的情况下，很容易导致不好排查的bug。例如keyPath对应的属性被调用的关系很复杂，就不太建议对这个属性进行KVO，可以想一下RAC的信号脑补一下。</p>
+<h2 id="自己实现KVO"><a href="#自己实现KVO" class="headerlink" title="自己实现KVO"></a>自己实现KVO</h2><pre><code>@implementation NSObject (KVOBlock)
+
+/** 和 NSObject 的方法- (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(nullable void *)context;功能相似
+ 1. 通过Method判断是否有这个key对应的selector，如果没有则Crash。
+ 2. 判断当前类是否是KVO子类，如果不是则创建，并设置其isa指针。
+ 3. 如果没有实现，则添加Key对应的setter方法。
+ 4. 将调用对象添加到数组中。
+ */
+- (void)lxz_addObserver:(NSObject *)observer
+       originalSelector:(SEL)originalSelector
+               callback:(lxz_KVOObserverBlock)callback {
+
+    // 1.
+    SEL originalSetter = NSSelectorFromString(lxz_setterForGetter(originalSelector));
+    Method originalMethod = class_getInstanceMethod(object_getClass(self), originalSetter);
+    if (!originalMethod) {
+        NSString *exceptionReason = [NSString stringWithFormat:@&quot;%@ Class %@ setter SEL not found.&quot;, NSStringFromClass([self class]), NSStringFromSelector(originalSelector)];
+        NSException *exception = [NSException exceptionWithName:@&quot;NotExistKeyExceptionName&quot; reason:exceptionReason userInfo:nil];
+        [exception raise];
+    }
+
+    // 2.
+    Class kvoClass = object_getClass(self);
+    NSString *kvoClassString = NSStringFromClass(kvoClass);
+    if (![kvoClassString hasPrefix:lxz_KVOClassPrefix]) {
+        kvoClass = [self lxz_makeKVOClassWithName:kvoClassString];
+        object_setClass(self, kvoClass);
+    }
+
+    // 3.
+    if (![self lxz_hasMethodWithKey:originalSetter]) {
+        class_addMethod(kvoClass, originalSetter, (IMP)lxz_kvoSetter, method_getTypeEncoding(originalMethod));
+    }
+
+    // 4.
+    KVOObserverItem *observerItem = [[KVOObserverItem alloc] initWithObserver:observer key:NSStringFromSelector(originalSelector) block:callback];
+    NSMutableArray&lt;KVOObserverItem *&gt; *observers = objc_getAssociatedObject(self, lxz_KVOObserverAssociatedKey);
+    if (observers == nil) {
+        observers = [NSMutableArray array];
+    }
+    [observers addObject:observerItem];
+    objc_setAssociatedObject(self, lxz_KVOObserverAssociatedKey, observers, OBJC_ASSOCIATION_RETAIN);
+}
+
+- (void)lxz_removeObserver:(NSObject *)observer
+          originalSelector:(SEL)originalSelector {
+    NSMutableArray &lt;KVOObserverItem *&gt;* observers = objc_getAssociatedObject(self, lxz_KVOObserverAssociatedKey);
+    [observers enumerateObjectsUsingBlock:^(KVOObserverItem * _Nonnull mapTable, NSUInteger idx, BOOL * _Nonnull stop) {
+        SEL selector = NSSelectorFromString(mapTable.key);
+        if (mapTable.observer == observer &amp;&amp; selector == originalSelector) {
+            [observers removeObject:mapTable];
+        }
+    }];
+}
+
+#pragma mark - ----- Private Method Or Funcation ------
+
+/**
+ 1. 获取旧值。
+ 2. 创建super的结构体，并向super发送属性的消息。
+ 3. 遍历调用block。
+ */
+static void lxz_kvoSetter(id self, SEL selector, id value) {
+    // 1.
+    id (*getterMsgSend) (id, SEL) = (void *)objc_msgSend;
+    NSString *getterString = lxz_getterForSetter(selector);
+    SEL getterSelector = NSSelectorFromString(getterString);
+    id oldValue = getterMsgSend(self, getterSelector);
+
+    [self willChangeValueForKey:key];
+
+    // 2.
+    id (*msgSendSuper) (void *, SEL, id) = (void *)objc_msgSendSuper;
+    struct objc_super objcSuper = {
+        .receiver = self,
+        .super_class = class_getSuperclass(object_getClass(self))
+    };
+    msgSendSuper(&amp;objcSuper, selector, value);
+
+    // 3.
+    NSMutableArray &lt;KVOObserverItem *&gt;* observers = objc_getAssociatedObject(self, lxz_KVOObserverAssociatedKey);
+    [observers enumerateObjectsUsingBlock:^(KVOObserverItem * _Nonnull mapTable, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([mapTable.key isEqualToString:getterString] &amp;&amp; mapTable.block) {
+            mapTable.block(self, NSStringFromSelector(selector), oldValue, value);
+        }
+    }];
+
+    [self didChangeValueForKey:key];
+}
+
+- (BOOL)lxz_hasMethodWithKey:(SEL)key {
+    NSString *setterName = NSStringFromSelector(key);
+    unsigned int count;
+    Method *methodList = class_copyMethodList(object_getClass(self), &amp;count);
+    for (NSInteger i = 0; i &lt; count; i++) {
+        Method method = methodList[i];
+        NSString *methodName = NSStringFromSelector(method_getName(method));
+        if ([methodName isEqualToString:setterName]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+static NSString * lxz_getterForSetter(SEL setter) {
+    NSString *setterString = NSStringFromSelector(setter);
+    if (![setterString hasPrefix:@&quot;set&quot;]) {
+        return nil;
+    }
+
+    NSString *getterString = [setterString substringWithRange:NSMakeRange(4, setterString.length - 5)];
+    NSString *firstString = [setterString substringWithRange:NSMakeRange(3, 1)];
+    firstString = [firstString lowercaseString];
+    getterString = [NSString stringWithFormat:@&quot;%@%@&quot;, firstString, getterString];
+    return getterString;
+}
+
+static NSString * lxz_setterForGetter(SEL getter) {
+    NSString *getterString = NSStringFromSelector(getter);
+    NSString *firstString = [getterString substringToIndex:1];
+    firstString = [firstString uppercaseString];
+
+    NSString *setterString = [getterString substringFromIndex:1];
+    setterString = [NSString stringWithFormat:@&quot;set%@%@:&quot;, firstString, setterString];
+    return setterString;
+}
+
+/**
+ 1. 判断是否存在KVO类，如果存在则返回。
+ 2. 如果不存在，则创建KVO类。
+ 3. 重写KVO类的class方法，指向自定义的IMP。
+ */
+- (Class)lxz_makeKVOClassWithName:(NSString *)name {
+    // 1.
+    NSString *className = [NSString stringWithFormat:@&quot;%@%@&quot;, lxz_KVOClassPrefix, name];
+    Class kvoClass = objc_getClass(className.UTF8String);
+    if (kvoClass) {
+        return kvoClass;
+    }
+
+    // 2.
+    kvoClass = objc_allocateClassPair(object_getClass(self), className.UTF8String, 0);
+    objc_registerClassPair(kvoClass);
+
+    // 3.
+    const char * types = NSStringFromSelector(@selector(class)).UTF8String;
+    class_addMethod(kvoClass, @selector(class), (IMP)lxz_kvoClass, types);
+
+    return kvoClass;
+}
+
+static Class lxz_kvoClass(id self, SEL selector) {
+    return class_getSuperclass(object_getClass(self));
+}
+
+@end
+
+//使用
+self.object1 = [[KVOObject alloc] init];
+[self.object1 lxz_addObserver:self originalSelector:@selector(name) callback:^(id observedObject, NSString *observedKey, id oldValue, id newValue) {
+    // callback
+}];
+self.object1.name = @&quot;lxz&quot;;
+[self.object1 lxz_removeObserver:self originalSelector:@selector(name)];
+</code></pre><p>调用代码很简单，直接通过lxz_addObserver:originalSelector:callback:方法就可以添加KVO的监听，可以通过callback的block接收属性发生改变后的回调，而且方法的keyPath接收的是一个SEL类型参数，所以可以通过@selector()传入参数时进行方法合法性检查，如果是未实现的方法直接就会报警告。</p>
+<p>通过lxz_removeObserver:originalSelector:方法传入观察者和keyPath，当观察者所有keyPath都移除后则从KVO中移除观察者对象。</p>
+<p>如果重复addObserver和removeObserver也没事，内部有判断逻辑。EasyKVO内部通过weak对观察者做引用，并不会影响观察者的生命周期，并且在观察者释放后不会导致Crash。一次add方法调用对应一个block，如果观察者监听多个keyPath属性，不需要在block回调中判断keyPath。</p>
+<blockquote>
+<p>注意:需要注意的是，EasyKVO只是做技术交流，不建议在项目中使用。因为KVO实现需要考虑很多情况，继承关系、多个观察者等很多问题。想在项目中安全便捷的使用KVO的话，推荐Facebook的一个KVO开源第三方框架-KVOController。KVOController本质上是对系统KVO的封装，具有原生KVO所有的功能，而且规避了原生KVO的很多问题，兼容block和action两种回调方式。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OC/" rel="tag"># OC</a>
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/KVO/" rel="tag"># KVO</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/30/KVC原理解析/" rel="next" title="KVC原理解析">
+                <i class="fa fa-chevron-left"></i> KVC原理解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80MTIxOC8xNzc2Ng=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="Frand Feng">
+            
+              <p class="site-author-name" itemprop="name">Frand Feng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">90</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/frandfeng" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:frandfeng@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基础使用"><span class="nav-number">2.</span> <span class="nav-text">基础使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注册方法"><span class="nav-number">2.1.</span> <span class="nav-text">注册方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听方法"><span class="nav-number">2.2.</span> <span class="nav-text">监听方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除方法"><span class="nav-number">2.3.</span> <span class="nav-text">移除方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KVO兼容"><span class="nav-number">3.</span> <span class="nav-text">KVO兼容</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自动调用KVO"><span class="nav-number">3.1.</span> <span class="nav-text">自动调用KVO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动调用KVO"><span class="nav-number">3.2.</span> <span class="nav-text">手动调用KVO</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Key值依赖"><span class="nav-number">4.</span> <span class="nav-text">Key值依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一对一关系"><span class="nav-number">4.1.</span> <span class="nav-text">一对一关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一对多关系"><span class="nav-number">4.2.</span> <span class="nav-text">一对多关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现原理"><span class="nav-number">5.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#测试代码"><span class="nav-number">5.1.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理分析"><span class="nav-number">5.2.</span> <span class="nav-text">原理分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缺点"><span class="nav-number">5.3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自己实现KVO"><span class="nav-number">5.4.</span> <span class="nav-text">自己实现KVO</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2011 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Frand Feng</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
