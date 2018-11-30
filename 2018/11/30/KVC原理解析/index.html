@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="概述键值编码是一种由NSKeyValueCoding非正式协议启用的机制，对象采用该机制提供对其属性的间接访问。当对象符合键值编码时，其属性可通过字符串参数通过简洁，统一的消息传递接口寻址。这种间接访问机制补充了实例变量及其相关访问​​器方法提供的直接访问。 您通常使用访问器方法来访问对象的属性。get访问器（或getter）返回属性的值。set访问器（或setter）设置属性的值。在Object">
 <meta name="keywords" content="OC,iOS,KVC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="KVC原理解析">
 <meta property="og:url" content="https://frandfeng.github.io/2018/11/30/KVC原理解析/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="概述键值编码是一种由NSKeyValueCoding非正式协议启用的机制，对象采用该机制提供对其属性的间接访问。当对象符合键值编码时，其属性可通过字符串参数通过简洁，统一的消息传递接口寻址。这种间接访问机制补充了实例变量及其相关访问​​器方法提供的直接访问。 您通常使用访问器方法来访问对象的属性。get访问器（或getter）返回属性的值。set访问器（或setter）设置属性的值。在Object">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-29T06:52:07.409Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/KVC.png">
+<meta property="og:updated_time" content="2018-11-30T08:14:41.685Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KVC原理解析">
-<meta name="twitter:description" content="概述键值编码是一种由NSKeyValueCoding非正式协议启用的机制，对象采用该机制提供对其属性的间接访问。当对象符合键值编码时，其属性可通过字符串参数通过简洁，统一的消息传递接口寻址。这种间接访问机制补充了实例变量及其相关访问​​器方法提供的直接访问。 您通常使用访问器方法来访问对象的属性。get访问器（或getter）返回属性的值。set访问器（或setter）设置属性的值。在Object">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/KVC.png">
 
 
 
@@ -394,40 +393,31 @@
       
 
       
-        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>键值编码是一种由NSKeyValueCoding非正式协议启用的机制，对象采用该机制提供对其属性的间接访问。当对象符合键值编码时，其属性可通过字符串参数通过简洁，统一的消息传递接口寻址。这种间接访问机制补充了实例变量及其相关访问​​器方法提供的直接访问。</p>
+        <p><img src="/assets/outline/KVC.png" alt=""></p>
+<a id="more"></a>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>键值编码是一种由NSKeyValueCoding非正式协议启用的机制，对象采用该机制提供对其属性的间接访问。当对象符合键值编码时，其属性可通过字符串参数通过简洁，统一的消息传递接口寻址。这种间接访问机制补充了实例变量及其相关访问​​器方法提供的直接访问。</p>
 <p>您通常使用访问器方法来访问对象的属性。get访问器（或getter）返回属性的值。set访问器（或setter）设置属性的值。在Objective-C中，您还可以直接访问属性的基础实例变量。以任何这些方式访问对象属性都很简单，但需要调用特定于属性的方法或变量名称。随着属性列表的增长或变化，访问这些属性的代码也必须如此。相反，符合键值编码的对象提供了一个简单的消息传递接口，该接口在其所有属性中都是一致的。</p>
 <p>键值编码是一个基本概念，是许多其他Cocoa技术的基础，例如键值观察(key-value observing)，Cocoa绑定(Cocoa bindings)，Core Data和AppleScript-ability。在某些情况下，键值编码还有助于简化代码。</p>
-<ul>
-<li><p>使用键值编码可以干什么？</p>
-<p>  对象通常在NSObject（直接或间接）继承时采用键值编码，它们都采用NSKeyValueCoding协议并为基本方法提供默认实现。这样的对象通过紧凑的消息传递接口使其他对象能够执行以下操作：</p>
+<h2 id="使用键值编码可以干什么？"><a href="#使用键值编码可以干什么？" class="headerlink" title="使用键值编码可以干什么？"></a>使用键值编码可以干什么？</h2><p>对象通常在NSObject（直接或间接）继承时采用键值编码，它们都采用NSKeyValueCoding协议并为基本方法提供默认实现。这样的对象通过紧凑的消息传递接口使其他对象能够执行以下操作：</p>
 <ul>
 <li>访问对象属性。 该协议指定方法，例如getter valueForKey: 和setter setValue:forKey:，用于通过名称或键访问对象属性，参数为字符串。这些和相关方法的默认实现使用键来定位基础数据并与其交互，如Accessing Object Properties</li>
 <li>操纵集合属性。 访问方法的默认实现和对象的集合属性（如NSArray对象）一样，也和任何其他属性一样。此外，如果对象定义属性的集合访问器方法，则它允许对集合内容进行键值访问。这通常比直接访问更有效，并允许您通过标准化界面使用自定义集合对象，如Accessing Collection Properties</li>
 <li>在集合对象上调用集合运算符。 在符合键值编码的对象中访问集合属性时，可以将集合运算符插入到键字符串中，如Using Collection Operators。集合运算符根据默认的NSKeyValueCodinggetter实现对集合执行操作，然后返回集合的新的过滤版本或表示集合的某些特征的单个值。</li>
-<li>访问非对象属性。 协议默认实现检测非对象属性，包括标量和结构体，并自动将它们包装和解包为协议接口上使用的对象，如Representing Non-Object Values。此外，该协议声明了一种方法，该方法允许兼容对象nil通过键值编码接口在非对象属性上设置值时为该情况提供合适的作用。</li>
+<li>访问基本类型属性。 协议默认实现检测非对象属性，包括标量和结构体，并自动将它们包装和解包为协议接口上使用的对象，如Representing Non-Object Values。此外，该协议声明了一种方法，该方法允许兼容对象nil通过键值编码接口在非对象属性上设置值时为该情况提供合适的作用。</li>
 <li>key path访问属性。 如果具有符合键值编码的对象层次结构，则可以使用基于key path的方法调用，使用单个调用在层次结构内深入查看，获取或设置值。</li>
 </ul>
-</li>
-<li><p>如何使用键值编码？</p>
-<p>  为了使您自己的对象键值编码符合要求，您需要确保它们采用NSKeyValueCoding非正式协议并实现相应的方法，例如作为valueForKey: 通用getter和setValue:forKey: 通用setter。幸运的是，如上所述，NSObject  采用此协议并为这些和其他基本方法提供默认实现。因此，如果您从NSObject（或其许多子类中的任何一个）派生对象，那么大部分工作已经完成。</p>
-<p>  为了使默认方法完成其工作，您需要确保对象的访问器方法和实例变量遵循某些明确定义的模式。这允许默认实现找到对象的属性以响应键值编码消息。然后，您可以选择通过提供验证方法和处理某些特殊情况来扩展和自定义键值编码。</p>
-</li>
-<li><p>如何使用Swift进行键值编码</p>
-<p>  NSObject从其子类或其子类之一 继承的Swift对象默认情况下是符合其属性的键值编码。而在Objective-C中，属性的访问器和实例变量必须遵循某些模式，Swift中的标准属性声明会自动保证这一点。另一方面，协议的许多功能要么不相关，要么使用Objective-C中不存在的本机Swift构造或技术来更好地处理。例如，因为所有Swift属性都是对象，所以您永远不会使用默认实现对非对象属性的特殊处理。</p>
-<p>  因此，虽然键值编码协议方法直接转换为Swift，但本指南主要关注Objective-C，您需要做更多工作以确保合规性，以及键值编码通常最有用的地方。整个指南中都提到了需要在Swift中采用明显不同方法的情况。</p>
-<p>  有关使用Swift和Cocoa技术的更多信息，请阅读将Swift与Cocoa和Objective-C一起使用（Swift 3）。有关Swift的完整描述，请阅读Swift编程语言（Swift 3）</p>
-</li>
-<li><p>哪些技术用到了KVO？</p>
-<p>  符合键值编码的对象可以参与依赖于此类访问的各种Cocoa技术，包括：</p>
+<h2 id="如何使用键值编码？"><a href="#如何使用键值编码？" class="headerlink" title="如何使用键值编码？"></a>如何使用键值编码？</h2><p>为了使您自己的对象键值编码符合要求，您需要确保它们采用NSKeyValueCoding非正式协议并实现相应的方法，例如作为valueForKey: 通用getter和setValue:forKey: 通用setter。幸运的是，如上所述，NSObject  采用此协议并为这些和其他基本方法提供默认实现。因此，如果您从NSObject（或其许多子类中的任何一个）派生对象，那么大部分工作已经完成。</p>
+<p>为了使默认方法完成其工作，您需要确保对象的访问器方法和实例变量遵循某些明确定义的模式。这允许默认实现找到对象的属性以响应键值编码消息。然后，您可以选择通过提供验证方法和处理某些特殊情况来扩展和自定义键值编码。</p>
+<h2 id="如何使用Swift进行键值编码"><a href="#如何使用Swift进行键值编码" class="headerlink" title="如何使用Swift进行键值编码"></a>如何使用Swift进行键值编码</h2><p>NSObject从其子类或其子类之一 继承的Swift对象默认情况下是符合其属性的键值编码。而在Objective-C中，属性的访问器和实例变量必须遵循某些模式，Swift中的标准属性声明会自动保证这一点。另一方面，协议的许多功能要么不相关，要么使用Objective-C中不存在的本机Swift构造或技术来更好地处理。例如，因为所有Swift属性都是对象，所以您永远不会使用默认实现对非对象属性的特殊处理。</p>
+<p>因此，虽然键值编码协议方法直接转换为Swift，但本指南主要关注Objective-C，您需要做更多工作以确保合规性，以及键值编码通常最有用的地方。整个指南中都提到了需要在Swift中采用明显不同方法的情况。</p>
+<p>有关使用Swift和Cocoa技术的更多信息，请阅读将Swift与Cocoa和Objective-C一起使用（Swift 3）。有关Swift的完整描述，请阅读Swift编程语言（Swift 3）</p>
+<h2 id="哪些技术用到了KVO？"><a href="#哪些技术用到了KVO？" class="headerlink" title="哪些技术用到了KVO？"></a>哪些技术用到了KVO？</h2><p>符合键值编码的对象可以参与依赖于此类访问的各种Cocoa技术，包括：</p>
 <ul>
 <li>键值观察(Key-value observing)。 此机制使对象能够注册异步通知监听另一个对象属性的改变，如“ Key-Value Observing Programming</li>
 <li>Cocoa绑定(Cocoa bindings)。 这一系列技术完全实现了Model-View-Controller范例，其中模型(Model)用于封装应用程序数据，视图(View)用于显示和编辑数据，控制器(Controller)在两者之​​间进行调解。阅读<em>Cocoa Bindings Programming Topics</em>以了解有关Cocoa绑定的更多信息</li>
 <li>核心数据(Core Data)。 该框架为与对象生命周期和对象图形化管理相关的常见任务（包括持久性）提供通用和自动化解决方案。您可以在<em>Core Data Programming Guide</em>阅读Core Data </li>
 <li>AppleScript。 这种脚本语言可以直接控制脚本化应用程序和macOS的许多部分。Cocoa的脚本支持利用键值编码来获取和设置脚本化对象中的信息。NSScriptKeyValueCoding非正式协议中的方法提供了使用键值编码的附加功能，包括通过多值键中的索引获取和设置键值，以及将键值强制（或转换）为适当的数据类型。<em>AppleScript Overview</em>提供了AppleScript及其相关技术的高级概述。</li>
 </ul>
-</li>
-</ul>
-<a id="more"></a>
 <h1 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h1><h2 id="访问对象属性"><a href="#访问对象属性" class="headerlink" title="访问对象属性"></a>访问对象属性</h2><p>对象通常在其接口声明中指定属性, 这些属性属于以下几种类别之一:</p>
 <ul>
 <li>属性. 指简单值, 例如标量(scalars)、字符串或布尔值。值对象(如NSNumber)和其他不可变类型(如NSColor) 也被视为属性。</li>
@@ -510,8 +500,7 @@
 @property (nonatomic) NSDate* date;      // When
 @end
 </code></pre><p>为了便于讨论, 假定BankAccount实例具有很多交易数组, 并且您可以从BankAccount对象内部进行调用。</p>
-<ul>
-<li><p>聚合运算符： 聚合运算符处理array或set属性, 从而生成反映集合某些方面的单个值。</p>
+<h3 id="聚合运算符："><a href="#聚合运算符：" class="headerlink" title="聚合运算符："></a>聚合运算符：</h3><p>聚合运算符处理array或set属性, 从而生成反映集合某些方面的单个值。</p>
 <ul>
 <li><p>@avg：当指定@avg运算符时, valueForKeyPath:读取集合中每个元素的右键路径指定的属性, 将其转换为double (nil值用0替代), 并计算这些值的算术平均值。然后它返回存储在NSNumber实例中的结果。</p>
 <pre><code>//数据之间的平均交易记录金额
@@ -534,8 +523,7 @@ NSDate *earliestDate = [self.transactions valueForKeyPath:@&quot;@min.date&quot;
 NSNumber *amountSum = [self.transactions valueForKeyPath:@&quot;@sum.amount&quot;];
 </code></pre></li>
 </ul>
-</li>
-<li><p>数组运算符:数组运算符使valueForKeyPath:返回与右键路径指示的特定对象集相对应的对象数组。注意：在使用数组运算符时, 如果有任何叶(leaf)对象为nil, 则valueForKeyPath:方法将引发异常。</p>
+<h3 id="数组运算符"><a href="#数组运算符" class="headerlink" title="数组运算符"></a>数组运算符</h3><p>数组运算符使valueForKeyPath:返回与右键路径指示的特定对象集相对应的对象数组。注意：在使用数组运算符时, 如果有任何叶(leaf)对象为nil, 则valueForKeyPath:方法将引发异常。</p>
 <ul>
 <li><p>@distinctUnionOfObjects：指定@distinctUnionOfObjects运算符时, valueForKeyPath:将创建并返回一个数组, 该数组包含与右键路径指定的属性对应的集合的不同对象。</p>
 <pre><code>//获取transactions中的交易记录的payee属性值的集合, 并省略重复值:
@@ -546,8 +534,7 @@ NSArray *distinctPayees = [self.transactions valueForKeyPath:@&quot;@distinctUni
 NSArray *payees = [self.transactions valueForKeyPath:@&quot;@unionOfObjects.payee&quot;];
 </code></pre></li>
 </ul>
-</li>
-<li><p>嵌套运算符:嵌套运算符对嵌套集合进行操作, 集合本身的每个条目都包含一个集合。注意：如果在使用嵌套运算符时, 有任何叶(leaf)对象为nil, 则valueForKeyPath:方法将引发异常。    <code>NSArray* moreTransactions = @[&lt;# transaction data #&gt;];</code><br><code>NSArray* arrayOfArrays = @[self.transactions, moreTransactions];</code></p>
+<h3 id="嵌套运算符"><a href="#嵌套运算符" class="headerlink" title="嵌套运算符"></a>嵌套运算符</h3><p>嵌套运算符对嵌套集合进行操作, 集合本身的每个条目都包含一个集合。注意：如果在使用嵌套运算符时, 有任何叶(leaf)对象为nil, 则valueForKeyPath:方法将引发异常。    <code>NSArray* moreTransactions = @[&lt;# transaction data #&gt;];</code><br><code>NSArray* arrayOfArrays = @[self.transactions, moreTransactions];</code></p>
 <ul>
 <li><p>@distinctUnionOfArrays:指定@distinctUnionOfArrays运算符时, valueForKeyPath:创建并返回一个数组, 其中包含与右键路径指定的属性相对应的所有集合的组合的不同对象。<br>在arrayOfArrays中的所有数组中获取payee属性的不同值:<br>NSArray *collectedDistinctPayees = [arrayOfArrays valueForKeyPath:@”@distinctUnionOfArrays.payee”];</p>
 </li>
@@ -558,8 +545,6 @@ NSArray *collectedPayees = [arrayOfArrays valueForKeyPath:@&quot;@unionOfArrays.
 <li><p>@distinctUnionOfSets:当指定@distinctUnionOfSets运算符时, valueForKeyPath:创建并返回一个NSSet对象, 其中包含与由右键路径所指定的属性相对应的所有集合组合的不同对象。<br>此运算符的行为与@distinctUnionOfArrays类似, 只是它需要一个包含NSSet实例的NSSet实例对象, 其中, 而不是包含NSArray实例的NSArray实例对象。此外, 它还返回一个NSSet实例。假设示例数据已存储在集合而不是数组中, 则示例调用和结果与@distinctUnionOfArrays中显示的相同。</p>
 </li>
 </ul>
-</li>
-</ul>
 <h2 id="标量类型的处理"><a href="#标量类型的处理" class="headerlink" title="标量类型的处理"></a>标量类型的处理</h2><p>通过NSObject使用对象和非对象属性提供的键值编码协议方法的默认实现。 默认实现自动在对象参数或返回值以及非对象属性之间进行转换。 这允许即使存储的属性是标量或结构体，基于key的getter和setter的命名也保持一致。注意：因为Swift中的所有属性都是对象，所以本节仅适用于Objective-C属性。</p>
 <p>当你调用协议的其中一个getter时，valueForKey：，默认实现根据Accessor Search Patterns中描述的规则 确定为指定键提供值的特定访问器方法或实例变量。 如果返回值不是对象，则getter使用此值初始化NSNumber对象（对于标量）或NSValue对象（对于结构体）并返回该值。同样，默认情况下，像setValue：forKey:这样的setter在给定特定键的情况下确定属性的访问器或实例变量所需的数据类型。 如果数据类型不是对象，则setter首先向传入值对象发送适当的<type> Value消息以提取基础数据，并存储该数据。</type></p>
 <p>注意:当您使用非对象属性的nil值调用其中一个KVC协议setter时，setter没有明显的一般操作过程。 因此，它向接收setter调用的对象发送setNilValueForKey：消息。 此方法的默认实现引发NSInvalidArgumentException异常，但子类可能会覆盖此行为，如Handling Non-Object Values中所述，例如设置标记值或提供有意义的默认值。</p>
@@ -567,7 +552,7 @@ NSArray *collectedPayees = [arrayOfArrays valueForKeyPath:@&quot;@unionOfArrays.
 <li>BOOL/char/double/float等基本类型包含在NSNumber对象中</li>
 <li>NSPoint/NSRange/NSRect/NSSize等结构体类型和自定义的结构体类型包含在NSValue对象中</li>
 </ul>
-<h3 id="验证属性"><a href="#验证属性" class="headerlink" title="验证属性"></a>验证属性</h3><p>键值编码协议定义了支持属性验证的方法。就像使用基于键的访问器来读取和写入符合键值编码的对象的属性一样，您也可以按键（或键路径）验证属性。手动调用方法<code>validateValue:forKey:error:(或validateValue:forKeyPath:error:)</code>即可，如果我们需要对验证属性进行自定义，则需在对象中自定义方法<code>validate&lt;Key&gt;:error:</code>。如果对象没有此类方法， 则默认情况下验证成功, 默认实现返回YES`。当存在属性特定的验证方法时， 默认实现将返回调用该方法的结果。</p>
+<h2 id="验证属性"><a href="#验证属性" class="headerlink" title="验证属性"></a>验证属性</h2><p>键值编码协议定义了支持属性验证的方法。就像使用基于键的访问器来读取和写入符合键值编码的对象的属性一样，您也可以按键（或键路径）验证属性。手动调用方法<code>validateValue:forKey:error:(或validateValue:forKeyPath:error:)</code>即可，如果我们需要对验证属性进行自定义，则需在对象中自定义方法<code>validate&lt;Key&gt;:error:</code>。如果对象没有此类方法， 则默认情况下验证成功, 默认实现返回YES`。当存在属性特定的验证方法时， 默认实现将返回调用该方法的结果。</p>
 <p>注意:您通常仅在Objective-C中使用此处描述的验证。在 Swift 中, 通过依赖 optionals 和强类型检查的编译器支持, 可以更便捷地处理属性验证, 同时使用内置的 willSet 和 didSet 属性观察器来测试任何运行时 API 协定, 详见<br>The Swift Programming Language (Swift 4.2)<br>中<em>Property Observers</em>章节对willSet didSet的描述。</p>
 <p>由于属性特定的验证方法通过引用的方式接收值和错误参数, 因此验证有三种可能的结果:</p>
 <ul>
@@ -576,10 +561,9 @@ NSArray *collectedPayees = [arrayOfArrays valueForKeyPath:@&quot;@unionOfArrays.
 <li>验证方法判断值对象无效, 但创建一个新的、有效的对象作为替换。在这种情况下, 该方法返回YES同时保持错误对象不变。返回之前, 该方法修改值引用以指向新值对象。当它进行修改时, 该方法总是创建一个新对象, 而不是修改旧值, 即使 value 对象是可变的。</li>
 </ul>
 <p>自动验证：通常, 键值编码协议及其默认实现都不定义任何自动执行验证的机制。但是, 您可以在您的应用程序中使用适合的验证方法。某些其他Cocoa技术在某些情况下会自动进行验证。例如, Core Data会在保存托管对象上下文时自动执行验证 (详见<em>Core Data Programming Guide)。此外, 在 macOS 中, Cocoa Bindings 允许您指定验证是否自动进行 (请阅读Cocoa Bindings Programming Topics</em>了解有关Cocoa Bindings的更多信息。)。</p>
-<h3 id="搜索规则"><a href="#搜索规则" class="headerlink" title="搜索规则"></a>搜索规则</h3><p>NSObject默认实现NSKeyValueCoding协议提供的基于键的访问器，使用一组明确定义的规则来调用对象的基础属性。这些协议方法使用键参数在其自己的对象实例中搜索访问器，实例变量以及遵循某些命名约定的相关方法。尽管您很少修改此默认搜索， 但了解它的工作方式会有所帮助，对于跟踪键值编码对象的行为，也可以使您自己的对象兼容。</p>
+<h2 id="搜索规则"><a href="#搜索规则" class="headerlink" title="搜索规则"></a>搜索规则</h2><p>NSObject默认实现NSKeyValueCoding协议提供的基于键的访问器，使用一组明确定义的规则来调用对象的基础属性。这些协议方法使用键参数在其自己的对象实例中搜索访问器，实例变量以及遵循某些命名约定的相关方法。尽管您很少修改此默认搜索， 但了解它的工作方式会有所帮助，对于跟踪键值编码对象的行为，也可以使您自己的对象兼容。</p>
 <p>注意：本节中的描述使用<key>或<key>作为键字符串的占位符，该键字符串在一个键值编码协议方法中作为参数出现，然后该方法将该键字符串用作间接方法调用或变量名称查找的一部分。映射的属性名称遵循占位符大小写的情况。例如，对于getter<key>和is<key>，名为 hidden 的属性映射为hidden和isHidden .。</key></key></key></key></p>
-<ul>
-<li><p>基本的Getter搜索模式：valueForKey：的默认实现，给定一个key参数作为输入，在接收valueForKey：调用的类实例中操作，执行以下过程。</p>
+<h3 id="基本的Getter搜索模式"><a href="#基本的Getter搜索模式" class="headerlink" title="基本的Getter搜索模式"></a>基本的Getter搜索模式</h3><p>valueForKey：的默认实现，给定一个key参数作为输入，在接收valueForKey：调用的类实例中操作，执行以下过程。</p>
 <ol>
 <li>搜索实例与名称，按照该顺序，搜索找到的名称为get<key>、<key>、is<key>或<key>的第一个访问器方法。如果找到，调用它并继续到步骤5。否则请继续执行下一步。</key></key></key></key></li>
 <li>如果找不到简单取值方法, 则在实例中搜索其方法名形如 countOf<key>和objectIn<key>AtIndex: （相当于NSArray类中定义的基本方法）和<key>AtIndexes:（相当于NSArray类中的objectsAtIndexes:方法）的方法。如果第一个方法和后边两个方法中的至少一个方法被实现了, 则创建一个能够响应所有NSArray方法并返回该方法的集合代理对象。否则, 继续执行步骤3。代理对象随后将它接收的任何NSArray消息转换为countOf <key>，objectIn <key> AtIndex：和<key> AtIndexes：的消息，并将其发送给创建它的键值编码兼容对象。如果原始对象还实现了一个名为get <key>：range：的可选方法，则代理对象也会在适当时使用该方法。实际上，与符合键值编码的对象一起工作的代理对象允许底层属性的行为就像它是一样NSArray，即使它不是。</key></key></key></key></key></key></key></li>
@@ -588,31 +572,27 @@ NSArray *collectedPayees = [arrayOfArrays valueForKeyPath:@&quot;@unionOfArrays.
 <li>如果获取到的属性值是对象指针,即获取的是对象, 则直接将对象返回。<br>如果获取到的属性值是NSNumber支持的数据类型, 则将其存储在NSNumber实例并返回。<br>如果获取到的属性值不是 NSNumber 支持的类型, 则转换为NSValue对象, 然后返回。</li>
 <li>如果上述所有方法都没有执行，则调用valueForUndefinedKey：。 默认情况下，这会引发异常，但NSObject的子类可以通过重载并根据特定key做一些特殊处理。</li>
 </ol>
-</li>
-<li><p>基本的Setter搜索方式：setValue:forKey:的默认实现, 给定key和value参数作为输入, 在接收调用的对象内尝试将名为key的属性设置为value(或者, 对于非对象属性, 则为unwarp value, 详见Representing Non-Object Values), 使用以下过程:</p>
+<h3 id="基本的Setter搜索方式"><a href="#基本的Setter搜索方式" class="headerlink" title="基本的Setter搜索方式"></a>基本的Setter搜索方式</h3><p>setValue:forKey:的默认实现, 给定key和value参数作为输入, 在接收调用的对象内尝试将名为key的属性设置为value(或者, 对于非对象属性, 则为unwarp value, 详见Representing Non-Object Values), 使用以下过程:</p>
 <ol>
 <li>按照顺序查找第一个名为set<key>:或_set<key>的方法。如果找到, 传入输入值 (或根据需要展开值) 调用它, 然后完成。</key></key></li>
 <li>如果找不到简单访问器, 并且类方法accessInstanceVariablesDirectly返回YES, 则按以下顺序查找实例变量: _<key>、 _is<key>、<key>、is<key> 。如果找到, 则直接使用输入值 (或展开值) 设置变量并完成。</key></key></key></key></li>
 <li>如果找不到以上方法或实例变量, 则调用setValue:forUndefinedKey:。默认情况下，这会引发异常，但NSObject的子类可以通过重载并根据特定key做一些特殊处理。</li>
 </ol>
-</li>
-<li><p>可变数组的搜索方式：mutableArrayValueForKey：的默认实现，给定一个key参数作为输入，使用以下过程为接收访问者调用的对象内的一个名为key的属性返回一个可变代理数组：</p>
+<h3 id="可变数组的搜索方式"><a href="#可变数组的搜索方式" class="headerlink" title="可变数组的搜索方式"></a>可变数组的搜索方式</h3><p>mutableArrayValueForKey：的默认实现，给定一个key参数作为输入，使用以下过程为接收访问者调用的对象内的一个名为key的属性返回一个可变代理数组：</p>
 <ol>
 <li>查找一对方法, 名为insertObject：in <key> AtIndex：和removeObjectFrom <key> AtIndex：的方法（分别对应于NSMutableArray原始方法insertObject：atIndex：和removeObjectAtIndex：） ，或者名称类似于insert <key>：atIndexes：和remove <key> AtIndexes：（对应于NSMutableArrayinsertObjects：atIndexes：和removeObjectsAtIndexes：方法）。如果对象至少实现一个插入方法和至少一个删除方法，则返回一个响应NSMutableArray消息的代理对象，方法是发送insertObject：in <key> AtIndex：，removeObjectFrom <key> AtIndex：，insert <key>：atIndexes：，和remove <key> AtIndexes：消息到mutableArrayValueForKey：的原始接收者。<br>当接收mutableArrayValueForKey：消息的对象也实现了一个可选的替换对象方法，其名称如replaceObjectIn <key> AtIndex：withObject：或replace <key> AtIndexes：with <key>：，代理对象在适合最佳性能时会自动调用该可选方法。</key></key></key></key></key></key></key></key></key></key></key></li>
 <li>如果对象没有可变数组方法，则查找名称与模式set <key>：匹配的访问器方法。 在这种情况下，通过向mutableArrayValueForKey：的原始接收者发出set <key>：消息，返回响应NSMutableArray消息的代理对象。注意:此步骤中描述的机制比上一步的效率要低得多, 因为它可能涉及重复创建新的集合对象, 而不是修改现有的。因此, 在设计自己的键值编码兼容对象时, 通常应避免这种情况。</key></key></li>
 <li>如果既没有找到可变数组方法，也没有找到访问器，并且接收者的类对accessInstanceVariablesDirectly响应’YES，则按照顺序搜索名为_ 或`的实例变量。如果找到这样的实例变量，则返回一个代理对象，该对象将它接收的每个NSMutableArray消息转发给实例变量的值，该值通常是NSMutableArray的实例或其子类之一。</li>
 <li>如果所有其他方法都失败了，只要收到NSMutableArray消息，就返回一个可变集合代理对象，该对象向mutableArrayValueForKey：消息的原始接收者发出setValue：forUndefinedKey：消息。<br>setValue:forUndefinedKey:的默认实现会抛出NSUndefinedKeyException异常, 但子类可能会重写此行为。</li>
 </ol>
-</li>
-<li><p>可变有序集的搜索方式:mutableOrderedSetValueForKey的默认实现：将相同的简单访问器方法和有序集访问器方法识别为valueForKey :(请参阅 Default Search Pattern for the Basic Getter），并遵循相同的直接访问实例变量策略，但始终返回可变集合代理对象 valueForKey：返回的不可变集合。 此外，它还执行以下操作：</p>
+<h3 id="可变有序集的搜索方式"><a href="#可变有序集的搜索方式" class="headerlink" title="可变有序集的搜索方式"></a>可变有序集的搜索方式</h3><p>mutableOrderedSetValueForKey的默认实现：将相同的简单访问器方法和有序集访问器方法识别为valueForKey:(请参阅 Default Search Pattern for the Basic Getter），并遵循相同的直接访问实例变量策略，但始终返回可变集合代理对象 valueForKey：返回的不可变集合。 此外，它还执行以下操作：</p>
 <ol>
 <li>搜索名称类似于以下形式的方法: insertObject：in <key> AtIndex：和removeObjectFrom <key> AtIndex：（对应于NSMutableOrderedSet类定义的两个最原始方法），以及insert <key>： atIndexes：和remove <key> AtIndexes：（对应于insertObjects：atIndexes：和removeObjectsAtIndexes：）。<br>如果找到至少一个insert方法和至少一个remove方法，返回的代理对象每次接收到 NSMutableOrderedSet的消息后， 会通过以下组合方法给mutableOrderedSetValueForKey的原始对象 发送消息: mutableOrderedSetValueForKey:  insertObject:in<key>AtIndex:, removeObjectFrom <key> AtIndex :, insert <key>：atIndexes：  remove<key>AtIndexes:<br>代理对象还使用方法名为 replaceObjectIn <key> AtIndex：withObject： 的方法，或replace<key>AtIndexes:with<key>: ,当这些方法存在于原始对象中时。</key></key></key></key></key></key></key></key></key></key></key></li>
 <li>如果找不到可变的set方法，请搜索名为set <key>：的访问器方法。 在这种情况下，返回的代理对象每次收到NSMutableOrderedSet消息时都会向mutableOrderedSetValueForKey：的原始接收者发送一个set <key>：消息。注意：此步骤中描述的机制比前一步骤的效率低得多，因为它可能涉及重复创建新的集合对象而不是修改现有的集合对象。 因此，在设计自己的符合键值编码的对象时，通常应该避免使用它。</key></key></li>
 <li>如果找不到可变集消息和访问器，并且接收者的accessInstanceVariablesDirectly类方法返回YES，则按顺序搜索名称如_ <key>或<key>的实例变量。 如果找到这样的实例变量，则返回的代理对象将它接收的任何NSMutableOrderedSet消息转发给实例变量的值，该值通常是NSMutableOrderedSet或其子类之一的实例。</key></key></li>
 <li>如果所有其他方法都失败了，那么只要收到一个可变的set消息，返回的代理对象就会向mutableOrderedSetValueForKey：的原始接收者发送一个setValue：forUndefinedKey：消息。<br>setValue：forUndefinedKey：的默认实现引发了一个NSUndefinedKeyException，但是对象可能会覆盖此行为。</li>
 </ol>
-</li>
-<li><p>可变集的搜索方式：mutableSetValueForKey：的默认实现，给定一个key参数作为输入，使用以下过程为接收访问者调用的对象内的一个名为key的数组属性返回一个可变代理集：</p>
+<h3 id="可变集的搜索方式"><a href="#可变集的搜索方式" class="headerlink" title="可变集的搜索方式"></a>可变集的搜索方式</h3><p>mutableSetValueForKey：的默认实现，给定一个key参数作为输入，使用以下过程为接收访问者调用的对象内的一个名为key的数组属性返回一个可变代理集：</p>
 <ol>
 <li>搜索方法名称为add<key>Object:和 remove <key> Object 的方法：（分别对应于NSMutableSet原始方法addObject:和removeObject:）以及add<key>：和remove<key>:（对应于NSMutableSet 方法unionSet:和minusSet: ）。如果找到至少一个添加方法和至少一个删除方法，则返回一个NSMutableSet代理对象，该代理对象发送add <key> Object：，remove <key> Object：，add <key>：的某种组合， 和remove <key>：对于它收到的每个NSMutableSet消息的mutableSetValueForKey：的原始接收者的消息。代理对象还使用名称为“cross：”或“set：”的方法来提高性能（如果可用的话）。</key></key></key></key></key></key></key></key></li>
 <li>如果mutableSetValueForKey：调用的接收者是托管对象，则搜索模式不会像非托管对象那样继续。 有关更多信息，请参阅“Core Data Programming Guide<br>”中的托管对象访问器方法。</li>
@@ -620,8 +600,6 @@ NSArray *collectedPayees = [arrayOfArrays valueForKeyPath:@&quot;@unionOfArrays.
 <li>如果找不到可变的set方法和accessor方法，并且accessInstanceVariablesDirectly类方法返回YES，则按照顺序搜索名为_ <key>或<key>的实例变量。 如果找到这样的实例变量，则代理对象将它接收的每个NSMutableSet消息转发给实例变量的值，该值通常是NSMutableSet的实例或其子类之一。</key></key></li>
 <li>如果所有其他方法都失败了，返回的代理对象通过向mutableSetValueForKey：’的原始接收者发送setValue：forUndefinedKey：消息来响应它收到的任何NSMutableSet`消息。</li>
 </ol>
-</li>
-</ul>
 
       
     </div>
@@ -829,7 +807,7 @@ NSArray *collectedPayees = [arrayOfArrays valueForKeyPath:@&quot;@unionOfArrays.
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详解"><span class="nav-number">2.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#访问对象属性"><span class="nav-number">2.1.</span> <span class="nav-text">访问对象属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Keys-和-Key-Paths标识对象的属性"><span class="nav-number">2.1.1.</span> <span class="nav-text">使用Keys 和 Key Paths标识对象的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用键获取属性值"><span class="nav-number">2.1.2.</span> <span class="nav-text">使用键获取属性值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用键设置属性值"><span class="nav-number">2.1.3.</span> <span class="nav-text">使用键设置属性值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用键简化对象访问"><span class="nav-number">2.1.4.</span> <span class="nav-text">使用键简化对象访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问集合属性"><span class="nav-number">2.2.</span> <span class="nav-text">访问集合属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用集合运算符"><span class="nav-number">2.3.</span> <span class="nav-text">使用集合运算符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标量类型的处理"><span class="nav-number">2.4.</span> <span class="nav-text">标量类型的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包装和解包标量类型"><span class="nav-number">2.4.1.</span> <span class="nav-text">包装和解包标量类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证属性"><span class="nav-number">2.4.2.</span> <span class="nav-text">验证属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索规则"><span class="nav-number">2.4.3.</span> <span class="nav-text">搜索规则</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用键值编码可以干什么？"><span class="nav-number">1.1.</span> <span class="nav-text">使用键值编码可以干什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用键值编码？"><span class="nav-number">1.2.</span> <span class="nav-text">如何使用键值编码？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用Swift进行键值编码"><span class="nav-number">1.3.</span> <span class="nav-text">如何使用Swift进行键值编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#哪些技术用到了KVO？"><span class="nav-number">1.4.</span> <span class="nav-text">哪些技术用到了KVO？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详解"><span class="nav-number">2.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#访问对象属性"><span class="nav-number">2.1.</span> <span class="nav-text">访问对象属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Keys-和-Key-Paths标识对象的属性"><span class="nav-number">2.1.1.</span> <span class="nav-text">使用Keys 和 Key Paths标识对象的属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用键获取属性值"><span class="nav-number">2.1.2.</span> <span class="nav-text">使用键获取属性值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用键设置属性值"><span class="nav-number">2.1.3.</span> <span class="nav-text">使用键设置属性值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用键简化对象访问"><span class="nav-number">2.1.4.</span> <span class="nav-text">使用键简化对象访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问集合属性"><span class="nav-number">2.2.</span> <span class="nav-text">访问集合属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用集合运算符"><span class="nav-number">2.3.</span> <span class="nav-text">使用集合运算符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#聚合运算符："><span class="nav-number">2.3.1.</span> <span class="nav-text">聚合运算符：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组运算符"><span class="nav-number">2.3.2.</span> <span class="nav-text">数组运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#嵌套运算符"><span class="nav-number">2.3.3.</span> <span class="nav-text">嵌套运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标量类型的处理"><span class="nav-number">2.4.</span> <span class="nav-text">标量类型的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#包装和解包标量类型"><span class="nav-number">2.4.1.</span> <span class="nav-text">包装和解包标量类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证属性"><span class="nav-number">2.5.</span> <span class="nav-text">验证属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索规则"><span class="nav-number">2.6.</span> <span class="nav-text">搜索规则</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本的Getter搜索模式"><span class="nav-number">2.6.1.</span> <span class="nav-text">基本的Getter搜索模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本的Setter搜索方式"><span class="nav-number">2.6.2.</span> <span class="nav-text">基本的Setter搜索方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变数组的搜索方式"><span class="nav-number">2.6.3.</span> <span class="nav-text">可变数组的搜索方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变有序集的搜索方式"><span class="nav-number">2.6.4.</span> <span class="nav-text">可变有序集的搜索方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可变集的搜索方式"><span class="nav-number">2.6.5.</span> <span class="nav-text">可变集的搜索方式</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
