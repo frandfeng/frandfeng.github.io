@@ -832,17 +832,7 @@
 
       
         
-          
-          
-App膨胀过程
- 手机天猫解耦之路原文
- 总结：一个APP的开发模式一般有这么几个过程
-
-当主城搭建框架时：一个简单的MVC工程，缺点是不同的人开发没有功能分层
-当几人协同开发时：模块化（先按功能把工程做横向分层，在业务层再做纵向梳理。把不同的模块代码简单的放在一个文件夹里），缺点是花大量的时间解决编译不过的问题
-当几个团队协同开发时：插件化，我们引入依赖管理设施（iOS引入了Cocoa Pods，Android使用Maven）；把此前的模块进一步剥离成独立工程，单独做版本管理；每个独立的插件对发布的版本号负责，不论是其他插件还是主工程都依赖插件发布的稳定版本（插件是可以独立开发，独立发布，独立运行的，而模块则必须依赖主工程的环境）
-开发到一定的代码量时：由于主工程是通过各插件的源码组合起来的，当源码量达到十万级以上时每一次重新索引和编译，都要消耗大量的时间。每次发布不再是一个稳定版本号
-          ...
+          <p><img src="/assets/outline/AppInflate.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/09/28/支付宝框架解析/#more" rel="contents">
@@ -988,29 +978,7 @@ App膨胀过程
 
       
         
-          
-          
-算法三原则：
-
-有穷性：能在有限步骤，有限时间内完成
-确定性：对相同的输入，产生唯一的输出，没有歧义
-可行性：算法是可行的，在当前设备，经济水平等条件下是可用的
-
-
-算法分析：
-
-时间复杂度：大O：最坏情况下的时间复杂度（如快排：O(n^2)，期望nlogn）。忽略常数，用来描述随着问题规模的增长，所需时间增长的速率/数量级
-空间复杂度：同时间复杂度
-
-对数公式是数学中的一种常见公式，如果a^x=N(a&gt;0,且a≠1)，则x叫做以a为底N的对数,记做x=log(a)(N)，其中a要写于log右下。其中a叫做对数的底，N叫做真数。通常我们将以10为底的对数叫做常用对数，以e为底的对数称为自然对数。
-
-常见分析方法
-
-输入输出，输入输出有时候也是算法的一部分，需要考虑到复杂度内，例如：输入N个元素，则时间复杂度必定大于等于O(n)
-
-数循环次数
-均摊分析，注意是否需要均摊，整个算法为O
-          ...
+          <p><img src="/assets/outline/iOS算法.png" alt=""><br><img src="/assets/outline/iOS算法2.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/08/31/iOS中的数据结构和算法/#more" rel="contents">
@@ -1961,7 +1929,7 @@ UIImage的底层是通过ImageIO库实现的，ImageIO库的.h头如下：
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="iOS,框架,">
+  <meta name="keywords" content="iOS,APPInflation,Optimization,">
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="App膨胀过程  手机天猫解耦之路原文  总结：一个APP的开发模式一般有这么几个过程  当主城搭建框架时：一个简单的MVC工程，缺点是不同的人开发没有功能分层 当几人协同开发时：模块化（先按功能把工程做横向分层，在业务层再做纵向梳理。把不同的模块代码简单的放在一个文件夹里），缺点是花大量的时间解决编译不过的问题 当几个团队协同开发时：插件化，我们引入依赖管理设施（iOS引入了Cocoa Pod">
-<meta name="keywords" content="iOS,框架">
+<meta name="keywords" content="iOS,APPInflation,Optimization">
 <meta property="og:type" content="article">
 <meta property="og:title" content="支付宝框架解析">
 <meta property="og:url" content="https://frandfeng.github.io/2018/09/28/支付宝框架解析/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="App膨胀过程  手机天猫解耦之路原文  总结：一个APP的开发模式一般有这么几个过程  当主城搭建框架时：一个简单的MVC工程，缺点是不同的人开发没有功能分层 当几人协同开发时：模块化（先按功能把工程做横向分层，在业务层再做纵向梳理。把不同的模块代码简单的放在一个文件夹里），缺点是花大量的时间解决编译不过的问题 当几个团队协同开发时：插件化，我们引入依赖管理设施（iOS引入了Cocoa Pod">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T10:26:54.877Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/AppInflate.png">
+<meta property="og:updated_time" content="2018-12-03T07:14:52.474Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="支付宝框架解析">
-<meta name="twitter:description" content="App膨胀过程  手机天猫解耦之路原文  总结：一个APP的开发模式一般有这么几个过程  当主城搭建框架时：一个简单的MVC工程，缺点是不同的人开发没有功能分层 当几人协同开发时：模块化（先按功能把工程做横向分层，在业务层再做纵向梳理。把不同的模块代码简单的放在一个文件夹里），缺点是花大量的时间解决编译不过的问题 当几个团队协同开发时：插件化，我们引入依赖管理设施（iOS引入了Cocoa Pod">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/AppInflate.png">
 
 
 
@@ -394,27 +393,23 @@
       
 
       
-        <ol>
-<li><p>App膨胀过程</p>
-<p> <a href="https://mp.weixin.qq.com/s?__biz=MzUxMzcxMzE5Ng==&amp;mid=2247488349&amp;idx=1&amp;sn=8e3234789a5de4db24f7a30c126d3894&amp;source=41#wechat_redirect" target="_blank" rel="noopener">手机天猫解耦之路原文</a></p>
-<p> 总结：一个APP的开发模式一般有这么几个过程</p>
+        <p><img src="/assets/outline/AppInflate.png" alt=""></p>
+<a id="more"></a>
+<h1 id="App膨胀过程"><a href="#App膨胀过程" class="headerlink" title="App膨胀过程"></a>App膨胀过程</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxMzcxMzE5Ng==&amp;mid=2247488349&amp;idx=1&amp;sn=8e3234789a5de4db24f7a30c126d3894&amp;source=41#wechat_redirect" target="_blank" rel="noopener">手机天猫解耦之路原文</a></p>
+<p>总结：一个APP的开发模式一般有这么几个过程</p>
 <ol>
-<li>当主城搭建框架时：一个简单的MVC工程，缺点是不同的人开发没有功能分层</li>
+<li>当主程搭建框架时：一个简单的MVC工程，缺点是不同的人开发没有功能分层</li>
 <li>当几人协同开发时：模块化（先按功能把工程做横向分层，在业务层再做纵向梳理。把不同的模块代码简单的放在一个文件夹里），缺点是花大量的时间解决编译不过的问题</li>
 <li>当几个团队协同开发时：插件化，我们引入依赖管理设施（iOS引入了Cocoa Pods，Android使用Maven）；把此前的模块进一步剥离成独立工程，单独做版本管理；每个独立的插件对发布的版本号负责，不论是其他插件还是主工程都依赖插件发布的稳定版本（插件是可以独立开发，独立发布，独立运行的，而模块则必须依赖主工程的环境）</li>
-<li><p>开发到一定的代码量时：由于主工程是通过各插件的源码组合起来的，当源码量达到十万级以上时每一次重新索引和编译，都要消耗大量的时间。每次发布不再是一个稳定版本号，而是一个稳定的二进制包。要解决这个问题，就是要把插件化进行到底，实现插件的另外两个独立——独立开发和独立运行。最重要的工作就是我们今天的主题解耦，梳理各个插件之间的依赖关系。每次发布不再是一个稳定版本号，而是一个稳定的二进制包。</p>
-<p>在这个工程膨胀过程里，我把耦合分成三类：</p>
-</li>
-<li><p>界面耦合，就是用户操作流程里，从首页-到搜索-到详情-再进店，这些界面的跳转是硬编码的</p>
-</li>
+<li>开发到一定的代码量时：由于主工程是通过各插件的源码组合起来的，当源码量达到十万级以上时每一次重新索引和编译，都要消耗大量的时间。每次发布不再是一个稳定版本号，而是一个稳定的二进制包。要解决这个问题，就是要把插件化进行到底，实现插件的另外两个独立——独立开发和独立运行。最重要的工作就是我们今天的主题解耦，梳理各个插件之间的依赖关系。每次发布不再是一个稳定版本号，而是一个稳定的二进制包。</li>
+</ol>
+<h1 id="耦合"><a href="#耦合" class="headerlink" title="耦合"></a>耦合</h1><p>在这个工程膨胀过程里，我把耦合分成三类：</p>
+<ol>
+<li>界面耦合，就是用户操作流程里，从首页-到搜索-到详情-再进店，这些界面的跳转是硬编码的</li>
 <li>依赖耦合，顾名思义，两个模块之间的有依赖，就是耦合</li>
 <li>工程耦合，每个模块有自己的生命周期和运行时，每个模块在生产环境里又需要依赖主工程的运行时</li>
 </ol>
-</li>
-</ol>
-<ol start="2">
-<li><p>模块之间的解耦</p>
-<ul>
+<h2 id="模块之间的解耦思路"><a href="#模块之间的解耦思路" class="headerlink" title="模块之间的解耦思路"></a>模块之间的解耦思路</h2><ul>
 <li>EOCNetFrame工程:(由基础组件团队开发，封装HTTP模块，实现和服务器交互)<ul>
 <li>EOCNetFrame Framework:(模块主代码，EOCNetFrame.h头文件及其他类实现)</li>
 <li>EOCNetFrameTest:(对EOCNetFrame框架测试，测试稳定后发布版本供其他组调用)</li>
@@ -425,126 +420,144 @@
 <li>TickeFrameTest:(对TicketFrame框架测试，测试稳定后发布版本供其他组调用)</li>
 </ul>
 </li>
-<li><p>Project主工程:(由主工程业务团队开发，基于基础组件团队和其他业务组件团队开发主业务)</p>
-<ul>
+<li>Project主工程:(由主工程业务团队开发，基于基础组件团队和其他业务组件团队开发主业务)<ul>
 <li>加入基础团队的各个组件包framework</li>
 <li>加入各个业务团队的功能包framework</li>
 </ul>
-<p>解耦代码</p>
-<p>  //Net层<br>  //EOCNetFrame.h<br>  #import &lt;UIKit/UIKit.h&gt;<br>  #import “EOCRequestManager.h”</p>
-<p>  //EOCRequestManager.h</p>
-<ul>
-<li>(nonnull instancetype)sharedInstance;</li>
-<li><ul>
-<li>(AFHTTPRequestOperation <em>)HttpRequestPostWithURLString:(NSString </em>)URLString<pre><code>         parameters:(NSDictionary *)parameters
-   startImmediately:(BOOL)startImmediately
-        ignoreCache:(BOOL)ignoreCache
-resultCacheDuration:(NSTimeInterval)resultCacheDuration
-          extend:(__nullable EOCExtendBlock)extendBlock
-   completionHandler:(__nullable EOCRequestCompletionHandler)completionHandler;
-</code></pre></li>
-</ul>
 </li>
 </ul>
-</li>
-</ul>
-</li>
-</ol>
-<pre><code>    //Ticket层               
-    //TicketFrame.h
-    #import &lt;UIKit/UIKit.h&gt;
-    #import &quot;TicketRoute.h&quot;
+<h2 id="解耦代码"><a href="#解耦代码" class="headerlink" title="解耦代码"></a>解耦代码</h2><pre><code>//Net层
+//EOCNetFrame.h
+#import &lt;UIKit/UIKit.h&gt;
+#import &quot;EOCRequestManager.h&quot;
 
-    //TicketRoute.h
-    @interface TicketRoute : NSObject
-    + (UIViewController*)ticketRootView;
-    @end
+//EOCRequestManager.h
++ (nonnull instancetype)sharedInstance;
++ - (AFHTTPRequestOperation *)HttpRequestPostWithURLString:(NSString *)URLString
+                               parameters:(NSDictionary *)parameters
+                         startImmediately:(BOOL)startImmediately
+                              ignoreCache:(BOOL)ignoreCache
+                      resultCacheDuration:(NSTimeInterval)resultCacheDuration
+                                extend:(__nullable EOCExtendBlock)extendBlock
+                         completionHandler:(__nullable EOCRequestCompletionHandler)completionHandler;
 
-    @implementation TicketRoute
-    + (UIViewController*)ticketRootView{
-        return [TicketViewCtr new];
+
+//Ticket层               
+//TicketFrame.h
+#import &lt;UIKit/UIKit.h&gt;
+#import &quot;TicketRoute.h&quot;
+
+//TicketRoute.h
+@interface TicketRoute : NSObject
++ (UIViewController*)ticketRootView;
+@end
+
+@implementation TicketRoute
++ (UIViewController*)ticketRootView{
+    return [TicketViewCtr new];
+}
+@end
+
+//TicketViewCtr
+@implementation TicketViewCtr
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @&quot;飞机票&quot;;
+    self.view.backgroundColor = [UIColor blueColor];
+    [self eocNet];
+}
+
+- (void)eocNet{
+    NSString* urlStr = URLPath;
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    [parameters setObject:@&quot;1&quot; forKey:@&quot;versions_id&quot;];
+    [parameters setObject:@&quot;1&quot; forKey:@&quot;system_type&quot;];
+    [[EOCRequestManager sharedInstance] HttpRequestPostWithURLString:urlStr
+                                                          parameters:parameters
+                                                    startImmediately:YES
+                                                         ignoreCache:NO
+                                                 resultCacheDuration:3
+                                                              extend:nil
+                                                   completionHandler:^(NSEOCError *error, id result, BOOL isFromCache, AFHTTPRequestOperation *operation){                 
+                                                       if (error) {
+                                                           NSLog(@&quot;%@&quot;, error);
+                                                       }else{                                              
+                                                           NSLog(@&quot;%@&quot;, result);
+                                                       }
+                                                   }];
+}
+@end
+
+//主工程层
+UIViewController *homePageViewCtr = [self routeTargetName:@&quot;FindRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
+UIViewController *communitViewCtr =  [self routeTargetName:@&quot;CommuniteRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
+UIViewController *finPlatformVCtr =  [self routeTargetName:@&quot;PlatformRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
+UIViewController *personViewCtr   =  [self routeTargetName:@&quot;PersonRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
+
+UINavigationController *baseNavOne   = [[UINavigationController alloc] initWithRootViewController:homePageViewCtr];
+UINavigationController *baseNavTwo   = [[UINavigationController alloc] initWithRootViewController:communitViewCtr];
+UINavigationController *baseNavThree = [[UINavigationController alloc] initWithRootViewController:finPlatformVCtr];
+UINavigationController *baseNavFour  = [[UINavigationController alloc] initWithRootViewController:personViewCtr];
+
+self.viewControllers = [[NSArray alloc] initWithObjects:baseNavOne, baseNavTwo, baseNavThree, baseNavFour, nil];
+
+@interface FindRoute : NSObject
+- (UIViewController*)controllerWithMainTabbar;
+@end
+
+@implementation FindRoute
+- (UIViewController*)controllerWithMainTabbar{
+    HomePageViewCtr *homePageViewCtr = [HomePageViewCtr new];
+    return homePageViewCtr;
+}
+@end
+
+//HomePageViewCtr
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event {
+    UIViewController *vc = [TicketRoute ticketRootView];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+NSObject+RouteRoot
+- (id)routeTargetName:(NSString*)targetName actionName:(NSString*)actionName param:(id)param {
+    Class targetClass = NSClassFromString(targetName);
+    SEL actionSel = NSSelectorFromString(actionName);
+    NSObject *targetObj = [targetClass new];
+    if ([targetObj respondsToSelector:actionSel]) {
+        NSMethodSignature *signture = [targetObj methodSignatureForSelector:actionSel];
+        NSString *returnType = [NSString stringWithUTF8String:signture.methodReturnType];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored &quot;-Warc-performSelector-leaks&quot;
+        if([returnType isEqualToString:@&quot;@&quot;]){
+            return [targetObj performSelector:actionSel withObject:param];
+        } else if ([returnType isEqualToString:@&quot;v&quot;]||[returnType isEqualToString:@&quot;V&quot;]) {
+            [targetObj performSelector:actionSel withObject:param];
+            return nil;
+        } else {
+            [targetObj performSelector:actionSel withObject:param];
+            return nil;
+        }
+#pragma clang diagnostic pop
+    } else {
+        NSLog(@&quot;error:%@没有%@方法&quot;, targetName, actionName);
+        return nil;
     }
-    @end
-
-    //TicketViewCtr
-    @implementation TicketViewCtr
-    - (void)viewDidLoad {
-        [super viewDidLoad];
-        self.title = @&quot;飞机票&quot;;
-        self.view.backgroundColor = [UIColor blueColor];
-        [self eocNet];
-    }
-
-    - (void)eocNet{
-        NSString* urlStr = URLPath;
-        NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-        [parameters setObject:@&quot;1&quot; forKey:@&quot;versions_id&quot;];
-        [parameters setObject:@&quot;1&quot; forKey:@&quot;system_type&quot;];
-        [[EOCRequestManager sharedInstance] HttpRequestPostWithURLString:urlStr
-                                                              parameters:parameters
-                                                        startImmediately:YES
-                                                             ignoreCache:NO
-                                                     resultCacheDuration:3
-                                                                  extend:nil
-                                                       completionHandler:^(NSEOCError *error, id result, BOOL isFromCache, AFHTTPRequestOperation *operation){                 
-                                                           if (error) {
-                                                               NSLog(@&quot;%@&quot;, error);
-                                                           }else{                                              
-                                                               NSLog(@&quot;%@&quot;, result);
-                                                           }
-                                                       }];
-    }
-    @end
-
-    //主工程层
-    UIViewController *homePageViewCtr = [self routeTargetName:@&quot;FindRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
-    UIViewController *communitViewCtr =  [self routeTargetName:@&quot;CommuniteRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
-    UIViewController *finPlatformVCtr =  [self routeTargetName:@&quot;PlatformRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
-    UIViewController *personViewCtr   =  [self routeTargetName:@&quot;PersonRoute&quot; actionName:@&quot;controllerWithMainTabbar&quot;];
-
-    UINavigationController *baseNavOne   = [[UINavigationController alloc] initWithRootViewController:homePageViewCtr];
-    UINavigationController *baseNavTwo   = [[UINavigationController alloc] initWithRootViewController:communitViewCtr];
-    UINavigationController *baseNavThree = [[UINavigationController alloc] initWithRootViewController:finPlatformVCtr];
-    UINavigationController *baseNavFour  = [[UINavigationController alloc] initWithRootViewController:personViewCtr];
-
-    self.viewControllers = [[NSArray alloc] initWithObjects:baseNavOne, baseNavTwo, baseNavThree, baseNavFour, nil];
-
-    @interface FindRoute : NSObject
-    - (UIViewController*)controllerWithMainTabbar;
-    @end
-
-    @implementation FindRoute
-    - (UIViewController*)controllerWithMainTabbar{
-        HomePageViewCtr *homePageViewCtr = [HomePageViewCtr new];
-        return homePageViewCtr;
-    }
-    @end
-
-    //HomePageViewCtr
-    - (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event {
-        UIViewController *vc = [TicketRoute ticketRootView];
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-
-&gt; 从上面代码可看出，主工程的编译链接运行不依赖于某个业务的内部代码是否完成，因为只要编译出来了framework，即说明子框架及业务是正常链接的
-</code></pre><ol start="3">
-<li><p>安全问题 hook</p>
-<ol>
+}
+</code></pre><blockquote>
+<p>从上面代码可看出，主工程的编译链接运行不依赖于某个业务的内部代码是否完成，因为只要编译出来了framework，即说明子框架及业务是正常链接的</p>
+</blockquote>
+<h1 id="安全问题-hook"><a href="#安全问题-hook" class="headerlink" title="安全问题 hook"></a>安全问题 hook</h1><ol>
 <li>非越狱 函数和参数安全</li>
 <li>越狱 通过终端来直接操作你的app 运行时 runtime hook的你方法。安全隐患 运行时导致，方法名和参数都能看到</li>
 </ol>
 <p>解决方法：</p>
-<ol>
-<li><p>define重定义函数的方法名和参数名</p>
-<pre><code>#define LoginMethod xggedsagegawegga
+<h2 id="define重定义函数的方法名和参数名"><a href="#define重定义函数的方法名和参数名" class="headerlink" title="define重定义函数的方法名和参数名"></a>define重定义函数的方法名和参数名</h2><pre><code>#define LoginMethod xggedsagegawegga
 #define loginName   kashdfkjhasdf
 
 - (void)LoginMethod:(NSString*)loginName{
     NSLog(@&quot;loginMethod %@&quot;, loginName);
 }
-</code></pre></li>
-<li><p>c的方法</p>
-<pre><code>@interface SafeCategory : NSObject
+</code></pre><h2 id="c的方法"><a href="#c的方法" class="headerlink" title="c的方法"></a>c的方法</h2><pre><code>@interface SafeCategory : NSObject
  @end
  /*
   把函数名隐藏在结构体里，以函数指针成员的形式存储。 编译后，只有留下地址，去掉了名字和参数表，提高了逆向成本和攻击门槛
@@ -575,11 +588,7 @@ resultCacheDuration:(NSTimeInterval)resultCacheDuration
      SafeUnit-&gt;resetPassword(pswd);
  }
  @end
-</code></pre></li>
-</ol>
-</li>
-</ol>
-
+</code></pre>
       
     </div>
     
@@ -598,7 +607,9 @@ resultCacheDuration:(NSTimeInterval)resultCacheDuration
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/框架/" rel="tag"># 框架</a>
+            <a href="/tags/APPInflation/" rel="tag"># APPInflation</a>
+          
+            <a href="/tags/Optimization/" rel="tag"># Optimization</a>
           
         </div>
       
@@ -686,8 +697,17 @@ resultCacheDuration:(NSTimeInterval)resultCacheDuration
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -726,7 +746,7 @@ resultCacheDuration:(NSTimeInterval)resultCacheDuration
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -765,6 +785,22 @@ resultCacheDuration:(NSTimeInterval)resultCacheDuration
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#App膨胀过程"><span class="nav-number">1.</span> <span class="nav-text">App膨胀过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#耦合"><span class="nav-number">2.</span> <span class="nav-text">耦合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#模块之间的解耦思路"><span class="nav-number">2.1.</span> <span class="nav-text">模块之间的解耦思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解耦代码"><span class="nav-number">2.2.</span> <span class="nav-text">解耦代码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安全问题-hook"><span class="nav-number">3.</span> <span class="nav-text">安全问题 hook</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#define重定义函数的方法名和参数名"><span class="nav-number">3.1.</span> <span class="nav-text">define重定义函数的方法名和参数名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c的方法"><span class="nav-number">3.2.</span> <span class="nav-text">c的方法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -87,8 +87,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://frandfeng.github.io/assets/outline/ARKit.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/ARKit流程.png">
-<meta property="og:image" content="https://frandfeng.github.io/assets/blog/ARKit流程.png">
-<meta property="og:updated_time" content="2018-12-03T03:36:34.579Z">
+<meta property="og:updated_time" content="2018-12-03T03:43:33.886Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ARKit增强现实">
 <meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/ARKit.png">
@@ -397,17 +396,13 @@
       
         <p><img src="/assets/outline/ARKit.png" alt=""><br><img src="/assets/blog/ARKit流程.png" alt=""></p>
 <a id="more"></a>
-<p>VR：Virtual Reality 虚拟现实，是一种仿真技术，模拟周围的环境、人物、动物等，让用户完全沉浸到该环境中，并在该环境中进行各种交互，现在一般会通过外设（头盔、眼镜等）。</p>
+<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>VR：Virtual Reality 虚拟现实，是一种仿真技术，模拟周围的环境、人物、动物等，让用户完全沉浸到该环境中，并在该环境中进行各种交互，现在一般会通过外设（头盔、眼镜等）。</p>
 <p>AR：Augmented Reality 增强现实，是一种在摄像机捕捉到真实世界，增加虚拟化物品，并能进行互动，主要以真实世界为主。</p>
-<p><img src="/assets/blog/ARKit流程.png" alt=""></p>
-<p>ARKit和ARCore的三大核心点：</p>
-<ol>
-<li>运动追踪（Motion tracking）: 视觉惯性测量(Visual Inertial Odometry)，ARKit使用视觉惯性测距技术获取手机的位置和方向，其原理是，对摄像头采集到的图像序列进行视觉分析，找出其特征点在连续的图像帧之间的位置变化，再通过设备的运动传感器，最终得到设备的位置和方向，因此使用时可以将虚拟对象固定在一个位置，并围绕它移动。</li>
-<li>环境识别（Environmental understanding）：使用相机检测到平坦的表面（比如桌面、地板或天花板），可以让用户将 AR 物体精准的” 放置 “在平面上。</li>
-<li>光线感应（Light estimation）：ARCore 可以感知所处环境中的环境光，使开发人员可以通过与周围环境相匹配光线塑造虚拟形象，使其外观更加逼真。</li>
-</ol>
-<p>ARKit的核心类</p>
-<ol>
+<h1 id="核心点"><a href="#核心点" class="headerlink" title="核心点"></a>核心点</h1><p>ARKit和ARCore的三大核心点：运动追踪、环境识别和光线感应</p>
+<h2 id="运动追踪（Motion-tracking）"><a href="#运动追踪（Motion-tracking）" class="headerlink" title="运动追踪（Motion tracking）:"></a>运动追踪（Motion tracking）:</h2><p>视觉惯性测量(Visual Inertial Odometry)，ARKit使用视觉惯性测距技术获取手机的位置和方向，其原理是，对摄像头采集到的图像序列进行视觉分析，找出其特征点在连续的图像帧之间的位置变化，再通过设备的运动传感器，最终得到设备的位置和方向，因此使用时可以将虚拟对象固定在一个位置，并围绕它移动。</p>
+<h2 id="环境识别（Environmental-understanding）："><a href="#环境识别（Environmental-understanding）：" class="headerlink" title="环境识别（Environmental understanding）："></a>环境识别（Environmental understanding）：</h2><p>使用相机检测到平坦的表面（比如桌面、地板或天花板），可以让用户将 AR 物体精准的” 放置 “在平面上。</p>
+<h2 id="光线感应（Light-estimation）："><a href="#光线感应（Light-estimation）：" class="headerlink" title="光线感应（Light estimation）："></a>光线感应（Light estimation）：</h2><p>ARCore 可以感知所处环境中的环境光，使开发人员可以通过与周围环境相匹配光线塑造虚拟形象，使其外观更加逼真。</p>
+<h1 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h1><h2 id="核心类"><a href="#核心类" class="headerlink" title="核心类"></a>核心类</h2><ol>
 <li>ARSession：前面三大核心点的实现</li>
 <li>ARCamera：通过手机摄像头抓取图片</li>
 <li>ARSCNView：展示场景</li>
@@ -415,8 +410,7 @@
 <blockquote>
 <p>ARSession通过ARCamera抓取的图片，做识别，识别出特征点在哪，平面在哪，光线的情况是怎么样的，然后将图片传给ARSCNView进行渲染，再根据交互，来添加虚拟物品</p>
 </blockquote>
-<p>SceneKit虚拟物品</p>
-<ol>
+<h2 id="SceneKit"><a href="#SceneKit" class="headerlink" title="SceneKit"></a>SceneKit</h2><ol>
 <li>SCNNode：虚拟物品节点</li>
 <li>SCNScene：场景，虚拟物品在添加到view上之前，需加到Scene里，添加到Scene之后才能展示</li>
 <li>SCNMaterial：物体材质</li>
@@ -425,13 +419,12 @@
 <p>除了用苹果的3D引擎SceneKit之外，还可以用其他引擎，如SpriteKit，Matal自己来写虚拟物品渲染逻辑、Unity3D、unreal4(UE4)等</p>
 <p>如果你要做纯粹的AR app，更多的技术公司还是会通过Unity或者UE4来开发，因为这些引擎生态更好，并且可以跨平台；但是这样的话app体积必然是很大的。</p>
 </blockquote>
-<p>ARKit运行机制</p>
-<ol>
+<h2 id="ARKit运行机制"><a href="#ARKit运行机制" class="headerlink" title="ARKit运行机制"></a>ARKit运行机制</h2><ol>
 <li>ARConfiguration：ARSession的配置信息，配置它是检测水平平面还是垂直平面等。</li>
 <li>ARFrame：从ARCamera获取的视频，来获取的一帧帧图片</li>
 <li>ARAnchor：你的虚拟物品放在哪个位置，由它来决定</li>
 </ol>
-<p>创建一个ARKit工程：</p>
+<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>创建一个ARKit工程：</p>
 <pre><code>@interface ViewController () &lt;ARSCNViewDelegate&gt;
 @property (nonatomic, strong) IBOutlet ARSCNView *sceneView;
 @end
@@ -782,8 +775,17 @@ ARSCNViewDelegate-&gt;didAddNode:forAnchor:
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -822,7 +824,7 @@ ARSCNViewDelegate-&gt;didAddNode:forAnchor:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -861,6 +863,22 @@ ARSCNViewDelegate-&gt;didAddNode:forAnchor:
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心点"><span class="nav-number">2.</span> <span class="nav-text">核心点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#运动追踪（Motion-tracking）"><span class="nav-number">2.1.</span> <span class="nav-text">运动追踪（Motion tracking）:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境识别（Environmental-understanding）："><span class="nav-number">2.2.</span> <span class="nav-text">环境识别（Environmental understanding）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#光线感应（Light-estimation）："><span class="nav-number">2.3.</span> <span class="nav-text">光线感应（Light estimation）：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#详解"><span class="nav-number">3.</span> <span class="nav-text">详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#核心类"><span class="nav-number">3.1.</span> <span class="nav-text">核心类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SceneKit"><span class="nav-number">3.2.</span> <span class="nav-text">SceneKit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARKit运行机制"><span class="nav-number">3.3.</span> <span class="nav-text">ARKit运行机制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用法"><span class="nav-number">4.</span> <span class="nav-text">用法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
