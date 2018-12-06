@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,音频,">
+  <meta name="keywords" content="iOS,音频,">
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="概念：先对音频的概念有一些了解  音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ">
-<meta name="keywords" content="OC,iOS,音频">
+<meta name="description" content="音频概念概念音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。 人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。 根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。 PCM对声音">
+<meta name="keywords" content="iOS,音频">
 <meta property="og:type" content="article">
 <meta property="og:title" content="实时音频功能开发">
 <meta property="og:url" content="https://frandfeng.github.io/2018/04/27/实时音频功能开发/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="概念：先对音频的概念有一些了解  音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ">
+<meta property="og:description" content="音频概念概念音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。 人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。 根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。 PCM对声音">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T10:23:55.468Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/音频-AudioQueue.png">
+<meta property="og:updated_time" content="2018-12-06T08:13:44.853Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实时音频功能开发">
-<meta name="twitter:description" content="概念：先对音频的概念有一些了解  音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ">
+<meta name="twitter:description" content="音频概念概念音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。 人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。 根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。 PCM对声音">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/blog/音频-AudioQueue.png">
 
 
 
@@ -394,22 +396,50 @@
       
 
       
-        <p>概念：先对音频的概念有一些了解</p>
+        <h1 id="音频概念"><a href="#音频概念" class="headerlink" title="音频概念"></a>音频概念</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。</p>
+<p>人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。</p>
+<p>根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。</p>
+<h2 id="PCM"><a href="#PCM" class="headerlink" title="PCM"></a>PCM</h2><p>对声音进行采样、量化过程被称为脉冲编码调制（Pulse Code Modulation）简称PCM，PCM是最原始的音频数据完全无损，所以PCM数据虽然音质优秀但体积庞大</p>
+<p>然后就诞生了一系列的音频格式，如MP3（有损压缩）目前最为常用的音频格式之一   苹果默认音频格式是aac</p>
+<h2 id="码率"><a href="#码率" class="headerlink" title="码率"></a>码率</h2><p>MP3格式中的码率（BitRate）代表了MP3数据的压缩质量，现在常用的码率有128kbit/s、160kbit/s、320kbit/s等等，这个值越高声音质量也就越高</p>
+<h2 id="MP3组成"><a href="#MP3组成" class="headerlink" title="MP3组成"></a>MP3组成</h2><p>MP3格式中的数据通常由两部分组成:</p>
 <ol>
-<li><p>音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程<br>人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。<br>根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，<br>所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。</p>
-</li>
-<li><p>对声音进行采样、量化过程被称为脉冲编码调制（Pulse Code Modulation）简称PCM，PCM是最原始的音频数据完全无损，所以PCM数据虽然音质优秀但体积庞大<br>然后就诞生了一系列的音频格式，如MP3（有损压缩）目前最为常用的音频格式之一   苹果默认音频格式是aac</p>
-</li>
-<li><p>MP3格式中的码率（BitRate）代表了MP3数据的压缩质量，现在常用的码率有128kbit/s、160kbit/s、320kbit/s等等，这个值越高声音质量也就越高</p>
-</li>
-<li><p>MP3格式中的数据通常由两部分组成:<br>一部分为ID3 用来存储歌名、演唱者、专辑、音轨数等信息<br>另一部分为音频数据<br>DataOffset +（我选择的时间点／总时间）*（音频数据总长度） seek（）</p>
-</li>
-<li><p>音频数据部分以帧(frame)为单位存储，每个音频都有自己的帧头<br>帧头其中存储了采样率等解码必须的信息,所以每一个帧都可以独立于文件存在和播放<br>帧头之后存储着音频数据，这些音频数据是若干个PCM数据帧经过压缩算法压缩得到的</p>
-</li>
+<li>一部分为ID3 用来存储歌名、演唱者、专辑、音轨数等信息</li>
+<li>另一部分为音频数据<br>DataOffset +（我选择的时间点／总时间）*（音频数据总长度） seek（）</li>
 </ol>
-<p>流程：之上我们就可以了解到的音频播放流程（MP3为例）</p>
+<h2 id="音频数据部分"><a href="#音频数据部分" class="headerlink" title="音频数据部分"></a>音频数据部分</h2><p>音频数据部分以帧(frame)为单位存储，每个帧都有自己的帧头<br>帧头其中存储了采样率等解码必须的信息,所以每一个帧都可以独立于文件存在和播放<br>帧头之后存储着音频数据，这些音频数据是若干个PCM数据帧经过压缩算法压缩得到的</p>
+<h1 id="AudioQueue"><a href="#AudioQueue" class="headerlink" title="AudioQueue"></a>AudioQueue</h1><p><img src="/assets/blog/音频-AudioQueue.png" alt=""></p>
+<h2 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h2><p>AudioQueue服务提供一种直接的,低开销的方式以用于在iOS及Mac OS X上录音和播放音乐。</p>
+<p>使用AudioQueue播放音乐的优点就是开销很小并且支持流式播放（边下边播），但是缺点就是开发难度大，所以有网络音频库AudioStreamer，网上有很多讲AudioQueue的，但是有实例代码说明的，实在是少之又少，正好公司项目有音频需求，虽然项目中使用的并非我自己写的音频播放功能，但事后还是想自己来研究一下，这个在我看来比较神奇也比较有趣的AudioQueue。</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><p>从上图可以看出其工作原理如下</p>
 <ol>
-<li>读取MP3文件（data 每次读一千bytes）</li>
+<li>在使用AudioQueue之前首先必须理解其工作模式，它之所以这么命名是因为在其内部有一套缓冲队列BufferQueue的机制。</li>
+<li><p>在AudioQueue启动之后需要通过AudioQueueAllocateBuffer生成若干个AudioQueueBufferRef结构，</p>
+<ul>
+<li>这些Buffer将用来存储即将要播放的音频数据，</li>
+<li>并且这些Buffer是受生成他们的AudioQueue实例管理的，<br>内存空间也已经被分配（按照Allocate方法的参数），</li>
+<li>当AudioQueue被Dispose时这些Buffer也会随之被销毁。</li>
+</ul>
+</li>
+<li><p>当有音频数据需要被播放时首先需要被memcpy到AudioQueueBufferRef的mAudioData中（mAudioData所指向的内存已经被分配，之前AudioQueueAllocateBuffer所做的工作），并给mAudioDataByteSize字段赋值传入的数据大小。</p>
+</li>
+<li>完成之后需要调用AudioQueueEnqueueBuffer把存有音频数据的Buffer插入到AudioQueue内置的Buffer队列中。</li>
+<li>在Buffer队列中有buffer存在的情况下调用AudioQueueStart，此时AudioQueue就回按照Enqueue顺序逐个使用Buffer队列中的buffer进行播放，<br>每当一个Buffer使用完毕之后就会从Buffer队列中被移除并且在使用者指定的RunLoop上触发一个回调来告诉使用者</li>
+<li>某个AudioQueueBufferRef对象已经使用完成，你可以继续重用这个对象来存储后面的音频数据。如此循环往复音频数据就会被逐个播放直到结束。</li>
+</ol>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>根据Apple提供的AudioQueue工作原理结合自己理解，可以得到其工作流程大致如下：</p>
+<ol>
+<li>创建AudioQueue，创建一个自己的buffer数组BufferArray;</li>
+<li>使用AudioQueueAllocateBuffer创建若干个AudioQueueBufferRef，放入BufferArray；</li>
+<li>有数据时从BufferArray取出一个buffer，memcpy数据后用AudioQueueEnqueueBuffer方法把buffer插入AudioQueue中；</li>
+<li>AudioQueue中存在Buffer后，调用AudioQueueStart播放。（具体等到填入多少buffer后再播放可以自己控制，只要能保证播放不间断即可）；</li>
+<li>AudioQueue播放音乐后消耗了某个buffer，在另一个线程回调并送出该buffer，把buffer放回BufferArray供下一次使用；</li>
+<li>返回步骤3继续循环直到播放结束</li>
+</ol>
+<p>总结：从以上步骤其实不难看出，AudioQueue播放的过程其实就是一个典型的生产者消费者问题。生产者是AudioFileStream，它们生产处音频数据帧，放入到AudioQueue的buffer队列中，直到buffer填满后需要等待消费者消费；AudioQueue作为消费者，消费了buffer队列中的数据，并且在另一个线程回调通知数据已经被消费,生产者可以继续生产。所以在实现AudioQueue播放音频的过程中必然会接触到一些多线程同步、信号量的使用、死锁的避免等等问题。</p>
+<h1 id="播放流程"><a href="#播放流程" class="headerlink" title="播放流程"></a>播放流程</h1><p>流程：之上我们就可以了解到的音频播放流程（MP3为例）</p>
+<ol>
+<li>读取MP3文件.data 每次读一千bytes</li>
 <li>解析采样率、码率、时长等信息，分离MP3中的音频帧（看上四） （audioParse，一个文件头，音频文件数据（帧头，音频帧数据））</li>
 <li>对分离出来的音频帧解码得到PCM数据（看上五）</li>
 <li>对PCM数据进行音效处理（均衡器、混响器等，非必须）</li>
@@ -426,9 +456,7 @@
 </li>
 </ol>
 </blockquote>
-<ol>
-<li><p>基本流程：</p>
-<pre><code>NSString *filePath  = [[NSBundle mainBundle] pathForResource:@&quot;MP3Sample&quot; ofType:@&quot;mp3&quot;];
+<h2 id="基本流程："><a href="#基本流程：" class="headerlink" title="基本流程："></a>基本流程：</h2><pre><code>NSString *filePath  = [[NSBundle mainBundle] pathForResource:@&quot;MP3Sample&quot; ofType:@&quot;mp3&quot;];
 fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
 _fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil] fileSize];
 
@@ -512,9 +540,7 @@ _fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:filePath err
 - (void)eocAudioStreamParseForPackets:(NSArray *)packetAry{
     [eocBuffersPool enqueuePoolStreamPacketsAry:packetAry];
 }
-</code></pre></li>
-<li><p>创建Session并设置激活、类型和监听打断</p>
-<pre><code>@implementation EOCAudioSession
+</code></pre><h2 id="创建Session并设置激活、类型和监听打断"><a href="#创建Session并设置激活、类型和监听打断" class="headerlink" title="创建Session并设置激活、类型和监听打断"></a>创建Session并设置激活、类型和监听打断</h2><pre><code>@implementation EOCAudioSession
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -554,9 +580,7 @@ _fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:filePath err
     return YES;
 }
 @end
-</code></pre></li>
-<li><p>创建头和内容解析器</p>
-<pre><code>/*
+</code></pre><h2 id="创建头和内容解析器"><a href="#创建头和内容解析器" class="headerlink" title="创建头和内容解析器"></a>创建头和内容解析器</h2><pre><code>/*
 属性解析的key值
  kAudioFileStreamProperty_ReadyToProducePackets
  kAudioFileStreamProperty_DataOffset
@@ -689,8 +713,7 @@ static void EOCAudioFileStream_PacketsProc(void *inClientData,
     }
 }
 @end
-</code></pre></li>
-<li><p>创建数据池，存储已经解析了的packet，每次存入固定大小个packet，取出某个size的data</p>
+</code></pre><h2 id="创建数据池"><a href="#创建数据池" class="headerlink" title="创建数据池"></a>创建数据池</h2><p>存储已经解析了的packet，每次存入固定大小个packet，取出某个size的data</p>
 <pre><code>@implementation EOCAudioStreamPacketBuffersPool
 - (instancetype)init{
     self = [super init];
@@ -755,8 +778,7 @@ static void EOCAudioFileStream_PacketsProc(void *inClientData,
     return streamData;
 }
 @end
-</code></pre></li>
-<li><p>创建读取器，对pool中的packet读取，放入AudioQueueBuff中去播放，并设置播放完成后的回调</p>
+</code></pre><h2 id="创建读取器"><a href="#创建读取器" class="headerlink" title="创建读取器"></a>创建读取器</h2><p>对pool中的packet读取，放入AudioQueueBuff中去播放，并设置播放完成后的回调</p>
 <pre><code>//播放完成Buff后的回调
 static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
                                         AudioQueueRef inAQ,
@@ -885,9 +907,7 @@ static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
     pthread_mutex_unlock(&amp;_mutex);
 }
 @end
-</code></pre></li>
-<li><p>将本地数据改成网络音频数据</p>
-<pre><code>@implementation EOCAudioStreamNet
+</code></pre><h2 id="将本地数据改成网络音频数据"><a href="#将本地数据改成网络音频数据" class="headerlink" title="将本地数据改成网络音频数据"></a>将本地数据改成网络音频数据</h2><pre><code>@implementation EOCAudioStreamNet
 - (void)startLoadMusic:(NSString*)urlStr offset:(long)offset {
     if (urlStr.length == 0)
         return;
@@ -969,36 +989,7 @@ static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
 - (void)URLSessionDidFinishEventsForBackgroundURLSession:(NSURLSession *)session{
 }
 @end
-</code></pre></li>
-</ol>
-<p>总结：</p>
-<p> AudioQueue的工作模式</p>
-<ol>
-<li>在使用AudioQueue之前首先必须理解其工作模式，它之所以这么命名是因为在其内部有一套缓冲队列BufferQueue的机制。</li>
-<li><p>在AudioQueue启动之后需要通过AudioQueueAllocateBuffer生成若干个AudioQueueBufferRef结构，</p>
-<ul>
-<li>这些Buffer将用来存储即将要播放的音频数据，</li>
-<li>并且这些Buffer是受生成他们的AudioQueue实例管理的，<br>内存空间也已经被分配（按照Allocate方法的参数），</li>
-<li>当AudioQueue被Dispose时这些Buffer也会随之被销毁。</li>
-</ul>
-</li>
-<li><p>当有音频数据需要被播放时首先需要被memcpy到AudioQueueBufferRef的mAudioData中（mAudioData所指向的内存已经被分配，之前AudioQueueAllocateBuffer所做的工作），并给mAudioDataByteSize字段赋值传入的数据大小。</p>
-</li>
-<li>完成之后需要调用AudioQueueEnqueueBuffer把存有音频数据的Buffer插入到AudioQueue内置的Buffer队列中。</li>
-<li>在Buffer队列中有buffer存在的情况下调用AudioQueueStart，此时AudioQueue就回按照Enqueue顺序逐个使用Buffer队列中的buffer进行播放，<br>每当一个Buffer使用完毕之后就会从Buffer队列中被移除并且在使用者指定的RunLoop上触发一个回调来告诉使用者</li>
-<li>某个AudioQueueBufferRef对象已经使用完成，你可以继续重用这个对象来存储后面的音频数据。如此循环往复音频数据就会被逐个播放直到结束。</li>
-</ol>
-<p>根据Apple提供的AudioQueue工作原理结合自己理解，可以得到其工作流程大致如下：</p>
-<ol>
-<li>创建AudioQueue，创建一个自己的buffer数组BufferArray;</li>
-<li>使用AudioQueueAllocateBuffer创建若干个AudioQueueBufferRef，放入BufferArray；</li>
-<li>有数据时从BufferArray取出一个buffer，memcpy数据后用AudioQueueEnqueueBuffer方法把buffer插入AudioQueue中；</li>
-<li>AudioQueue中存在Buffer后，调用AudioQueueStart播放。（具体等到填入多少buffer后再播放可以自己控制，只要能保证播放不间断即可）；</li>
-<li>AudioQueue播放音乐后消耗了某个buffer，在另一个线程回调并送出该buffer，把buffer放回BufferArray供下一次使用；</li>
-<li>返回步骤3继续循环直到播放结束</li>
-</ol>
-<p>从以上步骤其实不难看出，AudioQueue播放的过程其实就是一个典型的生产者消费者问题。生产者是AudioFileStream，它们生产处音频数据帧，放入到AudioQueue的buffer队列中，直到buffer填满后需要等待消费者消费；AudioQueue作为消费者，消费了buffer队列中的数据，并且在另一个线程回调通知数据已经被消费,生产者可以继续生产。所以在实现AudioQueue播放音频的过程中必然会接触到一些多线程同步、信号量的使用、死锁的避免等等问题。</p>
-
+</code></pre>
       
     </div>
     
@@ -1014,8 +1005,6 @@ static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
     <footer class="post-footer">
       
         <div class="post-tags">
-          
-            <a href="/tags/OC/" rel="tag"># OC</a>
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
@@ -1107,8 +1096,17 @@ static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -1186,6 +1184,22 @@ static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#音频概念"><span class="nav-number">1.</span> <span class="nav-text">音频概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCM"><span class="nav-number">1.2.</span> <span class="nav-text">PCM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#码率"><span class="nav-number">1.3.</span> <span class="nav-text">码率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MP3组成"><span class="nav-number">1.4.</span> <span class="nav-text">MP3组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频数据部分"><span class="nav-number">1.5.</span> <span class="nav-text">音频数据部分</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AudioQueue"><span class="nav-number">2.</span> <span class="nav-text">AudioQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念-1"><span class="nav-number">2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作原理"><span class="nav-number">2.2.</span> <span class="nav-text">工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作流程"><span class="nav-number">2.3.</span> <span class="nav-text">工作流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#播放流程"><span class="nav-number">3.</span> <span class="nav-text">播放流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本流程："><span class="nav-number">3.1.</span> <span class="nav-text">基本流程：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Session并设置激活、类型和监听打断"><span class="nav-number">3.2.</span> <span class="nav-text">创建Session并设置激活、类型和监听打断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建头和内容解析器"><span class="nav-number">3.3.</span> <span class="nav-text">创建头和内容解析器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据池"><span class="nav-number">3.4.</span> <span class="nav-text">创建数据池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建读取器"><span class="nav-number">3.5.</span> <span class="nav-text">创建读取器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将本地数据改成网络音频数据"><span class="nav-number">3.6.</span> <span class="nav-text">将本地数据改成网络音频数据</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

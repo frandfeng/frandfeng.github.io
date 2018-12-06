@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,RAC,">
+  <meta name="keywords" content="iOS,RAC,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="RAC 之原理各种编程思想汇总 /*  ReactiveCocoa函数响应式编程  理论基础  RAC使用  RAC源码  RAC应用   OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)  函数式编程：运算方式，函数（重在表达，更专注的是业务）  响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应   链式编程：">
-<meta name="keywords" content="OC,iOS,RAC">
+<meta name="keywords" content="iOS,RAC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="RAC详解">
 <meta property="og:url" content="https://frandfeng.github.io/2018/07/27/RAC详解/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="RAC 之原理各种编程思想汇总 /*  ReactiveCocoa函数响应式编程  理论基础  RAC使用  RAC源码  RAC应用   OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)  函数式编程：运算方式，函数（重在表达，更专注的是业务）  响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应   链式编程：">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T10:25:40.527Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/RAC.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/RAC2.png">
+<meta property="og:updated_time" content="2018-12-04T07:55:39.460Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RAC详解">
-<meta name="twitter:description" content="RAC 之原理各种编程思想汇总 /*  ReactiveCocoa函数响应式编程  理论基础  RAC使用  RAC源码  RAC应用   OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)  函数式编程：运算方式，函数（重在表达，更专注的是业务）  响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应   链式编程：">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/RAC.png">
 
 
 
@@ -394,43 +394,23 @@
       
 
       
-        <h1 id="RAC-之原理"><a href="#RAC-之原理" class="headerlink" title="RAC 之原理"></a>RAC 之原理</h1><p>各种编程思想汇总</p>
-<pre><code>/*
- ReactiveCocoa函数响应式编程
- 理论基础
- RAC使用
- RAC源码
- RAC应用
-
- OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)
- 函数式编程：运算方式，函数（重在表达，更专注的是业务）
- 响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应
-
- 链式编程：
- */
-
-//命令式编程举例，求阶乘
-int factorialMult(int x){
+        <p><img src="/assets/outline/RAC.png" alt=""><br><img src="/assets/outline/RAC2.png" alt=""></p>
+<a id="more"></a>
+<h1 id="RAC-之原理"><a href="#RAC-之原理" class="headerlink" title="RAC 之原理"></a>RAC 之原理</h1><p>各种编程思想汇总</p>
+<h2 id="命令式编程"><a href="#命令式编程" class="headerlink" title="命令式编程"></a>命令式编程</h2><p>寄存器+运算器(申请内存，计算内存，更注重过程)</p>
+<pre><code>//命令式编程举例，求阶乘
+int factorialMult(int x) {
     int result = 1;
     for (int i = 1; i &lt;= x; i++) {
         result *= i;
     }
     return result;
 }
-
-//函数式编程举例 n!=n*(n-1)!
+</code></pre><h2 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h2><p>运算方式，函数（重在表达，更专注的是业务）</p>
+<pre><code>//函数式编程举例 n!=n*(n-1)!
 int factorialMultTwo(int x){
     if(x == 1) return 1;
     return  x * factorialMultTwo(x-1);
-}
-
-//响应式编程举例 c值随着a值的变化而变化，如autolayout
-void ecoTest(){
-    int a = 1;
-    int b = 2;
-    int c = a+b;
-    a = 5;
-    printf(&quot;%d&quot;, c);
 }
 </code></pre><p>函数式编程求最大最小值：</p>
 <pre><code>typedef int (^CompareBlock)(int aValue, int aNext);
@@ -442,7 +422,7 @@ int maxOrMin(int *array, int count, CompareBlock block) {
     return block(num, array[count-1]);
 }
 
-CompareBlock relative(CompareBlock block){
+CompareBlock relative(CompareBlock block) {
     return ^int(int aValue, int aNext){
         return (aValue == block(aValue, aNext) ? aNext:aValue);
     };
@@ -479,14 +459,23 @@ CompareBlock relative(CompareBlock block){
     return [self originYToWindow:[view superview] positionY:startY+view.frame.origin.y];
 }
 @end
-</code></pre><h1 id="RAC-之使用"><a href="#RAC-之使用" class="headerlink" title="RAC 之使用"></a>RAC 之使用</h1><ol>
+</code></pre><h2 id="响应式编程"><a href="#响应式编程" class="headerlink" title="响应式编程"></a>响应式编程</h2><p>响应式的思想，实际是观察者模式，一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应</p>
+<pre><code>//响应式编程举例 c值随着a值的变化而变化，如autolayout
+void ecoTest(){
+    int a = 1;
+    int b = 2;
+    int c = a+b;
+    a = 5;
+    printf(&quot;%d&quot;, c);
+}
+</code></pre><h2 id="链式编程"><a href="#链式编程" class="headerlink" title="链式编程"></a>链式编程</h2><p>主要通过点‘.’来连接不同的函数调用。iOS上实现链式编程比较好的框架就是Masonry，通过查看Masonry源码，我们发现，每一个函数返回类型都是一个Block变量，然后Block变量中返回的内容就是当前对象本身。</p>
+<h1 id="RAC-之使用"><a href="#RAC-之使用" class="headerlink" title="RAC 之使用"></a>RAC 之使用</h1><ol>
 <li>OC写的ReactiveCocoa框架</li>
 <li>Swift写的RXSwift框架</li>
 </ol>
 <p>信号的简单应用</p>
-<ol>
-<li><p>冷信号</p>
-<pre><code>// 单元信号  冷信号（订阅就能被触发信号） ／ 热信号
+<h2 id="冷信号"><a href="#冷信号" class="headerlink" title="冷信号"></a>冷信号</h2><p>订阅就能被触发信号</p>
+<pre><code>// 单元信号  冷信号／ 热信号
 - (void)signalUnit{
     //1.创建信号
     RACSignal *signalOne = [RACSignal return:@&quot;signalOne&quot;];
@@ -507,9 +496,7 @@ CompareBlock relative(CompareBlock block){
         NSLog(@&quot;empty::%@&quot;, x);
     }];
 }
-</code></pre></li>
-<li><p>block信号</p>
-<pre><code>// block信号
+</code></pre><h2 id="block信号"><a href="#block信号" class="headerlink" title="block信号"></a>block信号</h2><pre><code>// block信号
 - (void)racSignalBlock {
     // 1 创建信号
     RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscriber&gt; subscriber) {
@@ -526,8 +513,7 @@ CompareBlock relative(CompareBlock block){
         NSLog(@&quot;id:%@&quot;, x);
     }];
 }
-</code></pre></li>
-<li><p>热信号（需要主动触发），可用作通知功能</p>
+</code></pre><h2 id="热信号"><a href="#热信号" class="headerlink" title="热信号"></a>热信号</h2><p>需要主动触发，可用作通知功能</p>
 <pre><code>// 热信号
 - (void)hotRacSignal {
     // 1 创建信号
@@ -536,7 +522,7 @@ CompareBlock relative(CompareBlock block){
     [_hotSubject subscribeNext:^(id x) {
         NSLog(@&quot;One 信号来了:%@&quot;, x);
     }];
-    // 3 订阅
+    // 2 订阅
     [_hotSubject subscribeNext:^(id x) {
         NSLog(@&quot;Tow 信号来了:%@&quot;, x);
     }];
@@ -549,9 +535,7 @@ CompareBlock relative(CompareBlock block){
     // 3 发送信号
     [_hotSubject sendNext:@&quot;八点钟学院&quot;];
 }
-</code></pre></li>
-<li><p>Button的点击信号触发</p>
-<pre><code>- (void)buttonRACHandle {
+</code></pre><h2 id="监听Button点击事件"><a href="#监听Button点击事件" class="headerlink" title="监听Button点击事件"></a>监听Button点击事件</h2><pre><code>- (void)buttonRACHandle {
     RACSignal *touchButtonSignal = [_eocButtton rac_signalForControlEvents:UIControlEventTouchUpInside];
     [touchButtonSignal subscribeNext:^(id x) {
         NSLog(@&quot;点击了&quot;);
@@ -561,16 +545,12 @@ CompareBlock relative(CompareBlock block){
         NSLog(@&quot;completed&quot;);
     }];
 }
-</code></pre></li>
-<li><p>Button属性信号</p>
-<pre><code>- (void)buttonUsingSignal {
+</code></pre><h2 id="触发修改Button属性"><a href="#触发修改Button属性" class="headerlink" title="触发修改Button属性"></a>触发修改Button属性</h2><pre><code>- (void)buttonUsingSignal {
     RACSignal *textColorSignal = [RACSignal return:[UIColor redColor]];
     RACSignal *statusSignal = [RACSignal return:@(UIControlStateNormal)];
     [_button rac_liftSelector:@selector(setTitleColor:forState:) withSignals:textColorSignal,statusSignal, nil];
 }
-</code></pre></li>
-<li><p>实例方法信号触发</p>
-<pre><code>@interface EOCObject : NSObject
+</code></pre><h2 id="监听实例方法的触发"><a href="#监听实例方法的触发" class="headerlink" title="监听实例方法的触发"></a>监听实例方法的触发</h2><pre><code>@interface EOCObject : NSObject
 - (void)eocMethod:(NSString *)eocName;
 @end
 
@@ -593,9 +573,7 @@ CompareBlock relative(CompareBlock block){
     }
     [_eocObject eocMethod:@&quot;123456&quot;];
 }
-</code></pre></li>
-<li><p>信号量变换</p>
-<pre><code>// 变换
+</code></pre><h2 id="信号量变换"><a href="#信号量变换" class="headerlink" title="信号量变换"></a>信号量变换</h2><pre><code>// 变换
 - (void)changeSignal{
     RACSignal *signalOne = [RACSignal return:@&quot;12345678&quot;];
     RACSignal *signalTwo = [signalOne map:^id(id value) {
@@ -606,9 +584,7 @@ CompareBlock relative(CompareBlock block){
         NSLog(@&quot;signalTwo::%@&quot;, x);
     }];
 }
-</code></pre></li>
-<li><p>数组序列化转化过滤</p>
-<pre><code>// 数组
+</code></pre><h2 id="数组序列化信号的转化与过滤"><a href="#数组序列化信号的转化与过滤" class="headerlink" title="数组序列化信号的转化与过滤"></a>数组序列化信号的转化与过滤</h2><pre><code>// 数组
 - (void)sequenceRAC {
     RACSignal *signal = @[@&quot;111&quot;, @&quot;222&quot;, @&quot;3333333&quot;, @&quot;44&quot;, @&quot;55555&quot;].rac_sequence.signal;
     RACSignal *newSignal = [signal filter:^BOOL(NSString *value) {
@@ -622,9 +598,7 @@ CompareBlock relative(CompareBlock block){
         NSLog(@&quot;%@&quot;, x);
     }];
 }
-</code></pre></li>
-<li><p>信号合并</p>
-<pre><code>// 信号组合，多信号处理
+</code></pre><h2 id="信号合并"><a href="#信号合并" class="headerlink" title="信号合并"></a>信号合并</h2><pre><code>// 信号组合，多信号处理
 - (void)racMerge {
     RACSignal *signalOne = [RACSignal return:@&quot;123&quot;];
     RACSignal *signalTwo = [RACSignal return:@&quot;678&quot;];
@@ -633,17 +607,13 @@ CompareBlock relative(CompareBlock block){
         NSLog(@&quot;%@&quot;, x);
     }];
 }
-</code></pre></li>
-<li><p>属性监听</p>
-<pre><code>- (void)racKVO{
+</code></pre><h2 id="用信号来对属性监听"><a href="#用信号来对属性监听" class="headerlink" title="用信号来对属性监听"></a>用信号来对属性监听</h2><pre><code>- (void)racKVO{
     [RACObserve(self, eocName) subscribeNext:^(id x) {
         NSLog(@&quot;监听属性，触发了&quot;);
     }];
     self.eocName = @&quot;八点钟学院&quot;;
 }
-</code></pre></li>
-<li><p>线程执行</p>
-<pre><code>// 异步操作 （GCD -- ）
+</code></pre><h2 id="信号量处理线程执行"><a href="#信号量处理线程执行" class="headerlink" title="信号量处理线程执行"></a>信号量处理线程执行</h2><pre><code>// 异步操作 （GCD -- ）
 - (void)racSchedule {
     // 主线程的Scheduler
     RACScheduler *mainScheduler = [RACScheduler mainThreadScheduler];
@@ -659,20 +629,14 @@ CompareBlock relative(CompareBlock block){
         NSLog(@&quot;%@&quot;, [NSThread currentThread]);
     }];
 }
-</code></pre></li>
-<li><p>延时执行</p>
-<pre><code>/// 延时
+</code></pre><h2 id="用信号量延时执行"><a href="#用信号量延时执行" class="headerlink" title="用信号量延时执行"></a>用信号量延时执行</h2><pre><code>/// 延时
 - (void)delayRac {
     RACScheduler *mainScheduler = [RACScheduler currentScheduler];
     [mainScheduler afterDelay:2 schedule:^{
         NSLog(@&quot;afterDelay&quot;);
     }];
 }
-</code></pre></li>
-</ol>
-<h1 id="RAC-之源码分析"><a href="#RAC-之源码分析" class="headerlink" title="RAC 之源码分析"></a>RAC 之源码分析</h1><ol>
-<li><p>signal生成</p>
-<pre><code>//生成一个signal,信号变量中保存初始化时的信息
+</code></pre><h1 id="RAC-之源码分析"><a href="#RAC-之源码分析" class="headerlink" title="RAC 之源码分析"></a>RAC 之源码分析</h1><h2 id="signal生成"><a href="#signal生成" class="headerlink" title="signal生成"></a>signal生成</h2><pre><code>//生成一个signal,信号变量中保存初始化时的信息
 //如果是return signal，保存value
 //如果是error signal，保存error
 //如果是block signal，保存block
@@ -754,9 +718,7 @@ RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscri
     signal-&gt;_didSubscribe = [didSubscribe copy];
     return [signal setNameWithFormat:@&quot;+createSignal:&quot;];
 }
-</code></pre></li>
-<li><p>signal订阅</p>
-<pre><code>//订阅signal，通过源码可以看出，returnSignal和errorSignal在订阅时就会触发执行block，而通过块生成的RACDynamicSignal订阅时并不会执行block，需要通过块中的subscribe去手动send
+</code></pre><h2 id="signal订阅"><a href="#signal订阅" class="headerlink" title="signal订阅"></a>signal订阅</h2><pre><code>//订阅signal，通过源码可以看出，returnSignal和errorSignal在订阅时就会触发执行block，而通过块生成的RACDynamicSignal订阅时并不会执行block，需要通过块中的subscribe去手动send
 [racSignal subscribeNext/Error:^(id x) {
     NSLog(@&quot;subscriber next id:%@&quot;, x);
 }];
@@ -769,7 +731,7 @@ RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscri
     return [self subscribe:o];
 }
 
-//RACRetnurSignal
+//RACReturnSignal
 - (RACDisposable *)subscribe:(id&lt;RACSubscriber&gt;)subscriber {
     NSCParameterAssert(subscriber != nil);
 
@@ -837,10 +799,9 @@ RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscri
         completedBlock();
     }
 }
-</code></pre></li>
-<li><p>热信号</p>
-<p> 通过源码可看出，热信号并没有在订阅的时候执行，而是要专门调用sendNext，而冷信号在订阅的时候就已经执行了，所以冷信号不需要sendNext也没有此功能，只需要订阅就好了</p>
-<pre><code>- (void)hotRacSignal {
+</code></pre><h2 id="热信号-1"><a href="#热信号-1" class="headerlink" title="热信号"></a>热信号</h2><pre><code>通过源码可看出，热信号并没有在订阅的时候执行，而是要专门调用sendNext，而冷信号在订阅的时候就已经执行了，所以冷信号不需要sendNext也没有此功能，只需要订阅就好了
+
+- (void)hotRacSignal {
     // 1 创建信号
     _hotSubject = [RACSubject subject];
     // 2 订阅信号
@@ -912,12 +873,7 @@ RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscri
         }
     }];
 }
-</code></pre></li>
-</ol>
-<p>举例：</p>
-<ol>
-<li><p>改变button字体颜色</p>
-<pre><code>- (void)buttonUsingSignal {
+</code></pre><h2 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h2><h3 id="改变button字体颜色"><a href="#改变button字体颜色" class="headerlink" title="改变button字体颜色"></a>改变button字体颜色</h3><pre><code>- (void)buttonUsingSignal {
     RACSignal *textColorSignal = [RACSignal return:[UIColor redColor]];
     RACSignal *statusSignal = [RACSignal return:@(UIControlStateNormal)];
     [_button rac_liftSelector:@selector(setTitleColor:forState:) withSignals:textColorSignal,statusSignal, nil];
@@ -992,9 +948,7 @@ RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscri
         index++;
     }
 }
-</code></pre></li>
-<li><p>监听button的点击信号</p>
-<pre><code>RACSignal *signalTwo =  [button rac_signalForControlEvents:UIControlEventTouchUpInside];
+</code></pre><h3 id="监听button的点击信号"><a href="#监听button的点击信号" class="headerlink" title="监听button的点击信号"></a>监听button的点击信号</h3><pre><code>RACSignal *signalTwo =  [button rac_signalForControlEvents:UIControlEventTouchUpInside];
 [signalTwo subscribeNext:^(id x) {
     // button响应了点击事件， 订阅者可以做事情了
     NSLog(@&quot;signalTwo::%@&quot;, x);
@@ -1020,9 +974,7 @@ RACSignal *racSignal = [RACSignal createSignal:^RACDisposable *(id&lt;RACSubscri
         }]
         setNameWithFormat:@&quot;%@ -rac_signalForControlEvents: %lx&quot;, self.rac_description, (unsigned long)controlEvents];
 }
-</code></pre></li>
-<li><p>更改view的background</p>
-<pre><code>#define RAC_(TARGET, KEYPATH, NILVALUE) \ [[RACSubscriptingAssignmentTrampoline alloc] initWithTarget:(TARGET) nilValue:(NILVALUE)][@keypath(TARGET, KEYPATH)]
+</code></pre><h3 id="更改view的background"><a href="#更改view的background" class="headerlink" title="更改view的background"></a>更改view的background</h3><pre><code>#define RAC_(TARGET, KEYPATH, NILVALUE) \ [[RACSubscriptingAssignmentTrampoline alloc] initWithTarget:(TARGET) nilValue:(NILVALUE)][@keypath(TARGET, KEYPATH)]
 
 RACSignal *viewColorSignal = [RACSignal return:[UIColor blueColor]];
 RAC(self.view, backgroundColor) = viewColorSignal;
@@ -1035,9 +987,7 @@ tmp[@&quot;backgroundColor&quot;] = viewColorSignal;
 - (void)setObject:(RACSignal *)signal forKeyedSubscript:(NSString *)keyPath;
 //如果需要也根据key取值，可以实现此方法
 - (id)objectForKeyedSubscript:(NSString*)key;
-</code></pre></li>
-</ol>
-
+</code></pre>
       
     </div>
     
@@ -1053,8 +1003,6 @@ tmp[@&quot;backgroundColor&quot;] = viewColorSignal;
     <footer class="post-footer">
       
         <div class="post-tags">
-          
-            <a href="/tags/OC/" rel="tag"># OC</a>
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
@@ -1244,7 +1192,7 @@ tmp[@&quot;backgroundColor&quot;] = viewColorSignal;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之原理"><span class="nav-number">1.</span> <span class="nav-text">RAC 之原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之使用"><span class="nav-number">2.</span> <span class="nav-text">RAC 之使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之源码分析"><span class="nav-number">3.</span> <span class="nav-text">RAC 之源码分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之原理"><span class="nav-number">1.</span> <span class="nav-text">RAC 之原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令式编程"><span class="nav-number">1.1.</span> <span class="nav-text">命令式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数式编程"><span class="nav-number">1.2.</span> <span class="nav-text">函数式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应式编程"><span class="nav-number">1.3.</span> <span class="nav-text">响应式编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#链式编程"><span class="nav-number">1.4.</span> <span class="nav-text">链式编程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之使用"><span class="nav-number">2.</span> <span class="nav-text">RAC 之使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#冷信号"><span class="nav-number">2.1.</span> <span class="nav-text">冷信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#block信号"><span class="nav-number">2.2.</span> <span class="nav-text">block信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#热信号"><span class="nav-number">2.3.</span> <span class="nav-text">热信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听Button点击事件"><span class="nav-number">2.4.</span> <span class="nav-text">监听Button点击事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发修改Button属性"><span class="nav-number">2.5.</span> <span class="nav-text">触发修改Button属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听实例方法的触发"><span class="nav-number">2.6.</span> <span class="nav-text">监听实例方法的触发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量变换"><span class="nav-number">2.7.</span> <span class="nav-text">信号量变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组序列化信号的转化与过滤"><span class="nav-number">2.8.</span> <span class="nav-text">数组序列化信号的转化与过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号合并"><span class="nav-number">2.9.</span> <span class="nav-text">信号合并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用信号来对属性监听"><span class="nav-number">2.10.</span> <span class="nav-text">用信号来对属性监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号量处理线程执行"><span class="nav-number">2.11.</span> <span class="nav-text">信号量处理线程执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用信号量延时执行"><span class="nav-number">2.12.</span> <span class="nav-text">用信号量延时执行</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RAC-之源码分析"><span class="nav-number">3.</span> <span class="nav-text">RAC 之源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#signal生成"><span class="nav-number">3.1.</span> <span class="nav-text">signal生成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#signal订阅"><span class="nav-number">3.2.</span> <span class="nav-text">signal订阅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#热信号-1"><span class="nav-number">3.3.</span> <span class="nav-text">热信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举例："><span class="nav-number">3.4.</span> <span class="nav-text">举例：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#改变button字体颜色"><span class="nav-number">3.4.1.</span> <span class="nav-text">改变button字体颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听button的点击信号"><span class="nav-number">3.4.2.</span> <span class="nav-text">监听button的点击信号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更改view的background"><span class="nav-number">3.4.3.</span> <span class="nav-text">更改view的background</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

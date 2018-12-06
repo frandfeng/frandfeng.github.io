@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,视频,">
+  <meta name="keywords" content="OC,iOS,直播,">
 
 
 
@@ -79,32 +79,31 @@
 
 
 
-<meta name="description" content="直播技术原理介绍和实现方案技术选型 如何搭建一个完整的视频直播系统？  直播整体架构     拉推流端涉及的音视频技术  网络协议选型 服务器CDN简介 iOS采集视频编码实现demo  流媒体服务器任务  数据分发 实时转码 录播 关键帧缓存 智能路由   音视频采集  AVFoundation：音频捕获-&amp;gt;音频AAC编码-&amp;gt;混合视频封装成flv/ts传输 CaptureSessio">
-<meta name="keywords" content="OC,iOS,视频">
+<meta name="keywords" content="OC,iOS,直播">
 <meta property="og:type" content="article">
 <meta property="og:title" content="视频直播系统开发">
 <meta property="og:url" content="https://frandfeng.github.io/2018/06/29/视频直播系统开发/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="直播技术原理介绍和实现方案技术选型 如何搭建一个完整的视频直播系统？  直播整体架构     拉推流端涉及的音视频技术  网络协议选型 服务器CDN简介 iOS采集视频编码实现demo  流媒体服务器任务  数据分发 实时转码 录播 关键帧缓存 智能路由   音视频采集  AVFoundation：音频捕获-&amp;gt;音频AAC编码-&amp;gt;混合视频封装成flv/ts传输 CaptureSessio">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS直播.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS直播1.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS直播2.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS直播3.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS直播4.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-直播总架构.png">
-<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-推流端.png">
-<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-拉流端.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-视频采集.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-推流端.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-视频抓取.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-音频抓取.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-LFLiveKit.png">
-<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-IJK底层实现.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-拉流端.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-FFMpeg底层拉流.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-IJK底层实现.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-优化策略.png">
-<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-消息模块整体结构.png">
-<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-连接流程.png">
-<meta property="og:image" content="https://frandfeng.github.io/assets/blog/视频直播-连接状态维护.png">
-<meta property="og:updated_time" content="2018-11-25T10:25:08.543Z">
+<meta property="og:updated_time" content="2018-12-05T04:03:02.263Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="视频直播系统开发">
-<meta name="twitter:description" content="直播技术原理介绍和实现方案技术选型 如何搭建一个完整的视频直播系统？  直播整体架构     拉推流端涉及的音视频技术  网络协议选型 服务器CDN简介 iOS采集视频编码实现demo  流媒体服务器任务  数据分发 实时转码 录播 关键帧缓存 智能路由   音视频采集  AVFoundation：音频捕获-&amp;gt;音频AAC编码-&amp;gt;混合视频封装成flv/ts传输 CaptureSessio">
-<meta name="twitter:image" content="https://frandfeng.github.io/assets/blog/视频直播-直播总架构.png">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/iOS直播.png">
 
 
 
@@ -408,88 +407,61 @@
       
 
       
-        <p>直播技术原理介绍和实现方案技术选型</p>
-<p>如何搭建一个完整的视频直播系统？</p>
-<ul>
-<li><p>直播整体架构</p>
-<p>  <img src="/assets/blog/视频直播-直播总架构.png" alt=""></p>
-</li>
-<li><p>拉推流端涉及的音视频技术</p>
-</li>
-<li>网络协议选型</li>
-<li>服务器CDN简介</li>
-<li><p>iOS采集视频编码实现demo</p>
-</li>
-<li><p>流媒体服务器任务</p>
-<ul>
-<li>数据分发</li>
-<li>实时转码</li>
-<li>录播</li>
-<li>关键帧缓存</li>
-<li>智能路由</li>
-</ul>
-</li>
-<li><p>音视频采集</p>
-<ul>
+        <p><img src="/assets/outline/iOS直播.png" alt=""><br><img src="/assets/outline/iOS直播1.png" alt=""><br><img src="/assets/outline/iOS直播2.png" alt=""><br><img src="/assets/outline/iOS直播3.png" alt=""><br><img src="/assets/outline/iOS直播4.png" alt=""></p>
+<a id="more"></a>
+<p><img src="/assets/blog/视频直播-直播总架构.png" alt=""></p>
+<h1 id="音视频采集"><a href="#音视频采集" class="headerlink" title="音视频采集"></a>音视频采集</h1><ul>
 <li>AVFoundation：音频捕获-&gt;音频AAC编码-&gt;混合视频封装成flv/ts传输</li>
 <li>CaptureSession：视频捕获-&gt;视频预处理-&gt;视频H.264编码-&gt;混合音频封装成flv/ts传输</li>
 </ul>
-</li>
-<li><p>视频预处理</p>
-<ul>
+<p><img src="/assets/blog/视频直播-视频采集.png" alt=""></p>
+<pre><code>//ViewController.m
+- (void)startCamera {
+    AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    AVCaptureDeviceInput *captureDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:nil];
+
+    //make output device
+    AVCaptureVideoDataOutput *captureVideoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+    NSNumber *val = [NSNumber numberWithUnsignedInteger:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange];
+    NSDictionary *videoSetting = [NSDictionary dictionaryWithObject:val forKey:(NSString *)kCVPixelBufferPixelFormatTypeKey];
+    captureVideoDataOutput.videoSettings = videoSetting;
+    //将输出流的delegate设置为self来处理
+    [captureVideoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
+
+    self.captureSession = [[AVCaptureSession alloc] init];
+    [self.captureSession addInput:captureDeviceInput];
+    [self.captureSession addOutput:captureVideoDataOutput];
+
+    [self.captureSession beginConfiguration];
+    [self.captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+    [self.captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+    //当把一个输入和输出添加到AVCaptureSession之后，AVCaptureSession就会在输入、输出设备之间建立连接，而且通过AVCaptureOutput可以获取这个连接对象
+    self.connection = [captureVideoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    [self.captureSession commitConfiguration];
+    [self.captureSession startRunning];
+}
+
+- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    //直接把samplebuffer传给AVSampleBufferDisplayLayer进行预览播放的同时压缩sampleBuffer
+    [self.displayLayer enqueueSampleBuffer:sampleBuffer];
+    [self.encoder encode:sampleBuffer];
+}
+</code></pre><h1 id="音视频处理"><a href="#音视频处理" class="headerlink" title="音视频处理"></a>音视频处理</h1><ul>
 <li>美颜</li>
 <li>水印</li>
 <li>人脸识别</li>
-<li>GUPImage：第三方框架，有很多种功能，可以处理上边三个需求，还有其他SDK，如讯飞SDK、商汤SDK等</li>
 </ul>
-</li>
-<li><p>推流</p>
-<p>  <img src="/assets/blog/视频直播-推流端.png" alt=""></p>
-<ul>
-<li>封装</li>
-<li>流媒体协议RTMP、RTSP、HLS、HTTP-FLV</li>
-<li>librtmp rtmp协议实现</li>
-<li>HLS使用HTTP协议上传</li>
-<li>webRTC实时消息传输协议实现，可以用点对点来做连麦，即多人会议，实时性较高</li>
-</ul>
-</li>
-<li><p>拉流</p>
-<p>  <img src="/assets/blog/视频直播-拉流端.png" alt=""></p>
-<ul>
-<li>流媒体协议RTMP、RTSP、HLS、HTTP-FLV</li>
-<li>ijkplayer开源播放器</li>
-<li>OpenGL渲染</li>
-<li>解封装</li>
-</ul>
-</li>
-<li><p>音视频解码</p>
-<ul>
-<li>最初的流是封装成flv、ts格式，先解封装成视频和音频两个部分</li>
-<li>视频硬解码成YUV格式 VideoToolbox：iOS8.0以上支持</li>
-<li>视频软解码成YUV格式 x264、FFMpeg</li>
-<li>音频硬解码成PCM格式 AudioToolbox</li>
-<li>音频软解码成PCM格式 fdk_acc</li>
-<li>最后将音视频交给播放器播放</li>
-</ul>
-</li>
-<li><p>聊天互动</p>
-<ul>
-<li>IM：MQTT、WebSocket</li>
-<li>聊天室</li>
-<li>礼物</li>
-</ul>
-</li>
-</ul>
-<p>什么是视频编码：</p>
-<p>使用特定的压缩算法压缩视频数据，便于视频的传输和存储。编码方式有H264（比265节省40%的空间），H265（iOS11以上原生支持），V8，V9（这两个是google提出，可以直接在播放器中播放，android端比较常用）</p>
-<p>H264的原理及其中的概念：每个图片跟前边的图片差异很小，所以提出一个关键帧，后边的帧只记住改变即可</p>
+<p>GUPImage：第三方框架，有很多种功能，可以处理上边三个需求，还有其他SDK，如讯飞SDK、商汤SDK等</p>
+<h1 id="音视频编码"><a href="#音视频编码" class="headerlink" title="音视频编码"></a>音视频编码</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>使用特定的压缩算法压缩视频数据，便于视频的传输和存储。编码方式有H264（比265节省40%的空间），H265（iOS11以上原生支持），V8，V9（这两个是google提出，可以直接在播放器中播放，android端比较常用）</p>
+<h2 id="H264"><a href="#H264" class="headerlink" title="H264"></a>H264</h2><p>H264的原理及其中的概念：每个图片跟前边的图片差异很小，所以提出一个关键帧，后边的帧只记住改变即可</p>
 <ul>
 <li>I帧（关键帧）、B帧（依靠前后帧还原，复杂度较高）、P帧（依靠前边的帧还原）</li>
 <li>GOP（两个关键帧之间的帧数）</li>
 <li>FPS：frame per second，每秒的帧数，一般是30</li>
 <li>码率 越大越清晰，相当于帧宽，帧的大小</li>
 </ul>
-<p>H264帧结构：（I P P P I P P P I P）</p>
+<h2 id="H264帧结构"><a href="#H264帧结构" class="headerlink" title="H264帧结构"></a>H264帧结构</h2><p>结构：（I P P P I P P P I P）</p>
 <ul>
 <li>序列参数集SPS：Sequence Parameter Set，包括与图像序列（定义为两个IDR图像之间的所有图像）有关的所有信息，应用于已编码视频序列。</li>
 <li>图像参数集PPS：Picture Parameter Set，包含所有属于该图像的相关信息，用于解码已编码视频序列中的1个或多个独立的图像。</li>
@@ -504,118 +476,8 @@
 <li>冗余图像</li>
 <li>序列结束符</li>
 </ul>
-<p>FLV格式：Header/PreviousTagSize0/Tag1/previousTagSize1/Tag2/previousTagSize2…Tag n/PreviousTagSize n</p>
-<ul>
-<li><p>Header：</p>
-<ul>
-<li>3byte：文件类型，即flv</li>
-<li>1byte：版本号</li>
-<li>1byte：流信息（各个位表示不同信息，最后一位是1表示有视频流，倒数第三位是1表示有音频流）</li>
-<li>4byte：header长度</li>
-</ul>
-</li>
-<li><p>Tag：</p>
-<ul>
-<li>1byte：tag类型，表示是音频还是视频还是字母或者是数据块</li>
-<li>3byte：数据区长度</li>
-<li>3byte：时间戳，单位毫秒</li>
-<li>1byte：时间戳扩展</li>
-<li>3byte：streamID，流ID</li>
-<li>数据区：长度由数据区长度字段决定</li>
-</ul>
-</li>
-<li><p>音频Tag：</p>
-<ul>
-<li>4bit：音频格式</li>
-<li>2bit：采样率</li>
-<li>1bit：采样长度</li>
-<li>1bit：音频类型</li>
-<li>实际的音频数据</li>
-</ul>
-</li>
-<li><p>视频Tag：</p>
-<ul>
-<li>4bit：帧类型</li>
-<li>4bit：编码ID</li>
-<li>实际的视频数据</li>
-</ul>
-</li>
-</ul>
-<p>传输协议HLS，HTTP Live Streaming（苹果推出）</p>
-<p>基于HLS的直播流URL式一个m3u8的文件，里面包含了最近若干个小视频TS(一种视频封装格式，这里就不扩展介绍)文件，每次通过请求m3u8文件得到ts小视频列表，然后一个一个的下载缓冲播放</p>
-<p>HTML5可以直接播放，不需要独立App支持，延时一般10s</p>
-<p>音频编码AAC</p>
-<p>采样率为44.1kHZ，采样大小为16bit的双声道。PCM的大小为<code>44.1*16*2bps=176kb/s</code>。AAC通畅压缩比为18：1，也有资料说是20：1，经过AAC压缩后的大小约为12kb/s左右，远远低于视频压缩后的大小</p>
-<p>为什么要封装？</p>
-<p>将经过编码的音视频帧数据信息和字幕等信息组织起来，便于播放端解析数据，对不同的数据选择不同的解码器进行解码，以完成音视频同步，字幕同步等。封装格式主要有rmvc、avi、mkv、mp4、flv、ts等</p>
-<p>服务器CDN简介：Content Delivery Network</p>
-<ul>
-<li>视频录制</li>
-<li>断流检测</li>
-<li>自动鉴黄</li>
-<li>GOP缓存</li>
-<li>智能路由</li>
-<li>实时转码，多分辨率清晰度</li>
-</ul>
-<p>CMTime：</p>
-<ul>
-<li>可以表示时间点，也可以表示时间长度</li>
-<li>主要的属性 value/timeScale，value表示时间粒度的数量，timeScale表示时间单位粒度</li>
-<li>value/timeScale = seconds 表示时间点</li>
-</ul>
-<p>CMSampleBufferRef中的几个数据结构</p>
-<ul>
-<li>CVPixelBuffer：编码前和解码后的图像数据结构</li>
-<li>CMBlockBuffer：编码后的图像数据结构</li>
-<li>CMSampleBuffer：存放编解码前后的视频图像的容器数据结构，包含CMTime，CMVideoFormatDesc，还有CVPixelBuffer或CMBlockBuffer</li>
-</ul>
-<p>视频的一个CMSampleBufferRef对应很多个CMBlockBuffer</p>
-<ol>
-<li><p>捕捉视频流及其压缩（h264用vlc播放）</p>
-<p> <img src="/assets/blog/视频直播-视频采集.png" alt=""></p>
-<pre><code>//ViewController.m
-- (void)startCamera {
-    AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    AVCaptureDeviceInput *captureDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:nil];
-
-    //make output device
-    AVCaptureVideoDataOutput *captureVideoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
-    NSNumber *val = [NSNumber numberWithUnsignedInteger:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange];
-    NSDictionary *videoSetting = [NSDictionary dictionaryWithObject:val forKey:(NSString *)kCVPixelBufferPixelFormatTypeKey];
-    captureVideoDataOutput.videoSettings = videoSetting;
-    [captureVideoDataOutput setSampleBufferDelegate:self queue:dispatch_get_main_queue()];
-
-    self.captureSession = [[AVCaptureSession alloc] init];
-    [self.captureSession addInput:captureDeviceInput];
-    [self.captureSession addOutput:captureVideoDataOutput];
-
-    [self.captureSession beginConfiguration];
-    [self.captureSession setSessionPreset:AVCaptureSessionPresetMedium];
-    [self.captureSession setSessionPreset:AVCaptureSessionPreset640x480];
-    //当把一个输入和输出添加到AVCaptureSession之后，AVCaptureSession就会在输入、输出设备之间建立连接，而且通过AVCaptureOutput可以获取这个连接对象
-    self.connection = [captureVideoDataOutput connectionWithMediaType:AVMediaTypeVideo];
-    [self setRelativeVideoOrientation];
-    NSNotificationCenter *notify = [NSNotificationCenter defaultCenter];
-    [notify addObserver:self selector:@selector(statusBarOrientationDidChange:) name:@&quot;StatusBarOrientationDidChange&quot; object:nil];
-    [self.captureSession commitConfiguration];
-    [self.captureSession startRunning];
-    self.fileHandler = [NSFileHandle fileHandleForWritingAtPath:self.savePath];
-
-    [self.encoder initEncoderWithWidth:480 height:640];
-    self.encoder.delegate = self;
-}
-
-#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
-- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    CGSize imageSize = CVImageBufferGetEncodedSize(imageBuffer);
-    NSLog(@&quot;ImageBufferSize ----- width:%.1f, height:%.1f&quot;, imageSize.width, imageSize.height);
-    //直接把samplebuffer传给AVSampleBufferDisplayLayer进行预览播放
-    [self.displayLayer enqueueSampleBuffer:sampleBuffer];
-    [self.encoder encode:sampleBuffer];
-}
-
-#pragma mark - H264EncoderDelegate
+<h2 id="音频编码AAC"><a href="#音频编码AAC" class="headerlink" title="音频编码AAC"></a>音频编码AAC</h2><p>采样率为44.1kHZ，采样大小为16bit的双声道。PCM的大小为<code>44.1*16*2bps=176kb/s</code>。AAC通畅压缩比为18：1，也有资料说是20：1，经过AAC压缩后的大小约为12kb/s左右，远远低于视频压缩后的大小</p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><pre><code>#pragma mark - H264EncoderDelegate
 - (void)didGetSparameterSet:(NSData *)sps pictureParameterSet:(NSData *)pps {
     NSLog(@&quot;didGet SparameterSet %d PparameterSet %d&quot;, (int)[sps length], (int)[pps length]);
     const char bytes[] = &quot;\x00\x00\x00\x01&quot;;
@@ -669,7 +531,6 @@
         VTSessionSetProperty(encodeSession, kVTCompressionPropertyKey_H264EntropyMode, kVTH264EntropyMode_CABAC);
         VTCompressionSessionPrepareToEncodeFrames(encodeSession);
     });
-
 }
 
 - (void)encode:(CMSampleBufferRef)sampleBuffer {
@@ -757,10 +618,81 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
         }
     }
 }
-</code></pre></li>
-<li><p>LFLiveKit推视频和音频流（oc写的）</p>
-<p> <img src="/assets/blog/视频直播-视频抓取.png" alt=""><br> <img src="/assets/blog/视频直播-音频抓取.png" alt=""><br> <img src="/assets/blog/视频直播-LFLiveKit.png" alt=""></p>
-<pre><code>//LFLiveConfiguration
+</code></pre><h1 id="推流"><a href="#推流" class="headerlink" title="推流"></a>推流</h1><p><img src="/assets/blog/视频直播-推流端.png" alt=""></p>
+<h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>为什么要封装？</p>
+<p>将经过编码的音视频帧数据信息和字幕等信息组织起来，便于播放端解析数据，对不同的数据选择不同的解码器进行解码，以完成音视频同步，字幕同步等。封装格式主要有rmvb、avi、mkv、mp4、flv、ts等</p>
+<h2 id="FLV格式"><a href="#FLV格式" class="headerlink" title="FLV格式"></a>FLV格式</h2><p>格式：Header/PreviousTagSize0/Tag1/previousTagSize1/Tag2/previousTagSize2…Tag n/PreviousTagSize n</p>
+<ul>
+<li><p>Header：</p>
+<ul>
+<li>3byte：文件类型，即flv</li>
+<li>1byte：版本号</li>
+<li>1byte：流信息（各个位表示不同信息，最后一位是1表示有视频流，倒数第三位是1表示有音频流）</li>
+<li>4byte：header长度</li>
+</ul>
+</li>
+<li><p>Tag：</p>
+<ul>
+<li>1byte：tag类型，表示是音频还是视频还是字母或者是数据块</li>
+<li>3byte：数据区长度</li>
+<li>3byte：时间戳，单位毫秒</li>
+<li>1byte：时间戳扩展</li>
+<li>3byte：streamID，流ID</li>
+<li>数据区：长度由数据区长度字段决定</li>
+</ul>
+</li>
+<li><p>音频Tag：</p>
+<ul>
+<li>4bit：音频格式</li>
+<li>2bit：采样率</li>
+<li>1bit：采样长度</li>
+<li>1bit：音频类型</li>
+<li>实际的音频数据</li>
+</ul>
+</li>
+<li><p>视频Tag：</p>
+<ul>
+<li>4bit：帧类型</li>
+<li>4bit：编码ID</li>
+<li>实际的视频数据</li>
+</ul>
+</li>
+</ul>
+<h2 id="流媒体协议"><a href="#流媒体协议" class="headerlink" title="流媒体协议"></a>流媒体协议</h2><h3 id="HLS"><a href="#HLS" class="headerlink" title="HLS"></a>HLS</h3><p>HLS：HTTP Live Streaming，由苹果推出，基于HLS的直播流URL式一个m3u8的文件，里面包含了最近若干个小视频TS(一种视频封装格式，这里就不扩展介绍)文件，每次通过请求m3u8文件得到ts小视频列表，然后一个一个的下载缓冲播放</p>
+<ul>
+<li>一般会延时10s，如果需要和主播互动，无法忍受</li>
+<li>HTML5可以直接播放，不需要独立App支持</li>
+</ul>
+<h3 id="RTMP"><a href="#RTMP" class="headerlink" title="RTMP"></a>RTMP</h3><p>RTMP：RealTime Message Protocol，底层基于可靠的传输协议层来保证信息传输的可靠性，一般基于TCP实现<br>*开源软件和开源库支持比较完整，是Adobe的专利协议，播放端安装率高，只需要有FlashPlayer，一般延时2-5s</p>
+<h3 id="HTTP-FLV"><a href="#HTTP-FLV" class="headerlink" title="HTTP-FLV"></a>HTTP-FLV</h3><p>HTTP-FLV：使用HTTP协议传输经过flv封装后的数据包，实现视频流的推拉流。</p>
+<ul>
+<li>拉流端实现简单，但目前没有比较好的推流实现。HTTP协议没有复杂的交互，打开速度比RTMP更快一丢丢</li>
+</ul>
+<h3 id="RTSP"><a href="#RTSP" class="headerlink" title="RTSP"></a>RTSP</h3><p>RTSP：Real Time Streaming Protocol，基于文本的多媒体播放控制协议，建立并控制一个或几个时间同步的连续流媒体，由Real Networks 和 Netscape共同提出的</p>
+<ul>
+<li>RTSP定义流格式，流数据经由RTP传输；RTSP实时效果非常好，适合视频聊天，视频监控等方向。</li>
+</ul>
+<h3 id="WebRTC"><a href="#WebRTC" class="headerlink" title="WebRTC"></a>WebRTC</h3><p>webRTC：实时消息传输协议实现，可以用点对点来做连麦，即多人会议，实时性较高</p>
+<h2 id="第三方框架LFLiveKit"><a href="#第三方框架LFLiveKit" class="headerlink" title="第三方框架LFLiveKit"></a>第三方框架LFLiveKit</h2><p>LFLiveKit推视频和音频流（oc写的）</p>
+<p><img src="/assets/blog/视频直播-视频抓取.png" alt=""><br><img src="/assets/blog/视频直播-音频抓取.png" alt=""><br><img src="/assets/blog/视频直播-LFLiveKit.png" alt=""></p>
+<pre><code>LFLiveVideoConfiguration *vConfig = [LFLiveVideoConfiguration defaultConfiguration];
+LFLiveAudioConfiguration *aConfig = [LFLiveAudioConfiguration defaultConfiguration];
+
+_session = [[LFLiveSession alloc] initWithAudioConfiguration:aConfig videoConfiguration:vConfig];
+_session.delegate = self;
+//设置预览的视图
+_session.preView = self.preView;
+//是否需要美颜
+_session.beautyFace = YES;
+//用哪个摄像头
+_session.captureDevicePosition = AVCaptureDevicePositionBack;
+
+LFLiveStreamInfo *info = [LFLiveStreamInfo new];
+info.url = url;
+//开始往url上推流
+[_session startLive:info];
+
+//LFLiveConfiguration
 //LFLiveVideoConfiguration.h
 /// 视频的分辨率，宽高务必设定为 2 的倍数，否则解码播放时可能出现绿边(这个videoSizeRespectingAspectRatio设置为YES则可能会改变)
 @property (nonatomic, assign) CGSize videoSize;
@@ -790,9 +722,9 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
 @property (nonatomic, assign, readonly) NSString *avSessionPreset;
 ///&lt; 是否是横屏
 @property (nonatomic, assign, readonly) BOOL landscape;
-</code></pre></li>
-</ol>
-<pre><code>//LFLiveAudioConfiguration.h
+
+
+//LFLiveAudioConfiguration.h
 /// 声道数目(default 2)
 @property (nonatomic, assign) NSUInteger numberOfChannels;
 /// 采样率
@@ -803,6 +735,7 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
 @property (nonatomic, assign, readonly) char *asc;
 /// 缓存区长度
 @property (nonatomic, assign,readonly) NSUInteger bufferLength;
+
 
 //LFLiveSessionConfiguration
 @interface LFLiveSession : NSObject
@@ -852,55 +785,25 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
 @property (nonatomic, assign) BOOL saveLocalVideo;
 /* The saveLocalVideoPath is save the local video  path */
 @property (nonatomic, strong, nullable) NSURL *saveLocalVideoPath;
-</code></pre><ol start="3">
-<li><p>IJKMediaFramework拉流及播放</p>
-<p> <img src="/assets/blog/视频直播-IJK底层实现.png" alt=""></p>
-<pre><code>//Player.h
-@interface Player : NSObject
-@property (nonatomic, strong) NSString *url;
-@property (nonatomic, assign) BOOL isPlaying;
-@property (nonatomic, readonly) UIView *view;
-- (BOOL)play;
-- (BOOL)retryPlay;
-- (BOOL)stopPlay;
-- (void)pause;
-- (void)resume;
-@end
+</code></pre><h1 id="拉流"><a href="#拉流" class="headerlink" title="拉流"></a>拉流</h1><p><img src="/assets/blog/视频直播-拉流端.png" alt=""></p>
+<p><img src="/assets/blog/视频直播-FFMpeg底层拉流.png" alt=""></p>
+<h2 id="原理及用到的技术"><a href="#原理及用到的技术" class="headerlink" title="原理及用到的技术"></a>原理及用到的技术</h2><ul>
+<li>流媒体协议RTMP、RTSP、HLS、HTTP-FLV</li>
+<li>ijkplayer开源播放器</li>
+<li>OpenGL渲染</li>
+<li>解封装</li>
+</ul>
+<h2 id="IJKMediaFramework拉流及播放"><a href="#IJKMediaFramework拉流及播放" class="headerlink" title="IJKMediaFramework拉流及播放"></a>IJKMediaFramework拉流及播放</h2><p><img src="/assets/blog/视频直播-IJK底层实现.png" alt=""></p>
+<pre><code>self.player.url = @&quot;rtmp://120.26.43.68:1935/hls/test&quot;;
+[self.player play];
+[self.view insertSubview:self.player.view atIndex:0];
+self.player.view.frame = self.view.bounds;
 
-//Player.m
-@interface Player()
-@property (nonatomic, strong) IJKFFMoviePlayerController *playerController;
-@property (nonatomic, strong) IJKFFOptions *options;
-@property (nonatomic, assign) BOOL paused;
-@end
 @implementation Player
 - (BOOL)play {
-    if (self.url == nil) {
-        return NO;
-    }
     self.playerController = [self createPlayerController];
     [self.playerController prepareToPlay];
     return YES;
-}
-- (BOOL)retryPlay {
-    return YES;
-}
-- (BOOL)stopPlay {
-    if (self.playerController) {
-        [self.playerController shutdown];
-        [self.playerController.view removeFromSuperview];
-        self.playerController = nil;
-    }
-    return YES;
-}
-- (void)resume {
-    self.paused = NO;
-}
-- (void)pause {
-    self.paused = YES;
-}
-- (UIView *)view {
-    return self.playerController.view;
 }
 - (IJKFFMoviePlayerController *)createPlayerController {
     IJKFFMoviePlayerController *playerController = [[IJKFFMoviePlayerController alloc] initWithContentURLString:self.url withOptions:self.options];
@@ -936,55 +839,43 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
     }
     return _options;
 }
-- (void)setPaused:(BOOL)paused {
-    _paused = paused;
-    if (_paused) {
-        [self.playerController pause];
-    } else {
-        [self.playerController play];
-    }
-}
 @end
-
-//PlayViewController.m
-@implementation PlayViewController
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.player = [[Player alloc] init];
-    self.player.url = @&quot;rtmp://120.26.43.68:1935/hls/test&quot;;
-    [self.player play];
-    [self setupViews];
-}
-- (void)setupViews {
-    [self.view insertSubview:self.player.view atIndex:0];
-    self.player.view.frame = self.view.bounds;
-}
-- (IBAction)closeBtnTouched:(id)sender {
-    if (self.player) {
-        [self.player stopPlay];
-        [self.player.view removeFromSuperview];
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-@end
-</code></pre><p> <img src="/assets/blog/视频直播-FFMpeg底层拉流.png" alt=""></p>
-</li>
-<li><p>全局优化</p>
-<p> <img src="/assets/blog/视频直播-优化策略.png" alt=""></p>
-</li>
-</ol>
+</code></pre><h1 id="音视频解码"><a href="#音视频解码" class="headerlink" title="音视频解码"></a>音视频解码</h1><p>音视频解码</p>
+<ul>
+<li>最初的流是封装成flv、ts格式，先解封装成视频和音频两个部分</li>
+<li>视频硬解码成YUV格式 VideoToolbox：iOS8.0以上支持</li>
+<li>视频软解码成YUV格式 x264、FFMpeg</li>
+<li>音频硬解码成PCM格式 AudioToolbox</li>
+<li>音频软解码成PCM格式 fdk_acc</li>
+<li>最后将音视频交给播放器播放</li>
+</ul>
+<h2 id="重要知识点"><a href="#重要知识点" class="headerlink" title="重要知识点"></a>重要知识点</h2><h3 id="CMTime："><a href="#CMTime：" class="headerlink" title="CMTime："></a>CMTime：</h3><ul>
+<li>可以表示时间点，也可以表示时间长度</li>
+<li>主要的属性 value/timeScale，value表示时间粒度的数量，timeScale表示时间单位粒度</li>
+<li>value/timeScale = seconds 表示时间点</li>
+</ul>
+<h3 id="CMSampleBufferRef"><a href="#CMSampleBufferRef" class="headerlink" title="CMSampleBufferRef"></a>CMSampleBufferRef</h3><p>视频的一个CMSampleBufferRef对应很多个CMBlockBuffer。CMSampleBufferRef中的几个数据结构：</p>
+<ul>
+<li>CMSampleBuffer：存放编解码前后的视频图像的容器数据结构，包含CMTime，CMVideoFormatDesc，还有CVPixelBuffer或CMBlockBuffer</li>
+<li>CVPixelBuffer：编码前和解码后的图像数据结构</li>
+<li>CMBlockBuffer：编码后的图像数据结构</li>
+</ul>
+<h1 id="全局优化"><a href="#全局优化" class="headerlink" title="全局优化"></a>全局优化</h1><p><img src="/assets/blog/视频直播-优化策略.png" alt=""></p>
 <blockquote>
 <p>Mac 上安装Nginx+rtmp的操作请自行百度</p>
 </blockquote>
-<p>实时消息通道</p>
-<ul>
-<li>xmpp：IM，GTALK，MSN都是基于此实现，此种协议只要客户端和服务器都基于此，就可以相互发送消息，如GTALK给MSN发消息，类似于邮件的STMP/POP协议</li>
-<li>websocket：轻量级消息通道，客户端和服务端可以相互发送消息，浏览器原生支持此协议</li>
-<li><p>mqtt：IBM推出的基于物联网的消息通道。协议比较简单，耗流量较少，用于嵌入式的消息通道，常用于低带宽和不稳定的网络</p>
-<p>  <img src="/assets/blog/视频直播-消息模块整体结构.png" alt=""><br>  <img src="/assets/blog/视频直播-连接流程.png" alt=""><br>  <img src="/assets/blog/视频直播-连接状态维护.png" alt=""></p>
-</li>
+<h1 id="聊天互动"><a href="#聊天互动" class="headerlink" title="聊天互动"></a>聊天互动</h1><ul>
+<li>IM：XMPP、MQTT、WebSocket</li>
+<li>聊天室</li>
+<li>礼物</li>
 </ul>
-<p>MQTT：</p>
+<h2 id="实时消息通道"><a href="#实时消息通道" class="headerlink" title="实时消息通道"></a>实时消息通道</h2><h3 id="xmpp："><a href="#xmpp：" class="headerlink" title="xmpp："></a>xmpp：</h3><p>IM，GTALK，MSN都是基于此实现，此种协议只要客户端和服务器都基于此，就可以相互发送消息，如GTALK给MSN发消息，类似于邮件的STMP/POP协议</p>
+<h3 id="websocket："><a href="#websocket：" class="headerlink" title="websocket："></a>websocket：</h3><p>轻量级消息通道，客户端和服务端可以相互发送消息，浏览器原生支持此协议</p>
+<h3 id="mqtt："><a href="#mqtt：" class="headerlink" title="mqtt："></a>mqtt：</h3><p>IBM推出的基于物联网的消息通道。协议比较简单，耗流量较少，用于嵌入式的消息通道，常用于低带宽和不稳定的网络</p>
+<pre><code>![](/assets/blog/视频直播-消息模块整体结构.png)
+![](/assets/blog/视频直播-连接流程.png)
+![](/assets/blog/视频直播-连接状态维护.png)
+</code></pre><p>MQTT：</p>
 <ul>
 <li>订阅/发布消息模式，支持一对多的消息发布</li>
 <li>协议头开销小，降低网络流量</li>
@@ -993,19 +884,26 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
 <blockquote>
 <p>Mac 上安装Mosquitto的的操作请自行百度或参见视频教程</p>
 </blockquote>
-<p>代码实现</p>
-<ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><ul>
 <li>建立消息通道：MQTT第三方Pod框架</li>
 <li>列表刷新方案：多少秒检测刷新一次，达到多少数量刷新一次，RunLoop空闲时刷新。注：解析和高度计算放后台</li>
 <li>YYText图片加载：CoreText</li>
 </ul>
-<p>动画方案介绍：</p>
-<ul>
+<h1 id="动画方案介绍："><a href="#动画方案介绍：" class="headerlink" title="动画方案介绍："></a>动画方案介绍：</h1><ul>
 <li>CoreAnimation：小动画或者大动画实现</li>
 <li>帧动画</li>
 <li>html5动画</li>
 <li>视频播放</li>
 <li>flash动画解析：FlashAnimationToMobile</li>
+</ul>
+<h1 id="服务器CDN"><a href="#服务器CDN" class="headerlink" title="服务器CDN"></a>服务器CDN</h1><p>简介：Content Delivery Network</p>
+<ul>
+<li>视频录制</li>
+<li>断流检测</li>
+<li>自动鉴黄</li>
+<li>GOP缓存</li>
+<li>智能路由</li>
+<li>实时转码，多分辨率清晰度</li>
 </ul>
 
       
@@ -1028,7 +926,7 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/视频/" rel="tag"># 视频</a>
+            <a href="/tags/直播/" rel="tag"># 直播</a>
           
         </div>
       
@@ -1116,8 +1014,17 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -1195,6 +1102,22 @@ void didCompressH264(void *outputCallbackRefCon, void *sourceFrameRefCon, OSStat
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#音视频采集"><span class="nav-number">1.</span> <span class="nav-text">音视频采集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#音视频处理"><span class="nav-number">2.</span> <span class="nav-text">音视频处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#音视频编码"><span class="nav-number">3.</span> <span class="nav-text">音视频编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#H264"><span class="nav-number">3.2.</span> <span class="nav-text">H264</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#H264帧结构"><span class="nav-number">3.3.</span> <span class="nav-text">H264帧结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频编码AAC"><span class="nav-number">3.4.</span> <span class="nav-text">音频编码AAC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码示例"><span class="nav-number">3.5.</span> <span class="nav-text">代码示例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#推流"><span class="nav-number">4.</span> <span class="nav-text">推流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#封装"><span class="nav-number">4.1.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FLV格式"><span class="nav-number">4.2.</span> <span class="nav-text">FLV格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流媒体协议"><span class="nav-number">4.3.</span> <span class="nav-text">流媒体协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HLS"><span class="nav-number">4.3.1.</span> <span class="nav-text">HLS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RTMP"><span class="nav-number">4.3.2.</span> <span class="nav-text">RTMP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-FLV"><span class="nav-number">4.3.3.</span> <span class="nav-text">HTTP-FLV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RTSP"><span class="nav-number">4.3.4.</span> <span class="nav-text">RTSP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebRTC"><span class="nav-number">4.3.5.</span> <span class="nav-text">WebRTC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三方框架LFLiveKit"><span class="nav-number">4.4.</span> <span class="nav-text">第三方框架LFLiveKit</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拉流"><span class="nav-number">5.</span> <span class="nav-text">拉流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理及用到的技术"><span class="nav-number">5.1.</span> <span class="nav-text">原理及用到的技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IJKMediaFramework拉流及播放"><span class="nav-number">5.2.</span> <span class="nav-text">IJKMediaFramework拉流及播放</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#音视频解码"><span class="nav-number">6.</span> <span class="nav-text">音视频解码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#重要知识点"><span class="nav-number">6.1.</span> <span class="nav-text">重要知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CMTime："><span class="nav-number">6.1.1.</span> <span class="nav-text">CMTime：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMSampleBufferRef"><span class="nav-number">6.1.2.</span> <span class="nav-text">CMSampleBufferRef</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#全局优化"><span class="nav-number">7.</span> <span class="nav-text">全局优化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#聊天互动"><span class="nav-number">8.</span> <span class="nav-text">聊天互动</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实时消息通道"><span class="nav-number">8.1.</span> <span class="nav-text">实时消息通道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#xmpp："><span class="nav-number">8.1.1.</span> <span class="nav-text">xmpp：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#websocket："><span class="nav-number">8.1.2.</span> <span class="nav-text">websocket：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mqtt："><span class="nav-number">8.1.3.</span> <span class="nav-text">mqtt：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">8.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动画方案介绍："><span class="nav-number">9.</span> <span class="nav-text">动画方案介绍：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务器CDN"><span class="nav-number">10.</span> <span class="nav-text">服务器CDN</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

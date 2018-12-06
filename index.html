@@ -1124,34 +1124,7 @@
 
       
         
-          
-          RAC 之原理各种编程思想汇总
-/*
- ReactiveCocoa函数响应式编程
- 理论基础
- RAC使用
- RAC源码
- RAC应用
-
- OC命令式编程：寄存器+运算器(申请内存，计算内存，更注重过程)
- 函数式编程：运算方式，函数（重在表达，更专注的是业务）
- 响应式编程：一个值伴随着一个值的变化而变化，更多的是在于种种关联和逻辑关系处理，当一个对象发生变化而产生的关联响应
-
- 链式编程：
- */
-
-//命令式编程举例，求阶乘
-int factorialMult(int x){
-    int result = 1;
-    for (int i = 1; i &lt;= x; i++) {
-        result *= i;
-    }
-    return result;
-}
-
-//函数式编程举例 n!=n*(n-1)!
-int factorialMultTwo(int x)
-          ...
+          <p><img src="/assets/outline/RAC.png" alt=""><br><img src="/assets/outline/RAC2.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/07/27/RAC详解/#more" rel="contents">
@@ -1297,51 +1270,7 @@ int factorialMultTwo(int x)
 
       
         
-          
-          直播技术原理介绍和实现方案技术选型
-如何搭建一个完整的视频直播系统？
-
-直播整体架构
-  
-
-拉推流端涉及的音视频技术
-
-网络协议选型
-服务器CDN简介
-iOS采集视频编码实现demo
-
-流媒体服务器任务
-
-数据分发
-实时转码
-录播
-关键帧缓存
-智能路由
-
-
-音视频采集
-
-AVFoundation：音频捕获-&gt;音频AAC编码-&gt;混合视频封装成flv/ts传输
-CaptureSession：视频捕获-&gt;视频预处理-&gt;视频H.264编码-&gt;混合音频封装成flv/ts传输
-
-
-视频预处理
-
-美颜
-水印
-人脸识别
-GUPImage：第三方框架，有很多种功能，可以处理上边三个需求，还有其他SDK，如讯飞SDK、商汤SDK等
-
-
-推流
-  
-
-封装
-流媒体协议RTMP、RTSP、HLS、HTTP-FLV
-librtmp rtmp协议实现
-HLS使用HTTP协议上传
-web
-          ...
+          <p><img src="/assets/outline/iOS直播.png" alt=""><br><img src="/assets/outline/iOS直播1.png" alt=""><br><img src="/assets/outline/iOS直播2.png" alt=""><br><img src="/assets/outline/iOS直播3.png" alt=""><br><img src="/assets/outline/iOS直播4.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/06/29/视频直播系统开发/#more" rel="contents">
@@ -1487,23 +1416,7 @@ web
 
       
         
-          
-          RunTime1在Objective-C中，任何类的定义都是对象。类和类的实例（对象）没有任何本质上的区别。任何对象都有isa指针。
-什么是类？什么是对象？
-NSObject *object = [[NSObject alloc] init];
-
-//NSObject.h
-@interface NSObject &lt;NSObject&gt; {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored &quot;-Wobjc-interface-ivars&quot;
-    Class isa  OBJC_ISA_AVAILABILITY;
-#pragma clang diagnostic pop
-}
-
-//objc.h
-#if !OBJC_TYPES_DEFINED
-/// An opaque type that
-          ...
+          <p><img src="/assets/outline/iOSRunTime.png" alt=""><br><img src="/assets/outline/iOSRunTime1.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/05/25/iOSRunTime/#more" rel="contents">
@@ -1650,13 +1563,12 @@ NSObject *object = [[NSObject alloc] init];
       
         
           
-          概念：先对音频的概念有一些了解
-
-音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。
-
-对声音进行采样、量化过程被称为脉冲编码调制（Pulse Code Modulation）简称PCM，PCM是最原始的音频数据完全无损，所以PCM数据虽然音质优秀但体积庞大然后就诞生了一系列的音频格式，如MP3（有损压缩）目前最为常用的音频格式之一   苹果默认音频格式是aac
-
-MP3格式中的码率（BitRate）代表了MP3数据的压缩质量，现在常用的码率有128kbit/s、160kbit
+          音频概念概念音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。
+人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。
+根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。
+PCM对声音进行采样、量化过程被称为脉冲编码调制（Pulse Code Modulation）简称PCM，PCM是最原始的音频数据完全无损，所以PCM数据虽然音质优秀但体积庞大
+然后就诞生了一系列的音频格式，如MP3（有损压缩）目前最为常用的音频格式之一   苹果默认音频格式是aac
+码率MP3格式中的码率（BitRate）代表了MP3数据的压缩质量，现在常用的码率有128kbit/s、160kbit/s、3
           ...
           <!--noindex-->
           <div class="post-button text-center">
