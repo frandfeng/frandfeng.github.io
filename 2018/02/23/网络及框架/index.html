@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,网络及框架,">
+  <meta name="keywords" content="iOS,框架,网络,">
 
 
 
@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="断点下载原理及文件上传 断点下载方式 1. 断点下载（URL） 2. 判断过渡区(中转站tmp)是否存在该请求的网络数据? 3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求 4. 过度区没有相关数据:直接发起网络请求 5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开 6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Do">
-<meta name="keywords" content="OC,iOS,网络及框架">
+<meta name="keywords" content="iOS,框架,网络">
 <meta property="og:type" content="article">
 <meta property="og:title" content="网络及框架">
 <meta property="og:url" content="https://frandfeng.github.io/2018/02/23/网络及框架/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="断点下载原理及文件上传 断点下载方式 1. 断点下载（URL） 2. 判断过渡区(中转站tmp)是否存在该请求的网络数据? 3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求 4. 过度区没有相关数据:直接发起网络请求 5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开 6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Do">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T10:21:46.078Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/网络.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/网络2.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/网络3.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/网络-SSL.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/网络-断点下载.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/网络-SSL1.png">
+<meta property="og:updated_time" content="2018-12-07T11:39:58.952Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络及框架">
-<meta name="twitter:description" content="断点下载原理及文件上传 断点下载方式 1. 断点下载（URL） 2. 判断过渡区(中转站tmp)是否存在该请求的网络数据? 3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求 4. 过度区没有相关数据:直接发起网络请求 5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开 6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Do">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/网络.png">
 
 
 
@@ -394,15 +398,18 @@
       
 
       
-        <h1 id="断点下载原理及文件上传"><a href="#断点下载原理及文件上传" class="headerlink" title="断点下载原理及文件上传"></a>断点下载原理及文件上传</h1><ol>
-<li><p>断点下载方式</p>
-<pre><code>1. 断点下载（URL）
-2. 判断过渡区(中转站tmp)是否存在该请求的网络数据?
-3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求
-4. 过度区没有相关数据:直接发起网络请求
-5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开
-6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Document)
-#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
+        <p><img src="/assets/outline/网络.png" alt=""><br><img src="/assets/outline/网络2.png" alt=""><br><img src="/assets/outline/网络3.png" alt=""><br><img src="/assets/blog/网络-SSL.png" alt=""><br><img src="/assets/blog/网络-断点下载.png" alt=""></p>
+<a id="more"></a>
+<h1 id="断点下载原理及文件上传"><a href="#断点下载原理及文件上传" class="headerlink" title="断点下载原理及文件上传"></a>断点下载原理及文件上传</h1><h2 id="断点下载"><a href="#断点下载" class="headerlink" title="断点下载"></a>断点下载</h2><ol>
+<li>断点下载（URL）</li>
+<li>判断过渡区(中转站tmp)是否存在该请求的网络数据?</li>
+<li>过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求<code>[request setValue:@&quot;bytes=1000-2000&quot;, forHTTPHeaderField:@&quot;Range&quot;];</code></li>
+<li>过度区没有相关数据:直接发起网络请求</li>
+<li>数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开</li>
+<li>数据下载完成：网络数据从过渡区(tmp)到目标区(Document)</li>
+</ol>
+<p>具体代码实现如下：</p>
+<pre><code>#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
 @interface BreakLoadImageVC ()&lt;NSURLSessionDelegate, NSURLSessionDataDelegate&gt; {
     NSString *filePathTmp;
     NSString *filePathDocument;
@@ -423,9 +430,9 @@
     filePathDocument = [filePath stringByAppendingPathComponent:fileName];
     filePathTmp = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
 }
-</code></pre></li>
-</ol>
-<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+
+
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
     [self netLoadImage];
 }
 
@@ -472,10 +479,8 @@
     [[NSFileManager defaultManager] moveItemAtPath:filePathTmp toPath:filePathDocument error:nil];
 }
 @end
-</code></pre><ol start="2">
-<li><p>AF方式下载</p>
-<pre><code>//所以AF框架不能做断点下载，因为断点下载需要一个中转站文件我们才能知道断点下载时的Range，AF采用的NSURLSessionDownloadTask只给出了下载完成后的目标地址，没有给出中转文件的地址，我们如果需要中转文件地址，则必须自己用NSURLSessionTask来做
-#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
+</code></pre><h2 id="AF方式下载"><a href="#AF方式下载" class="headerlink" title="AF方式下载"></a>AF方式下载</h2><p>所以AF框架不能做断点下载，因为断点下载需要一个中转站文件我们才能知道断点下载时的Range，AF采用的NSURLSessionDownloadTask只给出了下载完成后的目标地址，没有给出中转文件的地址，我们如果需要中转文件地址，则必须自己用NSURLSessionDownloadTask来做</p>
+<pre><code>#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
 @interface AFFileLoadVC ()&lt;NSURLSessionDelegate, NSURLSessionDataDelegate, NSURLSessionDownloadDelegate&gt;{
     NSString *filePathTmp;
     NSString *filePathDocument;
@@ -493,9 +498,8 @@
     NSLog(@&quot;%@&quot;, filePath);
     filePathDocument = [filePath stringByAppendingPathComponent:fileName];
 }
-</code></pre></li>
-</ol>
-<pre><code>- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
     [self netLoadAFImage];
 }
 
@@ -534,8 +538,7 @@ didFinishDownloadingToURL:(NSURL *)location{
     NSLog(@&quot;didCompleteWithError:%@&quot;, error);
 }
 @end
-</code></pre><ol start="3">
-<li><p>上传文件</p>
+</code></pre><h2 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h2><p>上传文件需要为请求添加请求头boundary(分界线)和请求体(body,包含开始分界线、属性数据、图片数据、结束分界线)</p>
 <pre><code>/*
  1 请求头  boundary（分界线） ******
 
@@ -598,9 +601,8 @@ didFinishDownloadingToURL:(NSURL *)location{
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler{
     completionHandler(NSURLSessionResponseAllow);
 }
-</code></pre></li>
-</ol>
-<pre><code>// 2 进度
+
+// 2 进度
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend{
     // 每次发送 32kb （32768）数据，bytesSent本次发送，totalBytesSent总共已发送，totalBytesExpectedToSend总共需发送，即文件大小
     NSLog(@&quot;didSendBodyData:: %ld--%ld--%ld&quot;, bytesSent, totalBytesSent, totalBytesExpectedToSend);
@@ -617,9 +619,7 @@ didFinishDownloadingToURL:(NSURL *)location{
     NSLog(@&quot;didCompleteWithError:%@&quot;, error);
 }
 @end
-</code></pre><ol start="4">
-<li><p>流上传</p>
-<pre><code>- (void)netLoadDelegate {
+</code></pre><h2 id="流上传"><a href="#流上传" class="headerlink" title="流上传"></a>流上传</h2><pre><code>- (void)netLoadDelegate {
     NSString *bodyStr = @&quot;versions_id=1&amp;system_type=1&quot;;
     NSURL *url = [NSURL URLWithString:URLPath];
     //请求体
@@ -670,11 +670,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     NSLog(@&quot;==%@&quot;, error);
 }        
-</code></pre></li>
-</ol>
-<h1 id="AF框架分析"><a href="#AF框架分析" class="headerlink" title="AF框架分析"></a>AF框架分析</h1><ol>
-<li><p>AF简单流程跟踪</p>
-<pre><code>//调用
+</code></pre><h1 id="AF框架分析"><a href="#AF框架分析" class="headerlink" title="AF框架分析"></a>AF框架分析</h1><h2 id="AF简单流程跟踪"><a href="#AF简单流程跟踪" class="headerlink" title="AF简单流程跟踪"></a>AF简单流程跟踪</h2><pre><code>//调用
 - (void)netLoad{
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -833,9 +829,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
     [self addNotificationObserverForTask:task];
     [self.lock unlock];
 }
-</code></pre></li>
-<li><p>详解组装request请求</p>
-<pre><code>// 上传头像
+</code></pre><h2 id="详解组装request请求"><a href="#详解组装request请求" class="headerlink" title="详解组装request请求"></a>详解组装request请求</h2><pre><code>// 上传头像
 - (void)uploadUserHeadImage:(UIImage *)image {
     // 获得网络manager
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -962,10 +956,8 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
 
     return self.request;
 }
-</code></pre></li>
-</ol>
-<h1 id="HTTPS及AFNetworking"><a href="#HTTPS及AFNetworking" class="headerlink" title="HTTPS及AFNetworking"></a>HTTPS及AFNetworking</h1><p>HTTPS = HTTP + 加密 + 认证 + 完整性保护，其实HTTPS是身披SSL外壳的HTTP</p>
-<p>常用加密方法：</p>
+</code></pre><h1 id="HTTPS及AFNetworking"><a href="#HTTPS及AFNetworking" class="headerlink" title="HTTPS及AFNetworking"></a>HTTPS及AFNetworking</h1><p>HTTPS = HTTP + 加密 + 认证 + 完整性保护，其实HTTPS是身披SSL外壳的HTTP</p>
+<h2 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h2><p>常用加密方法：</p>
 <ol>
 <li><p>共享密钥加密（也称为对称加密）：共享密钥加密就是加密和解密通用一个密钥，加密和解密是一个逆向的过程。</p>
 <p> 优点是加密解密速度快，缺点是一旦密钥泄露，别人也能解密数据。</p>
@@ -981,8 +973,7 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
 <li><p>HTTPS采用混合加密机制：共享密钥加密和公开密钥加密两者并用</p>
 </li>
 </ol>
-<p>HTTPS工作原理</p>
-<p>HTTPS工作在客户端和服务器端之间。客户端和服务器本身都会自带一些加密的算法，用于双方协商加密的选择项。</p>
+<h2 id="SSL工作原理"><a href="#SSL工作原理" class="headerlink" title="SSL工作原理"></a>SSL工作原理</h2><p>HTTPS工作在客户端和服务器端之间。客户端和服务器本身都会自带一些加密的算法，用于双方协商加密的选择项。</p>
 <ol>
 <li>客户端首先会将自己支持的加密算法，打个包告诉服务器端。</li>
 <li>服务器端从客户端发来的加密算法中，选出一组加密算法和HASH算法（注，HASH也属于加密），并将自己的身份信息以证书的形式发回给客户端。而证书中包含了网站的地址，加密用的公钥，以及证书的颁发机构等。这里，服务器就将自己用来加密用的公钥一同发给客户端，而私钥则服务器保存着，用户解密客户端加密过后的内容。</li>
@@ -1010,11 +1001,71 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
 </li>
 </ol>
 <p>总结：随机序列号–(公钥加密)–消息–(随机序列号加密)–加密消息–(HASH加密)–消息校验值，客户端给服务端发送的是消息和消息校验值</p>
-<blockquote>
-<p>为什么不直接全程使用非对称加密算法进行数据传输？这个问题的答案是因为非对称算法的效率对比起对称算法来说，要低得多得多；因此往往只用在HTTPS的握手阶段。</p>
-</blockquote>
-<p>AFNetworking</p>
-<pre><code>//UIViewController类
+<p><img src="/assets/blog/网络-SSL1.png" alt=""></p>
+<p>详解：</p>
+<ol>
+<li><p><code>client_hello</code></p>
+<p> 客户端发起请求，以明文传输请求信息，包含版本信息，加密套件候选列表，压缩算法候选列表，随机数，扩展字段等信息，相关信息如下：</p>
+<ul>
+<li>支持的最高TSL协议版本version，从低到高依次 <code>SSLv2 SSLv3 TLSv1 TLSv1.1 TLSv1.2</code>，当前基本不再使用低于 TLSv1 的版本;</li>
+<li>客户端支持的加密套件 <code>cipher suites</code> 列表， 每个加密套件对应前面 TLS 原理中的四个功能的组合：<code>认证算法 Au (身份验证)</code>、<code>密钥交换算法 KeyExchange(密钥协商)</code>、<code>对称加密算法 Enc (信息加密)</code>和<code>信息摘要 Mac(完整性校验)</code>;</li>
+<li>支持的压缩算法 <code>compression methods</code> 列表，用于后续的信息压缩传输;</li>
+<li>随机数 <code>random_C</code>，用于后续的密钥的生成;</li>
+<li>扩展字段 <code>extensions</code>，支持协议与算法的相关参数以及其它辅助信息等，常见的 SNI 就属于扩展字段，后续单独讨论该字段作用。</li>
+</ul>
+</li>
+<li><p><code>server_hello+server_certificate+sever_hello_done</code></p>
+<ul>
+<li><code>server_hello</code>, 服务端返回协商的信息结果，包括选择使用的协议版本 version，选择的加密套件 <code>cipher suite</code>，选择的压缩算法 <code>compression method</code>、随机数 <code>random_S</code> 等，其中随机数用于后续的密钥协商;</li>
+<li><code>server_certificates</code>, 服务器端配置对应的证书链，用于身份验证与密钥交换;</li>
+<li><code>server_hello_done</code>，通知客户端 server_hello 信息发送结束;</li>
+</ul>
+</li>
+<li><p>证书校验</p>
+<p> 客户端验证证书的合法性，如果验证通过才会进行后续通信，否则根据错误情况不同做出提示和操作，合法性验证包括如下：</p>
+<ul>
+<li>[证书链]的可信性 trusted certificate path，方法如前文所述;</li>
+<li>证书是否吊销 revocation，有两类方式离线 CRL 与在线 OCSP，不同的客户端行为会不同;</li>
+<li>有效期 expiry date，证书是否在有效时间范围;</li>
+<li>域名 domain，核查证书域名是否与当前的访问域名匹配，匹配规则后续分析;</li>
+</ul>
+</li>
+<li><p><code>client_key_exchange+change_cipher_spec+encrypted_handshake_message</code></p>
+<ul>
+<li><code>client_key_exchange</code>，合法性验证通过之后，客户端计算产生随机数字 <code>Pre-master</code>，并用证书公钥加密，发送给服务器;</li>
+<li>此时客户端已经获取全部的计算协商密钥需要的信息：两个明文随机数 <code>random_C</code> 和 <code>random_S</code> 与自己计算产生的 <code>Pre-master</code>，计算得到协商密钥:<br><code>enc_key=Fuc(random_C, random_S, Pre-Master)</code></li>
+<li><code>change_cipher_spec</code>，客户端通知服务器后续的通信都采用协商的通信密钥和加密算法进行加密通信;</li>
+<li><code>encrypted_handshake_message</code>，结合之前所有通信参数的 hash 值与其它相关信息生成一段数据，采用协商密钥 <code>session secret</code> 与算法进行加密，然后发送给服务器用于数据与握手验证;</li>
+</ul>
+</li>
+<li><p><code>change_cipher_spec+encrypted_handshake_message</code></p>
+<ul>
+<li>服务器用私钥解密加密的 <code>Pre-master</code> 数据，基于之前交换的两个明文随机数 <code>random_C</code> 和 <code>random_S</code>，计算得到协商密钥:<code>enc_key=Fuc(random_C, random_S, Pre-Master)</code>;</li>
+<li>计算之前所有接收信息的 hash 值，然后解密客户端发送的 <code>encrypted_handshake_message</code>，验证数据和密钥正确性;</li>
+<li><code>change_cipher_spec</code>, 验证通过之后，服务器同样发送 <code>change_cipher_spec</code> 以告知客户端后续的通信都采用协商的密钥与算法进行加密通信;</li>
+<li><code>encrypted_handshake_message</code>, 服务器也结合所有当前的通信参数信息生成一段数据并采用协商密钥 <code>session secret</code> 与算法加密并发送到客户端;</li>
+</ul>
+</li>
+<li><p>握手结束</p>
+<p> 客户端计算所有接收信息的 hash 值，并采用协商密钥解密 <code>encrypted_handshake_message</code>，验证服务器发送的数据和密钥，验证通过则握手完成;</p>
+</li>
+<li><p>加密通信<br> 开始使用协商密钥与算法进行加密通信。<br>注意：</p>
+<ul>
+<li>服务器也可以要求验证客户端，即双向认证，可以在过程2要发送 <code>client_certificate_request</code> 信息，客户端在过程4中先发送 <code>client_certificate与certificate_verify_message</code> 信息，证书的验证方式基本相同，<code>certificate_verify_message</code> 是采用client的私钥加密的一段基于已经协商的通信信息得到数据，服务器可以采用对应的公钥解密并验证;</li>
+<li>根据使用的密钥交换算法的不同，如 ECC 等，协商细节略有不同，总体相似;</li>
+<li><code>sever key exchange</code> 的作用是 <code>server certificate</code> 没有携带足够的信息时，发送给客户端以计算 <code>pre-master</code>，如基于 DH 的证书，公钥不被证书中包含，需要单独发送;</li>
+<li><code>change cipher spec</code> 实际可用于通知对端改版当前使用的加密通信方式，当前没有深入解析;</li>
+<li><code>alter message</code> 用于指明在握手或通信过程中的状态改变或错误信息，一般告警信息触发条件是连接关闭，收到不合法的信息，信息解密失败，用户取消操作等，收到告警信息之后，通信会被断开或者由接收方决定是否断开连接。</li>
+</ul>
+</li>
+<li><p>pre master key.基本上生成的方式有两种：</p>
+<ul>
+<li>随机生成器:一共48个字符，前两个字符是版本号，后面的字符是试用随机字符生成器生成。</li>
+<li>RSA,DH算法:该48个字符使用RSA或者DH算法生成的。</li>
+</ul>
+</li>
+</ol>
+<h2 id="AFNetworking源码"><a href="#AFNetworking源码" class="headerlink" title="AFNetworking源码"></a>AFNetworking源码</h2><pre><code>//UIViewController类
 //// NSURLSessionDelegate
 - (void)URLSession:(NSURLSession *)session
 didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
@@ -1326,18 +1377,14 @@ static void AFPostReachabilityStatusChange(SCNetworkReachabilityFlags flags, AFN
 <p>如上文所说，NSURLProtocol是一个抽象类。我们要使用它的时候需要创建它的一个子类。</p>
 <pre><code>@interface CustomURLProtocol : NSURLProtocol
 </code></pre><p>使用NSURLProtocol的主要可以分为5个步骤：注册—&gt;拦截—&gt;转发—&gt;回调—&gt;结束</p>
-<ol>
-<li><p>注册：</p>
-<p> 对于基于NSURLConnection或者使用[NSURLSession sharedSession]创建的网络请求，调用registerClass方法即可。</p>
+<h2 id="注册："><a href="#注册：" class="headerlink" title="注册："></a>注册：</h2><p>对于基于NSURLConnection或者使用[NSURLSession sharedSession]创建的网络请求，调用registerClass方法即可。</p>
 <pre><code>[NSURLProtocol registerClass:[NSClassFromString(@&quot;CustomURLProtocol&quot;) class]];
-</code></pre><p> 对于基于NSURLSession的网络请求，需要通过配置NSURLSessionConfiguration对象的protocolClasses属性。</p>
+</code></pre><p>对于基于NSURLSession的网络请求，需要通过配置NSURLSessionConfiguration对象的protocolClasses属性。</p>
 <pre><code>NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
 sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProtocol&quot;) class]];
-</code></pre></li>
-<li><p>拦截：</p>
-<p> 在拦截到网络请求后，NSURLProtocol会依次执行下列方法：</p>
+</code></pre><h2 id="拦截："><a href="#拦截：" class="headerlink" title="拦截："></a>拦截：</h2><p>在拦截到网络请求后，NSURLProtocol会依次执行下列方法：</p>
 <pre><code>+ (BOOL)canInitWithRequest:(NSURLRequest *)request
-</code></pre><p> 该方法会拿到request的对象，我们可以通过该方法的返回值来筛选request是否需要被NSURLProtocol做拦截处理。<br>比如：</p>
+</code></pre><p>该方法会拿到request的对象，我们可以通过该方法的返回值来筛选request是否需要被NSURLProtocol做拦截处理。<br>比如：</p>
 <pre><code>+ (BOOL)canInitWithRequest:(NSURLRequest *)request {
     NSString * scheme = [[request.URL scheme] lowercaseString];
     if ([scheme isEqual:@&quot;http&quot;]) {
@@ -1345,24 +1392,20 @@ sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProt
     }
     return NO;
 }
-</code></pre><p> 这里我们就只会拦截http的请求。</p>
+</code></pre><p>这里我们就只会拦截http的请求。</p>
 <pre><code>+ (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request
-</code></pre><p> 在该方法中，我们可以对request进行处理。例如修改头部信息等。最后返回一个处理后的request实例。</p>
-</li>
-<li><p>转发：</p>
-<p> 在拦截到网络请求，并且对网络请求进行定制处理以后。我们需要将网络请求重新发送出去。</p>
+</code></pre><p>在该方法中，我们可以对request进行处理。例如修改头部信息等。最后返回一个处理后的request实例。</p>
+<h2 id="转发："><a href="#转发：" class="headerlink" title="转发："></a>转发：</h2><p>在拦截到网络请求，并且对网络请求进行定制处理以后。我们需要将网络请求重新发送出去。</p>
 <pre><code>- (id)initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)cachedResponse client:(id&lt;NSURLProtocolClient&gt;)client
-</code></pre><p> 该方法会创建一个NSURLProtocol实例，这里每一个网络请求都会创建一个新的实例。</p>
+</code></pre><p>该方法会创建一个NSURLProtocol实例，这里每一个网络请求都会创建一个新的实例。</p>
 <pre><code>- (void)startLoading
-</code></pre><p> 接下来就是转发的核心方法startLoading。在该方法中，我们把处理过的request重新发送出去。至于发送的形式，可以是基于NSURLConnection，NSURLSession甚至CFNetwork。</p>
-</li>
-<li><p>回调：</p>
-<p> 既是面向切面的编程，就不能影响到原来网络请求的逻辑。所以上一步将网络请求转发出去以后，当收到网络请求的返回，还需要再将返回值返回给原来发送网络请求的地方。<br>主要需要需要调用到</p>
+</code></pre><p>接下来就是转发的核心方法startLoading。在该方法中，我们把处理过的request重新发送出去。至于发送的形式，可以是基于NSURLConnection，NSURLSession甚至CFNetwork。</p>
+<h2 id="回调："><a href="#回调：" class="headerlink" title="回调："></a>回调：</h2><p>既是面向切面的编程，就不能影响到原来网络请求的逻辑。所以上一步将网络请求转发出去以后，当收到网络请求的返回，还需要再将返回值返回给原来发送网络请求的地方。<br>主要需要需要调用到</p>
 <pre><code>[self.client URLProtocol:self didFailWithError:error];
 [self.client URLProtocolDidFinishLoading:self];
 [self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
 [self.client URLProtocol:self didLoadData:data];
-</code></pre><p> 这四个方法来回调给原来发送网络请求的地方。<br>这里假设我们在转发过程中是使用NSURLSession发送的网络请求，那么在NSURLSession的回调方法中，我们做相应的处理即可。并且我们也可以对这些返回，进行定制化处理。</p>
+</code></pre><p>这四个方法来回调给原来发送网络请求的地方。<br>这里假设我们在转发过程中是使用NSURLSession发送的网络请求，那么在NSURLSession的回调方法中，我们做相应的处理即可。并且我们也可以对这些返回，进行定制化处理。</p>
 <pre><code>- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     if (error) {
         [self.client URLProtocol:self didFailWithError:error];
@@ -1380,9 +1423,7 @@ sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProt
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
     [self.client URLProtocol:self didLoadData:data];
 }
-</code></pre></li>
-<li><p>结束：</p>
-<p> 在一个网络请求完全结束以后，NSURLProtocol回调用到</p>
+</code></pre><h2 id="结束："><a href="#结束：" class="headerlink" title="结束："></a>结束：</h2><p>在一个网络请求完全结束以后，NSURLProtocol回调用到</p>
 <pre><code>- (void)stopLoading
 在该方法里，我们完成在结束网络请求的操作。以NSURLSession为例：
 
@@ -1390,18 +1431,16 @@ sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProt
     [self.session invalidateAndCancel];
     self.session = nil;
 }
-</code></pre><p> 以上便是NSURLProtocol的基本流程。</p>
-</li>
-</ol>
-<p>应用场景：</p>
-<ul>
+</code></pre><p>以上便是NSURLProtocol的基本流程。</p>
+<h2 id="应用场景："><a href="#应用场景：" class="headerlink" title="应用场景："></a>应用场景：</h2><ul>
 <li>网络请求缓存</li>
 <li>网络请求mock stub，知名的库OHHTTPStubs就是基于NSURLProtocol</li>
 <li>网络相关的数据统计</li>
 <li>URL重定向</li>
-<li>配合实现HTTPDNS</li>
+<li>配合实现HTTP DNS</li>
 </ul>
-<h1 id="性能优化之网络缓存层搭建"><a href="#性能优化之网络缓存层搭建" class="headerlink" title="性能优化之网络缓存层搭建"></a>性能优化之网络缓存层搭建</h1><p>封装的作用 1.搭建缓存层 2.业务隔离层(如登录失效，json解析错误)</p>
+<p>在你的服务器没有准备妥当或者在你需要模拟数据进行本地开发时，OHHTTPStubs是一个很好的可以加速测试和开发的工具。OHHTTPStubs可使用伪造的网络数据和模拟的缓慢网络来测试你的应用程序，从而检测你的应用程序在不佳的网络环境中的行为，并使用伪造的网络数据编写单元测试。</p>
+<h1 id="性能优化之网络缓存层搭建"><a href="#性能优化之网络缓存层搭建" class="headerlink" title="性能优化之网络缓存层搭建"></a>性能优化之网络缓存层搭建</h1><h2 id="封装的作用"><a href="#封装的作用" class="headerlink" title="封装的作用"></a>封装的作用</h2><p>1.搭建缓存层 2.业务隔离层(如登录失效，json解析错误)</p>
 <pre><code>- (void)viewDidLoad {
     [super viewDidLoad];
     NSDictionary *infodict = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;1&quot;, @&quot;versions_id&quot;, @&quot;1&quot;, @&quot;system_type&quot;, nil];
@@ -1538,8 +1577,7 @@ sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProt
     };
 }
 @end
-</code></pre><p>多网络请求</p>
-<pre><code>// 多任务处理
+</code></pre><h2 id="多网络请求"><a href="#多网络请求" class="headerlink" title="多网络请求"></a>多网络请求</h2><pre><code>// 多任务处理
 - (void)multiNetTask{
     NSDictionary *infodictOne = [NSDictionary dictionaryWithObjectsAndKeys:@&quot;1&quot;, @&quot;versions_id&quot;, @&quot;1&quot;, @&quot;system_type&quot;, nil];
     SYNetRequestInfo *infoNetOne = [[SYNetMananger sharedInstance] syNetRequestWithURLStr:URLPath method:@&quot;POST&quot; parameters:infodictOne ignoreCache:NO cacheDuration:2 completionHandler:^(NSError * _Nullable error, BOOL isCache, NSDictionary * _Nullable result) {
@@ -1624,11 +1662,11 @@ sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProt
       
         <div class="post-tags">
           
-            <a href="/tags/OC/" rel="tag"># OC</a>
-          
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/网络及框架/" rel="tag"># 网络及框架</a>
+            <a href="/tags/框架/" rel="tag"># 框架</a>
+          
+            <a href="/tags/网络/" rel="tag"># 网络</a>
           
         </div>
       
@@ -1765,7 +1803,7 @@ sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProt
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -1814,7 +1852,7 @@ sessionConfiguration.protocolClasses = @[[NSClassFromString(@&quot;CustomURLProt
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#断点下载原理及文件上传"><span class="nav-number">1.</span> <span class="nav-text">断点下载原理及文件上传</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AF框架分析"><span class="nav-number">2.</span> <span class="nav-text">AF框架分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTPS及AFNetworking"><span class="nav-number">3.</span> <span class="nav-text">HTTPS及AFNetworking</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向切面的编程AOP"><span class="nav-number">4.</span> <span class="nav-text">面向切面的编程AOP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能优化之网络缓存层搭建"><span class="nav-number">5.</span> <span class="nav-text">性能优化之网络缓存层搭建</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#断点下载原理及文件上传"><span class="nav-number">1.</span> <span class="nav-text">断点下载原理及文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#断点下载"><span class="nav-number">1.1.</span> <span class="nav-text">断点下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AF方式下载"><span class="nav-number">1.2.</span> <span class="nav-text">AF方式下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上传文件"><span class="nav-number">1.3.</span> <span class="nav-text">上传文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#流上传"><span class="nav-number">1.4.</span> <span class="nav-text">流上传</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AF框架分析"><span class="nav-number">2.</span> <span class="nav-text">AF框架分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#AF简单流程跟踪"><span class="nav-number">2.1.</span> <span class="nav-text">AF简单流程跟踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#详解组装request请求"><span class="nav-number">2.2.</span> <span class="nav-text">详解组装request请求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTPS及AFNetworking"><span class="nav-number">3.</span> <span class="nav-text">HTTPS及AFNetworking</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加密"><span class="nav-number">3.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSL工作原理"><span class="nav-number">3.2.</span> <span class="nav-text">SSL工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AFNetworking源码"><span class="nav-number">3.3.</span> <span class="nav-text">AFNetworking源码</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向切面的编程AOP"><span class="nav-number">4.</span> <span class="nav-text">面向切面的编程AOP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注册："><span class="nav-number">4.1.</span> <span class="nav-text">注册：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拦截："><span class="nav-number">4.2.</span> <span class="nav-text">拦截：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转发："><span class="nav-number">4.3.</span> <span class="nav-text">转发：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回调："><span class="nav-number">4.4.</span> <span class="nav-text">回调：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结束："><span class="nav-number">4.5.</span> <span class="nav-text">结束：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景："><span class="nav-number">4.6.</span> <span class="nav-text">应用场景：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#性能优化之网络缓存层搭建"><span class="nav-number">5.</span> <span class="nav-text">性能优化之网络缓存层搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#封装的作用"><span class="nav-number">5.1.</span> <span class="nav-text">封装的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多网络请求"><span class="nav-number">5.2.</span> <span class="nav-text">多网络请求</span></a></li></ol></li></ol></div>
             
 
           </div>

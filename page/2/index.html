@@ -394,19 +394,7 @@
 
       
         
-          
-          断点下载原理及文件上传
-断点下载方式
-1. 断点下载（URL）
-2. 判断过渡区(中转站tmp)是否存在该请求的网络数据?
-3. 过度区有相关数据:计算已经下载了多少数据,配置请求头再发起网络请求
-4. 过度区没有相关数据:直接发起网络请求
-5. 数据下载中ing:网络数据存过渡区(中转站Tmp)由于网络问题等，有可能，下载过程中被断开
-6. 数据下载完成：网络数据从过渡区(tmp)到目标区(Document)
-#define ImageURL @&quot;http://www.8pmedu.com/files/system/2017/06-13/225247f9edb5180454.jpg&quot;
-@interface BreakLoadImageVC ()&lt;NSURLSessionDelegate, NSURLSessionDataDelegate&gt; {
-    NS
-          ...
+          <p><img src="/assets/outline/网络.png" alt=""><br><img src="/assets/outline/网络2.png" alt=""><br><img src="/assets/outline/网络3.png" alt=""><br><img src="/assets/blog/网络-SSL.png" alt=""><br><img src="/assets/blog/网络-断点下载.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/02/23/网络及框架/#more" rel="contents">
@@ -552,19 +540,8 @@
 
       
         
-          
-          京东MVCS框架搭建
-
-NSObject+SYKVO.h/NSObject+SYKVO.m
-typedef void(^SYKVOBlock)(id newValue);
-
-@interface NSObject (SYKVO)
-- (void)addObserverSuny:(NSObject *)observer keyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options block:(SYKVOBlock)block;
-// 默认是NSKeyValueObservingOptionNew
-- (void)addObserverSuny:(NSObject *)observer keyPath:(NSString *)keyPath block:(SYKVOBlock)block;
-@end
-CSBas
-          ...
+          <p><img src="/assets/blog/京东MVCS框架0.png" alt="京东MVCS框架0"></p>
+<p><img src="/assets/blog/京东MVCS框架1.png" alt="京东MVCS框架1"></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/01/26/京东MVCS框架/#more" rel="contents">
@@ -1957,7 +1934,7 @@ Blended像素混合：当图层有半透明时，GPU需要进行像素混合，�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

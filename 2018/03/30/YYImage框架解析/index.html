@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,YYImage,">
+  <meta name="keywords" content="iOS,YYKit,YYImage,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。 UIImage的底层是通过ImageIO库">
-<meta name="keywords" content="OC,iOS,YYImage">
+<meta name="keywords" content="iOS,YYKit,YYImage">
 <meta property="og:type" content="article">
 <meta property="og:title" content="YYImage框架解析">
 <meta property="og:url" content="https://frandfeng.github.io/2018/03/30/YYImage框架解析/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。 UIImage的底层是通过ImageIO库">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T10:22:24.774Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/YYImage.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/YYImage1.png">
+<meta property="og:updated_time" content="2018-12-07T03:11:02.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YYImage框架解析">
-<meta name="twitter:description" content="目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。 UIImage的底层是通过ImageIO库">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/YYImage.png">
 
 
 
@@ -394,8 +394,22 @@
       
 
       
-        <p>目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。</p>
-<p>UIImage的底层是通过ImageIO库实现的，ImageIO库的.h头如下：</p>
+        <p><img src="/assets/outline/YYImage.png" alt=""><br><img src="/assets/outline/YYImage1.png" alt=""></p>
+<a id="more"></a>
+<p>YYKit大家族成员包括YYText、YYModel、YYCache、YYWebImage、YYImage，今天来看YYImage</p>
+<h1 id="YYImage"><a href="#YYImage" class="headerlink" title="YYImage"></a>YYImage</h1><p>目前 iOS 原生支持的格式有：JPEG、JPEG2000、PNG、GIF、BMP、ICO、TIFF、PICT，自 iOS 8.0 起，ImageIO 又加入了 APNG、SVG、RAW 格式的支持。在上层，开发者可以直接调用 ImageIO 对上面这些图片格式进行编码和解码。对于动图来说，开发者可以解码动画 GIF 和 APNG、可以编码动画 GIF。</p>
+<p>YYImage 是一款功能强大的 iOS 图像框架，支持当前市场主流的静/动态图像编/解码与动态图像的动画播放显示，其具有以下特性：</p>
+<ul>
+<li>支持以下类型动画图像的播放/编码/解码: WebP, APNG, GIF。</li>
+<li>支持以下类型静态图像的显示/编码/解码: WebP, PNG, GIF, JPEG, JP2, TIFF, BMP, ICO, ICNS。</li>
+<li>支持以下类型图片的渐进式/逐行扫描/隔行扫描解码: PNG, GIF, JPEG, BMP。</li>
+<li>支持多张图片构成的帧动画播放，支持单张图片的 sprite sheet 动画。</li>
+<li>高效的动态内存缓存管理，以保证高性能低内存的动画播放。</li>
+<li>完全兼容 UIImage 和 UIImageView，使用方便。</li>
+<li>保留可扩展的接口，以支持自定义动画。</li>
+<li>每个类和方法都有完善的文档注释。</li>
+</ul>
+<h1 id="ImageIO库"><a href="#ImageIO库" class="headerlink" title="ImageIO库"></a>ImageIO库</h1><h2 id="ImageIO简介"><a href="#ImageIO简介" class="headerlink" title="ImageIO简介"></a>ImageIO简介</h2><p>UIImage的底层是通过ImageIO库实现的，ImageIO库的.h头如下：</p>
 <pre><code>//ImageIO的基本库
 #include &lt;ImageIO/ImageIOBase.h&gt;
 //负责读取数据
@@ -406,7 +420,7 @@
 #include &lt;ImageIO/CGImageProperties.h&gt;
 //图片元数据
 #include &lt;ImageIO/CGImageMetadata.h&gt;
-</code></pre><p>打印ImageIO框架所支持的可读取的图片格式和支持写入的图片格式</p>
+</code></pre><h2 id="ImageIO支持的图片格式"><a href="#ImageIO支持的图片格式" class="headerlink" title="ImageIO支持的图片格式"></a>ImageIO支持的图片格式</h2><p>打印ImageIO框架所支持的可读取的图片格式和支持写入的图片格式</p>
 <pre><code>- (void)logImageType {
    CFArrayRef sourceArr = CGImageSourceCopyTypeIdentifiers();
    CFShow(sourceArr);
@@ -424,7 +438,7 @@
 &quot;com.compuserve.gif&quot;,
 &quot;public.tiff&quot;,
 &quot;public.jpeg-2000&quot;,等
-</code></pre><p>获取图片信息, 这里颜色空间、颜色模型、色品、InterlaceType都得详细标注</p>
+</code></pre><h2 id="ImageIO获取图片信息"><a href="#ImageIO获取图片信息" class="headerlink" title="ImageIO获取图片信息"></a>ImageIO获取图片信息</h2><p>获取图片信息, 这里颜色空间、颜色模型、色品、InterlaceType都得详细标注</p>
 <pre><code>//imageMetaData表示单个图片的信息，比较详细，imageData表示的是一个图片组的信息，没有那么详细
 - (void)getImageInfo {
     NSString *path = [[NSBundle mainBundle] pathForResource:@&quot;mew_interlaced&quot; ofType:@&quot;png&quot;];
@@ -442,7 +456,7 @@
 <p>_bridge_transfer:常用在将CF对象转换成OC对象时使用，将CF对象的所有权交给OC对象，此时ARC就能自动管理该内存：(作用同CFBridgingRelease())，其实相当于释放CF对象，同时生成一个OC对象</p>
 <p>_bridge_ratain:与_bridge_transfer作用相反，常用在将OC对象转换成CF对象时，将OC对象的所有权交给CF对象来管理。相当于释放OC对象，同时生成一个CF对象</p>
 </blockquote>
-<p>图片格式可以理解为一种压缩包，就像我们的文件压缩成zip一样，但是你要在屏幕上渲染，必然是需要解码的，解码方式有以下几种：</p>
+<h2 id="解压图片的方式"><a href="#解压图片的方式" class="headerlink" title="解压图片的方式"></a>解压图片的方式</h2><p>图片格式可以理解为一种压缩包，就像我们的文件压缩成zip一样，但是你要在屏幕上渲染，必然是需要解码的，解码方式有以下几种：</p>
 <pre><code>- (UIImage *)customImage {
     NSString * path = [[NSBundle mainBundle] pathForResource:@&quot;mew_baseline&quot; ofType:@&quot;jpg&quot;];
     NSData *data = [NSData dataWithContentsOfFile:path];
@@ -530,20 +544,24 @@
 
     return [UIImage imageWithCGImage:newImage];
 }
-</code></pre><p>imageWithContentsOfFile将图片显示在屏幕上的过程：</p>
-<pre><code>1. 假设我们使用 +imageWithContentsOfFile: 方法从磁盘中加载一张图片，这个时候的图片并没有解压缩；
-2. 然后将生成的 UIImage 赋值给 UIImageView ；
-3. 接着一个隐式的 CATransaction 捕获到了 UIImageView 图层树的变化；
-4. 在主线程的下一个 run loop 到来时，Core Animation 提交了这个隐式的 transaction ，这个过程可能会对图片进行 copy 操作，而受图片是否字节对齐等因素的影响，这个 copy 操作可能会涉及以下部分或全部步骤：
-5. 分配内存缓冲区用于管理文件 IO 和解压缩操作；
-6. 将文件数据从磁盘读到内存中；
-7. 将压缩的图片数据解码成未压缩的位图形式，这是一个非常耗时的 CPU 操作；
-8. 最后 Core Animation 使用未压缩的位图数据渲染 UIImageView 的图层。
-在上面的步骤中，我们提到了图片的解压缩是一个非常耗时的 CPU 操作，并且它默认是在主线程中执行的。
-</code></pre><p>查看解码和未解码的数据源发现：iOS 对png进行了优化，对jpg未进行优化</p>
+</code></pre><h2 id="imageWithContentsOfFile"><a href="#imageWithContentsOfFile" class="headerlink" title="imageWithContentsOfFile"></a>imageWithContentsOfFile</h2><p>imageWithContentsOfFile将图片显示在屏幕上的过程：</p>
+<ol>
+<li>假设我们使用 +imageWithContentsOfFile: 方法从磁盘中加载一张图片，这个时候的图片并没有解压缩；</li>
+<li>然后将生成的 UIImage 赋值给 UIImageView ；</li>
+<li>接着一个隐式的 CATransaction 捕获到了 UIImageView 图层树的变化；</li>
+<li>在主线程的下一个 run loop 到来时，Core Animation 提交了这个隐式的 transaction ，这个过程可能会对图片进行 copy 操作，而受图片是否字节对齐等因素的影响，这个 copy 操作可能会涉及以下部分或全部步骤：</li>
+<li>分配内存缓冲区用于管理文件 IO 和解压缩操作；</li>
+<li>将文件数据从磁盘读到内存中；</li>
+<li>将压缩的图片数据解码成未压缩的位图形式，这是一个非常耗时的 CPU 操作；</li>
+<li>最后 Core Animation 使用未压缩的位图数据渲染 UIImageView 的图层。</li>
+</ol>
+<p>在上面的步骤中，我们提到了图片的解压缩是一个非常耗时的 CPU 操作，并且它默认是在主线程中执行的。</p>
+<h2 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h2><p>查看解码和未解码的数据源发现：iOS 对png进行了优化，对jpg未进行优化</p>
 <p>UIImage的底层操作是ImageIO，经过验证可以得出如下结论</p>
-<p>imageWithData:底层调用的是CGImageSourceCreateWithData(添加symbolic breakpoint，在symbol里添加CGImageSourceCreateWithData，如果调用CGImageSourceCreateWithData函数，则会自动调试)</p>
+<h2 id="imageWithData-amp-imageNamed"><a href="#imageWithData-amp-imageNamed" class="headerlink" title="imageWithData &amp; imageNamed"></a>imageWithData &amp; imageNamed</h2><p>imageWithData:底层调用的是CGImageSourceCreateWithData(添加symbolic breakpoint，在symbol里添加CGImageSourceCreateWithData，如果调用CGImageSourceCreateWithData函数，则会自动调试)</p>
 <p>imageNamed:背后是调用的CGImageSourceCreateWithFile和CGImageSourceCreateImageAtIndex来获取到CGImageRef的（同样的图片只调用了一次，后面不会调用）</p>
+<h2 id="大端模式-amp-小端模式"><a href="#大端模式-amp-小端模式" class="headerlink" title="大端模式 &amp; 小端模式"></a>大端模式 &amp; 小端模式</h2><p>大端模式，是指数据的高字节保存在内存的低地址中，而数据的低字节保存在内存的高地址中，这样的存储模式有点儿类似于把数据当作字符串顺序处理：地址由小向大增加，而数据从高位往低位放；这和我们的阅读习惯一致。</p>
+<p>小端模式，是指数据的高字节保存在内存的高地址中，而数据的低字节保存在内存的低地址中，这种存储模式将地址的高低和数据位权有效地结合起来，高地址部分权值高，低地址部分权值低。</p>
 <p>判断平台是大端还是小端：无论是32位还是64位，char都是1个字节</p>
 <pre><code>- (void)isBigEndianOrLittleEndian {
     unsigned int a, *p;
@@ -561,8 +579,7 @@
     endian_test = {&apos;l&apos;, &apos;?&apos;, &apos;?&apos;, &apos;b&apos; };
     NSLog(@&quot;%c&quot;, ((char)endian_test.mylong));
 }
-</code></pre><p>YYImage应用：</p>
-<pre><code>//YYImage支持GIF格式、APNG格式、WEBP格式
+</code></pre><h2 id="YYImage应用："><a href="#YYImage应用：" class="headerlink" title="YYImage应用："></a>YYImage应用：</h2><pre><code>//YYImage支持GIF格式、APNG格式、WEBP格式
 [self addImageWithName:@&quot;niconiconi&quot; text:@&quot;Animated GIF&quot;];
 [self addImageWithName:@&quot;cube&quot; text:@&quot;Animated PNG (APNG)&quot;];
 [self addImageWithName:@&quot;wall-e&quot; text:@&quot;Animated WebP&quot;];
@@ -777,9 +794,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/OC/" rel="tag"># OC</a>
-          
             <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/YYKit/" rel="tag"># YYKit</a>
           
             <a href="/tags/YYImage/" rel="tag"># YYImage</a>
           
@@ -869,8 +886,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -909,7 +935,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -948,6 +974,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#YYImage"><span class="nav-number">1.</span> <span class="nav-text">YYImage</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ImageIO库"><span class="nav-number">2.</span> <span class="nav-text">ImageIO库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageIO简介"><span class="nav-number">2.1.</span> <span class="nav-text">ImageIO简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageIO支持的图片格式"><span class="nav-number">2.2.</span> <span class="nav-text">ImageIO支持的图片格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ImageIO获取图片信息"><span class="nav-number">2.3.</span> <span class="nav-text">ImageIO获取图片信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压图片的方式"><span class="nav-number">2.4.</span> <span class="nav-text">解压图片的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#imageWithContentsOfFile"><span class="nav-number">2.5.</span> <span class="nav-text">imageWithContentsOfFile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优化"><span class="nav-number">2.6.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#imageWithData-amp-imageNamed"><span class="nav-number">2.7.</span> <span class="nav-text">imageWithData &amp; imageNamed</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#大端模式-amp-小端模式"><span class="nav-number">2.8.</span> <span class="nav-text">大端模式 &amp; 小端模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YYImage应用："><span class="nav-number">2.9.</span> <span class="nav-text">YYImage应用：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

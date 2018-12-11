@@ -79,20 +79,18 @@
 
 
 
-<meta name="description" content="音频概念概念音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。 人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。 根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。 PCM对声音">
 <meta name="keywords" content="iOS,音频">
 <meta property="og:type" content="article">
 <meta property="og:title" content="实时音频功能开发">
 <meta property="og:url" content="https://frandfeng.github.io/2018/04/27/实时音频功能开发/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="音频概念概念音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。 人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。 根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。 PCM对声音">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS音频.png">
 <meta property="og:image" content="https://frandfeng.github.io/assets/blog/音频-AudioQueue.png">
-<meta property="og:updated_time" content="2018-12-06T08:13:44.853Z">
+<meta property="og:updated_time" content="2018-12-06T08:27:12.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实时音频功能开发">
-<meta name="twitter:description" content="音频概念概念音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。 人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。 根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。 PCM对声音">
-<meta name="twitter:image" content="https://frandfeng.github.io/assets/blog/音频-AudioQueue.png">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/iOS音频.png">
 
 
 
@@ -396,7 +394,9 @@
       
 
       
-        <h1 id="音频概念"><a href="#音频概念" class="headerlink" title="音频概念"></a>音频概念</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。</p>
+        <p><img src="/assets/outline/iOS音频.png" alt=""></p>
+<a id="more"></a>
+<h1 id="音频概念"><a href="#音频概念" class="headerlink" title="音频概念"></a>音频概念</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>音频文件的生成过程是将声音信息采样、量化和编码产生的数字信号的过程。</p>
 <p>人耳所能听到的声音，最低的频率是从20Hz起一直到最高频率20KHZ，因此音频文件格式的最大带宽是20KHZ。</p>
 <p>根据奈奎斯特的理论，只有采样频率高于声音信号最高频率的两倍时，才能把数字信号表示的声音还原成为原来的声音，所以音频文件的采样率一般在40~50KHZ，比如最常见的CD音质采样率44.1KHZ。</p>
 <h2 id="PCM"><a href="#PCM" class="headerlink" title="PCM"></a>PCM</h2><p>对声音进行采样、量化过程被称为脉冲编码调制（Pulse Code Modulation）简称PCM，PCM是最原始的音频数据完全无损，所以PCM数据虽然音质优秀但体积庞大</p>
@@ -1145,7 +1145,7 @@ static void EOCAudioQueueOutputCallback(void * __nullable inUserData,
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
