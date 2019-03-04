@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,图文混排,">
+  <meta name="keywords" content="iOS,CoreText,">
 
 
 
@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="图文混排原理实现及应用富文本绘制步骤：  先需要一个StringA 把StringA转换成attributeString，并添加相关样式 生成CTFramesetter，得到CTFrame 绘制CTFrameDraw @interface EOCTextLabel() {     NSRange sepRange;     CGRect sepRect; } @end  @implementati">
-<meta name="keywords" content="OC,iOS,图文混排">
+<meta name="keywords" content="iOS,CoreText">
 <meta property="og:type" content="article">
 <meta property="og:title" content="图文混排原理实现及应用">
 <meta property="og:url" content="https://frandfeng.github.io/2017/02/24/图文混排原理实现及应用/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="图文混排原理实现及应用富文本绘制步骤：  先需要一个StringA 把StringA转换成attributeString，并添加相关样式 生成CTFramesetter，得到CTFrame 绘制CTFrameDraw @interface EOCTextLabel() {     NSRange sepRange;     CGRect sepRect; } @end  @implementati">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T08:51:03.063Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/图文混排.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/coretext-frame.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/blog/coretext-line.png">
+<meta property="og:updated_time" content="2018-12-13T08:16:54.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图文混排原理实现及应用">
-<meta name="twitter:description" content="图文混排原理实现及应用富文本绘制步骤：  先需要一个StringA 把StringA转换成attributeString，并添加相关样式 生成CTFramesetter，得到CTFrame 绘制CTFrameDraw @interface EOCTextLabel() {     NSRange sepRange;     CGRect sepRect; } @end  @implementati">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/图文混排.png">
 
 
 
@@ -394,12 +395,17 @@
       
 
       
-        <h1 id="图文混排原理实现及应用"><a href="#图文混排原理实现及应用" class="headerlink" title="图文混排原理实现及应用"></a>图文混排原理实现及应用</h1><p>富文本绘制步骤：</p>
+        <p><img src="/assets/outline/图文混排.png" alt=""><br><img src="/assets/blog/coretext-frame.png" alt=""><br><img src="/assets/blog/coretext-line.png" alt=""></p>
+<a id="more"></a>
+<h1 id="图文混排原理实现及应用"><a href="#图文混排原理实现及应用" class="headerlink" title="图文混排原理实现及应用"></a>图文混排原理实现及应用</h1><p>CTFrame作为一个整体的画布，其中由行(CTLine)组成，每行可以分为一个或多个小方块(CTRun)，属性一样的字符就分在一个小方块里。</p>
+<p>因为绘制只是显示，其他需要的额外操作，如响应相关点击事件原理：CTFrame包含了多个CTLine，并且可以得到每个line的起始位置与大小，计算出你响应的区域范围，然后根据你点击的坐标来判断是否在响应区。再如图片显示原理：先用空白占位符来把位置留出来，然后再添加图片</p>
+<h2 id="富文本绘制"><a href="#富文本绘制" class="headerlink" title="富文本绘制"></a>富文本绘制</h2><p>富文本绘制步骤：</p>
 <ol>
 <li>先需要一个StringA</li>
 <li>把StringA转换成attributeString，并添加相关样式</li>
 <li>生成CTFramesetter，得到CTFrame</li>
-<li><p>绘制CTFrameDraw</p>
+<li>绘制CTFrameDraw</li>
+</ol>
 <pre><code>@interface EOCTextLabel() {
     NSRange sepRange;
     CGRect sepRect;
@@ -423,6 +429,15 @@
     CGContextScaleCTM(context, 1, -1);
     //绘制
     CTFrameDraw(frame, context);
+}
+</code></pre><h2 id="事件添加"><a href="#事件添加" class="headerlink" title="事件添加"></a>事件添加</h2><p>事件添加步骤</p>
+<ol>
+<li>CTFrame中遍历CTLine，CTLine中遍历CTRun</li>
+<li>获得CTRun的位置判断其是否在CFRange范围内，寻找出指定位置的startX和startY</li>
+<li>根据寻找出的x和y组成其位置rect</li>
+<li><p>判断事件的点击位置是否处于rect中，如果是则触发事件</p>
+<pre><code>- (void)drawRect:(CGRect)rect {
+    //...绘制
     //获取信息
     NSArray *lines = (__bridge NSArray *)CTFrameGetLines(frame);
     CGPoint pointArray[lines.count];
@@ -477,7 +492,7 @@
 }
 </code></pre></li>
 </ol>
-<p>图文混排步骤</p>
+<h2 id="图文混排"><a href="#图文混排" class="headerlink" title="图文混排"></a>图文混排</h2><p>图文混排步骤</p>
 <ol>
 <li>定义attributeString，里边包含占位符及其宽高等属性</li>
 <li>根据attributeString绘制</li>
@@ -619,11 +634,9 @@ static CGFloat ctRunDelegateGetDescentCallback(void *refCon) {
       
         <div class="post-tags">
           
-            <a href="/tags/OC/" rel="tag"># OC</a>
-          
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/图文混排/" rel="tag"># 图文混排</a>
+            <a href="/tags/CoreText/" rel="tag"># CoreText</a>
           
         </div>
       
@@ -636,8 +649,8 @@ static CGFloat ctRunDelegateGetDescentCallback(void *refCon) {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/01/27/离屏渲染及图片压缩、滤镜等原理解析/" rel="next" title="离屏渲染及图片压缩、滤镜等原理解析">
-                <i class="fa fa-chevron-left"></i> 离屏渲染及图片压缩、滤镜等原理解析
+              <a href="/2017/01/27/离屏渲染及图片压缩、滤镜等原理解析/" rel="next" title="图片处理">
+                <i class="fa fa-chevron-left"></i> 图片处理
               </a>
             
           </div>
@@ -749,7 +762,7 @@ static CGFloat ctRunDelegateGetDescentCallback(void *refCon) {
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -760,7 +773,7 @@ static CGFloat ctRunDelegateGetDescentCallback(void *refCon) {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -809,7 +822,7 @@ static CGFloat ctRunDelegateGetDescentCallback(void *refCon) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图文混排原理实现及应用"><span class="nav-number">1.</span> <span class="nav-text">图文混排原理实现及应用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#图文混排原理实现及应用"><span class="nav-number">1.</span> <span class="nav-text">图文混排原理实现及应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#富文本绘制"><span class="nav-number">1.1.</span> <span class="nav-text">富文本绘制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件添加"><span class="nav-number">1.2.</span> <span class="nav-text">事件添加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图文混排"><span class="nav-number">1.3.</span> <span class="nav-text">图文混排</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -321,7 +321,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/04/28/OC多线程分析及使用和死锁处理/" itemprop="url">OC多线程分析及使用和死锁处理</a></h1>
+                <a class="post-title-link" href="/2017/04/28/OC多线程分析及使用和死锁处理/" itemprop="url">OC多线程</a></h1>
         
 
         <div class="post-meta">
@@ -394,27 +394,7 @@
 
       
         
-          
-          OC多线程分析及使用和死锁处理
-线程方式:NSThread，NSOperation, GCD
-
-NSThread 一线程对象 对应一个线程，当执行完之后，不能重新开启一个线程也是单独存在
-// 主动开线程
-// [NSThread detachNewThreadSelector:@selector(threadOne) toTarget:self withObject:nil];
-
-//手动开启，手动开启线程只能开一次
-_thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) object:nil];
-[_thread start];
-
-线程队列NSQueueOperation
-
-Operation抽象类必须用其子类实现
-系统的Operation对象
-
-NSBlockOperation
-/*
-
-          ...
+          <p><img src="/assets/outline/MultiThread.png" alt=""><br><img src="/assets/outline/多线程-锁.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/04/28/OC多线程分析及使用和死锁处理/#more" rel="contents">
@@ -560,21 +540,7 @@ NSBlockOperation
 
       
         
-          
-          Block原理细纠Block就是一个结构体，里面存储了指向函数体中包含定义block时的代码块的函数指针，以及block外部上下文变量等信息
-block的内存分布
-理解：
-
-当你的block没有使用外部变量的时候，通通都是global的，无论你怎么修饰、无论是否成员变量；
-全局变量、静态变量、静态局部变量在block中的存储，block都为globalBlock
-当在block里添加了外部变量，那么block的内存就会变成不一样: 当block赋值给strong变量、(非weak的)成员变量，block为mallocBlock；
-如果把block作为自定义函数的参数，那么该block是在栈区（系统的方法，会自动把block从栈区放到堆区）
-static变量无法加__block符的
-
-细究：
-
-当你的block使用了外部局部变量的时候，block本身就是在栈区，arc，当你有外部变量，str
-          ...
+          <p><img src="/assets/outline/Block.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/03/31/block原理及详解/#more" rel="contents">
@@ -720,24 +686,7 @@ static变量无法加__block符的
 
       
         
-          
-          图文混排原理实现及应用富文本绘制步骤：
-
-先需要一个StringA
-把StringA转换成attributeString，并添加相关样式
-生成CTFramesetter，得到CTFrame
-绘制CTFrameDraw
-@interface EOCTextLabel() {
-    NSRange sepRange;
-    CGRect sepRect;
-}
-@end
-
-@implementation EOCTextLabel
-- (void)drawRect:(CGRect)rect {
-    sepRange = NSMakeRange(30, 5);
-    NSMutableAttributedString *attriStr = [[NSMutableAttributedString alloc] initWithString:self.text attributes:nil]
-          ...
+          <p><img src="/assets/outline/图文混排.png" alt=""><br><img src="/assets/blog/coretext-frame.png" alt=""><br><img src="/assets/blog/coretext-line.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/02/24/图文混排原理实现及应用/#more" rel="contents">
@@ -810,7 +759,7 @@ static变量无法加__block符的
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/01/27/离屏渲染及图片压缩、滤镜等原理解析/" itemprop="url">离屏渲染及图片压缩、滤镜等原理解析</a></h1>
+                <a class="post-title-link" href="/2017/01/27/离屏渲染及图片压缩、滤镜等原理解析/" itemprop="url">图片处理</a></h1>
         
 
         <div class="post-meta">
@@ -883,21 +832,7 @@ static变量无法加__block符的
 
       
         
-          
-          离屏渲染及图片压缩、滤镜等原理解析
-图片压缩
-{
-    //上句变成下句的时候，发现内存的使用变的很小
-    _albumImage = [UIImage imageNamed:@&quot;3.jpg&quot;];
-    _albumImage = [self scaleImage:[UIImage imageNamed:@&quot;3.jpg&quot;] size:_pngImageV.frame.size];
-    [self imageDataLoad];
-}
-
-- (void)imageDataLoad {
-    // png  文件属性格式并不会压缩，压缩的是图片内容（像素）
-    NSData* pngImageData =  UIImagePNGRepresentation(_albumImage);
-    NSData *jpgImageData = 
-          ...
+          <p><img src="/assets/outline/图片.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/01/27/离屏渲染及图片压缩、滤镜等原理解析/#more" rel="contents">
@@ -1936,7 +1871,7 @@ Unity 入门本节将会通过一个案例来介绍Unity的基本使用方法。
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1947,7 +1882,7 @@ Unity 入门本节将会通过一个案例来介绍Unity的基本使用方法。
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

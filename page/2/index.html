@@ -687,19 +687,7 @@
 
       
         
-          
-          iOS动画之动画原理UIView和CALayer
-
-UIView继承于：UIResponder、NSObject
-CALayer继承于：NSObject
-UIView 响应事件
-CALayer 显示内容
-
-没有CoreAnimation框架，CoreAnimation.h文件存在于QuartzCore框架中；Core Animation 包含了 CAAnimation
-
-Layer坐标
- view的坐标  其实本质上是layer坐标来实现的，可以屏蔽掉layer的setFrame、setBounds、setPostion方法来达到验证。UIView 的 setFrame 方法，实际是在给 CALayer 设置 frame。每一个UIView内部都默认关联着一个CALayer, UIView有frame、bounds和center三个属性，CALayer也有类似的属性，分别为frame、bo
-          ...
+          <p><img src="/assets/outline/iOS动画.png" alt=""><br><img src="/assets/outline/iOS动画2.png" alt=""><br><img src="/assets/outline/iOS动画3.png" alt=""><br><img src="/assets/blog/iOS动画-位置.png" alt=""><br><img src="/assets/blog/iOS动画-框架.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/12/29/iOS动画/#more" rel="contents">
@@ -845,24 +833,7 @@ Layer坐标
 
       
         
-          
-          IM英文为InstantMessaging，即时通讯
-客户端网络自顶而下分为应用层(应用层、表示层、会话层)、传输层(TCP/UDP)、硬件层(网络层、数据链路层、物理层)
-
-物理层–        wire,radio协议                 
-数据链路层–    Ethernet, Token ring协议等
-网络层–        IP协议
-传输层–        TCP、UDP协议
-会话层–        ASAP，TLS协议
-表示层–        XDR协议
-应用层–        HTTP协议
-
-
-TCP/IP连接
- 手机能够使用联网功能是因为手机底层实现了TCP/IP协议，可以使手机终端通过无线网络建立TCP连接。TCP协议可以对上层网络提供接口，使上层网络数据的传输建立在“无差别”的网络之上。
- 建立起一个TCP连接需要经过“三次握手”：
- 第一次握手：客户端
-          ...
+          <p><img src="/assets/outline/IM.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/11/24/IM知识框架/#more" rel="contents">
@@ -1008,20 +979,7 @@ TCP/IP连接
 
       
         
-          
-          主题模型切换
-给NSObject扩展Theme，添加pickers属性来保存方法，这些方法用来更改主题颜色
-@interface NSObject (EOCTheme)
-@property(nonatomic, strong)NSMutableDictionary *pickers;
-@end
-@implementation NSObject (EOCTheme)
-@dynamic pickers;
-- (NSMutableDictionary *)pickers {
-    NSMutableDictionary *dict = objc_getAssociatedObject(self, @selector(pickers));
-    if (!dict) {
-        //添加通知
-        [[NSNotificationCenter defaultCenter] a
-          ...
+          <p><img src="/assets/outline/主题切换.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/10/27/主题模型切换框架解析/#more" rel="contents">
@@ -1094,7 +1052,7 @@ TCP/IP连接
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/" itemprop="url">APP文件结构分析(沙盒分析)+数据存储安全</a></h1>
+                <a class="post-title-link" href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/" itemprop="url">iOS数据存储</a></h1>
         
 
         <div class="post-meta">
@@ -1167,24 +1125,7 @@ TCP/IP连接
 
       
         
-          
-          APP文件结构分析(沙盒分析)+数据存储安全
-沙盒结构分析
-/*
- Documents (backup 备份){
-            大文件要做 非备份设置（如视频文件，多媒体文件）
-            审核的，如果检查出来，就会被拒
-        }
-
- Librayry
-    1 Caches{
-        系统的缓存存放在这个文件夹（如NSURLSessionTask的net获取缓存XXX/Cache/com.test.eoc/Cache.db）
-    }
-    2 Preferences (backup 备份) (如 NSUserDefaults存储在XXX/Preferences/com.test.eoc.plist
-
- tmp 临时文件夹（系统会不定期删除里面的文件）
-    不重要性的文件 （断点下载的时候 （当文件下载没完成的时候，下载完之后会转移到目的
-          ...
+          <p><img src="/assets/outline/iOS数据存储.png" alt=""><br><img src="/assets/outline/iOS数据存储2.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/#more" rel="contents">
@@ -1330,20 +1271,7 @@ TCP/IP连接
 
       
         
-          
-          MJRefresh框架级解析之HeaderView
-UIScrollView扩展属性HeaderView
-@interface UIScrollView (UIScrollView_EOCRefresh)
-@property(nonatomic, strong)EOCRefreshHeaderView *EOCRefreshHeaderView;
-@end
-
-@implementation UIScrollView (UIScrollView_EOCRefresh)
-- (EOCRefreshHeaderView *)EOCRefreshHeaderView {
-    return objc_getAssociatedObject(self, @selector(EOCRefreshHeaderView));
-}
-
-- (void)setEOCRefreshHeaderView:(EOC
-          ...
+          <p><img src="/assets/outline/MJRefresh.png" alt=""><br><img src="/assets/outline/MJRefresh2.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/08/25/MJRefresh框架级解析/#more" rel="contents">
@@ -1451,8 +1379,8 @@ UIScrollView扩展属性HeaderView
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
+                  <a href="/categories/项目实战/" itemprop="url" rel="index">
+                    <span itemprop="name">项目实战</span>
                   </a>
                 </span>
 
@@ -1489,18 +1417,7 @@ UIScrollView扩展属性HeaderView
 
       
         
-          
-          朋友圈粗糙实现
-可以在xib中布局，然后在其VC中重新定义其位置或高度；也可以直接用代码生成及布局控件
-//WXFriendCircleVCtr.m
-[theHeadView removeFromSuperview];
-[theFootView removeFromSuperview];
-[theTableView setTableHeaderView:theHeadView];
-[theTableView setTableFooterView:theFootView];
-
-theTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight) style:UITableViewStylePlain];
-theTableView.separatorStyle = UITabl
-          ...
+          <p><img src="/assets/outline/朋友圈.png" alt=""><br><img src="/assets/outline/朋友圈2.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/07/28/带你掌握微信朋友圈实现/#more" rel="contents">
@@ -1646,20 +1563,7 @@ theTableView.separatorStyle = UITabl
 
       
         
-          
-          iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？
-Instruments使用：用工具来监测App的各项性能，让性能了然于心。
-
-Activity Monitor
-  一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。
-
-Allocations
-  内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在哪些对象上
-
-Core Animation
-
-Blended像素混合：当图层有半透明时，GPU需要进行像素混合，需要先绘制透明层下层的内容，再叠加透明层以达到透明的效果，而不影响帧率的情况下，GPU可绘制的像素是有限制的。通常优化方式：backgroundColor设置为不透明色/Opaque设置为YES/图片能不用透明的切图成不透明。没有像素混合的显示绿色，有像素混合的显示红色。重要的是back
-          ...
+          <p><img src="/assets/outline/性能优化.png" alt=""><br><img src="/assets/outline/性能优化2.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/06/30/iOS性能优化实践/#more" rel="contents">
@@ -1805,21 +1709,7 @@ Blended像素混合：当图层有半透明时，GPU需要进行像素混合，�
 
       
         
-          
-          GCD深度使用和底层源码分析
-串行队列
-// 串行队列 只能开启一个任务 （串发dispatch_sync）
-- (void)serialQueue{
-    //执行结果是同一个线程上依次执行多个任务
-    dispatch_queue_t queue = dispatch_queue_create(&quot;serQueue&quot;, DISPATCH_QUEUE_SERIAL);
-    dispatch_async(queue, ^{
-        NSLog(@&quot;1:%@&quot;, [NSThread currentThread]);
-    });
-    dispatch_async(queue, ^{
-        NSLog(@&quot;2:%@&quot;, [NSThread currentThread]);
-    });
-    dis
-          ...
+          <p><img src="/assets/outline/GCD.png" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/05/26/GCD深度使用和底层源码分析/#more" rel="contents">
@@ -1923,7 +1813,7 @@ Blended像素混合：当图层有半透明时，GPU需要进行像素混合，�
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1934,7 +1824,7 @@ Blended像素混合：当图层有半透明时，GPU需要进行像素混合，�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

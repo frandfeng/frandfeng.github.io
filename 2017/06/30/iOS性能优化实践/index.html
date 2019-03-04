@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？ Instruments使用：用工具来监测App的各项性能，让性能了然于心。  Activity Monitor   一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。  Allocations   内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在">
 <meta name="keywords" content="iOS,性能优化">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS性能优化实践">
 <meta property="og:url" content="https://frandfeng.github.io/2017/06/30/iOS性能优化实践/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？ Instruments使用：用工具来监测App的各项性能，让性能了然于心。  Activity Monitor   一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。  Allocations   内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T08:56:15.000Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/性能优化.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/性能优化2.png">
+<meta property="og:updated_time" content="2018-12-20T10:24:24.429Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS性能优化实践">
-<meta name="twitter:description" content="iOS性能优化实践一腾讯bugly？？？dysm日志分析？？？ Instruments使用：用工具来监测App的各项性能，让性能了然于心。  Activity Monitor   一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。  Allocations   内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/性能优化.png">
 
 
 
@@ -394,18 +394,15 @@
       
 
       
-        <h1 id="iOS性能优化实践一"><a href="#iOS性能优化实践一" class="headerlink" title="iOS性能优化实践一"></a>iOS性能优化实践一</h1><p>腾讯bugly？？？<br>dysm日志分析？？？</p>
+        <p><img src="/assets/outline/性能优化.png" alt=""><br><img src="/assets/outline/性能优化2.png" alt=""></p>
+<a id="more"></a>
+<h1 id="Instruments"><a href="#Instruments" class="headerlink" title="Instruments"></a>Instruments</h1><p>腾讯bugly？？？<br>dysm日志分析？？？</p>
 <p>Instruments使用：用工具来监测App的各项性能，让性能了然于心。</p>
-<ul>
-<li><p>Activity Monitor</p>
-<p>  一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。</p>
-</li>
-<li><p>Allocations</p>
-<p>  内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在哪些对象上</p>
-</li>
-<li><p>Core Animation</p>
-<ul>
-<li><p>Blended像素混合：当图层有半透明时，GPU需要进行像素混合，需要先绘制透明层下层的内容，再叠加透明层以达到透明的效果，而不影响帧率的情况下，GPU可绘制的像素是有限制的。通常优化方式：backgroundColor设置为不透明色/Opaque设置为YES/图片能不用透明的切图成不透明。没有像素混合的显示绿色，有像素混合的显示红色。重要的是backgroundColor属性，如果不设置这个属性，控件依然被认为是透明的，所以我们做的第一个优化是设置控件的backgroundColor属性。</p>
+<h2 id="Activity-Monitor"><a href="#Activity-Monitor" class="headerlink" title="Activity Monitor"></a>Activity Monitor</h2><p>一款ios活动监视器，能看到每一个应用所占用的系统资源情况,如：使用线程数，使用CPU时长，实际使用内存大小等。</p>
+<h2 id="Allocations"><a href="#Allocations" class="headerlink" title="Allocations"></a>Allocations</h2><p>内存分配情况查看工具，可以查看每一个对象所占用的内存大小。方便定位内存消耗在哪些对象上</p>
+<h2 id="Timer-Profiler"><a href="#Timer-Profiler" class="headerlink" title="Timer Profiler"></a>Timer Profiler</h2><p>CPU核心使用与线程情况查看工具：它按照固定的时间间隔来跟踪每一个线程的堆栈信息，通过统计比较时间间隔之间的堆栈状态，来推算某个方法执行了多久，并获得一个近似值。其实从根本上来说与我们的原始分析方法异曲同工，只不过其将各个方法消耗的时间统计起来。</p>
+<h2 id="Counter"><a href="#Counter" class="headerlink" title="Counter"></a>Counter</h2><p>查看App的可能的性能瓶颈，Performance monitor counters (PMCs) 即Counter工具，衡量处理器发生的事件个数</p>
+<h2 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a>Core Animation</h2><h3 id="Blended像素混合："><a href="#Blended像素混合：" class="headerlink" title="Blended像素混合："></a>Blended像素混合：</h3><p>当图层有半透明时，GPU需要进行像素混合，需要先绘制透明层下层的内容，再叠加透明层以达到透明的效果，而不影响帧率的情况下，GPU可绘制的像素是有限制的。通常优化方式：backgroundColor设置为不透明色/Opaque设置为YES/图片能不用透明的切图成不透明。没有像素混合的显示绿色，有像素混合的显示红色。重要的是backgroundColor属性，如果不设置这个属性，控件依然被认为是透明的，所以我们做的第一个优化是设置控件的backgroundColor属性。</p>
 <pre><code>//如果label文字有中文，依然会出现图层混合，这是因为此时label多了一个sublayer
 //只有最后一个没有出现像素混合的情况
 [self testBlendedLayer:^(UILabel *label) {
@@ -435,120 +432,133 @@
     label.backgroundColor = [UIColor lightGrayColor];
     label.layer.masksToBounds = YES;
 }];
-</code></pre></li>
-<li><p>Color Copied images 像素在内存中的布局和它在磁盘中的存储方式并不相同。考虑一种简单的情况：每个像素有R、G、B和alpha四个值，每个值占用1字节，因此每个像素占用4字节的内存空间。一张1920*1080的照片(iPhone6 Plus的分辨率)一共有2,073,600个像素，因此占用了超过8Mb的内存。但是一张同样分辨率的PNG格式或JPEG格式的图片一般情况下不会有这么大。这是因为JPEG将像素数据进行了一种非常复杂且可逆的转化。所以CPU主要处理两件事：</p>
+</code></pre><h3 id="Color-Copied-images"><a href="#Color-Copied-images" class="headerlink" title="Color Copied images"></a>Color Copied images</h3><p>像素在内存中的布局和它在磁盘中的存储方式并不相同。考虑一种简单的情况：每个像素有R、G、B和alpha四个值，每个值占用1字节，因此每个像素占用4字节的内存空间。一张1920*1080的照片(iPhone6 Plus的分辨率)一共有2,073,600个像素，因此占用了超过8Mb的内存。但是一张同样分辨率的PNG格式或JPEG格式的图片一般情况下不会有这么大。这是因为JPEG将像素数据进行了一种非常复杂且可逆的转化。所以CPU主要处理两件事：</p>
 <ol>
 <li>把图片从PNG或JPEG等格式中解压出来，得到像素数据</li>
-<li><p>如果GPU不支持这种颜色格式，CPU需要进行格式转换</p>
-<p>图片能否需CPU要转码，需要的显示蓝色。如果图片格式GPU不能直接绘制，则会交给CPU先转码处理</p>
-<p> //如果直接赋值origin，则图片会出现蓝色，赋值image才是正常显示<br> UIImageView <em>imageView = [[UIImageView alloc]  initWithFrame:self.view.bounds];<br> UIImage </em>origin = [UIImage imageNamed:@”16.png”];<br> UIImage *image = [EOCUtil decodeImage:origin toSize:imageView.layer.bounds.size];<br> imageView.image = image;<br> imageView.opaque = YES;<br> [self.view addSubview:imageView];</p>
-<ul>
-<li><p>(UIImage <em>)decodeImage:(UIImage </em>)image toSize:(CGSize)size {<br>if (image == nil) { // Prevent “CGBitmapContextCreateImage: invalid context 0x0” error<br>  return nil;<br>}</p>
-<p>@autoreleasepool{<br>  // do not decode animated images<br>  if (image.images != nil) {</p>
-<pre><code>return image;
-</code></pre><p>  }</p>
-<p>  CGImageRef imageRef = image.CGImage;</p>
-<p>  CGImageAlphaInfo alpha = CGImageGetAlphaInfo(imageRef);<br>  BOOL anyAlpha = (alpha == kCGImageAlphaFirst ||</p>
-<pre><code>alpha == kCGImageAlphaLast ||
-alpha == kCGImageAlphaPremultipliedFirst ||
-alpha == kCGImageAlphaPremultipliedLast);
-</code></pre><p>  if (anyAlpha) {</p>
-<pre><code>NSLog(@&quot;图片解压失败，存在alpha通道&quot;);
-return image;
-</code></pre><p>  }</p>
-<p>  // current<br>  CGColorSpaceModel imageColorSpaceModel = CGColorSpaceGetModel(CGImageGetColorSpace(imageRef));<br>  CGColorSpaceRef colorspaceRef = CGImageGetColorSpace(imageRef);</p>
-<p>  BOOL unsupportedColorSpace = (imageColorSpaceModel == kCGColorSpaceModelUnknown ||</p>
-<pre><code>imageColorSpaceModel == kCGColorSpaceModelMonochrome ||
-imageColorSpaceModel == kCGColorSpaceModelCMYK ||
-imageColorSpaceModel == kCGColorSpaceModelIndexed);
-</code></pre><p>  if (unsupportedColorSpace) {</p>
-<pre><code>colorspaceRef = CGColorSpaceCreateDeviceRGB();
-</code></pre><p>  }<br>  CGFloat scale = [UIScreen mainScreen].scale;<br>  size_t width = size.width;<br>  size_t height = size.height;<br>  NSUInteger bytesPerPixel = 4;<br>  NSUInteger bytesPerRow = bytesPerPixel * width;<br>  NSUInteger bitsPerComponent = 8;</p>
-</li>
-</ul>
-</li>
+<li>如果GPU不支持这种颜色格式，CPU需要进行格式转换</li>
 </ol>
-</li>
-</ul>
-</li>
-</ul>
-<pre><code>            // kCGImageAlphaNone is not supported in CGBitmapContextCreate.
-            // Since the original image here has no alpha info, use kCGImageAlphaNoneSkipLast
-            // to create bitmap graphics contexts without alpha info.
-            CGContextRef context = CGBitmapContextCreate(NULL,
-                                                         width,
-                                                         height,
-                                                         bitsPerComponent,
-                                                         bytesPerRow,
-                                                         colorspaceRef,
-                                                         kCGBitmapByteOrderDefault|kCGImageAlphaNoneSkipLast);
+<p>图片是否需CPU要转码，需要的显示蓝色。如果图片格式GPU不能直接绘制，则会交给CPU先转码处理</p>
+<pre><code>//如果直接赋值origin，则图片会出现蓝色，赋值image才是正常显示
+UIImageView *imageView = [[UIImageView alloc]  initWithFrame:self.view.bounds];
+UIImage *origin = [UIImage imageNamed:@&quot;16.png&quot;];
+UIImage *image = [EOCUtil decodeImage:origin toSize:imageView.layer.bounds.size];
+imageView.image = image;
+imageView.opaque = YES;
+[self.view addSubview:imageView];
 
-            // Draw the image into the context and retrieve the new bitmap image without alpha
-            CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
-            CGImageRef imageRefWithoutAlpha = CGBitmapContextCreateImage(context);
-            UIImage *imageWithoutAlpha = [UIImage imageWithCGImage:imageRefWithoutAlpha
-                                                             scale:scale
-                                                       orientation:image.imageOrientation];
++ (UIImage *)decodeImage:(UIImage *)image toSize:(CGSize)size {
+if (image == nil) { // Prevent &quot;CGBitmapContextCreateImage: invalid context 0x0&quot; error
+    return nil;
+}
 
-            if (unsupportedColorSpace) {
-                CGColorSpaceRelease(colorspaceRef);
-            }
+@autoreleasepool{
+    // do not decode animated images
+    if (image.images != nil) {
+        return image;
+    }
 
-            CGContextRelease(context);
-            CGImageRelease(imageRefWithoutAlpha);
-            NSLog(@&quot;图片解压成功&quot;);
-            return imageWithoutAlpha;
+    CGImageRef imageRef = image.CGImage;
+
+    CGImageAlphaInfo alpha = CGImageGetAlphaInfo(imageRef);
+    BOOL anyAlpha = (alpha == kCGImageAlphaFirst ||
+                     alpha == kCGImageAlphaLast ||
+                     alpha == kCGImageAlphaPremultipliedFirst ||
+                     alpha == kCGImageAlphaPremultipliedLast);
+    if (anyAlpha) {
+        NSLog(@&quot;图片解压失败，存在alpha通道&quot;);
+        return image;
+    }
+
+    // current
+    CGColorSpaceModel imageColorSpaceModel = CGColorSpaceGetModel(CGImageGetColorSpace(imageRef));
+    CGColorSpaceRef colorspaceRef = CGImageGetColorSpace(imageRef);
+
+    BOOL unsupportedColorSpace = (imageColorSpaceModel == kCGColorSpaceModelUnknown ||
+                                  imageColorSpaceModel == kCGColorSpaceModelMonochrome ||
+                                  imageColorSpaceModel == kCGColorSpaceModelCMYK ||
+                                  imageColorSpaceModel == kCGColorSpaceModelIndexed);
+    if (unsupportedColorSpace) {
+        colorspaceRef = CGColorSpaceCreateDeviceRGB();
+    }
+    CGFloat scale = [UIScreen mainScreen].scale;
+    size_t width = size.width;
+    size_t height = size.height;
+    NSUInteger bytesPerPixel = 4;
+    NSUInteger bytesPerRow = bytesPerPixel * width;
+    NSUInteger bitsPerComponent = 8;
+
+
+    // kCGImageAlphaNone is not supported in CGBitmapContextCreate.
+    // Since the original image here has no alpha info, use kCGImageAlphaNoneSkipLast
+    // to create bitmap graphics contexts without alpha info.
+    CGContextRef context = CGBitmapContextCreate(NULL,
+                                                 width,
+                                                 height,
+                                                 bitsPerComponent,
+                                                 bytesPerRow,
+                                                 colorspaceRef,
+                                                 kCGBitmapByteOrderDefault|kCGImageAlphaNoneSkipLast);
+
+    // Draw the image into the context and retrieve the new bitmap image without alpha
+    CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef);
+    CGImageRef imageRefWithoutAlpha = CGBitmapContextCreateImage(context);
+    UIImage *imageWithoutAlpha = [UIImage imageWithCGImage:imageRefWithoutAlpha
+                                                     scale:scale
+                                               orientation:image.imageOrientation];
+
+    if (unsupportedColorSpace) {
+        CGColorSpaceRelease(colorspaceRef);
+    }
+
+    CGContextRelease(context);
+    CGImageRelease(imageRefWithoutAlpha);
+    NSLog(@&quot;图片解压成功&quot;);
+    return imageWithoutAlpha;
+}
+</code></pre><h3 id="Misaligned图像无法重合"><a href="#Misaligned图像无法重合" class="headerlink" title="Misaligned图像无法重合"></a>Misaligned图像无法重合</h3><p>在项目中，我们网络请求图片，大小不一，但是展示的UIImageView有时候是固定大小。这时候我们就需要图片的缩放了。图片的缩放需要占用时间，因此我们要尽可能保证无论是本地图片还是从网络或取得图片的大小，都与其frame保持一致。</p>
+<p>Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时系统需要进行缩放，抗锯齿等操作，增加了图形负担，通常这种问题出在对某些View的Frame重新计算和设置时产生的</p>
+<pre><code>//如果图片需要缩放则标记为黄色，如果没有像素对齐则标记为紫色，下例中如果赋值image1则会出现黄色蒙层，用image正常显示
+EOCImageView *imageView = [[EOCImageView alloc] initWithFrame:CGRectMake(0, 70, 382, 200)];
+UIImage *image = [EOCUtil decodeImage:[UIImage imageNamed:@&quot;770CB6EB-1524-44DE-987A-DB929C4AA544.jpeg&quot;] toSize:CGSizeMake(imageView.layer.bounds.size.width*2, imageView.layer.bounds.size.height*2)];
+UIImage *image1 = [UIImage imageNamed:@&quot;770CB6EB-1524-44DE-987A-DB929C4AA544.jpeg&quot;];
+imageView.image = image;
+imageView.opaque = YES;
+imageView.backgroundColor = [UIColor lightGrayColor];
+imageView.clipsToBounds = YES;
+[self.view addSubview:imageView];
+</code></pre><h3 id="Offscreen-Rendered工具："><a href="#Offscreen-Rendered工具：" class="headerlink" title="Offscreen-Rendered工具："></a>Offscreen-Rendered工具：</h3><p>离屏渲染（CPU）：离屏渲染表示渲染发生在屏幕之外。离屏渲染意味着把渲染结果临时保存，等用到时再取出，因此相对于普通渲染更占用资源。</p>
+<p>“Color Offscreen-Rendered Yellow”会把需要离屏渲染的地方标记为黄色，大部分情况下我们需要尽可能避免黄色的出现。离屏渲染可能会自动触发，也可以手动触发。以下情况可能会导致触发离屏渲染：</p>
+<ol>
+<li>重写drawRect方法；（自动触发离屏渲染） </li>
+<li>有mask或者是阴影(layer.masksToBounds, layer.shadow*)，模糊效果也是一种mask；（自动触发离屏渲染） </li>
+<li>layer.shouldRasterize = true；</li>
+</ol>
+<blockquote>
+<p>（手动开启离屏渲染）drawRect UIGraphicGetCurrentContext()<br>、使用Core Graphics  CreateBitMapContext()，以上两种情况都会开辟一个CGContext，分配一块内存空间，用于离屏渲染。离屏渲染（GPU）：设置cornerRadius, masks, shadows,edge antialiasing等，设置layer.shouldRasterize ＝ YES，用在view界面后续没有变化？？？</p>
+</blockquote>
+<pre><code>//如果图片使用了阴影，也是黄色，这说明它也进行了离屏渲染，解决方案，在设置阴影效果的四行代码下面添加一行：
+//这行代码制定了阴影路径，如果没有手动指定，Core Animation会去自动计算，这就会触发离屏渲染。如果人为指定了阴影路径，就可以免去计算，从而避免产生离屏渲染。
+imgView.layer.shadowPath = UIBezierPath(rect: imgView.bounds).CGPath
+</code></pre><h3 id="Color-Hits-Green-and-Misses-Red-："><a href="#Color-Hits-Green-and-Misses-Red-：" class="headerlink" title="Color Hits Green and Misses Red ："></a>Color Hits Green and Misses Red ：</h3><p>由于Shadow、Mask和Gradient等原因渲染很高，通常通过设置shouldRasterize栅格化属性为YES，缓存渲染内容。命中缓存image，显示绿色，未命中，显示红色，显然绿色越多越好，红色越少越好？？？</p>
+<pre><code>//光栅化是将一个layer预先渲染成位图(bitmap)，然后加入缓存中。如果对于阴影效果这样比较消耗资源的静态内容进行缓存，可以得到一定幅度的性能提升
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    __block UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;EOCTableViewCell&quot; forIndexPath:indexPath];
+    // Configure the cell...
+    static int i = 0;
+    for (UILabel *label in cell.contentView.subviews) {
+        if ([label isKindOfClass:[UILabel class]]) {
+            label.text = [NSString stringWithFormat:@&quot;helloworld %d&quot;, i++];
+            label.layer.shouldRasterize = YES;
         }
-
-* Misaligned图像无法重合。在项目中，我们网络请求图片，大小不一，但是展示的UIImageView有时候是固定大小。这时候我们就需要图片的缩放了。图片的缩放需要占用时间，因此我们要尽可能保证无论是本地图片还是从网络或取得图片的大小，都与其frame保持一致。
-
-Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时系统需要进行缩放，抗锯齿等操作，增加了图形负担，通常这种问题出在对某些View的Frame重新计算和设置时产生的
-
-        //如果图片需要缩放则标记为黄色，如果没有像素对齐则标记为紫色，下例中如果赋值image1则会出现黄色蒙层，用image正常显示
-        EOCImageView *imageView = [[EOCImageView alloc] initWithFrame:CGRectMake(0, 70, 382, 200)];
-        UIImage *image = [EOCUtil decodeImage:[UIImage imageNamed:@&quot;770CB6EB-1524-44DE-987A-DB929C4AA544.jpeg&quot;] toSize:CGSizeMake(imageView.layer.bounds.size.width*2, imageView.layer.bounds.size.height*2)];
-        UIImage *image1 = [UIImage imageNamed:@&quot;770CB6EB-1524-44DE-987A-DB929C4AA544.jpeg&quot;];
-        imageView.image = image;
-        imageView.opaque = YES;
-        imageView.backgroundColor = [UIColor lightGrayColor];
-        imageView.clipsToBounds = YES;
-        [self.view addSubview:imageView];
-
-* Offscreen-Rendered工具：离屏渲染（CPU）：离屏渲染表示渲染发生在屏幕之外。离屏渲染意味着把渲染结果临时保存，等用到时再取出，因此相对于普通渲染更占用资源。
-
-“Color Offscreen-Rendered Yellow”会把需要离屏渲染的地方标记为黄色，大部分情况下我们需要尽可能避免黄色的出现。离屏渲染可能会自动触发，也可以手动触发。以下情况可能会导致触发离屏渲染：
-
-1. 重写drawRect方法；（自动触发离屏渲染） 
-2. 有mask或者是阴影(layer.masksToBounds, layer.shadow*)，模糊效果也是一种mask；（自动触发离屏渲染） 
-3. layer.shouldRasterize = true；
-
-&gt; （手动开启离屏渲染）drawRect UIGraphicGetCurrentContext()
-</code></pre><p>、使用Core Graphics  CreateBitMapContext()，以上两种情况都会开辟一个CGContext，分配一块内存空间，用于离屏渲染。离屏渲染（GPU）：设置cornerRadius, masks, shadows,edge antialiasing等，设置layer.shouldRasterize ＝ YES，用在view界面后续没有变化？？？</p>
-<pre><code>    //如果图片使用了阴影，也是黄色，这说明它也进行了离屏渲染，解决方案，在设置阴影效果的四行代码下面添加一行：
-    //这行代码制定了阴影路径，如果没有手动指定，Core Animation会去自动计算，这就会触发离屏渲染。如果人为指定了阴影路径，就可以免去计算，从而避免产生离屏渲染。
-    imgView.layer.shadowPath = UIBezierPath(rect: imgView.bounds).CGPath
-
-* Color Hits Green and Misses Red ：由于Shadow、Mask和Gradient等原因渲染很高，通常通过设置shouldRasterize栅格化属性为YES，缓存渲染内容。命中缓存image，显示绿色，未命中，显示红色，显然绿色越多越好，红色越少越好？？？
-
-        //光栅化是将一个layer预先渲染成位图(bitmap)，然后加入缓存中。如果对于阴影效果这样比较消耗资源的静态内容进行缓存，可以得到一定幅度的性能提升
-        - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-            __block UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@&quot;EOCTableViewCell&quot; forIndexPath:indexPath];
-            // Configure the cell...
-            static int i = 0;
-            for (UILabel *label in cell.contentView.subviews) {
-                if ([label isKindOfClass:[UILabel class]]) {
-                    label.text = [NSString stringWithFormat:@&quot;helloworld %d&quot;, i++];
-                    label.layer.shouldRasterize = YES;
-                }
-            }
-            return cell;
-        }
-
-&gt; 光栅化的缓存机制是一把双刃剑，先写入缓存再读取有可能消耗较多的时间。因此光栅化仅适用于较复杂的、静态的效果。通过Instrument的调试发现，这里使用光栅化经常出现未命中缓存的情况，如果没有特殊需要则可以关闭光栅化
-
-* Color Compositing Fast-Path Blue:离屏渲染的最后一步是把此前的多个路径组合起来。如果这个组合过程能由CPU完成，就会大量减少GPU的工作。这种技术在绘制地图中可能用到。工具用于标记由硬件绘制的路径，蓝色越多越好
-* Flash updated Regions：刷新视图时，我们应该把需要重绘的区域尽可能缩小。对于未发生变化的内容则不应该重绘。工具用于标记发生重绘的区域
+    }
+    return cell;
+}
 </code></pre><blockquote>
+<p>光栅化的缓存机制是一把双刃剑，先写入缓存再读取有可能消耗较多的时间。因此光栅化仅适用于较复杂的、静态的效果。通过Instrument的调试发现，这里使用光栅化经常出现未命中缓存的情况，如果没有特殊需要则可以关闭光栅化</p>
+</blockquote>
+<h3 id="Color-Compositing-Fast-Path-Blue"><a href="#Color-Compositing-Fast-Path-Blue" class="headerlink" title="Color Compositing Fast-Path Blue:"></a>Color Compositing Fast-Path Blue:</h3><p>离屏渲染的最后一步是把此前的多个路径组合起来。如果这个组合过程能由CPU完成，就会大量减少GPU的工作。这种技术在绘制地图中可能用到。工具用于标记由硬件绘制的路径，蓝色越多越好</p>
+<h3 id="Flash-updated-Regions："><a href="#Flash-updated-Regions：" class="headerlink" title="Flash updated Regions："></a>Flash updated Regions：</h3><p>刷新视图时，我们应该把需要重绘的区域尽可能缩小。对于未发生变化的内容则不应该重绘。工具用于标记发生重绘的区域</p>
+<blockquote>
 <ol>
 <li>避免图层混合<ul>
 <li>确保控件的opaque属性设置为true，确保backgroundColor和父视图颜色一致且不透明；</li>
@@ -570,22 +580,11 @@ Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时�
 </li>
 </ol>
 </blockquote>
-<ul>
-<li><p>Counter</p>
-<p>  查看App的可能的性能瓶颈，Performance monitor counters (PMCs) 即Counter工具，衡量处理器发生的事件个数</p>
-</li>
-<li><p>System trace工具</p>
-<p>  它显示线程的调度、系统线程的转化和内存使用情况。简单点说就是记录一个App运行过程中所有底层系统线程、内存的调度使用过程的工具。</p>
-</li>
-<li><p>Timer Profiler</p>
-<p>  它按照固定的时间间隔来跟踪每一个线程的堆栈信息，通过统计比较时间间隔之间的堆栈状态，来推算某个方法执行了多久，并获得一个近似值。其实从根本上来说与我们的原始分析方法异曲同工，只不过其将各个方法消耗的时间统计起来。</p>
-</li>
-</ul>
-<h1 id="iOS性能优化实践二"><a href="#iOS性能优化实践二" class="headerlink" title="iOS性能优化实践二"></a>iOS性能优化实践二</h1><p>autolayout性能分析：frame&gt;autolayout(absolute)&gt;autolayout(relative)</p>
+<h2 id="System-trace工具"><a href="#System-trace工具" class="headerlink" title="System trace工具"></a>System trace工具</h2><p>它显示线程的调度、系统线程的转化和内存使用情况。简单点说就是记录一个App运行过程中所有底层系统线程、内存的调度使用过程的工具。</p>
+<p># </p>
+<p>autolayout性能分析：frame&gt;autolayout(absolute)&gt;autolayout(relative)</p>
 <p>OpenGL、CoreAnimation在GPU上，CoreGraphic在CPU上</p>
-<ul>
-<li><p>轻量化主线程</p>
-<pre><code>- (void)showImageView {
+<h1 id="轻量化主线程"><a href="#轻量化主线程" class="headerlink" title="轻量化主线程"></a>轻量化主线程</h1><pre><code>- (void)showImageView {
     if (self.imageView.image) {
         self.imageView.image = nil;
     }else {
@@ -602,9 +601,7 @@ Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时�
     }
     [self.imageView setNeedsDisplay];
 }
-</code></pre></li>
-<li><p>UITableView封装</p>
-<pre><code>//EOCBaseTableViewController类
+</code></pre><h1 id="UITableView封装"><a href="#UITableView封装" class="headerlink" title="UITableView封装"></a>UITableView封装</h1><pre><code>//EOCBaseTableViewController类
 @interface EOCBaseTableViewController ()
 @property (assign, nonatomic) int pageIndex;
 @property (assign, nonatomic) BOOL isLoading;
@@ -851,9 +848,7 @@ Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时�
     self.timeLabel.text = info.time;
 }
 @end
-</code></pre></li>
-</ul>
-<blockquote>
+</code></pre><blockquote>
 <p>UITableView的复用机制是享元设计模式，当其复用时，会生成N+1个Cell</p>
 </blockquote>
 <p>上例中可以看到执行过程如下，每次改变都需要reloadData，如果下载的图片多，会造成主线程卡顿，所以为了减少不必要的刷新，减轻主线程的任务，可以监听RunLoop，在RunLoop空闲时去刷新</p>
@@ -1278,99 +1273,99 @@ Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时�
     return context;
 }
 @end
-</code></pre><h1 id="iOS性能优化实践三"><a href="#iOS性能优化实践三" class="headerlink" title="iOS性能优化实践三"></a>iOS性能优化实践三</h1><pre><code>    @interface EOCImageDownManager ()
-    @property (strong, nonatomic) NSMutableDictionary *downOperations;
-    @property (strong, nonatomic) NSMutableArray *nextDownQueue;
-    @end
+</code></pre><h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><pre><code>@interface EOCImageDownManager ()
+@property (strong, nonatomic) NSMutableDictionary *downOperations;
+@property (strong, nonatomic) NSMutableArray *nextDownQueue;
+@end
 
-    @implementation EOCImageDownManager
-    + (EOCImageDownManager *)shareInstance {
-        static dispatch_once_t onceToken;
-        static EOCImageDownManager *__downloadManager = nil;
-        dispatch_once(&amp;onceToken, ^{
-            if (!__downloadManager) {
-                __downloadManager = [[EOCImageDownManager alloc] init];
-            }
-        });
-        return __downloadManager;
+@implementation EOCImageDownManager
++ (EOCImageDownManager *)shareInstance {
+    static dispatch_once_t onceToken;
+    static EOCImageDownManager *__downloadManager = nil;
+    dispatch_once(&amp;onceToken, ^{
+        if (!__downloadManager) {
+            __downloadManager = [[EOCImageDownManager alloc] init];
+        }
+    });
+    return __downloadManager;
+}
+
+- (UIImage *)loadImageWithUrl:(NSString *)urlStr complete:(void (^) (UIImage *image, NSURL *imageURL, NSError *error))complete {
+    /*
+    一层： UIImageView+Cache  UIButton+Cache，CacheInterface
+    二层：下载层  Download（queue）
+    三层：缓存，一级缓存Cache， 二级缓存：DiskCache
+    */
+    if ([urlStr length] == 0) {
+        if (complete) {
+            complete(nil, nil, [NSError errorWithDomain:@&quot;com.leo.news&quot; code:-1 userInfo:@{@&quot;msg&quot;:@&quot;下载失败，图片url为空!&quot;}]);
+        }
+        return nil;
+    }
+    NSURL *url = [NSURL URLWithString:urlStr];
+    //内存中缓存
+    UIImage *cacheImage = [self cacheImageForUrl:url];
+    if (cacheImage) {
+        if (complete) {
+            complete(cacheImage, url, nil);
+        }
+        return cacheImage;
     }
 
-    - (UIImage *)loadImageWithUrl:(NSString *)urlStr complete:(void (^) (UIImage *image, NSURL *imageURL, NSError *error))complete {
-        /*
-        一层： UIImageView+Cache  UIButton+Cache，CacheInterface
-        二层：下载层  Download（queue）
-        三层：缓存，一级缓存Cache， 二级缓存：DiskCache
-        */
-        if ([urlStr length] == 0) {
+    //磁盘中缓存
+    if ([SDWEBIMAGE_MANAGER.imageCache diskImageExistsWithKey:[SDWEBIMAGE_MANAGER cacheKeyForURL:url]]) {
+        [EOCUtil runBackground:^{
+            UIImage *image = [SDWEBIMAGE_MANAGER.imageCache imageFromDiskCacheForKey:[SDWEBIMAGE_MANAGER cacheKeyForURL:url]];
             if (complete) {
-                complete(nil, nil, [NSError errorWithDomain:@&quot;com.leo.news&quot; code:-1 userInfo:@{@&quot;msg&quot;:@&quot;下载失败，图片url为空!&quot;}]);
+                complete(image, url, nil);
             }
-            return nil;
-        }
-        NSURL *url = [NSURL URLWithString:urlStr];
-        //内存中缓存
-        UIImage *cacheImage = [self cacheImageForUrl:url];
-        if (cacheImage) {
-            if (complete) {
-                complete(cacheImage, url, nil);
-            }
-            return cacheImage;
-        }
-
-        //磁盘中缓存
-        if ([SDWEBIMAGE_MANAGER.imageCache diskImageExistsWithKey:[SDWEBIMAGE_MANAGER cacheKeyForURL:url]]) {
-            [EOCUtil runBackground:^{
-                UIImage *image = [SDWEBIMAGE_MANAGER.imageCache imageFromDiskCacheForKey:[SDWEBIMAGE_MANAGER cacheKeyForURL:url]];
-                if (complete) {
-                    complete(image, url, nil);
-                }
-            }];
-            return nil;
-        }
-
-        //如果正在下载
-        if ([self.downOperations objectForKey:url]) {
-            return nil;
-        }
-
-    #ifdef ENABLE_LIMIT_MAX_DOWNQUEUE
-        if ([self.downOperations count] &gt; EOCIMAGEDOWN_MAX_COUNT) {
-            [[self nextDownQueue] addObject:[EOCDownTask taskWithUrl:url complete:complete]];
-            return nil;
-        }
-    #endif
-        __block typeof(self) weakSelf = self;
-        NSOperation *operation = [[SDWebImageManager sharedManager] downloadImageWithURL:url options:SDWebImageRefreshCached progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-            if (complete) {
-    #ifdef ENABLE_IMAGEDECODE
-                if (image) {
-                    image = [EOCUtil decodeImage:image toSize:[EOCUtil sizeToForImage:image fitWidth:([UIScreen mainScreen].bounds.size.width - 8*2)*[UIScreen mainScreen].scale]];
-                }
-    #endif
-                complete(image, imageURL, error);
-            }
-            [weakSelf.downOperations removeObjectForKey:url];
-
-    #ifdef ENABLE_LIMIT_MAX_DOWNQUEUE
-            //开启下一个下载
-            EOCDownTask *task = [weakSelf.nextDownQueue firstObject];
-            if (task) {
-                [weakSelf.nextDownQueue removeObjectAtIndex:0];
-            }
-            [weakSelf loadImageWithUrl:[task.url absoluteString] complete:task.complete];
-    #endif
         }];
-        [self.downOperations setObject:operation forKey:url];
         return nil;
     }
 
-    - (UIImage *)cacheImageForUrl:(NSURL *)url {
-        SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
-        NSString *cacheKey = [[SDWebImageManager sharedManager] cacheKeyForURL:url];
-        UIImage *image = [cache imageFromMemoryCacheForKey:cacheKey];
-        return image;
+    //如果正在下载
+    if ([self.downOperations objectForKey:url]) {
+        return nil;
+    }
+
+#ifdef ENABLE_LIMIT_MAX_DOWNQUEUE
+    if ([self.downOperations count] &gt; EOCIMAGEDOWN_MAX_COUNT) {
+        [[self nextDownQueue] addObject:[EOCDownTask taskWithUrl:url complete:complete]];
+        return nil;
+    }
+#endif
+    __block typeof(self) weakSelf = self;
+    NSOperation *operation = [[SDWebImageManager sharedManager] downloadImageWithURL:url options:SDWebImageRefreshCached progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        if (complete) {
+#ifdef ENABLE_IMAGEDECODE
+            if (image) {
+                image = [EOCUtil decodeImage:image toSize:[EOCUtil sizeToForImage:image fitWidth:([UIScreen mainScreen].bounds.size.width - 8*2)*[UIScreen mainScreen].scale]];
+            }
+#endif
+            complete(image, imageURL, error);
+        }
+        [weakSelf.downOperations removeObjectForKey:url];
+
+#ifdef ENABLE_LIMIT_MAX_DOWNQUEUE
+        //开启下一个下载
+        EOCDownTask *task = [weakSelf.nextDownQueue firstObject];
+        if (task) {
+            [weakSelf.nextDownQueue removeObjectAtIndex:0];
+        }
+        [weakSelf loadImageWithUrl:[task.url absoluteString] complete:task.complete];
+#endif
+    }];
+    [self.downOperations setObject:operation forKey:url];
+    return nil;
 }
-</code></pre>
+
+- (UIImage *)cacheImageForUrl:(NSURL *)url {
+    SDImageCache *cache = [[SDWebImageManager sharedManager] imageCache];
+    NSString *cacheKey = [[SDWebImageManager sharedManager] cacheKeyForURL:url];
+    UIImage *image = [cache imageFromMemoryCacheForKey:cacheKey];
+    return image;
+</code></pre><p>}</p>
+
       
     </div>
     
@@ -1515,7 +1510,7 @@ Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时�
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1526,7 +1521,7 @@ Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时�
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -1575,7 +1570,7 @@ Misaligned Image表示要绘制的图像无法直接映射到屏幕上，此时�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS性能优化实践一"><span class="nav-number">1.</span> <span class="nav-text">iOS性能优化实践一</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS性能优化实践二"><span class="nav-number">2.</span> <span class="nav-text">iOS性能优化实践二</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS性能优化实践三"><span class="nav-number">3.</span> <span class="nav-text">iOS性能优化实践三</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Instruments"><span class="nav-number">1.</span> <span class="nav-text">Instruments</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Activity-Monitor"><span class="nav-number">1.1.</span> <span class="nav-text">Activity Monitor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Allocations"><span class="nav-number">1.2.</span> <span class="nav-text">Allocations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Timer-Profiler"><span class="nav-number">1.3.</span> <span class="nav-text">Timer Profiler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Counter"><span class="nav-number">1.4.</span> <span class="nav-text">Counter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Core-Animation"><span class="nav-number">1.5.</span> <span class="nav-text">Core Animation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Blended像素混合："><span class="nav-number">1.5.1.</span> <span class="nav-text">Blended像素混合：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Color-Copied-images"><span class="nav-number">1.5.2.</span> <span class="nav-text">Color Copied images</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Misaligned图像无法重合"><span class="nav-number">1.5.3.</span> <span class="nav-text">Misaligned图像无法重合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Offscreen-Rendered工具："><span class="nav-number">1.5.4.</span> <span class="nav-text">Offscreen-Rendered工具：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Color-Hits-Green-and-Misses-Red-："><span class="nav-number">1.5.5.</span> <span class="nav-text">Color Hits Green and Misses Red ：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Color-Compositing-Fast-Path-Blue"><span class="nav-number">1.5.6.</span> <span class="nav-text">Color Compositing Fast-Path Blue:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flash-updated-Regions："><span class="nav-number">1.5.7.</span> <span class="nav-text">Flash updated Regions：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#System-trace工具"><span class="nav-number">1.6.</span> <span class="nav-text">System trace工具</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#轻量化主线程"><span class="nav-number">2.</span> <span class="nav-text">轻量化主线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UITableView封装"><span class="nav-number">3.</span> <span class="nav-text">UITableView封装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存"><span class="nav-number">4.</span> <span class="nav-text">缓存</span></a></li></ol></div>
             
 
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="iOS,App文件结构,">
+  <meta name="keywords" content="iOS,数据存储,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="APP文件结构分析(沙盒分析)+数据存储安全 沙盒结构分析 /*  Documents (backup 备份){             大文件要做 非备份设置（如视频文件，多媒体文件）             审核的，如果检查出来，就会被拒         }   Librayry     1 Caches{         系统的缓存存放在这个文件夹（如NSURLSessionTask的net">
-<meta name="keywords" content="iOS,App文件结构">
+<meta name="keywords" content="iOS,数据存储">
 <meta property="og:type" content="article">
-<meta property="og:title" content="APP文件结构分析(沙盒分析)+数据存储安全">
+<meta property="og:title" content="iOS数据存储">
 <meta property="og:url" content="https://frandfeng.github.io/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="APP文件结构分析(沙盒分析)+数据存储安全 沙盒结构分析 /*  Documents (backup 备份){             大文件要做 非备份设置（如视频文件，多媒体文件）             审核的，如果检查出来，就会被拒         }   Librayry     1 Caches{         系统的缓存存放在这个文件夹（如NSURLSessionTask的net">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T08:59:51.492Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS数据存储.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/iOS数据存储2.png">
+<meta property="og:updated_time" content="2018-12-11T10:02:09.116Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="APP文件结构分析(沙盒分析)+数据存储安全">
-<meta name="twitter:description" content="APP文件结构分析(沙盒分析)+数据存储安全 沙盒结构分析 /*  Documents (backup 备份){             大文件要做 非备份设置（如视频文件，多媒体文件）             审核的，如果检查出来，就会被拒         }   Librayry     1 Caches{         系统的缓存存放在这个文件夹（如NSURLSessionTask的net">
+<meta name="twitter:title" content="iOS数据存储">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/iOS数据存储.png">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>APP文件结构分析(沙盒分析)+数据存储安全 | Frand Feng</title>
+  <title>iOS数据存储 | Frand Feng</title>
   
 
 
@@ -322,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">APP文件结构分析(沙盒分析)+数据存储安全</h1>
+          <h1 class="post-title" itemprop="name headline">iOS数据存储</h1>
         
 
         <div class="post-meta">
@@ -394,15 +394,15 @@
       
 
       
-        <h1 id="APP文件结构分析-沙盒分析-数据存储安全"><a href="#APP文件结构分析-沙盒分析-数据存储安全" class="headerlink" title="APP文件结构分析(沙盒分析)+数据存储安全"></a>APP文件结构分析(沙盒分析)+数据存储安全</h1><ol>
-<li><p>沙盒结构分析</p>
-<pre><code>/*
+        <p><img src="/assets/outline/iOS数据存储.png" alt=""><br><img src="/assets/outline/iOS数据存储2.png" alt=""></p>
+<a id="more"></a>
+<h1 id="数据存储"><a href="#数据存储" class="headerlink" title="数据存储"></a>数据存储</h1><h2 id="沙盒结构分析"><a href="#沙盒结构分析" class="headerlink" title="沙盒结构分析"></a>沙盒结构分析</h2><pre><code>/*
  Documents (backup 备份){
             大文件要做 非备份设置（如视频文件，多媒体文件）
             审核的，如果检查出来，就会被拒
         }
 
- Librayry
+ Library
     1 Caches{
         系统的缓存存放在这个文件夹（如NSURLSessionTask的net获取缓存XXX/Cache/com.test.eoc/Cache.db）
     }
@@ -411,20 +411,18 @@
  tmp 临时文件夹（系统会不定期删除里面的文件）
     不重要性的文件 （断点下载的时候 （当文件下载没完成的时候，下载完之后会转移到目的文件夹））
  */
-</code></pre></li>
-<li><p>Bundle分析</p>
-<pre><code>Bundle里边存放的是资源文件，不参与编译
-
-Bundle中的资源icon.png，在xib中设置icon.png，其在xib中正常显示，而在运行时显示不正常，如果设置为bundle.bunld/icon.png，则虽在xib中显示不正常，但在运行时正常显示
-
-//如果需要读取bundle中的文件
+</code></pre><h2 id="Bundle分析"><a href="#Bundle分析" class="headerlink" title="Bundle分析"></a>Bundle分析</h2><p>Bundle里边存放的是资源文件，不参与编译</p>
+<p>Bundle中的资源icon.png，在xib中设置icon.png，其在xib中正常显示，而在运行时显示不正常，如果设置为bundle.bunld/icon.png，则虽在xib中显示不正常，但在运行时正常显示</p>
+<pre><code>//如果需要读取bundle中的文件
 NSString *boundPath =  [[NSBundle mainBundle] pathForResource:@&quot;EOCBundle&quot; ofType:@&quot;bundle&quot;];
 NSBundle *eocBoundle = [NSBundle bundleWithPath:boundPath];
 NSString *imagePath = [eocBoundle pathForResource:@&quot;11&quot; ofType:@&quot;png&quot;];
 NSData *imageData =  [NSData dataWithContentsOfFile:imagePath];
-</code></pre></li>
-<li><p>归档</p>
-<pre><code>@interface EOCClass : NSObject &lt;NSCoding, NSCopying&gt;
+
+或 
+
+_imageView.image = [UIImage imageNamed:@&quot;EOCBundle.bundle/11.png&quot;];
+</code></pre><h2 id="归档"><a href="#归档" class="headerlink" title="归档"></a>归档</h2><pre><code>@interface EOCClass : NSObject &lt;NSCoding, NSCopying&gt;
 @property (nonatomic, strong)NSString *name;
 @property (nonatomic, strong)NSString *age;
 @property (nonatomic, strong)NSString *classId;
@@ -438,50 +436,47 @@ NSData *imageData =  [NSData dataWithContentsOfFile:imagePath];
     eocClass.classId = self.classId;
     return eocClass;
 }
-</code></pre></li>
-</ol>
-<pre><code>    // 归档
-    - (void)encodeWithCoder:(NSCoder *)aCoder{
-        [aCoder encodeObject:self.name    forKey:@&quot;name&quot;];
-        [aCoder encodeObject:self.age     forKey:@&quot;age&quot;];
-        [aCoder encodeObject:self.classId forKey:@&quot;classId&quot;];
-    }
 
-    // 解挡
-    - (instancetype)initWithCoder:(NSCoder *)aDecoder{
-        EOCClass *eocClass = [EOCClass new];
-        eocClass.name = [aDecoder decodeObjectForKey:@&quot;name&quot;];
-        eocClass.age = [aDecoder decodeObjectForKey:@&quot;age&quot;];
-        eocClass.classId = [aDecoder decodeObjectForKey:@&quot;classId&quot;];
-        return eocClass;
-    }
 
-    @implementation ArchiveViewCtr
-
-    - (void)viewDidLoad {
-        [super viewDidLoad];
-        EOCClass *eocClass = [EOCClass new];
-        eocClass.name = @&quot;11&quot;;
-        eocClass.age = @&quot;10&quot;;
-        eocClass.classId = @&quot;eocClass&quot;;
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:eocClass];
-        NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-        filePath = [filePath stringByAppendingPathComponent:@&quot;eocClass&quot;];
-        [data writeToFile:filePath atomically:NO];
-        EOCClass *tempEOC = [eocClass copy];// 深拷贝（copy）  浅拷贝 （strong）
-    }
-
-    //eocClass 从文件里面对出来，是不是要解压（）
-    - (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
-        NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-        filePath = [filePath stringByAppendingPathComponent:@&quot;eocClass&quot;];
-        EOCClass *eocClass = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-        NSLog(@&quot;%@, %@, %@&quot;, eocClass.name, eocClass.age, eocClass.classId);
+// 归档
+- (void)encodeWithCoder:(NSCoder *)aCoder{
+    [aCoder encodeObject:self.name    forKey:@&quot;name&quot;];
+    [aCoder encodeObject:self.age     forKey:@&quot;age&quot;];
+    [aCoder encodeObject:self.classId forKey:@&quot;classId&quot;];
 }
-@end
-</code></pre><ol start="4">
-<li><p>钥匙链的增删改查及跨应用</p>
-<pre><code>//保存KeyChain
+
+// 解挡
+- (instancetype)initWithCoder:(NSCoder *)aDecoder{
+    EOCClass *eocClass = [EOCClass new];
+    eocClass.name = [aDecoder decodeObjectForKey:@&quot;name&quot;];
+    eocClass.age = [aDecoder decodeObjectForKey:@&quot;age&quot;];
+    eocClass.classId = [aDecoder decodeObjectForKey:@&quot;classId&quot;];
+    return eocClass;
+}
+
+@implementation ArchiveViewCtr
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    EOCClass *eocClass = [EOCClass new];
+    eocClass.name = @&quot;11&quot;;
+    eocClass.age = @&quot;10&quot;;
+    eocClass.classId = @&quot;eocClass&quot;;
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:eocClass];
+    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    filePath = [filePath stringByAppendingPathComponent:@&quot;eocClass&quot;];
+    [data writeToFile:filePath atomically:NO];
+    EOCClass *tempEOC = [eocClass copy];// 深拷贝（copy）  浅拷贝 （strong）
+}
+
+//eocClass 从文件里面对出来，是不是要解压（）
+- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event{
+    NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    filePath = [filePath stringByAppendingPathComponent:@&quot;eocClass&quot;];
+    EOCClass *eocClass = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    NSLog(@&quot;%@, %@, %@&quot;, eocClass.name, eocClass.age, eocClass.classId);
+</code></pre><p>}<br>@end</p>
+<h2 id="钥匙链的增删改查及跨应用"><a href="#钥匙链的增删改查及跨应用" class="headerlink" title="钥匙链的增删改查及跨应用"></a>钥匙链的增删改查及跨应用</h2><pre><code>//保存KeyChain
 - (void)saveDataToKeyChain{
     // 根据 attributes这个字典的key进行 操作
     NSMutableDictionary *infoDict = [NSMutableDictionary new];
@@ -572,11 +567,7 @@ NSData *imageData =  [NSData dataWithContentsOfFile:imagePath];
     NSData *backData = (__bridge NSData*)data;
     NSLog(@&quot;%s&quot;, [backData bytes]);
 }
-</code></pre></li>
-</ol>
-<h1 id="Local数据层方案设计一"><a href="#Local数据层方案设计一" class="headerlink" title="Local数据层方案设计一"></a>Local数据层方案设计一</h1><ol>
-<li><p>SQL语法复习</p>
-<pre><code>/*
+</code></pre><h1 id="数据库功能"><a href="#数据库功能" class="headerlink" title="数据库功能"></a>数据库功能</h1><h2 id="SQL语法复习"><a href="#SQL语法复习" class="headerlink" title="SQL语法复习"></a>SQL语法复习</h2><pre><code>/*
  id(事件抽)  name（消息内容）
  一次拿3条记录当作一页
  */
@@ -628,9 +619,7 @@ NSData *imageData =  [NSData dataWithContentsOfFile:imagePath];
  2  sqlite3
 
 */
-</code></pre></li>
-<li><p>功能实现</p>
-<pre><code>@implementation EOCClassSQL
+</code></pre><h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><pre><code>@implementation EOCClassSQL
 // 第一步创建db
 + (void)createEOCDBFile{
     NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
@@ -733,9 +722,9 @@ static sqlite3 *database;
             [infoDict setObject:valueStr forKey:keyStr];
         }
         [recordAry addObject:infoDict];
-</code></pre></li>
-</ol>
-<pre><code>//        char *idC   =  (char*)sqlite3_column_text(stmt, 0);
+
+
+//        char *idC   =  (char*)sqlite3_column_text(stmt, 0);
 //        char *nameC = (char*)sqlite3_column_text(stmt, 1);
 //        NSString *idStr = [NSString stringWithUTF8String:idC];
 //        NSString *nameStr = [NSString stringWithUTF8String:nameC];
@@ -757,8 +746,7 @@ static sqlite3 *database;
 + (void)closeSQL{
     sqlite3_close_v2(database);
 }
-</code></pre><h1 id="Local数据层方案设计二（数据库框架的封装）"><a href="#Local数据层方案设计二（数据库框架的封装）" class="headerlink" title="Local数据层方案设计二（数据库框架的封装）"></a>Local数据层方案设计二（数据库框架的封装）</h1><ol>
-<li><p>数据库对应的类，用于提供数据库的名称、路径等</p>
+</code></pre><h1 id="数据库封装"><a href="#数据库封装" class="headerlink" title="数据库封装"></a>数据库封装</h1><h2 id="数据库对应的类"><a href="#数据库对应的类" class="headerlink" title="数据库对应的类"></a>数据库对应的类</h2><p>数据库对应的类，用于提供数据库的名称、路径等</p>
 <pre><code>//SQLDataBase类
 @interface SQLDataBase : NSObject
 - (instancetype)initWithFileName:(NSString*)dataBaseName;
@@ -782,8 +770,7 @@ static sqlite3 *database;
     return self;
 }
 @end
-</code></pre></li>
-<li><p>数据表对应的类，先用协议获得数据库名，表名，表结构，再根据初始化方法拼凑sql语句生成对应的表        </p>
+</code></pre><h2 id="数据表对应的类"><a href="#数据表对应的类" class="headerlink" title="数据表对应的类"></a>数据表对应的类</h2><p>数据表对应的类，先用协议获得数据库名，表名，表结构，再根据初始化方法拼凑sql语句生成对应的表    </p>
 <pre><code>@protocol SQLBaseTableProtocol &lt;NSObject&gt;
 @required
 // 1 文件名 db文件
@@ -825,8 +812,7 @@ static sqlite3 *database;
     return self;
 }
 @end
-</code></pre></li>
-<li><p>记录对应的类，用于对象和NSDictionary之间的转换，NSDictionary和列名列值之间的转换</p>
+</code></pre><h2 id="记录对应的类"><a href="#记录对应的类" class="headerlink" title="记录对应的类"></a>记录对应的类</h2><p>记录对应的类，用于对象和NSDictionary之间的转换，NSDictionary和列名列值之间的转换</p>
 <pre><code>@protocol SQLBaseRecordProtocol &lt;NSObject&gt;
 - (NSDictionary*)dictFromObjectProAndMatchTableColumn:(id&lt;SQLBaseTableProtocol&gt;)table;
 - (void)setRecordProValue:(id)propertyValue property:(NSString*)propertyName;
@@ -877,8 +863,7 @@ static sqlite3 *database;
     }
 }
 @end
-</code></pre></li>
-<li><p>SQLCommandHandle类用于来拼凑sql语句，拼凑的增删改查等语句放在扩展里，公共语句放于此类中</p>
+</code></pre><h2 id="SQLCommandHandle类"><a href="#SQLCommandHandle类" class="headerlink" title="SQLCommandHandle类"></a>SQLCommandHandle类</h2><p>SQLCommandHandle类用于来拼凑sql语句，拼凑的增删改查等语句放在扩展里，公共语句放于此类中</p>
 <pre><code>//SQLCommandHandle类
 @interface SQLCommandHandle : NSObject
 // sqlCommand = insert into table values (&quot;1&quot;, &quot;2&quot;)
@@ -948,8 +933,7 @@ static sqlite3 *database;
     return _dataBase;
 }
 @end
-</code></pre></li>
-<li><p>对SQLBaseTable进行增删改查扩展，如插入</p>
+</code></pre><h2 id="扩展SQLBaseTable"><a href="#扩展SQLBaseTable" class="headerlink" title="扩展SQLBaseTable"></a>扩展SQLBaseTable</h2><p>对SQLBaseTable进行增删改查扩展，如插入</p>
 <pre><code>@interface SQLBaseTable (Insert)
 - (void)insertDataContainBinary:(id&lt;SQLBaseRecordProtocol&gt;)object;
 @end
@@ -967,8 +951,7 @@ static sqlite3 *database;
     [sqlCommandHandel sqlExcuteWriteCommand];
 }
 @end
-</code></pre></li>
-<li><p>对SQLCommandHandle进行增删改查的扩展来生成sql语句，如createTable</p>
+</code></pre><h2 id="扩展SQLCommandHandle"><a href="#扩展SQLCommandHandle" class="headerlink" title="扩展SQLCommandHandle"></a>扩展SQLCommandHandle</h2><p>对SQLCommandHandle进行增删改查的扩展来生成sql语句，如createTable</p>
 <pre><code>@interface SQLCommandHandle (CreateTable)
 - (void)preSqlCreateTableName:(NSString*)tableName  colomnInfo:(NSDictionary*)colomnInfo;
 @end
@@ -989,9 +972,7 @@ static sqlite3 *database;
     [self.sqlCommand appendFormat:@&quot;create table if not exists %@(%@)&quot;, tableName, tableStructStr];
 }
 @end
-</code></pre></li>
-</ol>
-
+</code></pre>
       
     </div>
     
@@ -1010,7 +991,7 @@ static sqlite3 *database;
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/App文件结构/" rel="tag"># App文件结构</a>
+            <a href="/tags/数据存储/" rel="tag"># 数据存储</a>
           
         </div>
       
@@ -1136,7 +1117,7 @@ static sqlite3 *database;
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -1147,7 +1128,7 @@ static sqlite3 *database;
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -1196,7 +1177,7 @@ static sqlite3 *database;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#APP文件结构分析-沙盒分析-数据存储安全"><span class="nav-number">1.</span> <span class="nav-text">APP文件结构分析(沙盒分析)+数据存储安全</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Local数据层方案设计一"><span class="nav-number">2.</span> <span class="nav-text">Local数据层方案设计一</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Local数据层方案设计二（数据库框架的封装）"><span class="nav-number">3.</span> <span class="nav-text">Local数据层方案设计二（数据库框架的封装）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据存储"><span class="nav-number">1.</span> <span class="nav-text">数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#沙盒结构分析"><span class="nav-number">1.1.</span> <span class="nav-text">沙盒结构分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bundle分析"><span class="nav-number">1.2.</span> <span class="nav-text">Bundle分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#归档"><span class="nav-number">1.3.</span> <span class="nav-text">归档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#钥匙链的增删改查及跨应用"><span class="nav-number">1.4.</span> <span class="nav-text">钥匙链的增删改查及跨应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库功能"><span class="nav-number">2.</span> <span class="nav-text">数据库功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL语法复习"><span class="nav-number">2.1.</span> <span class="nav-text">SQL语法复习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能实现"><span class="nav-number">2.2.</span> <span class="nav-text">功能实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库封装"><span class="nav-number">3.</span> <span class="nav-text">数据库封装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库对应的类"><span class="nav-number">3.1.</span> <span class="nav-text">数据库对应的类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据表对应的类"><span class="nav-number">3.2.</span> <span class="nav-text">数据表对应的类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#记录对应的类"><span class="nav-number">3.3.</span> <span class="nav-text">记录对应的类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQLCommandHandle类"><span class="nav-number">3.4.</span> <span class="nav-text">SQLCommandHandle类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展SQLBaseTable"><span class="nav-number">3.5.</span> <span class="nav-text">扩展SQLBaseTable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展SQLCommandHandle"><span class="nav-number">3.6.</span> <span class="nav-text">扩展SQLCommandHandle</span></a></li></ol></li></ol></div>
             
 
           </div>

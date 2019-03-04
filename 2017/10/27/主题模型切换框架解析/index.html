@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,框架解析,">
+  <meta name="keywords" content="iOS,框架,">
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="主题模型切换 给NSObject扩展Theme，添加pickers属性来保存方法，这些方法用来更改主题颜色 @interface NSObject (EOCTheme) @property(nonatomic, strong)NSMutableDictionary *pickers; @end @implementation NSObject (EOCTheme) @dynamic pickers">
-<meta name="keywords" content="OC,iOS,框架解析">
+<meta name="keywords" content="iOS,框架">
 <meta property="og:type" content="article">
 <meta property="og:title" content="主题模型切换框架解析">
 <meta property="og:url" content="https://frandfeng.github.io/2017/10/27/主题模型切换框架解析/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="主题模型切换 给NSObject扩展Theme，添加pickers属性来保存方法，这些方法用来更改主题颜色 @interface NSObject (EOCTheme) @property(nonatomic, strong)NSMutableDictionary *pickers; @end @implementation NSObject (EOCTheme) @dynamic pickers">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T09:01:15.308Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/主题切换.png">
+<meta property="og:updated_time" content="2018-12-11T07:43:58.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="主题模型切换框架解析">
-<meta name="twitter:description" content="主题模型切换 给NSObject扩展Theme，添加pickers属性来保存方法，这些方法用来更改主题颜色 @interface NSObject (EOCTheme) @property(nonatomic, strong)NSMutableDictionary *pickers; @end @implementation NSObject (EOCTheme) @dynamic pickers">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/主题切换.png">
 
 
 
@@ -394,7 +393,9 @@
       
 
       
-        <h1 id="主题模型切换"><a href="#主题模型切换" class="headerlink" title="主题模型切换"></a>主题模型切换</h1><ol>
+        <p><img src="/assets/outline/主题切换.png" alt=""></p>
+<a id="more"></a>
+<h1 id="主题模型切换"><a href="#主题模型切换" class="headerlink" title="主题模型切换"></a>主题模型切换</h1><ol>
 <li><p>给NSObject扩展Theme，添加pickers属性来保存方法，这些方法用来更改主题颜色</p>
 <pre><code>@interface NSObject (EOCTheme)
 @property(nonatomic, strong)NSMutableDictionary *pickers;
@@ -495,9 +496,8 @@
 //- (NSString *)testName {
 //    return _testName;
 //}
-</code></pre></li>
-</ol>
-<pre><code>//返回block
+
+//返回block
 - (eocBlock)pickerWithKey:(NSString *)key {
     NSMutableDictionary *dict = [EOCThemeManager shareThemeManager].themeDict;
     NSDictionary *tmpDict = dict[key];
@@ -507,7 +507,7 @@
     return picker;
 }
 @end
-</code></pre><ol start="4">
+</code></pre></li>
 <li><p>定义配置文件</p>
 <pre><code>&lt;plist version=&quot;1.0&quot;&gt;
 &lt;dict&gt;
@@ -569,7 +569,8 @@
 &lt;/plist&gt;
 </code></pre></li>
 </ol>
-<h1 id="第三方框架DKNightVersion完整版逻辑"><a href="#第三方框架DKNightVersion完整版逻辑" class="headerlink" title="第三方框架DKNightVersion完整版逻辑"></a>第三方框架DKNightVersion完整版逻辑</h1>
+<h1 id="第三方框架DKNightVersion"><a href="#第三方框架DKNightVersion" class="headerlink" title="第三方框架DKNightVersion"></a>第三方框架DKNightVersion</h1><p>第三方框架DKNightVersion的核心类有DKColor、DKImage、DKNightVersionManager、NSObject+Night</p>
+
       
     </div>
     
@@ -586,11 +587,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/OC/" rel="tag"># OC</a>
-          
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/框架解析/" rel="tag"># 框架解析</a>
+            <a href="/tags/框架/" rel="tag"># 框架</a>
           
         </div>
       
@@ -603,8 +602,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/" rel="next" title="APP文件结构分析(沙盒分析)+数据存储安全">
-                <i class="fa fa-chevron-left"></i> APP文件结构分析(沙盒分析)+数据存储安全
+              <a href="/2017/09/29/APP文件结构分析(沙盒分析)+数据存储安全/" rel="next" title="iOS数据存储">
+                <i class="fa fa-chevron-left"></i> iOS数据存储
               </a>
             
           </div>
@@ -716,7 +715,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -727,7 +726,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -776,7 +775,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#主题模型切换"><span class="nav-number">1.</span> <span class="nav-text">主题模型切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三方框架DKNightVersion完整版逻辑"><span class="nav-number">2.</span> <span class="nav-text">第三方框架DKNightVersion完整版逻辑</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#主题模型切换"><span class="nav-number">1.</span> <span class="nav-text">主题模型切换</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三方框架DKNightVersion"><span class="nav-number">2.</span> <span class="nav-text">第三方框架DKNightVersion</span></a></li></ol></div>
             
 
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,OC多线程,">
+  <meta name="keywords" content="iOS,OC多线程,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="OC多线程分析及使用和死锁处理 线程方式:NSThread，NSOperation, GCD  NSThread 一线程对象 对应一个线程，当执行完之后，不能重新开启一个线程也是单独存在 // 主动开线程 // [NSThread detachNewThreadSelector:@selector(threadOne) toTarget:self withObject:nil];  //手动开启，">
-<meta name="keywords" content="OC,iOS,OC多线程">
+<meta name="keywords" content="iOS,OC多线程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OC多线程分析及使用和死锁处理">
+<meta property="og:title" content="OC多线程">
 <meta property="og:url" content="https://frandfeng.github.io/2017/04/28/OC多线程分析及使用和死锁处理/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="OC多线程分析及使用和死锁处理 线程方式:NSThread，NSOperation, GCD  NSThread 一线程对象 对应一个线程，当执行完之后，不能重新开启一个线程也是单独存在 // 主动开线程 // [NSThread detachNewThreadSelector:@selector(threadOne) toTarget:self withObject:nil];  //手动开启，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T08:54:28.770Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/MultiThread.png">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/多线程-锁.png">
+<meta property="og:updated_time" content="2018-12-24T09:04:37.781Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OC多线程分析及使用和死锁处理">
-<meta name="twitter:description" content="OC多线程分析及使用和死锁处理 线程方式:NSThread，NSOperation, GCD  NSThread 一线程对象 对应一个线程，当执行完之后，不能重新开启一个线程也是单独存在 // 主动开线程 // [NSThread detachNewThreadSelector:@selector(threadOne) toTarget:self withObject:nil];  //手动开启，">
+<meta name="twitter:title" content="OC多线程">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/MultiThread.png">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>OC多线程分析及使用和死锁处理 | Frand Feng</title>
+  <title>OC多线程 | Frand Feng</title>
   
 
 
@@ -322,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OC多线程分析及使用和死锁处理</h1>
+          <h1 class="post-title" itemprop="name headline">OC多线程</h1>
         
 
         <div class="post-meta">
@@ -394,26 +394,22 @@
       
 
       
-        <h1 id="OC多线程分析及使用和死锁处理"><a href="#OC多线程分析及使用和死锁处理" class="headerlink" title="OC多线程分析及使用和死锁处理"></a>OC多线程分析及使用和死锁处理</h1><ol>
-<li>线程方式:NSThread，NSOperation, GCD</li>
-</ol>
-<p>NSThread 一线程对象 对应一个线程，当执行完之后，不能重新开启<br>一个线程也是单独存在</p>
+        <p><img src="/assets/outline/MultiThread.png" alt=""><br><img src="/assets/outline/多线程-锁.png" alt=""></p>
+<a id="more"></a>
+<p>线程方式:NSThread，NSOperation, GCD</p>
+<h1 id="NSThread"><a href="#NSThread" class="headerlink" title="NSThread"></a>NSThread</h1><p>NSThread 一线程对象 对应一个线程，当执行完之后，不能重新开启<br>一个线程也是单独存在</p>
 <pre><code>// 主动开线程
 // [NSThread detachNewThreadSelector:@selector(threadOne) toTarget:self withObject:nil];
 
 //手动开启，手动开启线程只能开一次
 _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) object:nil];
 [_thread start];
-</code></pre><ol start="2">
-<li><p>线程队列NSQueueOperation</p>
-<ul>
-<li>Operation抽象类必须用其子类实现</li>
-<li><p>系统的Operation对象</p>
-<ul>
-<li><p>NSBlockOperation</p>
-<pre><code>/*
- operation可以添加到OperationQueue中去执行，在OperationQueue中执行时，所有的block会异步执行，也就是说要新启线程，但也可以调用[operation start]手动开启，手动开启的时候，代码会同步执行，且只能执行一次（参见finish），如果有多个block块，则会分配一个到主线程上执行，其他block会新启用线程执行
- block并不是先添加就先执行，当operation执行后，就不能在添加block
+</code></pre><h1 id="NSOperation"><a href="#NSOperation" class="headerlink" title="NSOperation"></a>NSOperation</h1><p>operation可以添加到OperationQueue中去执行，在OperationQueue中执行时，所有的operation会异步执行，也就是说要新启线程。</p>
+<p>也可以调用[operation start]手动开启，手动开启的时候，代码会同步执行，且只能执行一次（参见finish）</p>
+<p>NSOperation是抽象类，必须用其子类实现，其子类有两个，NSBlockOperation和NSInvocationOperation</p>
+<h2 id="NSBlockOperation"><a href="#NSBlockOperation" class="headerlink" title="NSBlockOperation"></a>NSBlockOperation</h2><pre><code>/*
+如果有多个operation块，则会分配一个到主线程上执行，其他operation块会新启用线程执行
+ block并不是先添加就先执行，当operation执行后，就不能再添加block
  */
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -446,9 +442,7 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
     [blockOperation start];
       //[blockOperation main];
 }
-</code></pre></li>
-<li><p>NSInvocationOperation(NSInvocation)</p>
-<pre><code>- (void)viewDidLoad {
+</code></pre><h3 id="NSInvocationOperation-NSInvocation"><a href="#NSInvocationOperation-NSInvocation" class="headerlink" title="NSInvocationOperation(NSInvocation)"></a>NSInvocationOperation(NSInvocation)</h3><pre><code>- (void)viewDidLoad {
     [super viewDidLoad];
     // 3 selector  方法签名（方法的对象结构，相关的结构信息：返回值，调用者，方法名，参数）
     NSMethodSignature *signture = [self methodSignatureForSelector:@selector(name:age:sex:)];
@@ -476,114 +470,90 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
     NSLog(@&quot;name: age: sex:%@&quot;, [NSThread currentThread]);
     return [NSString stringWithFormat:@&quot;%@%@%@&quot;, name, age, sex];
 }
-</code></pre></li>
-</ul>
-</li>
-<li><p>自定义Operation对象</p>
-<ul>
-<li>Operation状态（KVO通知）</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<pre><code>        [twoOperation addObserver:self forKeyPath:@&quot;finished&quot; options:NSKeyValueObservingOptionNew context:nil];
-        }
+</code></pre><h2 id="自定义Operation对象"><a href="#自定义Operation对象" class="headerlink" title="自定义Operation对象"></a>自定义Operation对象</h2><h3 id="Operation状态（KVO通知）"><a href="#Operation状态（KVO通知）" class="headerlink" title="Operation状态（KVO通知）"></a>Operation状态（KVO通知）</h3><pre><code>[twoOperation addObserver:self forKeyPath:@&quot;finished&quot; options:NSKeyValueObservingOptionNew context:nil];
+}
 
-        - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context{
-            NSLog(@&quot;%@&quot;, keyPath);
-        }
-
-* start方法和main方法理解
-
-        - (void)viewDidLoad {
-            [super viewDidLoad];
-            queue = [NSOperationQueue new];
-            //EocOperation重写start，SimpleOperation重写main，发现addOperation后均会执行，但重写start后并没有执行dealloc方法，是因为EocOperation的状态为未完成状态 _finished = NO；
-            EocOperation *eocOperation = [EocOperation new];
-            SimpleOperation *simpOperation = [SimpleOperation new];
-            [queue addOperation:eocOperation];
-               [queue addOperation:simpOperation];
-        }
-
-        //eocOperation
-        - (void)main{
-            // 主要的业务逻辑放到这里处理
-            NSLog(@&quot;main2&quot;);
-            // 如果是手动调用并且只有一个block块，则其在主线程上执行，主线程自己有runLoop，而如果在新启线程上执行的话，需要调用[[NSRunLoop currentRunLoop] run]在线程上维护一个RunLoop
-            _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeCount) userInfo:nil repeats:YES];
-            [[NSRunLoop currentRunLoop] run];
-        }
-
-        - (void)timeCount{
-            static int count = 0;
-            count++;
-            if (count &gt; 5) {
-                [_timer invalidate];
-            }
-            NSLog(@&quot;timeCount&quot;);
-        }
-
-        - (void)start{
-            //异常处理，状态修改
-            NSLog(@&quot;%@&quot;, [NSThread currentThread]);
-            //[NSThread detachNewThreadSelector:@selector(main) toTarget:self withObject:nil];
-            // self.finished = YES
-            if (_finished) {
-                return;
-            }
-            if (self.isExecuting) {
-                return;
-            }
-            NSLog(@&quot;start&quot;);
-            [self main];
-            _finished = YES;
-        }
-
-        - (void)dealloc{
-            NSLog(@&quot;start::%s&quot;, __func__);
-        }
-
-* 配置Operation执行行为（依赖关系）
-
-        - (void)viewDidLoad {
-            [super viewDidLoad];
-            queue = [NSOperationQueue new];
-            NSBlockOperation *eocOperation = [[NSBlockOperation alloc] init];
-            [eocOperation addExecutionBlock:^{
-                NSLog(@&quot;one block task&quot;);
-            }];
-            [eocOperation addExecutionBlock:^{
-                NSLog(@&quot;two block task&quot;);
-            }];
-            NSBlockOperation *twoOperation = [[NSBlockOperation alloc] init];
-            [twoOperation addExecutionBlock:^{
-                NSLog(@&quot;Three block task&quot;);
-            }];
-            [twoOperation addExecutionBlock:^{
-                NSLog(@&quot;Four block task&quot;);
-            }];
-
-            // 先后顺序关系 twoOperation 先，然后再eocOperation
-            // 在执行之前，把依赖关系建立好
-            [eocOperation addDependency:twoOperation];
-            [queue addOperation:eocOperation];
-            [queue addOperation:twoOperation];
-            [twoOperation addObserver:self forKeyPath:@&quot;finished&quot; options:NSKeyValueObservingOptionNew context:nil];
-        }
-
-        - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context{
-            NSLog(@&quot;%@&quot;, keyPath);
-        }
-
-* 分析依赖关系本质
-
-    本质是finish的状态监听
-</code></pre><ol start="3">
-<li><p>线程取消问题，僵尸线程问题</p>
-<ul>
-<li><p>NSThead操作</p>
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context{
+    NSLog(@&quot;%@&quot;, keyPath);
+}
+</code></pre><p>start方法和main方法理解</p>
 <pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+    queue = [NSOperationQueue new];
+    //EocOperation重写start，SimpleOperation重写main，发现addOperation后均会执行，但重写start后并没有执行dealloc方法，是因为EocOperation的状态为未完成状态 _finished = NO；
+    EocOperation *eocOperation = [EocOperation new];
+    SimpleOperation *simpOperation = [SimpleOperation new];
+    [queue addOperation:eocOperation];
+       [queue addOperation:simpOperation];
+}
+
+//eocOperation
+- (void)main{
+    // 主要的业务逻辑放到这里处理
+    NSLog(@&quot;main2&quot;);
+    // 如果是手动调用并且只有一个block块，则其在主线程上执行，主线程自己有runLoop，而如果在新启线程上执行的话，需要调用[[NSRunLoop currentRunLoop] run]在线程上维护一个RunLoop
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeCount) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] run];
+}
+
+- (void)timeCount{
+    static int count = 0;
+    count++;
+    if (count &gt; 5) {
+        [_timer invalidate];
+    }
+    NSLog(@&quot;timeCount&quot;);
+}
+
+- (void)start{
+    //异常处理，状态修改
+    NSLog(@&quot;%@&quot;, [NSThread currentThread]);
+    //[NSThread detachNewThreadSelector:@selector(main) toTarget:self withObject:nil];
+    // self.finished = YES
+    if (_finished) {
+        return;
+    }
+    if (self.isExecuting) {
+        return;
+    }
+    NSLog(@&quot;start&quot;);xx
+    _finished = YES;
+}
+
+- (void)dealloc{
+    NSLog(@&quot;start::%s&quot;, __func__);
+}
+</code></pre><h3 id="配置Operation执行行为（依赖关系）"><a href="#配置Operation执行行为（依赖关系）" class="headerlink" title="配置Operation执行行为（依赖关系）"></a>配置Operation执行行为（依赖关系）</h3><pre><code>- (void)viewDidLoad {
+    [super viewDidLoad];
+    queue = [NSOperationQueue new];
+    NSBlockOperation *eocOperation = [[NSBlockOperation alloc] init];
+    [eocOperation addExecutionBlock:^{
+        NSLog(@&quot;one block task&quot;);
+    }];
+    [eocOperation addExecutionBlock:^{
+        NSLog(@&quot;two block task&quot;);
+    }];
+    NSBlockOperation *twoOperation = [[NSBlockOperation alloc] init];
+    [twoOperation addExecutionBlock:^{
+        NSLog(@&quot;Three block task&quot;);
+    }];
+    [twoOperation addExecutionBlock:^{
+        NSLog(@&quot;Four block task&quot;);
+    }];
+
+    // 先后顺序关系 twoOperation 先，然后再eocOperation
+    // 在执行之前，把依赖关系建立好
+    [eocOperation addDependency:twoOperation];
+    [queue addOperation:eocOperation];
+    [queue addOperation:twoOperation];
+    [twoOperation addObserver:self forKeyPath:@&quot;finished&quot; options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary&lt;NSKeyValueChangeKey,id&gt; *)change context:(void *)context{
+    NSLog(@&quot;%@&quot;, keyPath);
+}
+</code></pre><h3 id="分析依赖关系本质"><a href="#分析依赖关系本质" class="headerlink" title="分析依赖关系本质"></a>分析依赖关系本质</h3><p>本质是finish的状态监听</p>
+<h1 id="线程取消问题，僵尸线程问题"><a href="#线程取消问题，僵尸线程问题" class="headerlink" title="线程取消问题，僵尸线程问题"></a>线程取消问题，僵尸线程问题</h1><h2 id="NSThead操作"><a href="#NSThead操作" class="headerlink" title="NSThead操作"></a>NSThead操作</h2><pre><code>- (void)viewDidLoad {
     [super viewDidLoad];
     //手动开启
     _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) object:nil];
@@ -611,9 +581,7 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
     //线程不能真正取消，如果需要取消，则需要取消节点
     [_thread cancel];
 }
-</code></pre></li>
-<li><p>RunLoop操作</p>
-<pre><code>- (void)ThreadOne{
+</code></pre><h2 id="RunLoop操作"><a href="#RunLoop操作" class="headerlink" title="RunLoop操作"></a>RunLoop操作</h2><pre><code>- (void)ThreadOne{
     NSLog(@&quot;start thread&quot;);
     port = [NSPort new];
     //如果没有这一句则RunLoop一直在跑，不会执行finish，就会形成僵尸线程
@@ -648,11 +616,7 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
         [_timer invalidate];
     }
 }
-</code></pre></li>
-</ul>
-</li>
-</ol>
-
+</code></pre>
       
     </div>
     
@@ -668,8 +632,6 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
     <footer class="post-footer">
       
         <div class="post-tags">
-          
-            <a href="/tags/OC/" rel="tag"># OC</a>
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
@@ -799,7 +761,7 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -810,7 +772,7 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -859,7 +821,7 @@ _thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadTwo) ob
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OC多线程分析及使用和死锁处理"><span class="nav-number">1.</span> <span class="nav-text">OC多线程分析及使用和死锁处理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NSThread"><span class="nav-number">1.</span> <span class="nav-text">NSThread</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NSOperation"><span class="nav-number">2.</span> <span class="nav-text">NSOperation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NSBlockOperation"><span class="nav-number">2.1.</span> <span class="nav-text">NSBlockOperation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NSInvocationOperation-NSInvocation"><span class="nav-number">2.1.1.</span> <span class="nav-text">NSInvocationOperation(NSInvocation)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义Operation对象"><span class="nav-number">2.2.</span> <span class="nav-text">自定义Operation对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Operation状态（KVO通知）"><span class="nav-number">2.2.1.</span> <span class="nav-text">Operation状态（KVO通知）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置Operation执行行为（依赖关系）"><span class="nav-number">2.2.2.</span> <span class="nav-text">配置Operation执行行为（依赖关系）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析依赖关系本质"><span class="nav-number">2.2.3.</span> <span class="nav-text">分析依赖关系本质</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程取消问题，僵尸线程问题"><span class="nav-number">3.</span> <span class="nav-text">线程取消问题，僵尸线程问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NSThead操作"><span class="nav-number">3.1.</span> <span class="nav-text">NSThead操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RunLoop操作"><span class="nav-number">3.2.</span> <span class="nav-text">RunLoop操作</span></a></li></ol></li></ol></div>
             
 
           </div>

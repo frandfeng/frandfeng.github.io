@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OC,iOS,GCD,">
+  <meta name="keywords" content="iOS,GCD,">
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="GCD深度使用和底层源码分析 串行队列 // 串行队列 只能开启一个任务 （串发dispatch_sync） - (void)serialQueue{     //执行结果是同一个线程上依次执行多个任务     dispatch_queue_t queue = dispatch_queue_create(&amp;quot;serQueue&amp;quot;, DISPATCH_QUEUE_SERIAL);">
-<meta name="keywords" content="OC,iOS,GCD">
+<meta name="keywords" content="iOS,GCD">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GCD深度使用和底层源码分析">
 <meta property="og:url" content="https://frandfeng.github.io/2017/05/26/GCD深度使用和底层源码分析/index.html">
 <meta property="og:site_name" content="Frand Feng">
-<meta property="og:description" content="GCD深度使用和底层源码分析 串行队列 // 串行队列 只能开启一个任务 （串发dispatch_sync） - (void)serialQueue{     //执行结果是同一个线程上依次执行多个任务     dispatch_queue_t queue = dispatch_queue_create(&amp;quot;serQueue&amp;quot;, DISPATCH_QUEUE_SERIAL);">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-25T08:55:18.777Z">
+<meta property="og:image" content="https://frandfeng.github.io/assets/outline/GCD.png">
+<meta property="og:updated_time" content="2018-12-14T04:36:14.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GCD深度使用和底层源码分析">
-<meta name="twitter:description" content="GCD深度使用和底层源码分析 串行队列 // 串行队列 只能开启一个任务 （串发dispatch_sync） - (void)serialQueue{     //执行结果是同一个线程上依次执行多个任务     dispatch_queue_t queue = dispatch_queue_create(&amp;quot;serQueue&amp;quot;, DISPATCH_QUEUE_SERIAL);">
+<meta name="twitter:image" content="https://frandfeng.github.io/assets/outline/GCD.png">
 
 
 
@@ -394,9 +393,9 @@
       
 
       
-        <h1 id="GCD深度使用和底层源码分析"><a href="#GCD深度使用和底层源码分析" class="headerlink" title="GCD深度使用和底层源码分析"></a>GCD深度使用和底层源码分析</h1><ul>
-<li><p>串行队列</p>
-<pre><code>// 串行队列 只能开启一个任务 （串发dispatch_sync）
+        <p><img src="/assets/outline/GCD.png" alt=""></p>
+<a id="more"></a>
+<h2 id="串行队列"><a href="#串行队列" class="headerlink" title="串行队列"></a>串行队列</h2><pre><code>// 串行队列 只能开启一个任务 （串发dispatch_sync）
 - (void)serialQueue{
     //执行结果是同一个线程上依次执行多个任务
     dispatch_queue_t queue = dispatch_queue_create(&quot;serQueue&quot;, DISPATCH_QUEUE_SERIAL);
@@ -413,9 +412,7 @@
         NSLog(@&quot;4:%@&quot;, [NSThread currentThread]);
     });
 }
-</code></pre></li>
-<li><p>并行队列</p>
-<pre><code>/*
+</code></pre><h2 id="并行队列"><a href="#并行队列" class="headerlink" title="并行队列"></a>并行队列</h2><pre><code>/*
  如果我们cpu是单核，能不能并行操作任务：不能 （）
  如果我们cpu是双核，能不能并行操作任务：能 cpu1 处理A， cpu2 处理B
  */
@@ -436,9 +433,7 @@
          NSLog(@&quot;4当前线程:%@&quot;, [NSThread currentThread]);
     });
 }
-</code></pre></li>
-<li><p>任务分组</p>
-<pre><code>// 组 多个任务执行
+</code></pre><h2 id="任务分组"><a href="#任务分组" class="headerlink" title="任务分组"></a>任务分组</h2><pre><code>// 组 多个任务执行
 - (void)group_gcd{
     // 1 创建组
     dispatch_group_t group = dispatch_group_create();
@@ -494,9 +489,7 @@
     dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
     NSLog(@&quot;finish 代码跑完了：%d&quot;,taskCount);
 }
-</code></pre></li>
-<li><p>栅栏</p>
-<pre><code>//栅栏
+</code></pre><h2 id="栅栏"><a href="#栅栏" class="headerlink" title="栅栏"></a>栅栏</h2><pre><code>//栅栏
 - (void)barrier_fct{
     dispatch_queue_t queue = dispatch_queue_create(&quot;serQueue&quot;, DISPATCH_QUEUE_CONCURRENT);
     dispatch_async(queue, ^{
@@ -553,18 +546,14 @@
     });
     return result;
 }
-</code></pre></li>
-<li><p>重复执行</p>
-<pre><code>// 重复 执行任务 dispatch_apply
+</code></pre><h2 id="重复执行"><a href="#重复执行" class="headerlink" title="重复执行"></a>重复执行</h2><pre><code>// 重复 执行任务 dispatch_apply
 - (void)apply_gcd{
     dispatch_queue_t queue = dispatch_queue_create(&quot;testRWAry&quot;, DISPATCH_QUEUE_CONCURRENT);
     dispatch_apply(5, queue , ^(size_t count) {
         NSLog(@&quot;%d&quot;, count);
     });
 }
-</code></pre></li>
-<li><p>延后执行</p>
-<pre><code>// 延后 dispatch_after
+</code></pre><h2 id="延后执行"><a href="#延后执行" class="headerlink" title="延后执行"></a>延后执行</h2><pre><code>// 延后 dispatch_after
 - (void)after_GCD {
     //没有RunLoop，所以延后时新开线程执行
     dispatch_queue_t queue = dispatch_queue_create(&quot;testRWAry&quot;, DISPATCH_QUEUE_CONCURRENT);
@@ -576,9 +565,7 @@
         NSLog(@&quot;end&quot;);
     });
 }
-</code></pre></li>
-<li><p>手动激活队列后执行</p>
-<pre><code>// 激活 dispatch_activate手动激活队列时才会执行
+</code></pre><h2 id="手动激活队列后执行"><a href="#手动激活队列后执行" class="headerlink" title="手动激活队列后执行"></a>手动激活队列后执行</h2><pre><code>// 激活 dispatch_activate手动激活队列时才会执行
 - (void)queueInactive{
     dispatch_queue_t queue = dispatch_queue_create(&quot;testRWAry&quot;, DISPATCH_QUEUE_CONCURRENT_INACTIVE);
     dispatch_async(queue, ^{
@@ -586,9 +573,7 @@
     });
     dispatch_activate(queue);
 }
-</code></pre></li>
-<li><p>GCD调用执行函数        </p>
-<pre><code>// _f IMP dispatch_async_f的第二个参数是testFunction的参数
+</code></pre><h2 id="GCD调用执行函数"><a href="#GCD调用执行函数" class="headerlink" title="GCD调用执行函数"></a>GCD调用执行函数</h2><pre><code>// _f IMP dispatch_async_f的第二个参数是testFunction的参数
 // 调用函数执行，执行线程不是主线程，是子线程中
 - (void)function_f{
     dispatch_queue_t queue = dispatch_queue_create(&quot;testRWAry&quot;, DISPATCH_QUEUE_CONCURRENT);
@@ -598,9 +583,7 @@
 void testFunction(){
     NSLog(@&quot;testFunction::--&gt;%@&quot;, [NSThread currentThread]);
 }
-</code></pre></li>
-<li><p>系统底层定时器        </p>
-<pre><code>// 定时器 dispatch_source_t  unix (pthread) GCD()
+</code></pre><h2 id="系统底层定时器"><a href="#系统底层定时器" class="headerlink" title="系统底层定时器"></a>系统底层定时器</h2><pre><code>// 定时器 dispatch_source_t  unix (pthread) GCD()
 dispatch_source_t soure;
 - (void)timeSource {
    // dispatch_object_t;
@@ -617,9 +600,7 @@ dispatch_source_t soure;
     // 开启定时器
     dispatch_resume(soure);
 }
-</code></pre></li>
-<li><p>锁和死锁</p>
-<pre><code>- (void)signalLock{
+</code></pre><h2 id="锁和死锁"><a href="#锁和死锁" class="headerlink" title="锁和死锁"></a>锁和死锁</h2><pre><code>- (void)signalLock{
     [NSThread detachNewThreadSelector:@selector(signalLockWrite) toTarget:self withObject:nil];
     [NSThread detachNewThreadSelector:@selector(signalLockRead) toTarget:self withObject:nil];
 }
@@ -681,10 +662,10 @@ dispatch_source_t soure;
         [_condition unlock];
     }
 }
-</code></pre></li>
-<li><p>条件锁原理</p>
-<pre><code>pthread_mutex_t mutex; pthread_mutex_init(&amp;mutex, 0);
-pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
+</code></pre><h2 id="条件锁原理"><a href="#条件锁原理" class="headerlink" title="条件锁原理"></a>条件锁原理</h2><pre><code>pthread_mutex_t mutex;
+pthread_mutex_init(&amp;mutex, 0);
+pthread_cond_t cond;
+pthread_cond_init(&amp;cond, 0);
 // theory c  OC条件量的c实现
 - (void)conditionLockOne{
     while (1) {
@@ -716,9 +697,7 @@ pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
         pthread_mutex_unlock(&amp;mutex);
     }
 }
-</code></pre></li>
-<li><p>递归锁及其原理</p>
-<pre><code>@interface RecursiveLock : NSObject{
+</code></pre><h2 id="递归锁及其原理"><a href="#递归锁及其原理" class="headerlink" title="递归锁及其原理"></a>递归锁及其原理</h2><pre><code>@interface RecursiveLock : NSObject{
     pthread_mutex_t _reclock;
     NSRecursiveLock *recursiveLock;
 }
@@ -780,10 +759,9 @@ pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
     pthread_mutex_unlock(&amp;_reclock);
     return tmp;
 }
-</code></pre><p>  ？？？？未完</p>
-</li>
-</ul>
 
+？？？？未完
+</code></pre>
       
     </div>
     
@@ -800,8 +778,6 @@ pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
       
         <div class="post-tags">
           
-            <a href="/tags/OC/" rel="tag"># OC</a>
-          
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
             <a href="/tags/GCD/" rel="tag"># GCD</a>
@@ -817,8 +793,8 @@ pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/28/OC多线程分析及使用和死锁处理/" rel="next" title="OC多线程分析及使用和死锁处理">
-                <i class="fa fa-chevron-left"></i> OC多线程分析及使用和死锁处理
+              <a href="/2017/04/28/OC多线程分析及使用和死锁处理/" rel="next" title="OC多线程">
+                <i class="fa fa-chevron-left"></i> OC多线程
               </a>
             
           </div>
@@ -930,7 +906,7 @@ pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -941,7 +917,7 @@ pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -990,7 +966,7 @@ pthread_cond_t cond; pthread_cond_init(&amp;cond, 0);
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GCD深度使用和底层源码分析"><span class="nav-number">1.</span> <span class="nav-text">GCD深度使用和底层源码分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#串行队列"><span class="nav-number">1.</span> <span class="nav-text">串行队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#并行队列"><span class="nav-number">2.</span> <span class="nav-text">并行队列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分组"><span class="nav-number">3.</span> <span class="nav-text">任务分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栅栏"><span class="nav-number">4.</span> <span class="nav-text">栅栏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重复执行"><span class="nav-number">5.</span> <span class="nav-text">重复执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延后执行"><span class="nav-number">6.</span> <span class="nav-text">延后执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手动激活队列后执行"><span class="nav-number">7.</span> <span class="nav-text">手动激活队列后执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GCD调用执行函数"><span class="nav-number">8.</span> <span class="nav-text">GCD调用执行函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统底层定时器"><span class="nav-number">9.</span> <span class="nav-text">系统底层定时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁和死锁"><span class="nav-number">10.</span> <span class="nav-text">锁和死锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件锁原理"><span class="nav-number">11.</span> <span class="nav-text">条件锁原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归锁及其原理"><span class="nav-number">12.</span> <span class="nav-text">递归锁及其原理</span></a></li></ol></div>
             
 
           </div>
